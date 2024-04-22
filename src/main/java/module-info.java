@@ -1,8 +1,9 @@
 module com.example.sep2 {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.rmi;
 
 
-    opens com.example.sep2 to javafx.fxml;
-    exports com.example.sep2;
+    opens sep to javafx.fxml;
+    exports sep;
 }
