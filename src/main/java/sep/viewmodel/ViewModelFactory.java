@@ -13,6 +13,9 @@ public class ViewModelFactory
     private final AdminServerLogViewModel adminServerLogViewModel;
     private final HelpViewModel helpViewModel;
     private final MainViewModel mainViewModel;
+    private final AdminManageEventsViewModel adminManageEventsViewModel;
+    private final AdminManageDonatedBooksViewModel adminManageDonatedBooksViewModel;
+
 
     public ViewModelFactory(Model model) {
         this.loginViewModel = new LoginViewModel(model);
@@ -23,6 +26,8 @@ public class ViewModelFactory
         this.adminServerLogViewModel = new AdminServerLogViewModel(model);
         this.helpViewModel = new HelpViewModel(model);
         this.mainViewModel = new MainViewModel(model);
+        this.adminManageEventsViewModel = new AdminManageEventsViewModel(model);
+        this.adminManageDonatedBooksViewModel = new AdminManageDonatedBooksViewModel(model);
     }
 
     public LoginViewModel getLoginViewModel()
@@ -45,4 +50,11 @@ public class ViewModelFactory
     public AdminServerLogViewModel getAdminServerLogViewModel() {return adminServerLogViewModel;}
     public HelpViewModel getHelpViewModel(){return helpViewModel;}
     public MainViewModel getMainViewModel(){return mainViewModel;}
+    public AdminManageEventsViewModel getAdminManageEventsViewModel() {
+        return adminManageEventsViewModel;
+    }
+
+    public AdminManageDonatedBooksViewModel getAdminManageDonatedBooksViewModel() {
+        return adminManageDonatedBooksViewModel;
+    }
 }
