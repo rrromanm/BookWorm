@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.DonateViewController">
+   <children>
+      <Label layoutX="29.0" layoutY="31.0" text="Title:" />
+      <TextField layoutX="72.0" layoutY="27.0" />
+      <Label layoutX="29.0" layoutY="63.0" text="Author:" />
+      <TextField layoutX="72.0" layoutY="59.0" />
+      <Label layoutX="29.0" layoutY="96.0" text="ISBN:" />
+      <TextField layoutX="72.0" layoutY="92.0" />
+      <Label layoutX="29.0" layoutY="128.0" text="Year:" />
+      <TextField layoutX="72.0" layoutY="124.0" />
+      <Label layoutX="268.0" layoutY="31.0" text="Publisher:" />
+      <TextField layoutX="329.0" layoutY="27.0" prefHeight="26.0" prefWidth="141.0" />
+      <Label layoutX="268.0" layoutY="63.0" text="Pages:" />
+      <TextField layoutX="311.0" layoutY="59.0" />
+      <Label layoutX="268.0" layoutY="96.0" text="Genre:" />
+      <TextField layoutX="311.0" layoutY="92.0" />
+      <Button layoutX="243.0" layoutY="181.0" mnemonicParsing="false" onAction="#submitButtonClicked" text="Submit">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Label layoutX="224.0" layoutY="236.0" prefHeight="83.0" prefWidth="141.0" text="NOTE: You have to drop book off and it has to be accepted by admin! Thank you." wrapText="true">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Button layoutX="28.0" layoutY="343.0" mnemonicParsing="false" onAction="#backButtonClicked" text="Back">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

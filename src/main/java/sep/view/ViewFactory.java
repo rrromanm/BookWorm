@@ -12,12 +12,20 @@ public class ViewFactory
     public static final String ADMINLOGIN = "adminLogin";
     public static final String LOGIN = "login";
     public static final String CREATEACCOUNT = "createAccount";
+    public static final String DONATEBOOK = "donateBook";
+    public static final String ADMINMANAGEACCOUNTS = "adminManageAccounts";
+    public static final String ADMINSERVERLOG = "adminServerLog";
+    public static final String HELP = "help";
 
     private final ViewHandler viewHandler;
     private final ViewModelFactory viewModelFactory;
     private AdminLoginViewController adminLoginViewController;
     private LoginViewController loginViewController;
     private CreateAccountViewController createAccountViewController;
+    private DonateViewController donateViewController;
+    private AdminManageAccountsViewController adminManageAccountsViewController;
+    private AdminServerLogViewController adminServerLogViewController;
+    private HelpViewController helpViewController;
 
     public ViewFactory(ViewHandler viewHandler, ViewModelFactory viewModelFactory)
     {
@@ -26,6 +34,10 @@ public class ViewFactory
         this.adminLoginViewController = null;
         this.loginViewController = null;
         this.createAccountViewController = null;
+        this.donateViewController = null;
+        this.adminManageAccountsViewController = null;
+        this.adminServerLogViewController = null;
+        this.helpViewController = null;
     }
 
     public Region loadLoginView() {
@@ -75,12 +87,76 @@ public class ViewFactory
         createAccountViewController.reset();
         return createAccountViewController.getRoot();
     }
+    public Region loadDonateView() {
+        if (donateViewController == null) {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/sep/DonateView.fxml"));
+            try {
+                Region root = loader.load();
+                donateViewController = loader.getController();
+                donateViewController.init(viewHandler, viewModelFactory.getDonateViewModel(), root);
+            } catch (IOException e) {
+                throw new IOError(e);
+            }
+        }
+        donateViewController.reset();
+        return donateViewController.getRoot();
+    }
+    public Region loadAdminServerLogView(){
+        if(adminServerLogViewController == null){
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/sep/ServerLogView.fxml"));
+            try {
+                Region root = loader.load();
+                adminServerLogViewController = loader.getController();
+                adminServerLogViewController.init(viewHandler, viewModelFactory.getAdminServerLogViewModel(), root);
+            } catch (IOException e) {
+                throw new IOError(e);
+            }
+        }
+        adminServerLogViewController.reset();
+        return adminServerLogViewController.getRoot();
+    }
+    public Region loadAdminManageAccountsView(){
+        if(adminManageAccountsViewController == null){
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/sep/ManageAccountsView.fxml"));
+            try {
+                Region root = loader.load();
+                adminManageAccountsViewController = loader.getController();
+                adminManageAccountsViewController.init(viewHandler, viewModelFactory.getAdminManageAccountsViewModel(), root);
+            } catch (IOException e) {
+                throw new IOError(e);
+            }
+        }
+        adminManageAccountsViewController.reset();
+        return adminManageAccountsViewController.getRoot();
+    }
+    public Region loadHelpView(){
+        if(helpViewController == null){
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/sep/HelpView.fxml"));
+            try {
+                Region root = loader.load();
+                helpViewController = loader.getController();
+                helpViewController.init(viewHandler, viewModelFactory.getHelpViewModel(), root);
+            } catch (IOException e) {
+                throw new IOError(e);
+            }
+        }
+        helpViewController.reset();
+        return helpViewController.getRoot();
+    }
 
     public Region load(String id) {
         Region root = switch(id) {
             case LOGIN -> loadLoginView();
             case ADMINLOGIN -> loadAdminLoginView();
             case CREATEACCOUNT -> loadCreateAccountView();
+            case DONATEBOOK -> loadDonateView();
+            case ADMINMANAGEACCOUNTS -> loadAdminManageAccountsView();
+            case ADMINSERVERLOG -> loadAdminServerLogView();
+            case HELP -> loadHelpView();
             default -> throw new IllegalArgumentException("Unknown view: " + id);
         };
         return root;
