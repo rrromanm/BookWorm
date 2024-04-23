@@ -16,6 +16,8 @@ public class ViewFactory
     public static final String ADMINMANAGEACCOUNTS = "adminManageAccounts";
     public static final String ADMINSERVERLOG = "adminServerLog";
     public static final String HELP = "help";
+    public static final String USERMAIN = "userMain";
+
 
     private final ViewHandler viewHandler;
     private final ViewModelFactory viewModelFactory;
@@ -26,6 +28,8 @@ public class ViewFactory
     private AdminManageAccountsViewController adminManageAccountsViewController;
     private AdminServerLogViewController adminServerLogViewController;
     private HelpViewController helpViewController;
+    private MainViewController mainViewController;
+
 
     public ViewFactory(ViewHandler viewHandler, ViewModelFactory viewModelFactory)
     {
@@ -38,6 +42,24 @@ public class ViewFactory
         this.adminManageAccountsViewController = null;
         this.adminServerLogViewController = null;
         this.helpViewController = null;
+        this.mainViewController = null;
+
+    }
+
+    public Region loadMainView() {
+        if (mainViewController == null) {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/sep/MainView.fxml"));
+            try {
+                Region root = loader.load();
+                mainViewController = loader.getController();
+                mainViewController.init(viewHandler, viewModelFactory.getMainViewModel(), root);
+            } catch (IOException e) {
+                throw new IOError(e);
+            }
+        }
+        mainViewController.reset();
+        return mainViewController.getRoot();
     }
 
     public Region loadLoginView() {
@@ -157,6 +179,7 @@ public class ViewFactory
             case ADMINMANAGEACCOUNTS -> loadAdminManageAccountsView();
             case ADMINSERVERLOG -> loadAdminServerLogView();
             case HELP -> loadHelpView();
+            case USERMAIN -> loadMainView();
             default -> throw new IllegalArgumentException("Unknown view: " + id);
         };
         return root;
