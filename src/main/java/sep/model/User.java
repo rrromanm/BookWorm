@@ -1,6 +1,7 @@
 package sep.model;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class User {
     private String firstName;
@@ -18,7 +19,7 @@ public class User {
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        //TODO this.userID = method here;
+        generateId();
     }
 
     public String getFirstName() {
@@ -75,6 +76,12 @@ public class User {
 
     public void setUserID(int userID) {
         this.userID = userID;
+    }
+
+    public void generateId() // Idk if this right approach. I tested it the ID is unique but the number is always negative for some reason. It might cause some troubles so we need to discuss it.
+    {
+        UUID uuid = UUID.randomUUID();
+        userID = uuid.hashCode();
     }
 
     @Override
