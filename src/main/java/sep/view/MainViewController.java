@@ -45,6 +45,7 @@ public class MainViewController {
         initializeTableView();
         initializeStateComboBox();
         initializeGenreComboBox(); // not completed
+        populateBookTableView(); // not implemented at all
         this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
 
 
@@ -72,6 +73,10 @@ public class MainViewController {
         String[] genreString = {""};  // I have no idea what genres are we going to have
         genreComboBox.getItems().addAll(genreString);
         genreComboBox.getSelectionModel().selectFirst();
+    }
+    public void populateBookTableView()
+    {
+        //needs to be implemented
     }
     @FXML public void onViewProfile()
     {
