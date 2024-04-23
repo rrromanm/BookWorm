@@ -18,6 +18,8 @@ public class ProfileViewController {
     @FXML private Button deleteButton;
     @FXML private Button backButton;
     @FXML private Label passwordLabel;
+    @FXML private Label feesLabel;
+    @FXML private Label booksReadLabel;
     @FXML private TextField firstNameTextField;
     @FXML private TextField lastNameTextField;
     @FXML private TextField usernameTextField;
@@ -56,9 +58,19 @@ public class ProfileViewController {
         this.root = root;
         initializeHistoryTableView();
         initializeWishlistTableView();
+        populateHBTableView(); // not implemented
+        populateWLTableView(); // not implemented
+        initializeLabels(); // not completed
         fillTextFields(); // not implemented
         edit = false;
         showPassword = false;
+    }
+    public void initializeLabels(){
+        booksReadLabel.setVisible(true);
+        feesLabel.setVisible(true);
+        // we need to get the data about the user fees and the amount of books read by him
+        feesLabel.setText("Outstanding fees: " + /*fees amount*/);
+        booksReadLabel.setText("Books read: " + /*amount of books read by the user*/);
     }
     public void initializeWishlistTableView(){
         WLtitleColumn.setCellValueFactory(new PropertyValueFactory<>("WLtitle"));
@@ -157,6 +169,7 @@ public class ProfileViewController {
     public void reset()
     {
         fillTextFields(); //not implemented
+        initializeLabels();
         firstNameTextField.setEditable(false);
         lastNameTextField.setEditable(false);
         usernameTextField.setEditable(false);

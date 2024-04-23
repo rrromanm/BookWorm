@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sep.view.MyBooksViewController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.MyBooksViewController">
+   <children>
+      <Label layoutX="21.0" layoutY="14.0" text="List of my borrowed books">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <TableView fx:id="bookTableView" layoutX="7.0" layoutY="60.0" onMouseClicked="#onSelect" prefHeight="507.0" prefWidth="892.0">
+        <columns>
+          <TableColumn fx:id="titleColumn" prefWidth="178.39999103546143" text="Title" />
+          <TableColumn fx:id="authorColumn" prefWidth="153.59999084472656" text="Author" />
+            <TableColumn fx:id="yearColumn" prefWidth="64.0" text="Year" />
+            <TableColumn fx:id="publisherColumn" prefWidth="165.60003662109375" text="Publisher" />
+            <TableColumn fx:id="isbnColumn" prefWidth="73.60003662109375" text="ISBN" />
+            <TableColumn fx:id="pageCountColumn" prefWidth="86.39996337890625" text="Page count" />
+            <TableColumn fx:id="bookIdColumn" prefWidth="77.5999755859375" text="Book ID" />
+            <TableColumn fx:id="genreColumn" prefWidth="93.60009765625" text="Genre" />
+        </columns>
+      </TableView>
+      <Button fx:id="returnButton" disable="true" layoutX="932.0" layoutY="60.0" mnemonicParsing="false" onAction="#onReturn" prefHeight="26.0" prefWidth="80.0" text="Return" />
+      <Button fx:id="extendButton" layoutX="932.0" layoutY="92.0" mnemonicParsing="false" onAction="#onExtend" prefHeight="26.0" prefWidth="80.0" text="Extend" visible="false" />
+      <Button fx:id="backButton" layoutX="932.0" layoutY="535.0" mnemonicParsing="false" onAction="#onBack" prefHeight="26.0" prefWidth="80.0" text="Back" />
+   </children>
 </AnchorPane>

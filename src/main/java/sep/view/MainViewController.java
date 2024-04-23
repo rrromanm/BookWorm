@@ -75,11 +75,11 @@ public class MainViewController {
     }
     @FXML public void onViewProfile()
     {
-        viewHandler.openView(ViewFactory.//VIEWPROFILE);
+        viewHandler.openView(ViewFactory.PROFILE);
     }
     @FXML public void onMyBooks()
     {
-        viewHandler.openView(ViewFactory.//MYBOOKS);
+        viewHandler.openView(ViewFactory.MYBOOKS);
     }
     @FXML public void onSeeEvents()
     {

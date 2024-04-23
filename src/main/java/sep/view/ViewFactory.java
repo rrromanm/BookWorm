@@ -202,7 +202,7 @@ public class ViewFactory
             try {
                 Region root = loader.load();
                 myBooksViewController = loader.getController();
-                myBooksViewController.init(viewHandler, viewModelFactory.getProfileViewModel(), root);
+                myBooksViewController.init(viewHandler, viewModelFactory.getMyBooksViewModel(), root);
             } catch (IOException e) {
                 throw new IOError(e);
             }

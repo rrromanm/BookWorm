@@ -50,51 +50,61 @@
          </font>
       </Label>
       <Button fx:id="backButton" layoutX="923.0" layoutY="541.0" mnemonicParsing="false" onAction="#onBack" prefHeight="25.0" prefWidth="87.0" text="Back" />
-      <Label layoutX="187.0" layoutY="36.0" text="First name: ">
+      <Label layoutX="189.0" layoutY="19.0" text="First name: ">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="188.0" layoutY="73.0" text="Last name: ">
+      <Label layoutX="190.0" layoutY="56.0" text="Last name: ">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="188.0" layoutY="108.0" text="Username: ">
+      <Label layoutX="190.0" layoutY="91.0" text="Username: ">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="484.0" layoutY="37.0" text="Email: ">
+      <Label layoutX="486.0" layoutY="20.0" text="Email: ">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="484.0" layoutY="74.0" text="Phone Number: ">
+      <Label layoutX="486.0" layoutY="57.0" text="Phone Number: ">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="482.0" layoutY="108.0" text="User ID: ">
+      <Label layoutX="484.0" layoutY="91.0" text="User ID: ">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="passwordLabel" layoutX="190.0" layoutY="145.0" text="Password: " visible="false">
+      <Label fx:id="passwordLabel" layoutX="192.0" layoutY="128.0" text="Password: " visible="false">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="firstNameTextField" editable="false" layoutX="269.0" layoutY="37.0" />
-      <TextField fx:id="lastNameTextField" editable="false" layoutX="270.0" layoutY="74.0" />
-      <TextField fx:id="usernameTextField" editable="false" layoutX="270.0" layoutY="108.0" />
+      <TextField fx:id="firstNameTextField" editable="false" layoutX="271.0" layoutY="20.0" />
+      <TextField fx:id="lastNameTextField" editable="false" layoutX="272.0" layoutY="57.0" />
+      <TextField fx:id="usernameTextField" editable="false" layoutX="272.0" layoutY="91.0" />
       <Button fx:id="editButton" layoutX="915.0" layoutY="37.0" mnemonicParsing="false" onAction="#onEdit" text="Edit" />
       <Button fx:id="saveButton" layoutX="913.0" layoutY="108.0" mnemonicParsing="false" onAction="#onSave" text="Save" visible="false" />
       <Button fx:id="deleteButton" layoutX="866.0" layoutY="148.0" mnemonicParsing="false" onAction="#onDelete" prefHeight="26.0" prefWidth="132.0" text="Delete Account" />
-      <TextField fx:id="emailTextField" editable="false" layoutX="599.0" layoutY="36.0" />
-      <TextField fx:id="phoneNumberTextField" editable="false" layoutX="599.0" layoutY="74.0" />
-      <TextField fx:id="userIDTextField" editable="false" layoutX="599.0" layoutY="108.0" />
-      <TextField fx:id="passwordTextField" layoutX="269.0" layoutY="145.0" visible="false" />
+      <TextField fx:id="emailTextField" editable="false" layoutX="601.0" layoutY="19.0" />
+      <TextField fx:id="phoneNumberTextField" editable="false" layoutX="601.0" layoutY="57.0" />
+      <TextField fx:id="userIDTextField" editable="false" layoutX="601.0" layoutY="91.0" />
+      <TextField fx:id="passwordTextField" layoutX="271.0" layoutY="128.0" visible="false" />
       <Button fx:id="passwordButton" layoutX="884.0" layoutY="74.0" mnemonicParsing="false" onAction="#onPassword" text="Show Password" visible="false" />
+      <Label fx:id="feesLabel" layoutX="192.0" layoutY="162.0" prefHeight="26.0" prefWidth="239.0" text="FeesLabel">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="booksReadLabel" layoutX="525.0" layoutY="161.0" prefHeight="26.0" prefWidth="239.0" text="BooksReadLabel">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
