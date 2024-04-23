@@ -87,7 +87,7 @@ public class MainViewController {
     }
     @FXML public void onDonate()
     {
-        viewHandler.openView(ViewFactory.//DONATE);
+        viewHandler.openView(ViewFactory.DONATEBOOK);
     }
     @FXML public void onReserve()
     {
@@ -103,12 +103,7 @@ public class MainViewController {
     }
     @FXML public void onHelp()
     {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information");
-        alert.setHeaderText("Contact Info");
-        alert.setContentText("If you need any help please check out our User Guide or contact us here: +45 77 22 11 84");
-        alert.showAndWait();
-        // I think we wanted on this to download the pdf file of the User Guide. We will do it later
+        viewHandler.openView(ViewFactory.HELP);
     }
     @FXML public void onLogout()
     {

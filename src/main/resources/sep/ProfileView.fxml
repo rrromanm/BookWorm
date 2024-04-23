@@ -10,34 +10,33 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.ProfileView">
+<AnchorPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.ProfileViewController">
    <children>
       <ImageView fitHeight="150.0" fitWidth="144.0" layoutX="14.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" />
       <Circle fill="DODGERBLUE" layoutX="86.0" layoutY="86.0" radius="72.0" stroke="BLACK" strokeType="INSIDE" />
-      <TableView layoutX="14.0" layoutY="189.0" prefHeight="160.0" prefWidth="1002.0">
+      <TableView fx:id="wishlistBookTableView" layoutX="14.0" layoutY="189.0" prefHeight="160.0" prefWidth="1002.0">
         <columns>
-          <TableColumn prefWidth="171.2000093460083" text="Title" />
-          <TableColumn minWidth="0.0" prefWidth="155.1999969482422" text="Author" />
-            <TableColumn prefWidth="60.800018310546875" text="Year" />
-            <TableColumn prefWidth="170.39999389648438" text="Publisher" />
-            <TableColumn prefWidth="71.20001220703125" text="ISBN" />
-            <TableColumn prefWidth="76.79998779296875" text="Page Count" />
-            <TableColumn prefWidth="92.0" text="Book ID" />
-            <TableColumn prefWidth="107.199951171875" text="Genre" />
-            <TableColumn prefWidth="95.20001220703125" text="State" />
+          <TableColumn fx:id="WLtitleColumn" prefWidth="171.2000093460083" text="Title" />
+          <TableColumn fx:id="WLauthorColumn" minWidth="0.0" prefWidth="155.1999969482422" text="Author" />
+            <TableColumn fx:id="WLyearColumn" prefWidth="60.800018310546875" text="Year" />
+            <TableColumn fx:id="WLpublisherColumn" prefWidth="170.39999389648438" text="Publisher" />
+            <TableColumn fx:id="WLisbnColumn" prefWidth="71.20001220703125" text="ISBN" />
+            <TableColumn fx:id="WLpageCountColumn" prefWidth="76.79998779296875" text="Page Count" />
+            <TableColumn fx:id="WLbookIdColumn" prefWidth="92.0" text="Book ID" />
+            <TableColumn fx:id="WLgenreColumn" prefWidth="107.199951171875" text="Genre" />
+            <TableColumn fx:id="WLstateColumn" prefWidth="95.20001220703125" text="State" />
         </columns>
       </TableView>
-      <TableView layoutX="14.0" layoutY="376.0" prefHeight="160.0" prefWidth="1002.0">
+      <TableView fx:id="historyOfBookTableView" layoutX="14.0" layoutY="376.0" prefHeight="160.0" prefWidth="1002.0">
         <columns>
-          <TableColumn prefWidth="171.19997882843018" text="Title" />
-          <TableColumn minWidth="0.0" prefWidth="169.6000518798828" text="Author" />
-            <TableColumn prefWidth="76.800048828125" text="Year" />
-            <TableColumn prefWidth="168.79998779296875" text="Publisher" />
-            <TableColumn prefWidth="90.40008544921875" text="ISBN" />
-            <TableColumn prefWidth="111.199951171875" text="Page Count" />
-            <TableColumn prefWidth="90.39996337890625" text="Book ID" />
-            <TableColumn prefWidth="127.199951171875" text="Genre" />
+          <TableColumn fx:id="HBtitleColumn" prefWidth="171.19997882843018" text="Title" />
+          <TableColumn fx:id="HBauthorColumn" minWidth="0.0" prefWidth="169.6000518798828" text="Author" />
+            <TableColumn fx:id="HByearColumn" prefWidth="76.800048828125" text="Year" />
+            <TableColumn fx:id="HBpublisherColumn" prefWidth="168.79998779296875" text="Publisher" />
+            <TableColumn fx:id="HBisbnColumn" prefWidth="90.40008544921875" text="ISBN" />
+            <TableColumn fx:id="HBpageCountColumn" prefWidth="111.199951171875" text="Page Count" />
+            <TableColumn fx:id="HBbookIdColumn" prefWidth="90.39996337890625" text="Book ID" />
+            <TableColumn fx:id="HBgenreColumn" prefWidth="127.199951171875" text="Genre" />
         </columns>
       </TableView>
       <Label layoutX="21.0" layoutY="171.0" prefHeight="18.0" prefWidth="110.0" text="Reading Wishlist">
@@ -50,7 +49,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Button layoutX="923.0" layoutY="541.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="Back" />
+      <Button fx:id="backButton" layoutX="923.0" layoutY="541.0" mnemonicParsing="false" onAction="#onBack" prefHeight="25.0" prefWidth="87.0" text="Back" />
       <Label layoutX="187.0" layoutY="36.0" text="First name: ">
          <font>
             <Font size="16.0" />
@@ -81,12 +80,21 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="744.0" layoutY="40.0" text="Password" />
-      <TextField layoutX="269.0" layoutY="37.0" />
-      <TextField layoutX="270.0" layoutY="74.0" />
-      <TextField layoutX="270.0" layoutY="108.0" />
-      <Button layoutX="915.0" layoutY="37.0" mnemonicParsing="false" text="Edit" />
-      <Button layoutX="913.0" layoutY="73.0" mnemonicParsing="false" text="Save" />
-      <Button layoutX="908.0" layoutY="159.0" mnemonicParsing="false" text="Delete" />
+      <Label fx:id="passwordLabel" layoutX="190.0" layoutY="145.0" text="Password: " visible="false">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="firstNameTextField" editable="false" layoutX="269.0" layoutY="37.0" />
+      <TextField fx:id="lastNameTextField" editable="false" layoutX="270.0" layoutY="74.0" />
+      <TextField fx:id="usernameTextField" editable="false" layoutX="270.0" layoutY="108.0" />
+      <Button fx:id="editButton" layoutX="915.0" layoutY="37.0" mnemonicParsing="false" onAction="#onEdit" text="Edit" />
+      <Button fx:id="saveButton" layoutX="913.0" layoutY="108.0" mnemonicParsing="false" onAction="#onSave" text="Save" visible="false" />
+      <Button fx:id="deleteButton" layoutX="866.0" layoutY="148.0" mnemonicParsing="false" onAction="#onDelete" prefHeight="26.0" prefWidth="132.0" text="Delete Account" />
+      <TextField fx:id="emailTextField" editable="false" layoutX="599.0" layoutY="36.0" />
+      <TextField fx:id="phoneNumberTextField" editable="false" layoutX="599.0" layoutY="74.0" />
+      <TextField fx:id="userIDTextField" editable="false" layoutX="599.0" layoutY="108.0" />
+      <TextField fx:id="passwordTextField" layoutX="269.0" layoutY="145.0" visible="false" />
+      <Button fx:id="passwordButton" layoutX="884.0" layoutY="74.0" mnemonicParsing="false" onAction="#onPassword" text="Show Password" visible="false" />
    </children>
 </AnchorPane>

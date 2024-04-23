@@ -17,6 +17,8 @@ public class ViewFactory
     public static final String ADMINSERVERLOG = "adminServerLog";
     public static final String HELP = "help";
     public static final String USERMAIN = "userMain";
+    public static final String PROFILE = "profile";
+    public static final String MYBOOKS = "myBooks";
 
 
     private final ViewHandler viewHandler;
@@ -29,6 +31,8 @@ public class ViewFactory
     private AdminServerLogViewController adminServerLogViewController;
     private HelpViewController helpViewController;
     private MainViewController mainViewController;
+    private ProfileViewController profileViewController;
+    private MyBooksViewController myBooksViewController;
 
 
     public ViewFactory(ViewHandler viewHandler, ViewModelFactory viewModelFactory)
@@ -43,6 +47,8 @@ public class ViewFactory
         this.adminServerLogViewController = null;
         this.helpViewController = null;
         this.mainViewController = null;
+        this.profileViewController = null;
+        this.myBooksViewController = null;
 
     }
 
@@ -169,6 +175,36 @@ public class ViewFactory
         helpViewController.reset();
         return helpViewController.getRoot();
     }
+    public Region loadProfileView(){
+        if(profileViewController == null){
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/sep/ProfileView.fxml"));
+            try {
+                Region root = loader.load();
+                profileViewController = loader.getController();
+                profileViewController.init(viewHandler, viewModelFactory.getProfileViewModel(), root);
+            } catch (IOException e) {
+                throw new IOError(e);
+            }
+        }
+        profileViewController.reset();
+        return profileViewController.getRoot();
+    }
+    public Region loadMyBooksView(){ // controller not implemented yet
+        if(myBooksViewController == null){
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/sep/MyBooksView.fxml"));
+            try {
+                Region root = loader.load();
+                myBooksViewController = loader.getController();
+                myBooksViewController.init(viewHandler, viewModelFactory.getProfileViewModel(), root);
+            } catch (IOException e) {
+                throw new IOError(e);
+            }
+        }
+        myBooksViewController.reset();
+        return myBooksViewController.getRoot();
+    }
 
     public Region load(String id) {
         Region root = switch(id) {
@@ -180,6 +216,8 @@ public class ViewFactory
             case ADMINSERVERLOG -> loadAdminServerLogView();
             case HELP -> loadHelpView();
             case USERMAIN -> loadMainView();
+            case PROFILE -> loadProfileView();
+            case MYBOOKS -> loadMyBooksView();
             default -> throw new IllegalArgumentException("Unknown view: " + id);
         };
         return root;
