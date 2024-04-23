@@ -13,7 +13,8 @@ public class Book {
     private String genre;
 
     private State state;
-    private User user;
+    private User borrower;
+    private User reservist;
 
 
     public Book(String title, String author,int year, String publisher, long isbn, int pageCount, int bookID, String genre) {
@@ -25,9 +26,9 @@ public class Book {
         this.pageCount = pageCount;
         this.bookID = bookID;
         this.genre = genre;
-
         this.state = new Available();
-        this.user = null;
+        this.borrower = null;
+        this.reservist = null;
     }
 
     public String getTitle() {
@@ -102,28 +103,33 @@ public class Book {
         this.state = state;
     }
 
-    public User getUser() {
-        return user;
+    public void setReservist(User reservist) {
+        this.reservist = reservist;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setBorrower(User borrower) {
+        this.borrower = borrower;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book) o;
-        return year == book.year && isbn == book.isbn && pageCount == book.pageCount && bookID == book.bookID && Objects.equals(title, book.title) && Objects.equals(author, book.author) && Objects.equals(publisher, book.publisher) && Objects.equals(genre, book.genre);
+    public User getBorrower() {
+        return borrower;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, author, publisher, year, isbn, pageCount, bookID, genre);
+    public User getReservist() {
+        return reservist;
     }
 
     @Override
+    public boolean equals(Object obj) { // I didn't add the state to the equals method since we dont have the equals method for comparing the states
+       if(obj==null || obj.getClass()!=getClass()){
+           return false;
+       }
+       Book other = (Book) obj;
+       return other.title.equals(title) && other.author.equals(author) && year == other.year && other.publisher.equals(publisher) &&
+        isbn == other.isbn && pageCount == other.pageCount && bookID == other.bookID && genre.equals(other.genre) && borrower.equals(other.borrower) &&
+        reservist.equals(other.reservist);
+    }
+    @Override // toString is missing the info about borrower,reservist and state
     public String toString() {
         return "Book{" +
                 "title='" + title + '\'' +
