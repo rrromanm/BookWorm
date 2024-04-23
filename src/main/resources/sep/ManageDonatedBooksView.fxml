@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.ManageDonatedBooksView">
+<AnchorPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.AdminManageDonatedBooksViewController">
    <children>
-      <ListView layoutX="14.0" layoutY="35.0" prefHeight="478.0" prefWidth="994.0" />
-      <Button layoutX="23.0" layoutY="530.0" mnemonicParsing="false" text="Back" />
-      <Button layoutX="892.0" layoutY="530.0" mnemonicParsing="false" text="Approve" />
-      <Button layoutX="961.0" layoutY="530.0" mnemonicParsing="false" text="Reject" />
+      <Button fx:id="back" layoutX="23.0" layoutY="530.0" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" />
+      <Button fx:id="approve" layoutX="892.0" layoutY="530.0" mnemonicParsing="false" onAction="#onApprove" text="Approve" />
+      <Button fx:id="reject" layoutX="961.0" layoutY="530.0" mnemonicParsing="false" onAction="#onReject" text="Reject" />
       <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="1024.0">
         <menus>
           <Menu mnemonicParsing="false" text="Manage Donated Books">
@@ -23,5 +22,17 @@
           </Menu>
         </menus>
       </MenuBar>
+      <TableView layoutX="23.0" layoutY="43.0" prefHeight="455.0" prefWidth="989.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="Username" />
+          <TableColumn prefWidth="128.0" text="Title" />
+            <TableColumn prefWidth="147.0" text="Author" />
+            <TableColumn prefWidth="163.0" text="ISBN" />
+            <TableColumn prefWidth="75.0" text="Year" />
+            <TableColumn prefWidth="69.0" text="Pages" />
+            <TableColumn prefWidth="150.0" text="Genre" />
+            <TableColumn prefWidth="181.0" text="Publisher" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>

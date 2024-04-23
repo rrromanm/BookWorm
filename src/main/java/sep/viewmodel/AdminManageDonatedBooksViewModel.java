@@ -1,4 +1,11 @@
 package sep.viewmodel;
 
-public class AdminManageDonatedBooksViewModel {
+import sep.model.Model;
+
+public class AdminManageDonatedBooksViewModel
+{
+    private final Model model;
+    public AdminManageDonatedBooksViewModel(Model model){
+        this.model = model;
+    }
 }
