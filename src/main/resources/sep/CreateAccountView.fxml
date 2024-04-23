@@ -5,8 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sep2.CreateAccountView">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.CreateAccountViewController">
    <children>
       <Text layoutX="29.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Account creation " wrappingWidth="174.0" />
       <TextField layoutX="141.0" layoutY="115.0" />
@@ -16,7 +15,7 @@
       <TextField layoutX="409.0" layoutY="158.0" />
       <TextField layoutX="409.0" layoutY="115.0" />
       <TextField layoutX="409.0" layoutY="72.0" />
-      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" text="Back" />
+      <Button fx:id="backButton" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" />
       <Button layoutX="436.0" layoutY="200.0" mnemonicParsing="false" text="Create account" />
       <Text layoutX="29.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" wrappingWidth="96.0" />
       <Text layoutX="29.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" wrappingWidth="96.0" />
