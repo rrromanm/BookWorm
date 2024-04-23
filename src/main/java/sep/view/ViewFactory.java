@@ -19,7 +19,8 @@ public class ViewFactory
     public static final String USERMAIN = "userMain";
     public static final String PROFILE = "profile";
     public static final String MYBOOKS = "myBooks";
-
+    public static final String ADMINMANAGEEVENTS = "adminManageEvents";
+    public static final String ADMINMANAGEDONATEDBOOKS = "adminManageDonatedBooks";
 
     private final ViewHandler viewHandler;
     private final ViewModelFactory viewModelFactory;
@@ -33,6 +34,8 @@ public class ViewFactory
     private MainViewController mainViewController;
     private ProfileViewController profileViewController;
     private MyBooksViewController myBooksViewController;
+    private AdminManageEventsViewController adminManageEventsViewController;
+    private AdminManageDonatedBooksViewController adminManageDonatedBooksViewController;
 
 
     public ViewFactory(ViewHandler viewHandler, ViewModelFactory viewModelFactory)
@@ -49,6 +52,8 @@ public class ViewFactory
         this.mainViewController = null;
         this.profileViewController = null;
         this.myBooksViewController = null;
+        this.adminManageEventsViewController = null;
+        this.adminManageDonatedBooksViewController = null;
 
     }
 
@@ -206,6 +211,37 @@ public class ViewFactory
         return myBooksViewController.getRoot();
     }
 
+    public Region loadAdminManageEventsView(){
+        if(adminManageEventsViewController == null){
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/sep/ManageEventsView.fxml"));
+            try{
+                Region root = loader.load();
+                adminManageEventsViewController = loader.getController();
+                adminManageEventsViewController.init(viewHandler, viewModelFactory.getAdminManageEventsViewModel(), root);
+            } catch (IOException e) {
+                throw new IOError(e);
+            }
+        }
+        adminManageEventsViewController.reset();
+        return adminManageEventsViewController.getRoot();
+    }
+    public Region loadAdminDonatedBooksView(){
+        if(adminManageDonatedBooksViewController == null){
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/sep/ManageEventsView.fxml"));
+            try{
+                Region root = loader.load();
+                adminManageDonatedBooksViewController = loader.getController();
+                adminManageDonatedBooksViewController.init(viewHandler, viewModelFactory.getAdminManageDonatedBooksViewModel(), root);
+            } catch (IOException e) {
+                throw new IOError(e);
+            }
+        }
+        adminManageDonatedBooksViewController.reset();
+        return adminManageDonatedBooksViewController.getRoot();
+    }
+
     public Region load(String id) {
         Region root = switch(id) {
             case LOGIN -> loadLoginView();
@@ -218,6 +254,8 @@ public class ViewFactory
             case USERMAIN -> loadMainView();
             case PROFILE -> loadProfileView();
             case MYBOOKS -> loadMyBooksView();
+            case ADMINMANAGEEVENTS -> loadAdminManageEventsView();
+            case ADMINMANAGEDONATEDBOOKS  -> loadAdminDonatedBooksView();
             default -> throw new IllegalArgumentException("Unknown view: " + id);
         };
         return root;
