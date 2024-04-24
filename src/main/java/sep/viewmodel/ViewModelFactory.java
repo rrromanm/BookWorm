@@ -18,6 +18,7 @@ public class ViewModelFactory
     private final AdminManageEventsViewModel adminManageEventsViewModel;
     private final AdminManageDonatedBooksViewModel adminManageDonatedBooksViewModel;
     private final AdminMainViewModel adminMainViewModel;
+    private final AdminManageBooksViewModel adminManageBooksViewModel;
 
     public ViewModelFactory(Model model) {
         this.loginViewModel = new LoginViewModel(model);
@@ -33,6 +34,7 @@ public class ViewModelFactory
         this.adminManageEventsViewModel = new AdminManageEventsViewModel(model);
         this.adminManageDonatedBooksViewModel = new AdminManageDonatedBooksViewModel(model);
         this.adminMainViewModel = new AdminMainViewModel(model);
+        this.adminManageBooksViewModel = new AdminManageBooksViewModel(model);
     }
 
     public LoginViewModel getLoginViewModel()
@@ -70,8 +72,11 @@ public class ViewModelFactory
     public AdminManageDonatedBooksViewModel getAdminManageDonatedBooksViewModel() {
         return adminManageDonatedBooksViewModel;
     }
-
     public AdminMainViewModel getAdminMainViewModel() {
         return adminMainViewModel;
+    }
+
+    public AdminManageBooksViewModel getAdminManageBooksViewModel() {
+        return adminManageBooksViewModel;
     }
 }

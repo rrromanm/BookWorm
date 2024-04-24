@@ -58,8 +58,8 @@ public class AdminManageDonatedBooksViewController
     @FXML
     private void backButtonClicked()
     {
-        viewHandler.openView("");
-    } //TODO put the right path for ADMIN MAIN VIEW
+        viewHandler.openView("adminMainView");
+    }
 
     @FXML
     private void onApprove(){

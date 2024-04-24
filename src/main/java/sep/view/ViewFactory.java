@@ -22,6 +22,7 @@ public class ViewFactory
     public static final String ADMINMANAGEEVENTS = "adminManageEvents";
     public static final String ADMINMANAGEDONATEDBOOKS = "adminManageDonatedBooks";
     public static final String ADMINMAINVIEW = "adminMainView";
+    public static final String ADMINMANAGEBOOKSVIEW = "adminManageBooksView";
 
     private final ViewHandler viewHandler;
     private final ViewModelFactory viewModelFactory;
@@ -38,6 +39,7 @@ public class ViewFactory
     private AdminManageEventsViewController adminManageEventsViewController;
     private AdminManageDonatedBooksViewController adminManageDonatedBooksViewController;
     private AdminMainViewController adminMainViewController;
+    private AdminManageBooksViewController adminManageBooksViewController;
 
 
     public ViewFactory(ViewHandler viewHandler, ViewModelFactory viewModelFactory)
@@ -57,6 +59,7 @@ public class ViewFactory
         this.adminManageEventsViewController = null;
         this.adminManageDonatedBooksViewController = null;
         this.adminMainViewController = null;
+        this.adminManageBooksViewController = null;
     }
 
     public Region loadMainView() {
@@ -259,6 +262,23 @@ public class ViewFactory
         adminMainViewController.reset();
         return adminMainViewController.getRoot();
     }
+    public Region loadAdminManageBooksView(){
+        if(adminManageBooksViewController == null){
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/sep/ManageEventsView.fxml"));
+            try{
+                Region root = loader.load();
+                adminManageBooksViewController = loader.getController();
+                adminManageBooksViewController.init(viewHandler, viewModelFactory.getAdminManageBooksViewModel(), root);
+            } catch (IOException e) {
+                throw new IOError(e);
+            }
+        }
+        adminManageBooksViewController.reset();
+        return adminManageBooksViewController.getRoot();
+    }
+
+
 
     public Region load(String id) {
         Region root = switch(id) {
@@ -275,6 +295,7 @@ public class ViewFactory
             case ADMINMANAGEEVENTS -> loadAdminManageEventsView();
             case ADMINMANAGEDONATEDBOOKS  -> loadAdminDonatedBooksView();
             case ADMINMAINVIEW -> loadAdminMainView();
+            case ADMINMANAGEBOOKSVIEW -> loadAdminManageBooksView();
             default -> throw new IllegalArgumentException("Unknown view: " + id);
         };
         return root;
