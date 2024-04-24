@@ -69,8 +69,8 @@ public class ProfileViewController {
         booksReadLabel.setVisible(true);
         feesLabel.setVisible(true);
         // we need to get the data about the user fees and the amount of books read by him
-        feesLabel.setText("Outstanding fees: " + /*fees amount*/);
-        booksReadLabel.setText("Books read: " + /*amount of books read by the user*/);
+        //feesLabel.setText("Outstanding fees: " + /*fees amount*/);
+        //booksReadLabel.setText("Books read: " + /*amount of books read by the user*/);
     }
     public void initializeWishlistTableView(){
         WLtitleColumn.setCellValueFactory(new PropertyValueFactory<>("WLtitle"));

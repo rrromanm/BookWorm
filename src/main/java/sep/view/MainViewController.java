@@ -83,7 +83,7 @@ public class MainViewController {
     }
     @FXML public void onSeeEvents()
     {
-        viewHandler.openView(ViewFactory.//EVENTS);
+        //viewHandler.openView(ViewFactory.//EVENTS);
     }
     @FXML public void onDonate()
     {
@@ -91,11 +91,11 @@ public class MainViewController {
     }
     @FXML public void onReserve()
     {
-        mainViewModel.reserve(); // the method should be here
+        //mainViewModel.reserve(); // the method should be here
     }
     @FXML public void onBorrow()
     {
-        mainViewModel.borrow(); //the method should be here
+        //mainViewModel.borrow(); //the method should be here
     }
     @FXML public void onSearch()
     {

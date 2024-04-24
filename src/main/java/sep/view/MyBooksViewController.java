@@ -50,7 +50,7 @@ public class MyBooksViewController {
         // we need to get the books that this user borrowed. So if(user.equals(user) && state.equals(BORROWED))
     }
     @FXML public void onReturn(){
-        myBooksViewModel.returnBook(); // it should have this method
+        //myBooksViewModel.returnBook(); // it should have this method
     }
     @FXML public void onExtend(){
         // extend the deadline for the book

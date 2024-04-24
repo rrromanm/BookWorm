@@ -21,6 +21,7 @@ public class ViewFactory
     public static final String MYBOOKS = "myBooks";
     public static final String ADMINMANAGEEVENTS = "adminManageEvents";
     public static final String ADMINMANAGEDONATEDBOOKS = "adminManageDonatedBooks";
+    public static final String ADMINMAINVIEW = "adminMainView";
 
     private final ViewHandler viewHandler;
     private final ViewModelFactory viewModelFactory;
@@ -36,6 +37,7 @@ public class ViewFactory
     private MyBooksViewController myBooksViewController;
     private AdminManageEventsViewController adminManageEventsViewController;
     private AdminManageDonatedBooksViewController adminManageDonatedBooksViewController;
+    private AdminMainViewController adminMainViewController;
 
 
     public ViewFactory(ViewHandler viewHandler, ViewModelFactory viewModelFactory)
@@ -54,7 +56,7 @@ public class ViewFactory
         this.myBooksViewController = null;
         this.adminManageEventsViewController = null;
         this.adminManageDonatedBooksViewController = null;
-
+        this.adminMainViewController = null;
     }
 
     public Region loadMainView() {
@@ -92,7 +94,7 @@ public class ViewFactory
     public Region loadAdminLoginView() {
         if (adminLoginViewController == null) {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("sep/AdminLoginView.fxml"));
+            loader.setLocation(getClass().getResource("/sep/AdminLoginView.fxml"));
             try {
                 Region root = loader.load();
                 adminLoginViewController = loader.getController();
@@ -242,6 +244,22 @@ public class ViewFactory
         return adminManageDonatedBooksViewController.getRoot();
     }
 
+    public Region loadAdminMainView(){
+        if(adminMainViewController == null){
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/sep/ManageEventsView.fxml"));
+            try{
+                Region root = loader.load();
+                adminMainViewController = loader.getController();
+                adminMainViewController.init(viewHandler, viewModelFactory.getAdminMainViewModel(), root);
+            } catch (IOException e) {
+                throw new IOError(e);
+            }
+        }
+        adminMainViewController.reset();
+        return adminMainViewController.getRoot();
+    }
+
     public Region load(String id) {
         Region root = switch(id) {
             case LOGIN -> loadLoginView();
@@ -256,6 +274,7 @@ public class ViewFactory
             case MYBOOKS -> loadMyBooksView();
             case ADMINMANAGEEVENTS -> loadAdminManageEventsView();
             case ADMINMANAGEDONATEDBOOKS  -> loadAdminDonatedBooksView();
+            case ADMINMAINVIEW -> loadAdminMainView();
             default -> throw new IllegalArgumentException("Unknown view: " + id);
         };
         return root;
