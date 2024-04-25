@@ -23,6 +23,8 @@ public class ViewFactory
     public static final String ADMINMANAGEDONATEDBOOKS = "adminManageDonatedBooks";
     public static final String ADMINMAINVIEW = "adminMainView";
     public static final String ADMINMANAGEBOOKSVIEW = "adminManageBooksView";
+    public static final String EVENTSVIEW = "eventsView";
+
 
     private final ViewHandler viewHandler;
     private final ViewModelFactory viewModelFactory;
@@ -40,6 +42,7 @@ public class ViewFactory
     private AdminManageDonatedBooksViewController adminManageDonatedBooksViewController;
     private AdminMainViewController adminMainViewController;
     private AdminManageBooksViewController adminManageBooksViewController;
+    private EventsViewController eventsViewController;
 
 
     public ViewFactory(ViewHandler viewHandler, ViewModelFactory viewModelFactory)
@@ -60,6 +63,7 @@ public class ViewFactory
         this.adminManageDonatedBooksViewController = null;
         this.adminMainViewController = null;
         this.adminManageBooksViewController = null;
+        this.eventsViewController = null;
     }
 
     public Region loadMainView() {
@@ -219,7 +223,7 @@ public class ViewFactory
     public Region loadAdminManageEventsView(){
         if(adminManageEventsViewController == null){
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/sep/ManageEventsView.fxml"));
+            loader.setLocation(getClass().getResource("/sep/AdminManageEventsView.fxml"));
             try{
                 Region root = loader.load();
                 adminManageEventsViewController = loader.getController();
@@ -234,7 +238,7 @@ public class ViewFactory
     public Region loadAdminDonatedBooksView(){
         if(adminManageDonatedBooksViewController == null){
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/sep/ManageEventsView.fxml"));
+            loader.setLocation(getClass().getResource("/sep/AdminManageEventsView.fxml"));
             try{
                 Region root = loader.load();
                 adminManageDonatedBooksViewController = loader.getController();
@@ -250,7 +254,7 @@ public class ViewFactory
     public Region loadAdminMainView(){
         if(adminMainViewController == null){
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/sep/ManageEventsView.fxml"));
+            loader.setLocation(getClass().getResource("/sep/AdminManageEventsView.fxml"));
             try{
                 Region root = loader.load();
                 adminMainViewController = loader.getController();
@@ -265,7 +269,7 @@ public class ViewFactory
     public Region loadAdminManageBooksView(){
         if(adminManageBooksViewController == null){
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/sep/ManageEventsView.fxml"));
+            loader.setLocation(getClass().getResource("/sep/AdminManageEventsView.fxml"));
             try{
                 Region root = loader.load();
                 adminManageBooksViewController = loader.getController();
@@ -276,6 +280,22 @@ public class ViewFactory
         }
         adminManageBooksViewController.reset();
         return adminManageBooksViewController.getRoot();
+    }
+
+    public Region loadEventsView(){
+        if(eventsViewController == null){
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/sep/EventView.fxml"));
+            try{
+                Region root = loader.load();
+                eventsViewController = loader.getController();
+                eventsViewController.init(viewHandler, viewModelFactory.getEventsViewModel(), root);
+            } catch (IOException e) {
+                throw new IOError(e);
+            }
+        }
+        eventsViewController.reset();
+        return eventsViewController.getRoot();
     }
 
 
@@ -296,6 +316,7 @@ public class ViewFactory
             case ADMINMANAGEDONATEDBOOKS  -> loadAdminDonatedBooksView();
             case ADMINMAINVIEW -> loadAdminMainView();
             case ADMINMANAGEBOOKSVIEW -> loadAdminManageBooksView();
+            case EVENTSVIEW -> loadEventsView();
             default -> throw new IllegalArgumentException("Unknown view: " + id);
         };
         return root;

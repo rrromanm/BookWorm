@@ -1,4 +1,11 @@
 package sep.viewmodel;
 
-public class EventsViewModel {
+import sep.model.Model;
+
+public class EventsViewModel
+{
+    private final Model model;
+    public EventsViewModel(Model model){
+        this.model = model;
+    }
 }
