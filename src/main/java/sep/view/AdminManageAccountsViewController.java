@@ -7,10 +7,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
-import sep.model.Book;
-import sep.model.User;
+import sep.model.Patron;
 import sep.viewmodel.AdminManageAccountsViewModel;
-import sep.viewmodel.DonateViewModel;
 
 public class AdminManageAccountsViewController {
     private ViewHandler viewHandler;
@@ -25,14 +23,14 @@ public class AdminManageAccountsViewController {
     @FXML
     private Button SaveUserButton;
     @FXML
-    private TableView<User> UserTableView;
-    @FXML private TableColumn<User, Integer> IDcolumn;
-    @FXML private TableColumn<User, String> FirstNameColumn;
-    @FXML private TableColumn<User, String> LastNameColumn;
-    @FXML private TableColumn<User, String> UsernameColumn;
-    @FXML private TableColumn<User, String> EmailColumn;
-    @FXML private TableColumn<User, Integer> phoneNumberColumn;
-    private ReadOnlyObjectProperty<User> selectedUser;
+    private TableView<Patron> UserTableView;
+    @FXML private TableColumn<Patron, Integer> IDcolumn;
+    @FXML private TableColumn<Patron, String> FirstNameColumn;
+    @FXML private TableColumn<Patron, String> LastNameColumn;
+    @FXML private TableColumn<Patron, String> UsernameColumn;
+    @FXML private TableColumn<Patron, String> EmailColumn;
+    @FXML private TableColumn<Patron, Integer> phoneNumberColumn;
+    private ReadOnlyObjectProperty<Patron> selectedUser;
 
     public void init(ViewHandler viewHandler, AdminManageAccountsViewModel viewModel, Region root) {
         this.viewHandler = viewHandler;

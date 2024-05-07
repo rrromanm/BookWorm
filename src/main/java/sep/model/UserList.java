@@ -4,33 +4,33 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class UserList {
-    private ArrayList<User> users;
+    private ArrayList<Patron> patrons;
 
     public UserList() {
-        users = new ArrayList<>();
+        patrons = new ArrayList<>();
     }
 
-    public ArrayList<User> getUsers() {
-        return users;
+    public ArrayList<Patron> getUsers() {
+        return patrons;
     }
 
-    public void addUser(User user) {
-        users.add(user);
+    public void addUser(Patron patron) {
+        patrons.add(patron);
     }
 
-    public void removeUser(User user) {
-        users.remove(user);
+    public void removeUser(Patron patron) {
+        patrons.remove(patron);
     }
 
-    public User getUserByID(int id) {
-        User user = null;
+    public Patron getUserByID(int id) {
+        Patron patron = null;
 
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getUserID() == id){
-                user = users.get(i);
+        for (int i = 0; i < patrons.size(); i++) {
+            if (patrons.get(i).getUserID() == id){
+                patron = patrons.get(i);
             }
         }
-        return user;
+        return patron;
     }
 
     @Override
@@ -38,20 +38,20 @@ public class UserList {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserList userList = (UserList) o;
-        return Objects.equals(users, userList.users);
+        return Objects.equals(patrons, userList.patrons);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(users);
+        return Objects.hashCode(patrons);
     }
 
     @Override
     public String toString() {
         String string = "";
 
-        for (User user : users) {
-            string += user.toString() + "\n";
+        for (Patron patron : patrons) {
+            string += patron.toString() + "\n";
         }
         return string;
     }

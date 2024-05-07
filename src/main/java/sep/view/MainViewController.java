@@ -116,20 +116,9 @@ public class MainViewController {
             borrowButton.setDisable(true);
             reserveButton.setDisable(false);
         }
-        if(selectedBook.get().getState() instanceof Reserved)
-        {
-            borrowButton.setDisable(false);  // it can cause some problems since it was designed for the single user client
-            reserveButton.setDisable(true);
-        }
-        if(selectedBook.get().getState() instanceof Borrowed)
-        {
+        if(selectedBook.get().getState() instanceof Borrowed) {
             borrowButton.setDisable(true);
             reserveButton.setDisable(false);
-        }
-        if(selectedBook.get().getState() instanceof Borrowed_Reserved)
-        {
-            borrowButton.setDisable(true);
-            reserveButton.setDisable(true);
         }
 
         // we still need to figure out how to show the description of the book

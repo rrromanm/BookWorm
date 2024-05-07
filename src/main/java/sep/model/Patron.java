@@ -3,7 +3,7 @@ package sep.model;
 import java.util.Objects;
 import java.util.UUID;
 
-public class User {
+public class Patron {
     private String firstName;
     private String lastName;
     private String username;
@@ -12,7 +12,7 @@ public class User {
     private long phoneNumber;
     private int userID;
 
-    public User(String firstName, String lastName, String username, String password, String email, long phoneNumber) {
+    public Patron(String firstName, String lastName, String username, String password, String email, long phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -88,8 +88,8 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return phoneNumber == user.phoneNumber && userID == user.userID && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(email, user.email);
+        Patron patron = (Patron) o;
+        return phoneNumber == patron.phoneNumber && userID == patron.userID && Objects.equals(firstName, patron.firstName) && Objects.equals(lastName, patron.lastName) && Objects.equals(username, patron.username) && Objects.equals(password, patron.password) && Objects.equals(email, patron.email);
     }
 
     @Override
