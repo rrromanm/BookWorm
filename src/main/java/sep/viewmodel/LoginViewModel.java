@@ -27,6 +27,12 @@ public class LoginViewModel
             e.printStackTrace();
         }
     }
+    public void bindUsername(StringProperty property){
+        this.username.bindBidirectional(property);
+    }
+    public void bindPassword(StringProperty property){
+        this.password.bindBidirectional(property);
+    }
     public void reset()
     {
         this.username.set("");

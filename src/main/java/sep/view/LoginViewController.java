@@ -2,6 +2,7 @@ package sep.view;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import sep.viewmodel.LoginViewModel;
 import javafx.scene.layout.Region;
 
@@ -10,6 +11,9 @@ public class LoginViewController {
     private ViewHandler viewHandler;
     private LoginViewModel viewModel;
     private Region root;
+
+    @FXML private TextField usernameTextField;
+    @FXML private TextField passwordTextField;
 
     @FXML private Button loginButton;
     @FXML private Button loginAsAdminButton;
@@ -20,6 +24,9 @@ public class LoginViewController {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
         this.root = root;
+
+        this.viewModel.bindUsername(usernameTextField.textProperty());
+        this.viewModel.bindPassword(passwordTextField.textProperty());
     }
 
     @FXML private void loginButtonClicked()
