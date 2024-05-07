@@ -204,10 +204,10 @@ public class ViewFactory
         profileViewController.reset();
         return profileViewController.getRoot();
     }
-    public Region loadMyBooksView(){ // controller not implemented yet
+    public Region loadMyBooksView(){
         if(myBooksViewController == null){
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/sep/MyBooksView.fxml"));
+            loader.setLocation(getClass().getResource("/sep/MyBooks.fxml"));
             try {
                 Region root = loader.load();
                 myBooksViewController = loader.getController();

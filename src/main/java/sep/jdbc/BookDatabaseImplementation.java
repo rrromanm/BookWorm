@@ -1,8 +1,13 @@
 package sep.jdbc;
 
+import sep.model.Available;
 import sep.model.Book;
+import sep.model.Patron;
+import sep.model.State;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookDatabaseImplementation {
     private static BookDatabaseImplementation instance;
@@ -47,5 +52,56 @@ public class BookDatabaseImplementation {
         }
     }
 
+    public List<Book> filterByGenre(int genreID) throws SQLException {
+        try (Connection connection = getConnection())
+        {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM books WHERE genre_id = ?");
+            statement.setInt(1, genreID);
+            ResultSet resultSet = statement.executeQuery();
+            ArrayList<Book> books = new ArrayList<>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String title = resultSet.getString("title");
+                String author = resultSet.getString("author");
+                int year = resultSet.getInt("year");
+                String publisher = resultSet.getString("publisher");
+                long isbn = resultSet.getLong("isbn");
+                int pageCount = resultSet.getInt("page_count");
+                String genre = resultSet.getString("genre");
+                Patron borrower = (Patron) resultSet.getObject("borrower"); //TODO: needs to be figured out
+                State state = (State) resultSet.getObject("state"); //TODO: needs to be figured out
+                Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
+                book.setBorrower(borrower);
+                book.setState(state);
+                books.add(book);
+            }
+            return books;
+        }
+    }
 
+    public List<Book> filterByState(State state) throws SQLException {
+        try (Connection connection = getConnection())
+        {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM books WHERE state = ?");
+            statement.setObject(1, state);
+            ResultSet resultSet = statement.executeQuery();
+            ArrayList<Book> books = new ArrayList<>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String title = resultSet.getString("title");
+                String author = resultSet.getString("author");
+                int year = resultSet.getInt("year");
+                String publisher = resultSet.getString("publisher");
+                long isbn = resultSet.getLong("isbn");
+                int pageCount = resultSet.getInt("page_count");
+                String genre = resultSet.getString("genre");
+                Patron borrower = (Patron) resultSet.getObject("borrower"); //TODO: needs to be figured out
+                Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
+                book.setBorrower(borrower);
+                book.setState(state);
+                books.add(book);
+            }
+            return books;
+        }
+    }
 }

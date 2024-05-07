@@ -19,7 +19,7 @@ public class DonateViewController {
     }
     @FXML
     private void backButtonClicked(){
-        viewHandler.openView("login");
+        viewHandler.openView(ViewFactory.USERMAIN);
     }
     @FXML private void submitButtonClicked(){
         //TODO: Implement working submit

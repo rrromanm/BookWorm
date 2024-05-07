@@ -46,6 +46,7 @@ public class MainViewController {
         initializeStateComboBox();
         initializeGenreComboBox(); // not completed
         this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
+        this.mainViewModel.bindList(bookTableView.itemsProperty());
 
 
         // somehow we need to figure out how to change the button to an image of the bell for notification and

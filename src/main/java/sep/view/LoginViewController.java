@@ -24,7 +24,7 @@ public class LoginViewController {
 
     @FXML private void loginButtonClicked()
     {
-        viewHandler.openView("login");
+        viewHandler.openView(ViewFactory.USERMAIN);
     }
 
     @FXML private void createButtonClicked()

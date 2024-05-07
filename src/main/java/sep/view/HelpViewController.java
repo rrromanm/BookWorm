@@ -20,7 +20,7 @@ public class HelpViewController {
     }
     @FXML
     private void backButtonClicked(){
-        viewHandler.openView("login"); //TODO: Change to main page view
+        viewHandler.openView(ViewFactory.USERMAIN); //TODO: Change to main page view
     }
     @FXML private void UserGuideButtonClicked(){
         viewHandler.openView("UserGuide"); //TODO: Implement actual user guide
