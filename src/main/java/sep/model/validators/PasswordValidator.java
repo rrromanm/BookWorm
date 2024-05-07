@@ -6,9 +6,9 @@ public class PasswordValidator {
     private static final int MAX_LENGTH = 40;
     private static final String SPECIAL_CHARACTERS = "!@#$%^&*()-_=+|,.<>?";
 
-    public static boolean validate(String password) {
+    public static void validate(String password) throws IllegalArgumentException {
         if (password == null || password.length() < MIN_LENGTH || password.length() > MAX_LENGTH) {
-            return false;
+            throw new IllegalArgumentException("Password must be at least " + MIN_LENGTH + " characters!");
         }
 
         boolean hasUpper = false;
@@ -29,7 +29,10 @@ public class PasswordValidator {
             }
         }
 
-        return hasUpper && hasLower && hasDigit && hasSpecial;
+        if(!hasUpper && !hasLower && !hasDigit && !hasSpecial){
+            throw new IllegalArgumentException("Password must have at least one uppercase character, " +
+                    "one digit and one special character!");
+        };
     }
 
 }

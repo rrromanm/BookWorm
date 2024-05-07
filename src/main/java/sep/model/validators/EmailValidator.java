@@ -2,28 +2,27 @@ package sep.model.validators;
 
 public class EmailValidator {
 
-    public static boolean validate(String email) {
+    public static void validate(String email) throws IllegalArgumentException {
         if (email == null || email.isEmpty()) {
-            return false;
+            throw new IllegalArgumentException("Please fill the email field!");
         }
 
         int atPosition = email.indexOf('@');
         int dotPosition = email.lastIndexOf('.');
 
         if (atPosition == -1 || dotPosition == -1 || dotPosition <= atPosition) {
-            return false;
+            throw new IllegalArgumentException("Email format is invalid!");
         }
 
         if (atPosition == 0) {
-            return false;
+            throw new IllegalArgumentException("Email format is invalid!");
         }
 
 
         if (dotPosition == atPosition + 1 || dotPosition == email.length() - 1) {
-            return false;
+            throw new IllegalArgumentException("Email format is invalid!");
         }
 
-        return true;
     }
 
 }
