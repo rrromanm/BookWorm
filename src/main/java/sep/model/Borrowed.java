@@ -1,6 +1,8 @@
 package sep.model;
 
-public class Borrowed implements State {
+import java.io.Serializable;
+
+public class Borrowed implements State, Serializable {
 
     @Override
     public void borrow(Book book, Patron patron) {

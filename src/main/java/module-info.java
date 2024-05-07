@@ -8,6 +8,7 @@ module sep {
 
     opens sep to javafx.fxml;
     opens sep.view to javafx.fxml;
+    opens sep.model to javafx.base;
 
     exports sep;
     exports sep.view;

@@ -109,24 +109,20 @@ public class BookDatabaseImplementation {
         try (Connection connection = getConnection())
         {
             PreparedStatement statement1 = connection.prepareStatement(
-                "SELECT * FROM books;");
+                "SELECT * FROM book_worm_db.books;");
         ResultSet resultSet = statement1.executeQuery();
         ArrayList<Book> books = new ArrayList<>();
         while (resultSet.next())
         {
             int id = resultSet.getInt("id");
             String title = resultSet.getString("title");
-            String author = resultSet.getString("author");
+            String author = resultSet.getString("authors");
             int year = resultSet.getInt("year");
             String publisher = resultSet.getString("publisher");
             long isbn = resultSet.getLong("isbn");
             int pageCount = resultSet.getInt("page_count");
-            String genre = resultSet.getString("genre");
-            Patron borrower = (Patron) resultSet.getObject("borrower");
-            State state = (State) resultSet.getObject("state");
+            String genre = resultSet.getString("genre_id");
             Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
-            book.setBorrower(borrower);
-            book.setState(state);
             books.add(book);
         }
         return books;
