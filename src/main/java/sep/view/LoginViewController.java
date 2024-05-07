@@ -24,6 +24,7 @@ public class LoginViewController {
 
     @FXML private void loginButtonClicked()
     {
+        this.viewModel.login();
         viewHandler.openView(ViewFactory.USERMAIN);
     }
 
@@ -37,9 +38,10 @@ public class LoginViewController {
         viewHandler.openView("adminLogin");
     }
 
+
     public void reset()
     {
-
+        this.viewModel.reset();
     }
 
     public Region getRoot()

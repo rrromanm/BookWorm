@@ -1,9 +1,10 @@
 package sep.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Patron {
+public class Patron implements Serializable {
     private String firstName;
     private String lastName;
     private String username;
