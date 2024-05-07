@@ -8,13 +8,13 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.CreateAccountViewController">
    <children>
       <Text layoutX="29.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Account creation " wrappingWidth="174.0" />
-      <TextField layoutX="141.0" layoutY="115.0" />
-      <TextField layoutX="141.0" layoutY="158.0" />
-      <TextField layoutX="141.0" layoutY="72.0" />
-      <TextField layoutX="141.0" layoutY="200.0" />
-      <TextField layoutX="409.0" layoutY="158.0" />
-      <TextField layoutX="409.0" layoutY="115.0" />
-      <TextField layoutX="409.0" layoutY="72.0" />
+      <TextField id="lastNameTextField" layoutX="141.0" layoutY="115.0" />
+      <TextField id="emailTextField" layoutX="141.0" layoutY="158.0" />
+      <TextField id="firstNameTextField" layoutX="141.0" layoutY="72.0" />
+      <TextField id="phoneNumberTextField" layoutX="141.0" layoutY="200.0" />
+      <TextField id="repeatPasswordTextField" layoutX="409.0" layoutY="158.0" />
+      <TextField id="passwordTextField" layoutX="409.0" layoutY="115.0" />
+      <TextField id="usernameTextField" layoutX="409.0" layoutY="72.0" />
       <Button fx:id="backButton" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" />
       <Button fx:id="createAccountButton" layoutX="436.0" layoutY="200.0" mnemonicParsing="false" onAction="#createAccountButtonClicked" text="Create account" />
       <Text layoutX="29.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" wrappingWidth="96.0" />
