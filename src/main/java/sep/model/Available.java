@@ -1,6 +1,8 @@
 package sep.model;
 
-public class Available implements State{
+import java.io.Serializable;
+
+public class Available implements State, Serializable {
 
 
     @Override

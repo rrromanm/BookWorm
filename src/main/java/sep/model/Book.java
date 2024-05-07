@@ -1,6 +1,8 @@
 package sep.model;
 
-public class Book {
+import java.io.Serializable;
+
+public class Book implements Serializable {
     private String title;
     private String author;
     private String publisher;
@@ -14,7 +16,7 @@ public class Book {
     private Patron borrower;
 
 
-    public Book(int bookID, String title, String author,int year, String publisher, long isbn, int pageCount, String genre) {
+    public Book(int bookID, String title, String author,int year, String publisher, long isbn, int pageCount, String genre){
         this.bookID = bookID;
         this.title = title;
         this.author = author;
@@ -115,7 +117,7 @@ public class Book {
        }
        Book other = (Book) obj;
        return other.title.equals(title) && other.author.equals(author) && year == other.year && other.publisher.equals(publisher) &&
-        isbn == other.isbn && pageCount == other.pageCount && bookID == other.bookID && genre.equals(other.genre) && borrower.equals(other.borrower);
+        isbn == other.isbn && pageCount == other.pageCount && bookID == other.bookID && genre.equals(other.genre);
     }
     @Override // toString is missing the info about borrower,reservist and state
     public String toString() {
