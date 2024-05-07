@@ -24,7 +24,7 @@ public class BookDatabaseImplementation {
     }
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=jdbc", "postgres", "via");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "via");
     }
 
     public Book createBook(String title, String author,int year, String publisher, long isbn, int pageCount, String genre) throws SQLException {
@@ -102,6 +102,34 @@ public class BookDatabaseImplementation {
                 books.add(book);
             }
             return books;
+        }
+    }
+
+    public ArrayList<Book> readBooks() throws SQLException {
+        try (Connection connection = getConnection())
+        {
+            PreparedStatement statement1 = connection.prepareStatement(
+                "SELECT * FROM books;");
+        ResultSet resultSet = statement1.executeQuery();
+        ArrayList<Book> books = new ArrayList<>();
+        while (resultSet.next())
+        {
+            int id = resultSet.getInt("id");
+            String title = resultSet.getString("title");
+            String author = resultSet.getString("author");
+            int year = resultSet.getInt("year");
+            String publisher = resultSet.getString("publisher");
+            long isbn = resultSet.getLong("isbn");
+            int pageCount = resultSet.getInt("page_count");
+            String genre = resultSet.getString("genre");
+            Patron borrower = (Patron) resultSet.getObject("borrower");
+            State state = (State) resultSet.getObject("state");
+            Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
+            book.setBorrower(borrower);
+            book.setState(state);
+            books.add(book);
+        }
+        return books;
         }
     }
 }

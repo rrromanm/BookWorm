@@ -8,6 +8,8 @@ import javafx.scene.layout.Region;
 import sep.model.*;
 import sep.viewmodel.MainViewModel;
 
+import java.rmi.RemoteException;
+
 public class MainViewController {
     @FXML private Button notificationButton;
     @FXML private Button viewProfileButton;
@@ -37,8 +39,7 @@ public class MainViewController {
     private ViewHandler viewHandler;
     private MainViewModel mainViewModel;
     private ReadOnlyObjectProperty<Book> selectedBook;
-    public void init(ViewHandler viewHandler, MainViewModel viewModel, Region root)
-    {
+    public void init(ViewHandler viewHandler, MainViewModel viewModel, Region root) throws RemoteException {
         this.viewHandler = viewHandler;
         this.mainViewModel = viewModel;
         this.root = root;

@@ -9,6 +9,8 @@ import javafx.scene.control.TableView;
 import sep.model.Book;
 import sep.model.Model;
 
+import java.rmi.RemoteException;
+
 public class MainViewModel {
     private final Model model;
     private final ListProperty<Book> bookList;
@@ -19,7 +21,12 @@ public class MainViewModel {
         this.bookList = new SimpleListProperty<>(FXCollections.observableArrayList());
     }
 
-    public void bindList(ObjectProperty<ObservableList<Book>> property) {
+    public void bindList(ObjectProperty<ObservableList<Book>> property) throws RemoteException {
         property.bindBidirectional(bookList);
+        resetBookList();
+    }
+
+    private void resetBookList() throws RemoteException {
+        bookList.setAll(model.getAllBooks());
     }
 }
