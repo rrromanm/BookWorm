@@ -33,14 +33,43 @@ public class CreateAccountViewModel {
         try{
             if(!password.get().equals(repeatPassword.get()))
                 throw new Exception("Passwords do not match!");
-
+            System.out.println(username.get()+ "IS THE USERNAME");
             model.createPatron(username.get(), password.get(), first_name.get(), last_name.get(), email.get(), phone_number.get());
             reset();
             System.out.println("Patron created!");
         }catch(Exception e){
-            throw new IllegalArgumentException("Error creating account");
+            throw new RuntimeException(e);
         }
     }
+
+    public void bindEmail(StringProperty property){
+        this.email.bindBidirectional(property);
+    }
+
+    public void bindUsername(StringProperty property){
+        this.username.bindBidirectional(property);
+    }
+
+    public void bindPassword(StringProperty property){
+        this.password.bindBidirectional(property);
+    }
+
+    public void bindRepeatPassword(StringProperty property){
+        this.repeatPassword.bindBidirectional(property);
+    }
+
+    public void bindFirstName(StringProperty property){
+        this.first_name.bindBidirectional(property);
+    }
+
+    public void bindLastName(StringProperty property){
+        this.last_name.bindBidirectional(property);
+    }
+
+    public void bindPhoneNumber(LongProperty property){
+        this.phone_number.bindBidirectional(property);
+    }
+    
 
 
 
