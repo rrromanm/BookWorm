@@ -10,10 +10,10 @@ public class Patron implements Serializable {
     private String username;
     private String password; //TODO make password validator
     private String email;
-    private long phoneNumber;
+    private String phoneNumber;
     private int userID;
 
-    public Patron(String firstName, String lastName, String username, String password, String email, long phoneNumber) {
+    public Patron(String firstName, String lastName, String username, String password, String email, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -63,11 +63,11 @@ public class Patron implements Serializable {
         this.email = email;
     }
 
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

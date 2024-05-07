@@ -26,7 +26,7 @@ public class ModelManager extends UnicastRemoteObject implements Model {
     }
 
     @Override
-    public void createPatron(String username, String password, String first_name, String last_name, String email, long phone_number) throws RemoteException {
+    public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws RemoteException {
         try{
 
             UsernameValidator.validate(username);

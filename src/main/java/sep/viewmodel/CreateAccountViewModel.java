@@ -15,7 +15,7 @@ public class CreateAccountViewModel {
     private final StringProperty password;
     private final StringProperty first_name;
     private final StringProperty last_name;
-    private final LongProperty phone_number;
+    private final StringProperty phone_number;
     private final StringProperty repeatPassword;
 
     public CreateAccountViewModel(Model model) {
@@ -26,7 +26,7 @@ public class CreateAccountViewModel {
         this.repeatPassword = new SimpleStringProperty("");
         this.first_name = new SimpleStringProperty("");
         this.last_name = new SimpleStringProperty("");
-        this.phone_number = new SimpleLongProperty();
+        this.phone_number = new SimpleStringProperty("");
     }
 
     public void createPatron() throws RemoteException {
@@ -66,7 +66,7 @@ public class CreateAccountViewModel {
         this.last_name.bindBidirectional(property);
     }
 
-    public void bindPhoneNumber(LongProperty property){
+    public void bindPhoneNumber(StringProperty property){
         this.phone_number.bindBidirectional(property);
     }
     
@@ -79,7 +79,7 @@ public class CreateAccountViewModel {
         this.email.set("");
         this.username.set("");
         this.password.set("");
-        this.phone_number.set(0);
+        this.phone_number.set("");
         this.first_name.set("");
         this.last_name.set("");
     }

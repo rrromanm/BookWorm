@@ -29,6 +29,14 @@ public class CreateAccountViewController {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
         this.root = root;
+
+        this.viewModel.bindUsername(usernameTextField.textProperty());
+        this.viewModel.bindFirstName(firstNameTextField.textProperty());
+        this.viewModel.bindLastName(lastNameTextField.textProperty());
+        this.viewModel.bindEmail(emailTextField.textProperty());
+        this.viewModel.bindPhoneNumber(phoneNumberTextField.textProperty());
+        this.viewModel.bindRepeatPassword(repeatPasswordTextField.textProperty());
+        this.viewModel.bindPassword(passwordTextField.textProperty());
     }
 
     @FXML

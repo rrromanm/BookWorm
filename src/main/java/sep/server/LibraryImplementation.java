@@ -38,7 +38,7 @@ public class LibraryImplementation implements LibraryInterface {
     }
 
     @Override
-    public void createPatron(String username, String password, String first_name, String last_name, String email, long phone_number) throws RemoteException {
+    public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws RemoteException {
         Patron createdPatron = new Patron(username, password, first_name, last_name, email, phone_number);
         try{
             this.patronDatabase.createPatron(username, password, first_name, last_name, email, phone_number);

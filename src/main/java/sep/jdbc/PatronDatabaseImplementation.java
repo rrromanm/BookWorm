@@ -22,7 +22,7 @@ public class PatronDatabaseImplementation {
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "via");
     }
-    public void createPatron(String username, String password, String first_name, String last_name, String email, long phone_number) throws SQLException {
+    public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws SQLException {
         try(Connection conn = getConnection()) {
             PreparedStatement statement = conn.prepareStatement("INSERT INTO patrons(first_name, last_name, username, password, email, phone_number) VALUES (?,?,?,?,?,?)");
             statement.setString(1, first_name);
@@ -30,7 +30,7 @@ public class PatronDatabaseImplementation {
             statement.setString(3, username);
             statement.setString(4, password);
             statement.setString(5, email);
-            statement.setLong(6, phone_number);
+            statement.setString(6, phone_number);
             statement.executeUpdate();
         }
     }
