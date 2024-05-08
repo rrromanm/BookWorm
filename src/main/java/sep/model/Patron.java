@@ -11,16 +11,18 @@ public class Patron implements Serializable {
     private String password; //TODO make password validator
     private String email;
     private String phoneNumber;
-    private int userID;
+    private int userId;
+    private int fees;
 
-    public Patron(String firstName, String lastName, String username, String password, String email, String phoneNumber) {
+    public Patron(int userId, String firstName, String lastName, String username, String password, String email, String phoneNumber, int fees) {
+        this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        generateId();
+        this.fees = fees;
     }
 
     public String getFirstName() {
@@ -72,17 +74,19 @@ public class Patron implements Serializable {
     }
 
     public int getUserID() {
-        return userID;
+        return userId;
     }
 
     public void setUserID(int userID) {
-        this.userID = userID;
+        this.userId = userID;
     }
 
-    public void generateId() // Idk if this right approach. I tested it the ID is unique but the number is always negative for some reason. It might cause some troubles so we need to discuss it.
-    {
-        UUID uuid = UUID.randomUUID();
-        userID = uuid.hashCode();
+    public int getFees() {
+        return fees;
+    }
+
+    public void setFees(int fees) {
+        this.fees = fees;
     }
 
     @Override
@@ -90,12 +94,7 @@ public class Patron implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Patron patron = (Patron) o;
-        return phoneNumber == patron.phoneNumber && userID == patron.userID && Objects.equals(firstName, patron.firstName) && Objects.equals(lastName, patron.lastName) && Objects.equals(username, patron.username) && Objects.equals(password, patron.password) && Objects.equals(email, patron.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, username, password, email, phoneNumber, userID);
+        return phoneNumber == patron.phoneNumber && userId == patron.userId && Objects.equals(firstName, patron.firstName) && Objects.equals(lastName, patron.lastName) && Objects.equals(username, patron.username) && Objects.equals(password, patron.password) && Objects.equals(email, patron.email);
     }
 
     @Override
@@ -107,7 +106,7 @@ public class Patron implements Serializable {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber=" + phoneNumber +
-                ", userID=" + userID +
+                ", userID=" + userId +
                 '}';
     }
 }

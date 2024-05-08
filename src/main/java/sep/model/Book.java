@@ -9,15 +9,15 @@ public class Book implements Serializable {
     private int year;
     private long isbn;
     private int pageCount;
-    private int bookID;
+    private int bookId;
     private String genre;
 
     private State state;
     private Patron borrower;
 
 
-    public Book(int bookID, String title, String author,int year, String publisher, long isbn, int pageCount, String genre){
-        this.bookID = bookID;
+    public Book(int bookId, String title, String author,int year, String publisher, long isbn, int pageCount, String genre){
+        this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.year = year;
@@ -86,11 +86,11 @@ public class Book implements Serializable {
     }
 
     public int getBookID() {
-        return bookID;
+        return bookId;
     }
 
     public void setBookID(int bookID) {
-        this.bookID = bookID;
+        this.bookId = bookID;
     }
 
     public State getState() {
@@ -117,7 +117,7 @@ public class Book implements Serializable {
        }
        Book other = (Book) obj;
        return other.title.equals(title) && other.author.equals(author) && year == other.year && other.publisher.equals(publisher) &&
-        isbn == other.isbn && pageCount == other.pageCount && bookID == other.bookID && genre.equals(other.genre);
+        isbn == other.isbn && pageCount == other.pageCount && bookId == other.bookId && genre.equals(other.genre);
     }
     @Override // toString is missing the info about borrower,reservist and state
     public String toString() {
@@ -128,7 +128,7 @@ public class Book implements Serializable {
                 ", year=" + year +
                 ", isbn=" + isbn +
                 ", pageCount=" + pageCount +
-                ", bookID=" + bookID +
+                ", bookID=" + bookId +
                 ", genre='" + genre + '\'' +
                 '}';
     }

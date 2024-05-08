@@ -66,7 +66,7 @@ public class MainViewController {
         stateColumn.setCellValueFactory(new PropertyValueFactory<>("state"));
     }
     public void initializeStateComboBox(){
-        String[] stateString = {"Available,Reserved,Borrowed,Borrowed & Reserved"};
+        String[] stateString = {"Available","Borrowed"};
         stateComboBox.getItems().addAll(stateString);
         stateComboBox.getSelectionModel().selectFirst();
     }
