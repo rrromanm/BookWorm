@@ -9,12 +9,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.MainViewController">
+<AnchorPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.MainViewController">
     <children>
         <ImageView fitHeight="64.0" fitWidth="71.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="500.4" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="939.0" AnchorPane.topAnchor="14.0" />
         <Circle fill="DODGERBLUE" layoutX="50.0" layoutY="46.0" radius="32.0" stroke="BLACK" strokeType="INSIDE" />
         <Button fx:id="notificationButton" layoutX="92.0" layoutY="33.0" mnemonicParsing="false" text="Notification" />
-        <ComboBox fx:id="genreComboBox" layoutX="179.0" layoutY="33.0" prefWidth="150.0" promptText="Genre" />
+        <ComboBox fx:id="genreComboBox" layoutX="179.0" layoutY="33.0" onAction="#onGenreClick" prefWidth="150.0" promptText="Genre" />
         <ComboBox fx:id="stateComboBox" layoutX="329.0" layoutY="33.0" onAction="#onStateClick" prefWidth="150.0" promptText="State" />
         <TextField fx:id="searchTextField" layoutX="491.0" layoutY="34.0" prefHeight="26.0" prefWidth="429.0" />
         <Button fx:id="searchButton" layoutX="931.0" layoutY="35.0" mnemonicParsing="false" onAction="#onSearch" prefHeight="26.0" prefWidth="78.0" text="Search" />

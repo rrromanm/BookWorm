@@ -36,9 +36,9 @@ public class LibraryImplementation implements LibraryInterface {
         }
     }
 
-    @Override public synchronized  ArrayList<Book> filterByState(String genre,String state){
+    @Override public synchronized  ArrayList<Book> filter(String genre,String state, String search){
         try {
-            return this.bookDatabase.filter(genre, state);
+            return this.bookDatabase.filter(genre, state,search);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

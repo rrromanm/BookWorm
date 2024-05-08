@@ -48,42 +48,60 @@ public class BookDatabaseImplementation {
         }
     }
 
-    public ArrayList<Book> filter(String genre , String state) throws SQLException {
-        try (Connection connection = getConnection())
-        {
-            PreparedStatement statement1 = connection.prepareStatement(
-                    "SELECT\n" +
-                            "    books.id,\n" +
-                            "    books.title,\n" +
-                            "    books.authors,\n" +
-                            "    books.year,\n" +
-                            "    books.publisher,\n" +
-                            "    books.isbn,\n" +
-                            "    books.page_count,\n" +
-                            "    books.state,\n" +
-                            "    g.genre AS genre_name,\n" +
-                            "    p.id as borrower_id,\n" +
-                            "    p.username as username,\n" +
-                            "    p.first_name as firstname,\n" +
-                            "    p.last_name as lastname,\n" +
-                            "    p.password as password,\n" +
-                            "    p.email as email,\n" +
-                            "    p.phone_number as pNo,\n" +
-                            "    p.fees as fees\n" +
-                            "FROM\n" +
-                            "    book_worm_db.books\n" +
-                            "JOIN\n" +
-                            "    book_worm_db.genre g ON books.genre_id = g.id\n" +
-                            "LEFT JOIN\n" +
-                            "    book_worm_db.patron p on books.borrower = p.id\n" +
-                            "WHERE genre = ?\n" +
-                            "AND state = ?;");
-            statement1.setObject(1, genre);
-            statement1.setString(2, state);
-            ResultSet resultSet = statement1.executeQuery();
+    public ArrayList<Book> filter(String state, String genres, String search) throws SQLException {
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement;
+            StringBuilder sqlQuery = new StringBuilder("SELECT\n" +
+                "    books.id,\n" +
+                "    books.title,\n" +
+                "    books.authors,\n" +
+                "    books.year,\n" +
+                "    books.publisher,\n" +
+                "    books.isbn,\n" +
+                "    books.page_count,\n" +
+                "    books.state,\n" +
+                "    g.genre AS genre_name,\n" +
+                "    p.id as borrower_id,\n" +
+                "    p.username as username,\n" +
+                "    p.first_name as firstname,\n" +
+                "    p.last_name as lastname,\n" +
+                "    p.password as password,\n" +
+                "    p.email as email,\n" +
+                "    p.phone_number as pNo,\n" +
+                "    p.fees as fees\n" +
+                "FROM\n" +
+                "    book_worm_db.books\n" +
+                "JOIN\n" +
+                "    book_worm_db.genre g ON books.genre_id = g.id\n" +
+                "LEFT JOIN\n" +
+                "    book_worm_db.patron p on books.borrower = p.id\n" +
+                "WHERE 1=1");
+
+            if (!"All".equals(state)) {
+                sqlQuery.append(" AND state = ?");
+            }
+            if (!"All".equals(genres)) {
+                sqlQuery.append(" AND genre = ?");
+            }
+            if (!search.isEmpty()) {
+                sqlQuery.append(" AND title LIKE ?");
+            }
+
+            statement = connection.prepareStatement(sqlQuery.toString());
+
+            int parameterIndex = 1;
+            if (!"All".equals(state)) {
+                statement.setString(parameterIndex++, state);
+            }
+            if (!"All".equals(genres)) {
+                statement.setString(parameterIndex++, genres);
+            }
+            if (!search.isEmpty()) {
+                statement.setString(parameterIndex, "%" + search + "%");
+            }
+            ResultSet resultSet = statement.executeQuery();
             ArrayList<Book> books = new ArrayList<>();
-            while (resultSet.next())
-            {
+            while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String title = resultSet.getString("title");
                 String author = resultSet.getString("authors");
@@ -91,8 +109,8 @@ public class BookDatabaseImplementation {
                 String publisher = resultSet.getString("publisher");
                 long isbn = resultSet.getLong("isbn");
                 int pageCount = resultSet.getInt("page_count");
-                String stateBook = resultSet.getString("state");
-                String genreBook = resultSet.getString("genre_name");
+                String state2 = resultSet.getString("state");
+                String genre = resultSet.getString("genre_name");
 
                 int borrowerId = resultSet.getInt("borrower_id");
                 String username = resultSet.getString("username");
@@ -105,11 +123,11 @@ public class BookDatabaseImplementation {
 
                 if (username == null) {
                     State state1 = null;
-                    Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genreBook);
-                    if (stateBook.equalsIgnoreCase("Available")){
+                    Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
+                    if (state2.equalsIgnoreCase("Available")){
                         state1 = new Available();
                     }
-                    else if(stateBook.equalsIgnoreCase("Borrowed")){
+                    else if(state2.equalsIgnoreCase("Borrowed")){
                         state1 = new Borrowed();
                     }
                     book.setState(state1);
@@ -117,7 +135,7 @@ public class BookDatabaseImplementation {
                 } else {
                     State state1 = null;
                     Patron patron = new Patron(borrowerId, firstname, lastname, username, password, email, phoneNumber, fee);
-                    Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genreBook);
+                    Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
                     if (state.equalsIgnoreCase("Available")){
                         state1 = new Available();
                     }
@@ -132,6 +150,7 @@ public class BookDatabaseImplementation {
             return books;
         }
     }
+
 
     public ArrayList<Book> readBooks() throws SQLException {
         try (Connection connection = getConnection())
@@ -161,7 +180,7 @@ public class BookDatabaseImplementation {
                         "    book_worm_db.genre g ON books.genre_id = g.id\n" +
                         "LEFT JOIN\n" +
                         "    book_worm_db.patron p on books.borrower = p.id;");
-
+            
         ResultSet resultSet = statement1.executeQuery();
         ArrayList<Book> books = new ArrayList<>();
         while (resultSet.next())

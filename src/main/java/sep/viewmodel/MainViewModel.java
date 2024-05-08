@@ -29,7 +29,7 @@ public class MainViewModel {
         bookList.setAll(model.getAllBooks());
     }
 
-    public void showFilteredBooksByState(String genre, String state) throws RemoteException {
-        bookList.setAll(model.filterByState(genre, state));
+    public void showFiltered(String genre, String state,String search) throws RemoteException {
+        bookList.setAll(model.filter(genre, state, search));
     }
 }

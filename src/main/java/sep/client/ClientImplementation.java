@@ -20,8 +20,8 @@ public class ClientImplementation implements ClientInterface {
     }
 
     @Override
-    public ArrayList<Book> filterByState(String genre,String state) throws RemoteException {
-        return library.filterByState(genre, state);
+    public ArrayList<Book> filter(String genre,String state, String search) throws RemoteException {
+        return library.filter(genre, state,search);
     }
 
 //    @Override

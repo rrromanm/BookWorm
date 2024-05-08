@@ -26,8 +26,8 @@ public class ModelManager extends UnicastRemoteObject implements Model {
     }
 
     @Override
-    public ArrayList<Book> filterByState(String genre,String state) throws RemoteException {
-        return client.filterByState(genre,state);
+    public ArrayList<Book> filter(String genre,String state, String search) throws RemoteException {
+        return client.filter(genre,state,search);
     }
 
 //    @Override
