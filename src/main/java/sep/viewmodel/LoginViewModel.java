@@ -19,13 +19,17 @@ public class LoginViewModel
         this.password = new SimpleStringProperty("");
     }
 
-    public void login(){
+    public boolean login(){
         try {
-            model.login(username.get(), password.get());
-            reset();
+            if(model.login(username.get(), password.get())){
+                reset();
+                return true;
+            }
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+        return false;
     }
     public void bindUsername(StringProperty property){
         this.username.bindBidirectional(property);

@@ -20,11 +20,11 @@ public class PatronDatabaseImplementation {
         return instance;
     }
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "via");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "VIAVIA");
     }
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws SQLException {
         try(Connection conn = getConnection()) {
-            PreparedStatement statement = conn.prepareStatement("INSERT INTO patrons(first_name, last_name, username, password, email, phone_number) VALUES (?,?,?,?,?,?)");
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO book_worm_db.patron(first_name, last_name, username, password, email, phone_number) VALUES (?,?,?,?,?,?)");
             statement.setString(1, first_name);
             statement.setString(2, last_name);
             statement.setString(3, username);
@@ -35,19 +35,28 @@ public class PatronDatabaseImplementation {
         }
     }
 
-    public boolean login(String username, String password) throws SQLException
-    {
+    public boolean login(String username, String password) throws SQLException {
         try(Connection conn = getConnection()) {
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM patrons WHERE username =? AND password =?;");
+            PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) FROM book_worm_db.patron WHERE username = ? AND password = ?;");
             statement.setString(1, username);
             statement.setString(2, password);
+
             ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()){
-                return true;
-            }
-            else{
+            System.out.println("Checking for user in db....");
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                if (count == 1) {
+                    System.out.println("Logging in successful!");
+                    return true;
+                } else {
+                    System.out.println("No such user found or multiple entries found.");
+                    return false;
+                }
+            } else {
+                System.out.println("Logging in failed!");
                 return false;
             }
         }
     }
+
 }

@@ -31,8 +31,10 @@ public class LoginViewController {
 
     @FXML private void loginButtonClicked()
     {
-        this.viewModel.login();
-        viewHandler.openView(ViewFactory.USERMAIN);
+        if(this.viewModel.login()){
+            viewHandler.openView(ViewFactory.USERMAIN);
+        }
+        System.out.println("Login unsuccessful");
     }
 
     @FXML private void createButtonClicked()

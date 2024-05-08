@@ -44,10 +44,10 @@ public class ModelManager extends UnicastRemoteObject implements Model {
     }
 
     @Override
-    public void login(String username, String password) throws RemoteException {
+    public boolean login(String username, String password) throws RemoteException {
         try{
 
-            this.client.login(username, password);
+            return this.client.login(username, password);
 
         }catch (Exception e){
             throw new RemoteException(e.getMessage());

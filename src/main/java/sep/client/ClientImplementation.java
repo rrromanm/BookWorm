@@ -25,8 +25,8 @@ public class ClientImplementation implements ClientInterface {
     }
 
     @Override
-    public void login(String username, String password) throws RemoteException {
-        library.login(username, password);
+    public boolean login(String username, String password) throws RemoteException {
+        return library.login(username, password);
     }
 
 }

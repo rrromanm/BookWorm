@@ -8,7 +8,7 @@ public class Patron implements Serializable {
     private String firstName;
     private String lastName;
     private String username;
-    private String password; //TODO make password validator
+    private String password;
     private String email;
     private String phoneNumber;
     private int userID;
