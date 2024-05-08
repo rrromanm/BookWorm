@@ -154,17 +154,32 @@ public class BookDatabaseImplementation {
             String phoneNumber = resultSet.getString("phone_number");
             int fee = resultSet.getInt("fees");
 
-            if (state.equals("Available")){
-                State state1 = new Available();
-            }
+
 
             if (username == null) {
+                State state1 = null;
                 Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
+                if (state.equalsIgnoreCase("Available")){
+                    state1 = new Available();
+                }
+                else if(state.equalsIgnoreCase("Borrowed")){
+                    state1 = new Borrowed();
+                }
+                book.setState(state1);
                 books.add(book);
             } else {
+                State state1 = null;
                 Patron patron = new Patron(borrowerId, firstname, lastname, username, password, email, phoneNumber, fee);
                 Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
+                if (state.equalsIgnoreCase("Available")){
+                    state1 = new Available();
+                }
+                else if(state.equalsIgnoreCase("Borrowed")){
+                    state1 = new Borrowed();
+                }
+                book.setState(state1);
                 book.setBorrower(patron);
+                books.add(book);
             }
         }
         return books;
