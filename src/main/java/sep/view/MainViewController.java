@@ -18,7 +18,6 @@ public class MainViewController {
     @FXML private Button myBooksButton;
     @FXML private Button seeEventsButton;
     @FXML private Button donateButton;
-    @FXML private Button reserveButton;
     @FXML private Button borrowButton;
     @FXML private Button helpButton;
     @FXML private Button logoutButton;
@@ -120,12 +119,10 @@ public class MainViewController {
     @FXML public void onSelect(){
         if(selectedBook.get().getState() instanceof Available)
         {
-            borrowButton.setDisable(true);
-            reserveButton.setDisable(false);
+            borrowButton.setDisable(false);
         }
         if(selectedBook.get().getState() instanceof Borrowed) {
             borrowButton.setDisable(true);
-            reserveButton.setDisable(false);
         }
 
         // we still need to figure out how to show the description of the book
@@ -138,7 +135,6 @@ public class MainViewController {
         searchTextField.clear();
         stateComboBox.getSelectionModel().selectFirst();
         borrowButton.setDisable(true);
-        reserveButton.setDisable(true);
     }
 
 
