@@ -25,6 +25,11 @@ public class ModelManager extends UnicastRemoteObject implements Model {
         return client.getAllBooks();
     }
 
+    @Override
+    public ArrayList<Book> filterByState(String state) throws RemoteException {
+        return client.filterByState(state);
+    }
+
 //    @Override
 //    public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws RemoteException {
 //        try{

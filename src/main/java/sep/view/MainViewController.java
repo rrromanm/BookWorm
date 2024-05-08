@@ -51,6 +51,7 @@ public class MainViewController {
         initializeGenreComboBox(); // not completed
         this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
         this.mainViewModel.bindList(bookTableView.itemsProperty());
+        viewModel.resetBookList();
 
 
         // somehow we need to figure out how to change the button to an image of the bell for notification and
@@ -69,16 +70,41 @@ public class MainViewController {
         stateColumn.setCellValueFactory(new PropertyValueFactory<>("state"));
     }
     public void initializeStateComboBox(){
-        String[] stateString = {"Available","Borrowed"};
+        String[] stateString = {"All","Available", "Borrowed"};
         stateComboBox.getItems().addAll(stateString);
         stateComboBox.getSelectionModel().selectFirst();
     }
     public void initializeGenreComboBox() throws SQLException
     {
+        genreComboBox.getItems().add("All");
         genreComboBox.getItems().addAll(BookDatabaseImplementation.getInstance()
             .readGenres());
         genreComboBox.getSelectionModel().selectFirst();
     }
+    @FXML public void onStateClick() throws RemoteException {
+        if (stateComboBox.getSelectionModel().getSelectedItem().equals("All"))
+        {
+            mainViewModel.resetBookList();
+        }
+        else
+        {
+            mainViewModel.showFilteredBooksByState(stateComboBox.getSelectionModel().getSelectedItem());
+        }
+    }
+
+    @FXML public void onGenreClick() throws RemoteException {
+        String genreChoice = genreComboBox.getSelectionModel().getSelectedItem();
+
+        if (genreComboBox.getSelectionModel().getSelectedItem().equals("All"))
+        {
+            mainViewModel.resetBookList();
+        }
+        else
+        {
+
+        }
+    }
+
     @FXML public void onViewProfile()
     {
         viewHandler.openView(ViewFactory.PROFILE);
@@ -89,15 +115,11 @@ public class MainViewController {
     }
     @FXML public void onSeeEvents()
     {
-        //viewHandler.openView(ViewFactory.//EVENTS);
+        viewHandler.openView(ViewFactory.EVENTSVIEW);
     }
     @FXML public void onDonate()
     {
         viewHandler.openView(ViewFactory.DONATEBOOK);
-    }
-    @FXML public void onReserve()
-    {
-        //mainViewModel.reserve(); // the method should be here
     }
     @FXML public void onBorrow()
     {

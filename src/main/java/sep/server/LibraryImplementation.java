@@ -37,6 +37,14 @@ public class LibraryImplementation implements LibraryInterface {
         }
     }
 
+    @Override public synchronized  ArrayList<Book> filterByState(String state){
+        try {
+            return this.bookDatabase.filterByState(state);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 //    @Override
 //    public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws RemoteException {
 //        Patron createdPatron = new Patron(username, password, first_name, last_name, email, phone_number);
