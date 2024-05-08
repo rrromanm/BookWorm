@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.AdminLoginViewController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.AdminLoginViewController">
    <children>
       <TextField fx:id="usernameTextField" layoutX="226.0" layoutY="140.0" promptText="Username" />
       <TextField fx:id="passwordTextField" layoutX="226.0" layoutY="175.0" promptText="Password" />
       <Button fx:id="login" layoutX="275.0" layoutY="221.0" mnemonicParsing="false" onAction="#loginButtonClicked" text="Login" />
       <Button fx:id="backButton" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" />
+      <Label fx:id="error" layoutX="191.0" layoutY="281.0" prefHeight="71.0" prefWidth="230.0" textAlignment="CENTER" textFill="RED" wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

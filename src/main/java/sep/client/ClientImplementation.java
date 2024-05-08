@@ -29,4 +29,9 @@ public class ClientImplementation implements ClientInterface {
         return library.login(username, password);
     }
 
+    @Override
+    public boolean loginAsAdmin(String username, String password) throws RemoteException {
+        return library.loginAsAdmin(username, password);
+    }
+
 }

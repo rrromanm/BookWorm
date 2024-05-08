@@ -2,6 +2,7 @@ package sep.view;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import sep.viewmodel.CreateAccountViewModel;
 import javafx.scene.layout.Region;
@@ -24,6 +25,7 @@ public class CreateAccountViewController {
     private Button backButton;
     @FXML
     private Button createAccountButton;
+    @FXML private Label error;
 
     public void init(ViewHandler viewHandler, CreateAccountViewModel viewModel, Region root) {
         this.viewHandler = viewHandler;
@@ -37,6 +39,7 @@ public class CreateAccountViewController {
         this.viewModel.bindPhoneNumber(phoneNumberTextField.textProperty());
         this.viewModel.bindRepeatPassword(repeatPasswordTextField.textProperty());
         this.viewModel.bindPassword(passwordTextField.textProperty());
+        this.viewModel.bindError(error.textProperty());
     }
 
     @FXML

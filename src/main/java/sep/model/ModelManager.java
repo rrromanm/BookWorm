@@ -13,11 +13,13 @@ import java.util.ArrayList;
 public class ModelManager extends UnicastRemoteObject implements Model {
     private final LibraryInterface library;
     private final ClientInterface client;
+    private String error;
 
     public ModelManager(LibraryInterface library) throws RemoteException {
         super();
         this.library = library;
         this.client = new ClientImplementation(library);
+        this.error = "";
     }
 
     @Override
@@ -35,9 +37,12 @@ public class ModelManager extends UnicastRemoteObject implements Model {
             PhoneValidator.validate(phone_number);
             NameValidator.validate(first_name);
             NameValidator.validate(last_name);
+
+
             this.client.createPatron( username, password, first_name, last_name, email, phone_number);
 
         }catch(Exception e){
+            error = e.getMessage();
             throw new RemoteException(e.getMessage());
         }
 
@@ -53,5 +58,17 @@ public class ModelManager extends UnicastRemoteObject implements Model {
             throw new RemoteException(e.getMessage());
         }
 
+    }
+    public boolean loginAsAdmin(String username, String password) throws RemoteException{
+        try{
+            return this.client.loginAsAdmin(username, password);
+        }catch (Exception e){
+            throw new RemoteException(e.getMessage());
+        }
+
+    }
+
+    public String getError() {
+        return error;
     }
 }

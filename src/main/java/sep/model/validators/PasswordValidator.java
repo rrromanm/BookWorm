@@ -2,7 +2,7 @@ package sep.model.validators;
 
 public class PasswordValidator {
 
-    private static final int MIN_LENGTH = 8;
+    private static final int MIN_LENGTH = 7;
     private static final int MAX_LENGTH = 40;
     private static final String SPECIAL_CHARACTERS = "!@#$%^&*()-_=+|,.<>?";
 

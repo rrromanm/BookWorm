@@ -10,22 +10,26 @@ public class AdminLoginViewModel {
     private final Model model;
     private final StringProperty username;
     private final StringProperty password;
+    private final StringProperty error;
 
     public AdminLoginViewModel(Model model) {
         this.model = model;
         this.username = new SimpleStringProperty("");
         this.password = new SimpleStringProperty("");
+        this.error = new SimpleStringProperty("");
     }
 
     public boolean login(){
         try{
-            if(model.login(username.get(), password.get())){
+            if(model.loginAsAdmin(username.get(), password.get())){
                 reset();
                 return true;
             }
         } catch (RemoteException e){
+            error.set(e.getMessage());
             e.printStackTrace();
         }
+        error.set("Username or password incorrect. Try again.");
         return false;
     }
 
@@ -34,6 +38,9 @@ public class AdminLoginViewModel {
     }
     public void bindPassword(StringProperty property){
         this.password.bindBidirectional(property);
+    }
+    public void bindError(StringProperty property){
+        this.error.bindBidirectional(property);
     }
     public void reset()
     {

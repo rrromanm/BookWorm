@@ -254,7 +254,7 @@ public class ViewFactory
     public Region loadAdminMainView(){
         if(adminMainViewController == null){
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/sep/AdminManageEventsView.fxml"));
+            loader.setLocation(getClass().getResource("/sep/AdminMainView.fxml"));
             try{
                 Region root = loader.load();
                 adminMainViewController = loader.getController();
