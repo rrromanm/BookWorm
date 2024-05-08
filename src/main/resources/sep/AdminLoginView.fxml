@@ -6,9 +6,9 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.AdminLoginViewController">
    <children>
-      <TextField layoutX="226.0" layoutY="140.0" promptText="Username" />
-      <TextField layoutX="226.0" layoutY="175.0" promptText="Password" />
-      <Button layoutX="275.0" layoutY="221.0" mnemonicParsing="false" text="Login" />
+      <TextField fx:id="usernameTextField" layoutX="226.0" layoutY="140.0" promptText="Username" />
+      <TextField fx:id="passwordTextField" layoutX="226.0" layoutY="175.0" promptText="Password" />
+      <Button fx:id="login" layoutX="275.0" layoutY="221.0" mnemonicParsing="false" onAction="#loginButtonClicked" text="Login" />
       <Button fx:id="backButton" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" />
    </children>
 </AnchorPane>

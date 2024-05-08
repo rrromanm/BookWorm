@@ -59,4 +59,28 @@ public class PatronDatabaseImplementation {
         }
     }
 
+    public boolean loginAsAdmin(String username, String password) throws SQLException {
+        try(Connection conn = getConnection()) {
+            PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) FROM book_worm_db.librarian WHERE username = ? AND password = ?;");
+            statement.setString(1, username);
+            statement.setString(2, password);
+
+            ResultSet resultSet = statement.executeQuery();
+            System.out.println("Checking for admin in db....");
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                if (count == 1) {
+                    System.out.println("Logging in successful!");
+                    return true;
+                } else {
+                    System.out.println("No such user found or multiple entries found.");
+                    return false;
+                }
+            } else {
+                System.out.println("Logging in failed!");
+                return false;
+            }
+        }
+    }
+
 }

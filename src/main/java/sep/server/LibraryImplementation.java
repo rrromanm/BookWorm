@@ -57,7 +57,17 @@ public class LibraryImplementation implements LibraryInterface {
         }catch(SQLException e){
             throw new IllegalArgumentException("Account doesn't exist.");
         }
-
-
     }
+
+    @Override
+    public boolean loginAsAdmin(String username, String password) throws RemoteException {
+        try{
+            return patronDatabase.loginAsAdmin(username, password);
+
+        }catch(SQLException e){
+            throw new IllegalArgumentException("Account doesn't exist.");
+        }
+    }
+
+
 }
