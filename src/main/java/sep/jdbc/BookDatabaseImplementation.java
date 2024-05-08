@@ -181,4 +181,17 @@ public class BookDatabaseImplementation {
         return books;
         }
     }
+    public ArrayList<String> readGenres() throws SQLException{
+        try (Connection connection = getConnection()){
+            PreparedStatement statement1 = connection.prepareStatement("SELECT genre FROM book_worm_db.genre");
+            ResultSet resultSet = statement1.executeQuery();
+            ArrayList<String> genres = new ArrayList<>();
+            while (resultSet.next()){
+                String genre = resultSet.getString("genre");
+                genres.add(genre);
+
+            }
+            return genres;
+        }
+    }
 }
