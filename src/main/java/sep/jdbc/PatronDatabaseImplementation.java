@@ -24,7 +24,7 @@ public class PatronDatabaseImplementation {
     }
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws SQLException {
         try(Connection conn = getConnection()) {
-            PreparedStatement statement = conn.prepareStatement("INSERT INTO patrons(first_name, last_name, username, password, email, phone_number) VALUES (?,?,?,?,?,?)");
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO book_worm_db.patron(first_name, last_name, username, password, email, phone_number) VALUES (?,?,?,?,?,?)");
             statement.setString(1, first_name);
             statement.setString(2, last_name);
             statement.setString(3, username);
@@ -38,7 +38,7 @@ public class PatronDatabaseImplementation {
     public boolean login(String username, String password) throws SQLException
     {
         try(Connection conn = getConnection()) {
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM patrons WHERE username =? AND password =?;");
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM book_worm_db.patron WHERE username =? AND password =?;");
             statement.setString(1, username);
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
