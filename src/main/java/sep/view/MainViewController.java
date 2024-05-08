@@ -5,10 +5,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
+import sep.jdbc.BookDatabaseImplementation;
 import sep.model.*;
 import sep.viewmodel.MainViewModel;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 public class MainViewController {
     @FXML private Button notificationButton;
@@ -39,7 +41,9 @@ public class MainViewController {
     private ViewHandler viewHandler;
     private MainViewModel mainViewModel;
     private ReadOnlyObjectProperty<Book> selectedBook;
-    public void init(ViewHandler viewHandler, MainViewModel viewModel, Region root) throws RemoteException {
+    public void init(ViewHandler viewHandler, MainViewModel viewModel, Region root)
+        throws RemoteException, SQLException
+    {
         this.viewHandler = viewHandler;
         this.mainViewModel = viewModel;
         this.root = root;
@@ -70,9 +74,10 @@ public class MainViewController {
         stateComboBox.getItems().addAll(stateString);
         stateComboBox.getSelectionModel().selectFirst();
     }
-    public void initializeGenreComboBox(){
-        String[] genreString = {""};  // I have no idea what genres are we going to have
-        genreComboBox.getItems().addAll(genreString);
+    public void initializeGenreComboBox() throws SQLException
+    {
+        genreComboBox.getItems().addAll(BookDatabaseImplementation.getInstance()
+            .readGenres());
         genreComboBox.getSelectionModel().selectFirst();
     }
     @FXML public void onViewProfile()
