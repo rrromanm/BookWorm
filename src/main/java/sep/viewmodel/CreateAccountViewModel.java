@@ -29,18 +29,18 @@ public class CreateAccountViewModel {
         this.phone_number = new SimpleStringProperty("");
     }
 
-    public void createPatron() throws RemoteException {
-        try{
-            if(!password.get().equals(repeatPassword.get()))
-                throw new Exception("Passwords do not match!");
-            System.out.println(username.get()+ "IS THE USERNAME");
-            model.createPatron(username.get(), password.get(), first_name.get(), last_name.get(), email.get(), phone_number.get());
-            reset();
-            System.out.println("Patron created!");
-        }catch(Exception e){
-            throw new RuntimeException(e);
-        }
-    }
+//    public void createPatron() throws RemoteException {
+//        try{
+//            if(!password.get().equals(repeatPassword.get()))
+//                throw new Exception("Passwords do not match!");
+//            System.out.println(username.get()+ "IS THE USERNAME");
+//            model.createPatron(username.get(), password.get(), first_name.get(), last_name.get(), email.get(), phone_number.get());
+//            reset();
+//            System.out.println("Patron created!");
+//        }catch(Exception e){
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     public void bindEmail(StringProperty property){
         this.email.bindBidirectional(property);

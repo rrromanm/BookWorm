@@ -83,6 +83,7 @@ public class BookDatabaseImplementation {
             statement.setObject(1, state);
             ResultSet resultSet = statement.executeQuery();
             ArrayList<Book> books = new ArrayList<>();
+
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String title = resultSet.getString("title");
@@ -92,10 +93,7 @@ public class BookDatabaseImplementation {
                 long isbn = resultSet.getLong("isbn");
                 int pageCount = resultSet.getInt("page_count");
                 String genre = resultSet.getString("genre");
-                Patron borrower = (Patron) resultSet.getObject("borrower"); //TODO: needs to be figured out
                 Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
-                book.setBorrower(borrower);
-                book.setState(state);
                 books.add(book);
             }
             return books;
@@ -151,10 +149,8 @@ public class BookDatabaseImplementation {
             String lastname = resultSet.getString("lastname");
             String password = resultSet.getString("password");
             String email = resultSet.getString("email");
-            String phoneNumber = resultSet.getString("phone_number");
+            String phoneNumber = resultSet.getString("pNo");
             int fee = resultSet.getInt("fees");
-
-
 
             if (username == null) {
                 State state1 = null;

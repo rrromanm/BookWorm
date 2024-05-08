@@ -19,10 +19,10 @@ public class ClientImplementation implements ClientInterface {
         return library.getAllBooks();
     }
 
-    @Override
-    public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws RemoteException {
-        library.createPatron(username, password, first_name, last_name, email, phone_number);
-    }
+//    @Override
+//    public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws RemoteException {
+//        library.createPatron(username, password, first_name, last_name, email, phone_number);
+//    }
 
     @Override
     public void login(String username, String password) throws RemoteException {

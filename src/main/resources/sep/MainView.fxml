@@ -37,7 +37,6 @@
                 <TableColumn fx:id="stateColumn" prefWidth="97.599853515625" text="State" />
             </columns>
         </TableView>
-        <Button fx:id="reserveButton" disable="true" layoutX="23.0" layoutY="265.0" mnemonicParsing="false" onAction="#onReserve" prefHeight="26.0" prefWidth="132.0" text="Reserve" />
         <Button fx:id="borrowButton" disable="true" layoutX="23.0" layoutY="300.0" mnemonicParsing="false" onAction="#onBorrow" prefHeight="26.0" prefWidth="132.0" text="Borrow" />
     </children>
 </AnchorPane>

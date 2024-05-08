@@ -85,12 +85,12 @@ public class Book implements Serializable {
         this.genre = genre;
     }
 
-    public int getBookID() {
+    public int getBookId() {
         return bookId;
     }
 
-    public void setBookID(int bookID) {
-        this.bookId = bookID;
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
     }
 
     public State getState() {
