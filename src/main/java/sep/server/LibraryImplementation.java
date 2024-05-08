@@ -3,7 +3,6 @@ package sep.server;
 import sep.jdbc.BookDatabaseImplementation;
 import sep.jdbc.PatronDatabaseImplementation;
 import sep.model.Book;
-import sep.model.Patron;
 import sep.shared.LibraryInterface;
 
 import java.rmi.RemoteException;
@@ -37,9 +36,9 @@ public class LibraryImplementation implements LibraryInterface {
         }
     }
 
-    @Override public synchronized  ArrayList<Book> filterByState(String state){
+    @Override public synchronized  ArrayList<Book> filterByState(String genre,String state){
         try {
-            return this.bookDatabase.filterByState(state);
+            return this.bookDatabase.filter(genre, state);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

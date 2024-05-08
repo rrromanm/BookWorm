@@ -4,7 +4,6 @@ import sep.model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class BookDatabaseImplementation {
     private static BookDatabaseImplementation instance;
@@ -49,34 +48,7 @@ public class BookDatabaseImplementation {
         }
     }
 
-    public List<Book> filterByGenre(int genreID) throws SQLException {
-        try (Connection connection = getConnection())
-        {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM books WHERE genre_id = ?");
-            statement.setInt(1, genreID);
-            ResultSet resultSet = statement.executeQuery();
-            ArrayList<Book> books = new ArrayList<>();
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String title = resultSet.getString("title");
-                String author = resultSet.getString("author");
-                int year = resultSet.getInt("year");
-                String publisher = resultSet.getString("publisher");
-                long isbn = resultSet.getLong("isbn");
-                int pageCount = resultSet.getInt("page_count");
-                String genre = resultSet.getString("genre");
-                Patron borrower = (Patron) resultSet.getObject("borrower"); //TODO: needs to be figured out
-                State state = (State) resultSet.getObject("state"); //TODO: needs to be figured out
-                Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
-                book.setBorrower(borrower);
-                book.setState(state);
-                books.add(book);
-            }
-            return books;
-        }
-    }
-
-    public ArrayList<Book> filterByState(String state) throws SQLException {
+    public ArrayList<Book> filter(String genre , String state) throws SQLException {
         try (Connection connection = getConnection())
         {
             PreparedStatement statement1 = connection.prepareStatement(
@@ -104,8 +76,10 @@ public class BookDatabaseImplementation {
                             "    book_worm_db.genre g ON books.genre_id = g.id\n" +
                             "LEFT JOIN\n" +
                             "    book_worm_db.patron p on books.borrower = p.id\n" +
-                            "WHERE state = ?;");
-            statement1.setObject(1, state);
+                            "WHERE genre = ?\n" +
+                            "AND state = ?;");
+            statement1.setObject(1, genre);
+            statement1.setString(2, state);
             ResultSet resultSet = statement1.executeQuery();
             ArrayList<Book> books = new ArrayList<>();
             while (resultSet.next())
@@ -118,7 +92,7 @@ public class BookDatabaseImplementation {
                 long isbn = resultSet.getLong("isbn");
                 int pageCount = resultSet.getInt("page_count");
                 String stateBook = resultSet.getString("state");
-                String genre = resultSet.getString("genre_name");
+                String genreBook = resultSet.getString("genre_name");
 
                 int borrowerId = resultSet.getInt("borrower_id");
                 String username = resultSet.getString("username");
@@ -131,7 +105,7 @@ public class BookDatabaseImplementation {
 
                 if (username == null) {
                     State state1 = null;
-                    Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
+                    Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genreBook);
                     if (stateBook.equalsIgnoreCase("Available")){
                         state1 = new Available();
                     }
@@ -143,7 +117,7 @@ public class BookDatabaseImplementation {
                 } else {
                     State state1 = null;
                     Patron patron = new Patron(borrowerId, firstname, lastname, username, password, email, phoneNumber, fee);
-                    Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
+                    Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genreBook);
                     if (state.equalsIgnoreCase("Available")){
                         state1 = new Available();
                     }

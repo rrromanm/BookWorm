@@ -88,7 +88,7 @@ public class MainViewController {
         }
         else
         {
-            mainViewModel.showFilteredBooksByState(stateComboBox.getSelectionModel().getSelectedItem());
+            mainViewModel.showFilteredBooksByState(genreComboBox.getSelectionModel().getSelectedItem() ,stateComboBox.getSelectionModel().getSelectedItem());
         }
     }
 
