@@ -10,6 +10,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
+//TODO: NOTE TO ROMANS: I finished updateUsername etc. but you need to create getUsername etc.
+// so we can retrieve values from db, and thus update them in ViewModel
 public class ModelManager extends UnicastRemoteObject implements Model {
     private final LibraryInterface library;
     private final ClientInterface client;
@@ -66,6 +68,51 @@ public class ModelManager extends UnicastRemoteObject implements Model {
             throw new RemoteException(e.getMessage());
         }
 
+    }
+
+    @Override
+    public void updateUsername(String oldUsername, String newUsername) throws RemoteException {
+        try{
+            client.updateUsername(oldUsername, newUsername);
+        }catch (Exception e){
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateEmail(String oldEmail, String newEmail) throws RemoteException {
+        try{
+            client.updateEmail(oldEmail, newEmail);
+        }catch (Exception e){
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void updatePhoneNumber(String oldPhoneNumber, String newPhoneNumber) throws RemoteException {
+        try{
+            client.updatePhoneNumber(oldPhoneNumber, newPhoneNumber);
+        }catch (Exception e){
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateFirstName(String oldFirstName, String newFirstName) throws RemoteException {
+        try{
+            client.updateFirstName(oldFirstName, newFirstName);
+        }catch (Exception e){
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateLastName(String oldLastName, String newLastName) throws RemoteException {
+        try{
+            client.updateLastName(oldLastName, newLastName);
+        }catch (Exception e){
+            throw new RemoteException(e.getMessage());
+        }
     }
 
     public String getError() {

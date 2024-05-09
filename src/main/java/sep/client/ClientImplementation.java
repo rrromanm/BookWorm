@@ -4,6 +4,7 @@ import sep.model.Book;
 import sep.shared.LibraryInterface;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ClientImplementation implements ClientInterface {
@@ -33,5 +34,52 @@ public class ClientImplementation implements ClientInterface {
     public boolean loginAsAdmin(String username, String password) throws RemoteException {
         return library.loginAsAdmin(username, password);
     }
+
+    @Override
+    public void updateUsername(String oldUsername, String newUsername) throws RemoteException {
+        try{
+            library.updateUsername(oldUsername, newUsername);
+        }catch (RemoteException e){
+            throw new RemoteException(e.getMessage());
+        }
+
+    }
+
+    @Override
+    public void updateEmail(String oldEmail, String newEmail) throws RemoteException {
+        try{
+            library.updateEmail(oldEmail, newEmail);
+        }catch (RemoteException e){
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void updatePhoneNumber(String oldPhoneNumber, String newPhoneNumber) throws RemoteException {
+        try{
+            library.updatePhoneNumber(oldPhoneNumber, newPhoneNumber);
+        }catch (RemoteException e){
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateFirstName(String oldFirstName, String newFirstName) throws RemoteException {
+        try{
+            library.updateFirstName(oldFirstName, newFirstName);
+        }catch (RemoteException e){
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateLastName(String oldLastName, String newLastName) throws RemoteException {
+        try{
+            library.updateLastName(oldLastName, newLastName);
+        } catch (RemoteException e){
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
 
 }

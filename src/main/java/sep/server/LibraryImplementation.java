@@ -39,7 +39,7 @@ public class LibraryImplementation implements LibraryInterface {
 
     @Override
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws RemoteException {
-        Patron createdPatron = new Patron(username, password, first_name, last_name, email, phone_number);
+        Patron createdPatron = new Patron(username, password, first_name, last_name, email, phone_number); //TODO: I think this is redundant
         try{
             this.patronDatabase.createPatron(username, password, first_name, last_name, email, phone_number);
         }
@@ -66,6 +66,51 @@ public class LibraryImplementation implements LibraryInterface {
 
         }catch(SQLException e){
             throw new IllegalArgumentException("Account doesn't exist.");
+        }
+    }
+
+    @Override
+    public void updateUsername(String oldUsername, String newUsername) throws RemoteException {
+        try{
+            patronDatabase.updateUsername(oldUsername, newUsername);
+        }catch(SQLException e){
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
+    public void updateEmail(String oldEmail, String newEmail) throws RemoteException {
+        try{
+            patronDatabase.updateEmail(oldEmail, newEmail);
+        }catch(SQLException e){
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
+    public void updatePhoneNumber(String oldPhoneNumber, String newPhoneNumber) throws RemoteException {
+        try{
+            patronDatabase.updatePhone(oldPhoneNumber, newPhoneNumber);
+        } catch (SQLException e){
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
+    public void updateFirstName(String oldFirstName, String newFirstName) throws RemoteException {
+        try{
+            patronDatabase.updateFirstName(oldFirstName, newFirstName);
+        }catch(SQLException e){
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
+    public void updateLastName(String oldLastName, String newLastName) throws RemoteException {
+        try{
+            patronDatabase.updateLastName(oldLastName, newLastName);
+        }catch(SQLException e){
+            throw new IllegalArgumentException(e);
         }
     }
 
