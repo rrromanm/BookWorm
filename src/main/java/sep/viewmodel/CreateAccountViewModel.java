@@ -31,6 +31,7 @@ public class CreateAccountViewModel {
         this.error = new SimpleStringProperty("");
     }
 
+
     public void createPatron() throws RemoteException {
         try{
 
@@ -39,7 +40,7 @@ public class CreateAccountViewModel {
                 throw new Exception("Passwords do not match!");
             }
             error.set("");
-            model.createPatron(username.get(), password.get(), first_name.get(), last_name.get(), email.get(), phone_number.get());
+            model.createPatron(username.get(), password.get(), first_name.get(), last_name.get(), email.get(), phone_number.get(),0); // TODO userID logic needs to be changed
             reset();
             error.set("");
             System.out.println("Patron created!");
@@ -48,7 +49,6 @@ public class CreateAccountViewModel {
             throw new RuntimeException(model.getError());
         }
     }
-
     public void bindEmail(StringProperty property){
         this.email.bindBidirectional(property);
     }

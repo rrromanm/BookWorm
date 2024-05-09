@@ -37,17 +37,32 @@ public class LibraryImplementation implements LibraryInterface {
         }
     }
 
+
     @Override
-    public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws RemoteException {
-        Patron createdPatron = new Patron(username, password, first_name, last_name, email, phone_number); //TODO: I think this is redundant
-        try{
-            this.patronDatabase.createPatron(username, password, first_name, last_name, email, phone_number);
+    public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException
+    {
+        Patron createdPatron = new Patron(first_name,  last_name,  username,  password,  email, phone_number,  fees); //TODO: I think this is redundant
+        try
+        {
+            this.patronDatabase.createPatron(username, password, first_name,
+                last_name, email, phone_number);
         }
         catch (SQLException e)
         {
+
+        }
+    }
+
+    @Override public synchronized  ArrayList<Book> filter(String genre,String state, String search){
+        try {
+            return this.bookDatabase.filter(genre, state,search);
+        } catch (SQLException e) {
+
             throw new RuntimeException(e);
         }
     }
+
+
 
     @Override
     public boolean login(String username, String password) throws RemoteException {

@@ -1,13 +1,9 @@
 package sep.jdbc;
 
-import sep.model.Available;
-import sep.model.Book;
-import sep.model.Patron;
-import sep.model.State;
+import sep.model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class BookDatabaseImplementation {
     private static BookDatabaseImplementation instance;
@@ -52,64 +48,139 @@ public class BookDatabaseImplementation {
         }
     }
 
-    public List<Book> filterByGenre(int genreID) throws SQLException {
-        try (Connection connection = getConnection())
-        {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM books WHERE genre_id = ?");
-            statement.setInt(1, genreID);
+    public ArrayList<Book> filter(String state, String genres, String search) throws SQLException {
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement;
+            StringBuilder sqlQuery = new StringBuilder("SELECT\n" +
+                "    books.id,\n" +
+                "    books.title,\n" +
+                "    books.authors,\n" +
+                "    books.year,\n" +
+                "    books.publisher,\n" +
+                "    books.isbn,\n" +
+                "    books.page_count,\n" +
+                "    books.state,\n" +
+                "    g.genre AS genre_name,\n" +
+                "    p.id as borrower_id,\n" +
+                "    p.username as username,\n" +
+                "    p.first_name as firstname,\n" +
+                "    p.last_name as lastname,\n" +
+                "    p.password as password,\n" +
+                "    p.email as email,\n" +
+                "    p.phone_number as pNo,\n" +
+                "    p.fees as fees\n" +
+                "FROM\n" +
+                "    book_worm_db.books\n" +
+                "JOIN\n" +
+                "    book_worm_db.genre g ON books.genre_id = g.id\n" +
+                "LEFT JOIN\n" +
+                "    book_worm_db.patron p on books.borrower = p.id\n" +
+                "WHERE 1=1");
+
+            if (!"All".equals(state)) {
+                sqlQuery.append(" AND state = ?");
+            }
+            if (!"All".equals(genres)) {
+                sqlQuery.append(" AND genre = ?");
+            }
+            if (!search.isEmpty()) {
+                sqlQuery.append(" AND title LIKE ?");
+            }
+
+            statement = connection.prepareStatement(sqlQuery.toString());
+
+            int parameterIndex = 1;
+            if (!"All".equals(state)) {
+                statement.setString(parameterIndex++, state);
+            }
+            if (!"All".equals(genres)) {
+                statement.setString(parameterIndex++, genres);
+            }
+            if (!search.isEmpty()) {
+                statement.setString(parameterIndex, "%" + search + "%");
+            }
             ResultSet resultSet = statement.executeQuery();
             ArrayList<Book> books = new ArrayList<>();
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String title = resultSet.getString("title");
-                String author = resultSet.getString("author");
+                String author = resultSet.getString("authors");
                 int year = resultSet.getInt("year");
                 String publisher = resultSet.getString("publisher");
                 long isbn = resultSet.getLong("isbn");
                 int pageCount = resultSet.getInt("page_count");
-                String genre = resultSet.getString("genre");
-                Patron borrower = (Patron) resultSet.getObject("borrower"); //TODO: needs to be figured out
-                State state = (State) resultSet.getObject("state"); //TODO: needs to be figured out
-                Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
-                book.setBorrower(borrower);
-                book.setState(state);
-                books.add(book);
+                String state2 = resultSet.getString("state");
+                String genre = resultSet.getString("genre_name");
+
+                int borrowerId = resultSet.getInt("borrower_id");
+                String username = resultSet.getString("username");
+                String firstname = resultSet.getString("firstname");
+                String lastname = resultSet.getString("lastname");
+                String password = resultSet.getString("password");
+                String email = resultSet.getString("email");
+                String phoneNumber = resultSet.getString("pNo");
+                int fee = resultSet.getInt("fees");
+
+                if (username == null) {
+                    State state1 = null;
+                    Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
+                    if (state2.equalsIgnoreCase("Available")){
+                        state1 = new Available();
+                    }
+                    else if(state2.equalsIgnoreCase("Borrowed")){
+                        state1 = new Borrowed();
+                    }
+                    book.setState(state1);
+                    books.add(book);
+                } else {
+                    State state1 = null;
+                    Patron patron = new Patron(borrowerId, firstname, lastname, username, password, email, phoneNumber, fee);
+                    Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
+                    if (state.equalsIgnoreCase("Available")){
+                        state1 = new Available();
+                    }
+                    else if(state.equalsIgnoreCase("Borrowed")){
+                        state1 = new Borrowed();
+                    }
+                    book.setState(state1);
+                    book.setBorrower(patron);
+                    books.add(book);
+                }
             }
             return books;
         }
     }
 
-    public List<Book> filterByState(State state) throws SQLException {
-        try (Connection connection = getConnection())
-        {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM books WHERE state = ?");
-            statement.setObject(1, state);
-            ResultSet resultSet = statement.executeQuery();
-            ArrayList<Book> books = new ArrayList<>();
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String title = resultSet.getString("title");
-                String author = resultSet.getString("author");
-                int year = resultSet.getInt("year");
-                String publisher = resultSet.getString("publisher");
-                long isbn = resultSet.getLong("isbn");
-                int pageCount = resultSet.getInt("page_count");
-                String genre = resultSet.getString("genre");
-                Patron borrower = (Patron) resultSet.getObject("borrower"); //TODO: needs to be figured out
-                Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
-                book.setBorrower(borrower);
-                book.setState(state);
-                books.add(book);
-            }
-            return books;
-        }
-    }
 
     public ArrayList<Book> readBooks() throws SQLException {
         try (Connection connection = getConnection())
         {
             PreparedStatement statement1 = connection.prepareStatement(
-                "SELECT * FROM book_worm_db.books;");
+                "SELECT\n" +
+                        "    books.id,\n" +
+                        "    books.title,\n" +
+                        "    books.authors,\n" +
+                        "    books.year,\n" +
+                        "    books.publisher,\n" +
+                        "    books.isbn,\n" +
+                        "    books.page_count,\n" +
+                        "    books.state,\n" +
+                        "    g.genre AS genre_name,\n" +
+                        "    p.id as borrower_id,\n" +
+                        "    p.username as username,\n" +
+                        "    p.first_name as firstname,\n" +
+                        "    p.last_name as lastname,\n" +
+                        "    p.password as password,\n" +
+                        "    p.email as email,\n" +
+                        "    p.phone_number as pNo,\n" +
+                        "    p.fees as fees\n" +
+                        "FROM\n" +
+                        "    book_worm_db.books\n" +
+                        "JOIN\n" +
+                        "    book_worm_db.genre g ON books.genre_id = g.id\n" +
+                        "LEFT JOIN\n" +
+                        "    book_worm_db.patron p on books.borrower = p.id;");
+            
         ResultSet resultSet = statement1.executeQuery();
         ArrayList<Book> books = new ArrayList<>();
         while (resultSet.next())
@@ -121,11 +192,58 @@ public class BookDatabaseImplementation {
             String publisher = resultSet.getString("publisher");
             long isbn = resultSet.getLong("isbn");
             int pageCount = resultSet.getInt("page_count");
-            String genre = resultSet.getString("genre_id");
-            Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
-            books.add(book);
+            String state = resultSet.getString("state");
+            String genre = resultSet.getString("genre_name");
+
+            int borrowerId = resultSet.getInt("borrower_id");
+            String username = resultSet.getString("username");
+            String firstname = resultSet.getString("firstname");
+            String lastname = resultSet.getString("lastname");
+            String password = resultSet.getString("password");
+            String email = resultSet.getString("email");
+            String phoneNumber = resultSet.getString("pNo");
+            int fee = resultSet.getInt("fees");
+
+            if (username == null) {
+                State state1 = null;
+                Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
+                if (state.equalsIgnoreCase("Available")){
+                    state1 = new Available();
+                }
+                else if(state.equalsIgnoreCase("Borrowed")){
+                    state1 = new Borrowed();
+                }
+                book.setState(state1);
+                books.add(book);
+            } else {
+                State state1 = null;
+                Patron patron = new Patron(borrowerId, firstname, lastname, username, password, email, phoneNumber, fee);
+                Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
+                if (state.equalsIgnoreCase("Available")){
+                    state1 = new Available();
+                }
+                else if(state.equalsIgnoreCase("Borrowed")){
+                    state1 = new Borrowed();
+                }
+                book.setState(state1);
+                book.setBorrower(patron);
+                books.add(book);
+            }
         }
         return books;
+        }
+    }
+    public ArrayList<String> readGenres() throws SQLException{
+        try (Connection connection = getConnection()){
+            PreparedStatement statement1 = connection.prepareStatement("SELECT genre FROM book_worm_db.genre");
+            ResultSet resultSet = statement1.executeQuery();
+            ArrayList<String> genres = new ArrayList<>();
+            while (resultSet.next()){
+                String genre = resultSet.getString("genre");
+                genres.add(genre);
+
+            }
+            return genres;
         }
     }
 }

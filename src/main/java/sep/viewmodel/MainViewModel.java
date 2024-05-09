@@ -23,10 +23,13 @@ public class MainViewModel {
 
     public void bindList(ObjectProperty<ObservableList<Book>> property) throws RemoteException {
         property.bindBidirectional(bookList);
-        resetBookList();
     }
 
-    private void resetBookList() throws RemoteException {
+    public void resetBookList() throws RemoteException {
         bookList.setAll(model.getAllBooks());
+    }
+
+    public void showFiltered(String genre, String state,String search) throws RemoteException {
+        bookList.setAll(model.filter(genre, state, search));
     }
 }

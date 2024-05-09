@@ -30,8 +30,10 @@ public class ModelManager extends UnicastRemoteObject implements Model {
     }
 
     @Override
-    public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws RemoteException {
-        try{
+    public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException
+    {
+        try
+        {
 
             UsernameValidator.validate(username);
             EmailValidator.validate(email);
@@ -40,15 +42,21 @@ public class ModelManager extends UnicastRemoteObject implements Model {
             NameValidator.validate(first_name);
             NameValidator.validate(last_name);
 
+            this.client.createPatron(username,  password,  first_name,  last_name,  email,  phone_number,  fees);
 
-            this.client.createPatron( username, password, first_name, last_name, email, phone_number);
-
-        }catch(Exception e){
+        }
+        catch (Exception e)
+        {
             error = e.getMessage();
             throw new RemoteException(e.getMessage());
         }
-
     }
+
+
+    public ArrayList<Book> filter(String genre,String state, String search) throws RemoteException {
+        return client.filter(genre,state,search);
+    }
+
 
     @Override
     public boolean login(String username, String password) throws RemoteException {

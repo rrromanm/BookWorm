@@ -5,10 +5,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
+import sep.jdbc.BookDatabaseImplementation;
 import sep.model.*;
 import sep.viewmodel.MainViewModel;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 public class MainViewController {
     @FXML private Button notificationButton;
@@ -16,7 +18,6 @@ public class MainViewController {
     @FXML private Button myBooksButton;
     @FXML private Button seeEventsButton;
     @FXML private Button donateButton;
-    @FXML private Button reserveButton;
     @FXML private Button borrowButton;
     @FXML private Button helpButton;
     @FXML private Button logoutButton;
@@ -39,7 +40,9 @@ public class MainViewController {
     private ViewHandler viewHandler;
     private MainViewModel mainViewModel;
     private ReadOnlyObjectProperty<Book> selectedBook;
-    public void init(ViewHandler viewHandler, MainViewModel viewModel, Region root) throws RemoteException {
+    public void init(ViewHandler viewHandler, MainViewModel viewModel, Region root)
+        throws RemoteException, SQLException
+    {
         this.viewHandler = viewHandler;
         this.mainViewModel = viewModel;
         this.root = root;
@@ -48,6 +51,7 @@ public class MainViewController {
         initializeGenreComboBox(); // not completed
         this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
         this.mainViewModel.bindList(bookTableView.itemsProperty());
+        viewModel.resetBookList();
 
 
         // somehow we need to figure out how to change the button to an image of the bell for notification and
@@ -66,15 +70,38 @@ public class MainViewController {
         stateColumn.setCellValueFactory(new PropertyValueFactory<>("state"));
     }
     public void initializeStateComboBox(){
-        String[] stateString = {"Available,Reserved,Borrowed,Borrowed & Reserved"};
+        String[] stateString = {"All","Available", "Borrowed"};
         stateComboBox.getItems().addAll(stateString);
         stateComboBox.getSelectionModel().selectFirst();
     }
-    public void initializeGenreComboBox(){
-        String[] genreString = {""};  // I have no idea what genres are we going to have
-        genreComboBox.getItems().addAll(genreString);
+    public void initializeGenreComboBox() throws SQLException
+    {
+        genreComboBox.getItems().add("All");
+        genreComboBox.getItems().addAll(BookDatabaseImplementation.getInstance()
+            .readGenres());
         genreComboBox.getSelectionModel().selectFirst();
     }
+    @FXML public void onStateClick() throws RemoteException {
+        String genreChoice = genreComboBox.getSelectionModel().getSelectedItem();
+        String stateChoice = stateComboBox.getSelectionModel().getSelectedItem();
+        String searchChoice = searchTextField.getText();
+        mainViewModel.showFiltered(stateChoice,genreChoice,searchChoice);
+    }
+
+    @FXML public void onGenreClick() throws RemoteException {
+        String genreChoice = genreComboBox.getSelectionModel().getSelectedItem();
+        String stateChoice = stateComboBox.getSelectionModel().getSelectedItem();
+        String searchChoice = searchTextField.getText();
+        mainViewModel.showFiltered(stateChoice,genreChoice,searchChoice);
+    }
+    @FXML public void onSearch() throws RemoteException
+    {
+        String genreChoice = genreComboBox.getSelectionModel().getSelectedItem();
+        String stateChoice = stateComboBox.getSelectionModel().getSelectedItem();
+        String searchChoice = searchTextField.getText();
+        mainViewModel.showFiltered(stateChoice,genreChoice,searchChoice);
+    }
+
     @FXML public void onViewProfile()
     {
         viewHandler.openView(ViewFactory.PROFILE);
@@ -85,23 +112,15 @@ public class MainViewController {
     }
     @FXML public void onSeeEvents()
     {
-        //viewHandler.openView(ViewFactory.//EVENTS);
+        viewHandler.openView(ViewFactory.EVENTSVIEW);
     }
     @FXML public void onDonate()
     {
         viewHandler.openView(ViewFactory.DONATEBOOK);
     }
-    @FXML public void onReserve()
-    {
-        //mainViewModel.reserve(); // the method should be here
-    }
     @FXML public void onBorrow()
     {
         //mainViewModel.borrow(); //the method should be here
-    }
-    @FXML public void onSearch()
-    {
-        // it needs to take whatever is in the TextField and then search through the database and get the result in the TableView
     }
     @FXML public void onHelp()
     {
@@ -115,12 +134,10 @@ public class MainViewController {
     @FXML public void onSelect(){
         if(selectedBook.get().getState() instanceof Available)
         {
-            borrowButton.setDisable(true);
-            reserveButton.setDisable(false);
+            borrowButton.setDisable(false);
         }
         if(selectedBook.get().getState() instanceof Borrowed) {
             borrowButton.setDisable(true);
-            reserveButton.setDisable(false);
         }
 
         // we still need to figure out how to show the description of the book
@@ -133,7 +150,6 @@ public class MainViewController {
         searchTextField.clear();
         stateComboBox.getSelectionModel().selectFirst();
         borrowButton.setDisable(true);
-        reserveButton.setDisable(true);
     }
 
 
