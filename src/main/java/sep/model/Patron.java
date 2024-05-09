@@ -24,6 +24,15 @@ public class Patron implements Serializable {
         this.phoneNumber = phoneNumber;
         this.fees = fees;
     }
+    public Patron(String firstName, String lastName, String username, String password, String email, String phoneNumber, int fees) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.fees = fees;
+    }
 
     public String getFirstName() {
         return firstName;

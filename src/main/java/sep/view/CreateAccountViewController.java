@@ -47,16 +47,16 @@ public class CreateAccountViewController {
     {
         viewHandler.openView("login");
     }
-//    @FXML protected void createAccountButtonClicked() {
-//
-//        try {
-//            this.viewModel.createPatron();
-//            viewHandler.openView("login");
-//            reset();
-//        } catch (RemoteException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+   @FXML protected void createAccountButtonClicked() {
+
+       try {
+            this.viewModel.createPatron();
+            viewHandler.openView("login");
+           reset();
+        } catch (RemoteException e) {
+           throw new RuntimeException(e);
+       }
+    }
 
 
 

@@ -37,13 +37,17 @@ public class LoginViewController {
     {
         if(this.viewModel.login()){
             viewHandler.openView(ViewFactory.USERMAIN);
+            System.out.println("Login successful");
         }
-        System.out.println("Login unsuccessful");
+        else {
+            System.out.println("Login unsuccessful");
+        }
+
     }
 
     @FXML private void createButtonClicked()
     {
-        viewHandler.openView("createAccount");
+        viewHandler.openView(ViewFactory.CREATEACCOUNT);
     }
 
     @FXML private void loginAsAdminButtonClicked()
