@@ -1,6 +1,8 @@
 package sep.shared;
 
+import dk.via.remote.observer.RemotePropertyChangeListener;
 import sep.model.Book;
+import sep.model.Patron;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -17,4 +19,10 @@ public interface LibraryInterface extends Remote { //TODO: Rename it please to c
     void updatePhoneNumber(String oldPhoneNumber, String newPhoneNumber) throws RemoteException;
     void updateFirstName(String oldFirstName, String newFirstName) throws RemoteException;
     void updateLastName(String oldLastName, String newLastName) throws RemoteException;
+
+  void addPropertyChangeListener(
+      RemotePropertyChangeListener<Book> listener);
+  void removePropertyChangeListener(RemotePropertyChangeListener<Book> listener);
+  void borrow(Book book, Patron patron);
+  void returnBook(Book book, Patron patron);
 }

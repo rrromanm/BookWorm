@@ -4,6 +4,8 @@ module sep {
     requires java.rmi;
     requires java.sql;
     requires org.postgresql.jdbc;
+    requires java.desktop;
+    requires remoteobserver;
 
 
     opens sep to javafx.fxml;

@@ -1,5 +1,6 @@
 package sep.server;
 
+import dk.via.remote.observer.RemotePropertyChangeListener;
 import sep.jdbc.BookDatabaseImplementation;
 import sep.jdbc.PatronDatabaseImplementation;
 import sep.model.Book;
@@ -129,5 +130,26 @@ public class LibraryImplementation implements LibraryInterface {
         }
     }
 
+    @Override public void addPropertyChangeListener(
+        RemotePropertyChangeListener<Book> listener)
+    {
+        // idk
+    }
+
+    @Override public void removePropertyChangeListener(
+        RemotePropertyChangeListener<Book> listener)
+    {
+
+    }
+
+    @Override public void borrow(Book book, Patron patron)
+    {
+
+    }
+
+    @Override public void returnBook(Book book, Patron patron)
+    {
+
+    }
 
 }
