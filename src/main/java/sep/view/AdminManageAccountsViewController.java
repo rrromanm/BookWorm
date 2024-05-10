@@ -50,7 +50,7 @@ public class AdminManageAccountsViewController {
     }
     @FXML
     private void backButtonClicked(){
-        viewHandler.openView("login"); //TODO: Change it to main view
+        viewHandler.openView("adminMainView");
     }
     @FXML private void saveButtonClicked(){
         //TODO: Implement working save

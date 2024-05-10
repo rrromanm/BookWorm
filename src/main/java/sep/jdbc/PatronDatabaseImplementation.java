@@ -84,6 +84,20 @@ public class PatronDatabaseImplementation {
         }
     }
 
+    public boolean usernameExists(String username) throws SQLException {
+        boolean exists = false;
+        try (Connection conn = getConnection()) {
+            PreparedStatement checkStmt = conn.prepareStatement("SELECT COUNT(*) FROM book_worm_db.patron WHERE username = ?");
+            checkStmt.setString(1, username);
+            ResultSet rs = checkStmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                exists = (count > 0);
+            }
+        }
+        return exists;
+    }
+
     public void updateUsername(String oldUsername, String newUsername) throws SQLException {
         try (Connection conn = getConnection()) {
             PreparedStatement checkStmt = conn.prepareStatement("SELECT COUNT(*) FROM book_worm_db.patron WHERE username = ?");

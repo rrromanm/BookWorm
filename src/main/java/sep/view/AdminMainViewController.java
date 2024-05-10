@@ -11,8 +11,12 @@ public class AdminMainViewController {
     private AdminMainViewModel viewModel;
     private Region root;
 
-    @FXML
-    private Button backButton;
+    @FXML public Button logoutButton;
+    @FXML public Button historyViewButton;
+    @FXML public Button eventsViewButton;
+    @FXML public Button accountsViewButton;
+    @FXML public Button booksViewButton;
+
 
     public void init(ViewHandler viewHandler, AdminMainViewModel viewModel, Region root)
     {
@@ -22,9 +26,26 @@ public class AdminMainViewController {
     }
 
     @FXML
-    private void backButtonClicked()
-    {
+    private void logoutClicked()
+    { //TODO i guess we need somehow to disconnect the admin from the server?
         viewHandler.openView("login");
+    }
+
+    @FXML
+    private void historyClicked(){
+        viewHandler.openView("adminServerLog");
+    }
+    @FXML
+    private void booksClicked(){
+        viewHandler.openView("adminManageBooksView");
+    }
+    @FXML
+    private void accountsClicked(){
+        viewHandler.openView("adminManageAccounts");
+    }
+    @FXML
+    private void eventsClicked(){
+        viewHandler.openView("adminManageEvents");
     }
 
     public void reset()

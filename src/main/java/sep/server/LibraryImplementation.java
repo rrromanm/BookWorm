@@ -44,10 +44,15 @@ public class LibraryImplementation implements LibraryInterface {
         Patron createdPatron = new Patron(first_name,  last_name,  username,  password,  email, phone_number,  fees); //TODO: I think this is redundant
         try
         {
-            this.patronDatabase.createPatron(username, password, first_name,
-                last_name, email, phone_number);
+            if (patronDatabase.usernameExists(username)){
+                System.out.println("Username already in use.");
+            } else {
+                this.patronDatabase.createPatron(username, password, first_name,
+                    last_name, email, phone_number);
+            }
+
         }
-        catch (SQLException e)
+        catch (SQLException ignored)
         {
 
         }

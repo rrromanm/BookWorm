@@ -8,11 +8,11 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.AdminMainViewController">
    <children>
       <Text layoutX="199.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome! You are logged in as admin" />
-      <Button layoutX="300.0" layoutY="221.0" mnemonicParsing="false" text="Histrory" />
-      <Button layoutX="233.0" layoutY="221.0" mnemonicParsing="false" text="Events" />
-      <Button layoutX="233.0" layoutY="182.0" mnemonicParsing="false" text="Accounts" />
-      <Button layoutX="310.0" layoutY="182.0" mnemonicParsing="false" text="Books" />
+      <Button fx:id="historyViewButton" layoutX="300.0" layoutY="221.0" mnemonicParsing="false" text="History" onAction="#historyClicked" />
+      <Button fx:id="eventsViewButton" layoutX="233.0" layoutY="221.0" mnemonicParsing="false" text="Events" onAction="#eventsClicked" />
+      <Button fx:id="accountsViewButton" layoutX="233.0" layoutY="182.0" mnemonicParsing="false" text="Accounts" onAction="#accountsClicked" />
+      <Button fx:id="booksViewButton" layoutX="310.0" layoutY="182.0" mnemonicParsing="false" text="Books" onAction="#booksClicked" />
       <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Users online: " />
-      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" text="Logout" />
+      <Button fx:id="logoutButton" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" text="Logout" onAction="#logoutClicked"/>
    </children>
 </AnchorPane>
