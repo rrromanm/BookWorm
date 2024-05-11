@@ -1,11 +1,15 @@
 package sep.model;
 
 
+import dk.via.remote.observer.RemotePropertyChangeListener;
+import dk.via.remote.observer.RemotePropertyChangeSupport;
 import sep.client.ClientImplementation;
 import sep.client.ClientInterface;
 import sep.model.validators.*;
 import sep.shared.LibraryInterface;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
@@ -17,12 +21,42 @@ public class ModelManager extends UnicastRemoteObject implements Model {
     private final LibraryInterface library;
     private final ClientInterface client;
     private String error;
+    private RemotePropertyChangeSupport<Book> support;
 
     public ModelManager(LibraryInterface library) throws RemoteException {
         super();
         this.library = library;
         this.client = new ClientImplementation(library);
         this.error = "";
+       this.support = new RemotePropertyChangeSupport<>();
+    }
+    @Override
+    public void addPropertyChangeListener(RemotePropertyChangeListener<Book> listener) {
+        support.addPropertyChangeListener(listener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(RemotePropertyChangeListener<Book> listener) {
+        support.removePropertyChangeListener(listener);
+    }
+    @Override
+    public synchronized void borrow(Book book, Patron patron) {
+        try {
+            book.borrow(book,patron);
+            support.firePropertyChange("BorrowedBook",null,book);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override public synchronized void returnBook(Book book, Patron patron)
+    {
+        try {
+            book.returnBook(book,patron);
+            support.firePropertyChange("ReturnedBook",null,book);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override

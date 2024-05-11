@@ -109,6 +109,15 @@ public class Book implements Serializable {
         return borrower;
     }
 
+    public void borrow(Book book, Patron patron)
+    {
+        state.borrow(book,patron);
+    }
+    public void returnBook(Book book, Patron patron)
+    {
+        state.returnBook(book, patron);
+    }
+
 
     @Override
     public boolean equals(Object obj) { // I didn't add the state to the equals method since we dont have the equals method for comparing the states
