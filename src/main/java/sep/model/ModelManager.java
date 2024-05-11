@@ -57,6 +57,12 @@ public class ModelManager extends UnicastRemoteObject implements Model , RemoteP
         return client.getAllBooks();
     }
 
+    @Override public ArrayList<Book> getBorrowedBooks(Patron patron)
+        throws RemoteException
+    {
+        return client.getBorrowedBooks(patron);
+    }
+
     @Override
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException
     {

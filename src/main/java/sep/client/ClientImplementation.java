@@ -25,7 +25,12 @@ public class ClientImplementation implements ClientInterface {
         return library.getAllBooks();
     }
 
-    @Override
+  @Override public ArrayList<Book> getBorrowedBooks(Patron patron) throws RemoteException
+  {
+    return library.getBorrowedBooks(patron);
+  }
+
+  @Override
     public ArrayList<Book> filter(String genre,String state, String search) throws RemoteException {
         return library.filter(genre, state,search);
     }
