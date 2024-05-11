@@ -25,7 +25,7 @@ public class BookDatabaseImplementation {
 
     public Book createBook(String title, String author,int year, String publisher, long isbn, int pageCount, String genre) throws SQLException {
         try (Connection connection = getConnection();){
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO books(title, isbn, year, publisher, authors, page_count, genre_id, borrower, state) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO books(title, isbn, year, publisher, page_count, genre_id, borrower, state, authors) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setString(1, title);
             statement.setString(2, author);
             statement.setInt(3, year);
@@ -244,6 +244,35 @@ public class BookDatabaseImplementation {
 
             }
             return genres;
+        }
+    }
+
+    //TODO: Needs to implement a function that the admin sets how long you can borrow book for + extend
+
+    public void borrowBook(Book book, Patron patron) throws SQLException {
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO book_worm_db.borrowed_books (book_id, profile_id, borrowed_date, return_date) VALUES (?, ?, CURRENT_DATE, CURRENT_DATE + INTERVAL '1 month')"
+            );
+            statement.setInt(1, book.getBookId());
+            statement.setInt(2, patron.getUserID());
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                PreparedStatement updateStatement = connection.prepareStatement(
+                        "UPDATE book_worm_db.books SET state = 'Borrowed' WHERE id = ?"
+                );
+                updateStatement.setInt(1, book.getBookId());
+                int rowsUpdated = updateStatement.executeUpdate();
+
+                if (rowsUpdated > 0) {
+                    System.out.println("Book borrowed successfully.");
+                } else {
+                    System.out.println("Failed to update the state of the book.");
+                }
+            } else {
+                System.out.println("Failed to borrow the book.");
+            }
         }
     }
 }

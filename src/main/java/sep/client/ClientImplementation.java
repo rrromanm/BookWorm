@@ -1,6 +1,9 @@
 package sep.client;
 
+import dk.via.remote.observer.RemotePropertyChangeListener;
+import dk.via.remote.observer.RemotePropertyChangeSupport;
 import sep.model.Book;
+import sep.model.Patron;
 import sep.shared.LibraryInterface;
 
 import java.rmi.RemoteException;
@@ -9,9 +12,11 @@ import java.util.ArrayList;
 
 public class ClientImplementation implements ClientInterface {
     private LibraryInterface library;
+    private final RemotePropertyChangeSupport<Patron> support;
 
     public ClientImplementation(LibraryInterface library) {
         this.library = library;
+      this.support = new RemotePropertyChangeSupport<Patron>();
     }
 
 
@@ -25,14 +30,36 @@ public class ClientImplementation implements ClientInterface {
         return library.filter(genre, state,search);
     }
 
-   @Override
+    @Override
+    public void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException {
+        library.borrowBooks(book, patron);
+    }
+
+  @Override public void addPropertyChangeListener(RemotePropertyChangeListener<Patron> listener)
+  {
+    support.addPropertyChangeListener(listener);
+  }
+
+  @Override public void removePropertyChangeListener(RemotePropertyChangeListener<Patron> listener)
+  {
+    support.removePropertyChangeListener(listener);
+  }
+
+  @Override public void returnBook(Book book, Patron patron)
+  {
+   // library.returnBook(book,patron);
+  }
+
+  @Override
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException {
         library.createPatron(username,  password,  first_name, last_name,  email,  phone_number, fees);
    }
 
     @Override
-    public boolean login(String username, String password) throws RemoteException {
-        return library.login(username, password);
+    public Patron login(String username, String password) throws RemoteException {
+        Patron userLoggedIn = library.login(username, password);
+        support.firePropertyChange("UserLoggedIn",null,userLoggedIn);
+        return userLoggedIn;
     }
 
     @Override

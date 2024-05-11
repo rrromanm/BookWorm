@@ -36,7 +36,7 @@ public class PatronDatabaseImplementation {
         }
     }
 
-    public boolean login(String username, String password) throws SQLException {
+    public Patron login(String username, String password) throws SQLException {
         try(Connection conn = getConnection()) {
 
             PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) FROM book_worm_db.patron WHERE username = ? AND password = ?;");
@@ -47,15 +47,32 @@ public class PatronDatabaseImplementation {
             if (resultSet.next()) {
                 int count = resultSet.getInt(1);
                 if (count == 1) {
-                    System.out.println("Logging in successful!");
-                    return true;
+                    PreparedStatement statement2 = conn.prepareStatement("SELECT * FROM book_worm_db.patron WHERE username = ? AND password = ?;"); // creating the new patron object in order to pass it to the next GUI windows
+                    statement2.setString(1, username);
+                    statement2.setString(2, password);
+                    ResultSet resultSet2 = statement2.executeQuery();
+                    Patron user = null;
+                    while(resultSet2.next()){
+                        int userID = resultSet2.getInt("id");
+                        String username2 = resultSet2.getString("username");
+                        String password2 = resultSet2.getString("password");
+                        String firstname = resultSet2.getString("first_name");
+                        String lastname = resultSet2.getString("last_name");
+                        String email = resultSet2.getString("email");
+                        String phoneNumber = resultSet2.getString("phone_number");
+                        int fees = resultSet2.getInt("fees");
+                        System.out.println("Logging in successful!");
+                        user = new Patron(userID,firstname,lastname,username2,password2,email,phoneNumber,fees);
+                    }
+                    return user;
+
                 } else {
                     System.out.println("No such user found or multiple entries found.");
-                    return false;
+                    return null;
                 }
             } else {
                 System.out.println("Logging in failed!");
-                return false;
+                return null;
             }
         }
     }

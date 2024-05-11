@@ -20,4 +20,9 @@ public class Borrowed implements State, Serializable {
         else
             throw new RuntimeException("You cannot return book that you do not have");
     }
+
+    public String toString()
+    {
+        return "Borrowed";
+    }
 }

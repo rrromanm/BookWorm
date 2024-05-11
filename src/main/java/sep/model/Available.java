@@ -7,7 +7,9 @@ public class Available implements State, Serializable {
 
     @Override
     public void borrow(Book book, Patron patron) {
-        throw new RuntimeException("You can not borrow without reserving the book"); // In JavaFX, we will just disable the buttons that will throw it
+        book.setState(new Borrowed());
+        System.out.println(book.getTitle() + " got borrowed by " + patron.getFirstName());
+        book.setBorrower(patron);
     }
 
     @Override
@@ -16,6 +18,6 @@ public class Available implements State, Serializable {
     }
     public String toString()
     {
-        return "available";
+        return "Available";
     }
 }
