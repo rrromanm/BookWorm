@@ -1,5 +1,8 @@
 package sep.view;
 
+import dk.via.remote.observer.RemotePropertyChangeEvent;
+import dk.via.remote.observer.RemotePropertyChangeListener;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -12,7 +15,8 @@ import sep.viewmodel.MainViewModel;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
-public class MainViewController {
+public class MainViewController implements RemotePropertyChangeListener
+{
     @FXML private Button notificationButton;
     @FXML private Button viewProfileButton;
     @FXML private Button myBooksButton;
@@ -40,6 +44,7 @@ public class MainViewController {
     private ViewHandler viewHandler;
     private MainViewModel mainViewModel;
     private ReadOnlyObjectProperty<Book> selectedBook;
+    private Patron loggedInUser;
     public void init(ViewHandler viewHandler, MainViewModel viewModel, Region root)
         throws RemoteException, SQLException
     {
@@ -52,7 +57,7 @@ public class MainViewController {
         this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
         this.mainViewModel.bindList(bookTableView.itemsProperty());
         viewModel.resetBookList();
-
+        mainViewModel.addPropertyChangeListener(this);
         // somehow we need to figure out how to change the button to an image of the bell for notification and
         // make imageView fit into the circle
         // populate the tableView should also be here (we will do it from the database)
@@ -126,10 +131,13 @@ public class MainViewController {
         bookTableView.getSelectionModel().clearSelection();
     }
 
-    Patron testPatron = new Patron(9,"john_doe", "password123", "John", "Doe", "john.doe@example.com", "123-456-7890", 0);
+    //Patron testPatron = new Patron(9,"john_doe", "password123", "John", "Doe", "john.doe@example.com", "123-456-7890", 0);
 
     @FXML public void onBorrow() throws RemoteException, SQLException {
-        mainViewModel.borrowBook(selectedBook.get(), testPatron);
+        mainViewModel.borrowBook(selectedBook.get(), loggedInUser);
+        mainViewModel.resetBookList();
+        bookTableView.getSelectionModel().clearSelection();
+        borrowButton.setDisable(true);
         //TODO: add alert for when book is borrowed
     }
     @FXML public void onHelp()
@@ -160,5 +168,17 @@ public class MainViewController {
         searchTextField.clear();
         stateComboBox.getSelectionModel().selectFirst();
         borrowButton.setDisable(true);
+    }
+
+    @Override public void propertyChange(RemotePropertyChangeEvent evt) throws RemoteException
+    {
+        Platform.runLater(() -> {
+            if ("UserLoggedIn".equals(evt.getPropertyName())) {
+                // Handle user logged-in event
+                loggedInUser = (Patron) evt.getNewValue();
+                System.out.println("User logged in: " + loggedInUser.getUsername());
+                // Perform any UI updates or actions here
+            }
+        });
     }
 }

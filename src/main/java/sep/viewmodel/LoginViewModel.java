@@ -1,9 +1,16 @@
 package sep.viewmodel;
 
+import dk.via.remote.observer.RemotePropertyChangeEvent;
+import dk.via.remote.observer.RemotePropertyChangeListener;
+import dk.via.remote.observer.RemotePropertyChangeSupport;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import sep.model.Model;
+import sep.model.Patron;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 
 public class LoginViewModel
@@ -13,6 +20,7 @@ public class LoginViewModel
     private final StringProperty password;
     private final StringProperty error;
 
+
     public LoginViewModel(Model model)
     {
         this.model = model;
@@ -21,12 +29,13 @@ public class LoginViewModel
         this.error = new SimpleStringProperty("");
     }
 
-    public boolean login(){
+    public Patron login(){
         try {
-            if(model.login(username.get(), password.get())){
+            Patron patron = model.login(username.get(),password.get());
+            if(patron!=null){
                 reset();
                 this.error.set("");
-                return true;
+                return patron;
             }
 
         } catch (RemoteException e) {
@@ -34,7 +43,7 @@ public class LoginViewModel
             e.printStackTrace();
         }
         this.error.set("Username or password is incorrect. Try again");
-        return false;
+        return null;
     }
     public void bindUsername(StringProperty property){
         this.username.bindBidirectional(property);

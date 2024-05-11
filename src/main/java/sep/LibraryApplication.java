@@ -16,7 +16,7 @@ import java.rmi.registry.Registry;
 public class LibraryApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException, NotBoundException {
-        Registry registry = LocateRegistry.getRegistry(1099);
+        Registry registry = LocateRegistry.getRegistry(1098);
         LibraryInterface library = (LibraryInterface) registry.lookup("library");
         Model model = new ModelManager(library);
         ViewModelFactory viewModelFactory = new ViewModelFactory(model);

@@ -1,6 +1,7 @@
 package sep.server;
 
 import dk.via.remote.observer.RemotePropertyChangeListener;
+import sep.client.ClientInterface;
 import sep.jdbc.BookDatabaseImplementation;
 import sep.jdbc.PatronDatabaseImplementation;
 import sep.model.Book;
@@ -66,7 +67,7 @@ public class LibraryImplementation implements LibraryInterface {
 
 
     @Override
-    public boolean login(String username, String password) throws RemoteException {
+    public Patron login(String username, String password) throws RemoteException {
         try{
             return patronDatabase.login(username, password);
 
@@ -134,20 +135,7 @@ public class LibraryImplementation implements LibraryInterface {
     public void borrowBooks(Book book, Patron parton) throws RemoteException, SQLException {
         bookDatabase.borrowBook(book,parton);
     }
-
-    @Override public void addPropertyChangeListener(
-        RemotePropertyChangeListener<Book> listener)
-    {
-        // idk
-    }
-
-    @Override public void removePropertyChangeListener(
-        RemotePropertyChangeListener<Book> listener)
-    {
-
-    }
-
-    @Override public void returnBook(Book book, Patron patron)
+    //@Override public void returnBook(Book book, Patron patron)
     {
 
     }

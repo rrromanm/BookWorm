@@ -9,13 +9,13 @@ import java.util.ArrayList;
 
 public interface Model {
     ArrayList<Book> getAllBooks() throws RemoteException;
-    void addPropertyChangeListener(RemotePropertyChangeListener<Book> listener);
-    void removePropertyChangeListener(RemotePropertyChangeListener<Book> listener);
+    void addPropertyChangeListener(RemotePropertyChangeListener<Patron> listener);
+    void removePropertyChangeListener(RemotePropertyChangeListener<Patron> listener);
     void borrow(Book book, Patron patron);
     void returnBook(Book book, Patron patron);
 
     void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException;
-    boolean login(String username, String password) throws RemoteException;
+    Patron login(String username, String password) throws RemoteException;
     boolean loginAsAdmin(String username, String password) throws RemoteException;
     void updateUsername(String oldUsername, String newUsername) throws RemoteException;
     void updateEmail(String oldEmail, String newEmail) throws RemoteException;

@@ -1,8 +1,10 @@
 package sep.model;
 
 
+import dk.via.remote.observer.RemotePropertyChangeEvent;
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
+import javafx.application.Platform;
 import sep.client.ClientImplementation;
 import sep.client.ClientInterface;
 import sep.model.validators.*;
@@ -17,46 +19,37 @@ import java.util.ArrayList;
 
 //TODO: NOTE TO ROMANS: I finished updateUsername etc. but you need to create getUsername etc.
 // so we can retrieve values from db, and thus update them in ViewModel
-public class ModelManager extends UnicastRemoteObject implements Model {
+public class ModelManager extends UnicastRemoteObject implements Model , RemotePropertyChangeListener {
     private final LibraryInterface library;
     private final ClientInterface client;
     private String error;
-    private RemotePropertyChangeSupport<Book> support;
+    private RemotePropertyChangeSupport<Patron> support;
 
     public ModelManager(LibraryInterface library) throws RemoteException {
         super();
         this.library = library;
         this.client = new ClientImplementation(library);
         this.error = "";
-       this.support = new RemotePropertyChangeSupport<>();
+        this.support = new RemotePropertyChangeSupport<Patron>();
+        this.client.addPropertyChangeListener(this);
     }
     @Override
-    public void addPropertyChangeListener(RemotePropertyChangeListener<Book> listener) {
+    public void addPropertyChangeListener(RemotePropertyChangeListener<Patron> listener) {
         support.addPropertyChangeListener(listener);
     }
 
     @Override
-    public void removePropertyChangeListener(RemotePropertyChangeListener<Book> listener) {
+    public void removePropertyChangeListener(RemotePropertyChangeListener<Patron> listener) {
         support.removePropertyChangeListener(listener);
     }
     @Override
     public synchronized void borrow(Book book, Patron patron) {
-        try {
-            book.borrow(book,patron);
-            support.firePropertyChange("BorrowedBook",null,book);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        book.borrow(book,patron);
     }
 
     @Override public synchronized void returnBook(Book book, Patron patron)
     {
-        try {
-            book.returnBook(book,patron);
-            support.firePropertyChange("ReturnedBook",null,book);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        book.returnBook(book,patron);
     }
 
     @Override
@@ -99,7 +92,7 @@ public class ModelManager extends UnicastRemoteObject implements Model {
 
 
     @Override
-    public boolean login(String username, String password) throws RemoteException {
+    public Patron login(String username, String password) throws RemoteException {
         try{
 
             return this.client.login(username, password);
@@ -165,5 +158,21 @@ public class ModelManager extends UnicastRemoteObject implements Model {
 
     public String getError() {
         return error;
+    }
+
+    @Override public void propertyChange(RemotePropertyChangeEvent evt) throws RemoteException
+    {
+        Platform.runLater(() -> {
+            if ("UserLoggedIn".equals(evt.getPropertyName())) {
+              try
+              {
+                support.firePropertyChange("UserLoggedIn", null,(Patron) evt.getNewValue());
+              }
+              catch (RemoteException e)
+              {
+                throw new RuntimeException(e);
+              }
+            }
+        });
     }
 }
