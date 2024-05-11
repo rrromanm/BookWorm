@@ -1,6 +1,7 @@
 package sep.model;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface Model {
@@ -16,7 +17,6 @@ public interface Model {
     void updateLastName(String oldLastName, String newLastName) throws RemoteException;
     String getError();
     ArrayList<Book> filter(String genre, String state, String search) throws RemoteException;
-
-
+    void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException;
 }
 

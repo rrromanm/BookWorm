@@ -8,6 +8,7 @@ import sep.shared.LibraryInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 //TODO: NOTE TO ROMANS: I finished updateUsername etc. but you need to create getUsername etc.
@@ -55,6 +56,11 @@ public class ModelManager extends UnicastRemoteObject implements Model {
 
     public ArrayList<Book> filter(String genre,String state, String search) throws RemoteException {
         return client.filter(genre,state,search);
+    }
+
+    @Override
+    public void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException {
+        client.borrowBooks(book,patron);
     }
 
 

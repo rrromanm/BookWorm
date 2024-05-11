@@ -53,7 +53,6 @@ public class MainViewController {
         this.mainViewModel.bindList(bookTableView.itemsProperty());
         viewModel.resetBookList();
 
-
         // somehow we need to figure out how to change the button to an image of the bell for notification and
         // make imageView fit into the circle
         // populate the tableView should also be here (we will do it from the database)
@@ -118,9 +117,20 @@ public class MainViewController {
     {
         viewHandler.openView(ViewFactory.DONATEBOOK);
     }
-    @FXML public void onBorrow()
-    {
-        //mainViewModel.borrow(); //the method should be here
+
+
+
+    public void selectBook() throws RemoteException {
+        mainViewModel.bindSelectedBook(bookTableView.getSelectionModel().selectedItemProperty());
+        //TODO: check if without this user can get more books
+        bookTableView.getSelectionModel().clearSelection();
+    }
+
+    Patron testPatron = new Patron(9,"john_doe", "password123", "John", "Doe", "john.doe@example.com", "123-456-7890", 0);
+
+    @FXML public void onBorrow() throws RemoteException, SQLException {
+        mainViewModel.borrowBook(selectedBook.get(), testPatron);
+        //TODO: add alert for when book is borrowed
     }
     @FXML public void onHelp()
     {
@@ -151,6 +161,4 @@ public class MainViewController {
         stateComboBox.getSelectionModel().selectFirst();
         borrowButton.setDisable(true);
     }
-
-
 }

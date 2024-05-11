@@ -1,6 +1,7 @@
 package sep.client;
 
 import sep.model.Book;
+import sep.model.Patron;
 import sep.shared.LibraryInterface;
 
 import java.rmi.RemoteException;
@@ -25,7 +26,12 @@ public class ClientImplementation implements ClientInterface {
         return library.filter(genre, state,search);
     }
 
-   @Override
+    @Override
+    public void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException {
+        library.borrowBooks(book, patron);
+    }
+
+    @Override
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException {
         library.createPatron(username,  password,  first_name, last_name,  email,  phone_number, fees);
    }

@@ -16,6 +16,6 @@ public class Available implements State, Serializable {
     }
     public String toString()
     {
-        return "available";
+        return "Available";
     }
 }

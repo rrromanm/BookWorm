@@ -1,8 +1,10 @@
 package sep.client;
 
 import sep.model.Book;
+import sep.model.Patron;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface ClientInterface {
@@ -17,5 +19,5 @@ public interface ClientInterface {
     void updateFirstName(String oldFirstName, String newFirstName) throws RemoteException;
     void updateLastName(String oldLastName, String newLastName) throws RemoteException;
     ArrayList<Book> filter(String genre, String state,String search) throws RemoteException;
-
+    void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException;
 }

@@ -1,9 +1,11 @@
 package sep.shared;
 
 import sep.model.Book;
+import sep.model.Patron;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface LibraryInterface extends Remote { //TODO: Rename it please to connector or sum
@@ -17,4 +19,5 @@ public interface LibraryInterface extends Remote { //TODO: Rename it please to c
     void updatePhoneNumber(String oldPhoneNumber, String newPhoneNumber) throws RemoteException;
     void updateFirstName(String oldFirstName, String newFirstName) throws RemoteException;
     void updateLastName(String oldLastName, String newLastName) throws RemoteException;
+    void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException;
 }
