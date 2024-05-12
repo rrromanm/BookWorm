@@ -17,8 +17,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-//TODO: NOTE TO ROMANS: I finished updateUsername etc. but you need to create getUsername etc.
-// so we can retrieve values from db, and thus update them in ViewModel
 public class ModelManager extends UnicastRemoteObject implements Model , RemotePropertyChangeListener {
     private final LibraryInterface library;
     private final ClientInterface client;

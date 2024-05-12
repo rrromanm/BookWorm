@@ -1,11 +1,15 @@
 package sep.view;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
 import sep.model.Book;
+import sep.model.Patron;
 import sep.model.State;
+import sep.model.UserSession;
 import sep.viewmodel.MainViewModel;
 import sep.viewmodel.ProfileViewModel;
 
@@ -51,19 +55,24 @@ public class ProfileViewController {
     private ProfileViewModel profileViewModel;
     private boolean edit;
     private boolean showPassword;
+    private UserSession session;
+
     public void init(ViewHandler viewHandler, ProfileViewModel viewModel, Region root)
     {
         this.viewHandler = viewHandler;
         this.profileViewModel = viewModel;
+        this.profileViewModel.setPatronData();
         this.root = root;
         initializeHistoryTableView();
         initializeWishlistTableView();
         populateHBTableView(); // not implemented
         populateWLTableView(); // not implemented
         initializeLabels(); // not completed
-        fillTextFields(); // not implemented
+        fillTextFields();
         edit = false;
         showPassword = false;
+
+
     }
     public void initializeLabels(){
         booksReadLabel.setVisible(true);
@@ -94,7 +103,13 @@ public class ProfileViewController {
         HBgenreColumn.setCellValueFactory(new PropertyValueFactory<>("HBgenre"));
     }
     public void fillTextFields(){
-        // We need to get the data about the user and display it in the textFields
+        this.profileViewModel.bindUsername(usernameTextField.textProperty());
+        this.profileViewModel.bindEmail(emailTextField.textProperty());
+        this.profileViewModel.bindFirstName(firstNameTextField.textProperty());
+        this.profileViewModel.bindLastName(lastNameTextField.textProperty());
+        this.profileViewModel.bindPhoneNumber(phoneNumberTextField.textProperty());
+        this.profileViewModel.bindPassword(passwordTextField.textProperty());
+        this.profileViewModel.bindPatronID(userIDTextField.textProperty());
     }
     public void populateWLTableView(){
         // We need to get the data about the user wishlist and populate the table with the books
