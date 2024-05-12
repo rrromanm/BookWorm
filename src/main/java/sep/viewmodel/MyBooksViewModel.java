@@ -14,6 +14,7 @@ import sep.model.Model;
 import sep.model.Patron;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 public class MyBooksViewModel implements RemotePropertyChangeListener<Patron>
 {
@@ -44,23 +45,11 @@ public class MyBooksViewModel implements RemotePropertyChangeListener<Patron>
         borrowedBookList.setAll(model.getBorrowedBooks(patron));
     }
 
-    public void returnBook(Book book, Patron patron) throws RemoteException {
-        model.returnBook(book, patron);
+    public void returnBook(Book book, Patron patron) throws RemoteException, SQLException {
+        model.returnBookToDatabase(book, patron);
     }
 
     @Override public void propertyChange(RemotePropertyChangeEvent evt) throws RemoteException
     {
-        Platform.runLater(() -> {
-            if ("UserLoggedIn".equals(evt.getPropertyName())){
-                try
-                {
-                    support.firePropertyChange("UserLoggedIn", null, (Patron)evt.getNewValue());
-                }
-                catch (RemoteException e)
-                {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
     }
 }

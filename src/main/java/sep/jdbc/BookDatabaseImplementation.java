@@ -277,7 +277,7 @@ public class BookDatabaseImplementation {
         }
     }
 
-    public void returnBook(Book book, Patron patron) throws SQLException {
+    public void returnBookToDatabase(Book book, Patron patron) throws SQLException {
         try (Connection connection = getConnection()) {
                 PreparedStatement returnStatement = connection.prepareStatement(
                         "UPDATE book_worm_db.borrowed_books SET return_date = CURRENT_DATE WHERE book_id = ? AND profile_id = ?"

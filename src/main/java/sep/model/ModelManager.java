@@ -96,6 +96,11 @@ public class ModelManager extends UnicastRemoteObject implements Model , RemoteP
         client.borrowBooks(book,patron);
     }
 
+    @Override
+    public void returnBookToDatabase(Book book, Patron patron) throws RemoteException, SQLException {
+        client.returnBookToDatabase(book,patron);
+    }
+
 
     @Override
     public Patron login(String username, String password) throws RemoteException {

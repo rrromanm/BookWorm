@@ -16,6 +16,7 @@ import sep.viewmodel.MyBooksViewModel;
 import sep.viewmodel.ProfileViewModel;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 public class MyBooksViewController implements RemotePropertyChangeListener
 {
@@ -46,6 +47,7 @@ public class MyBooksViewController implements RemotePropertyChangeListener
         //myBooksViewModel.addPropertyChangeListener(this);
         initializeTableView();
         populateTableView();
+        viewModel.addPropertyChangeListener(this);
         this.myBooksViewModel.bindList(bookTableView.itemsProperty());
         this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
     }
@@ -63,8 +65,9 @@ public class MyBooksViewController implements RemotePropertyChangeListener
     {
         myBooksViewModel.resetBookList(loggedInUser);
     }
-    @FXML public void onReturn() throws RemoteException {
-        myBooksViewModel.returnBook(selectedBook.get(), loggedInUser); // it should have this method
+    @FXML public void onReturn() throws RemoteException, SQLException {
+        myBooksViewModel.returnBook(selectedBook.get(), loggedInUser);
+        populateTableView();
     }
     @FXML public void onExtend(){
         // extend the deadline for the book

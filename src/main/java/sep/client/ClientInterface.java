@@ -24,5 +24,5 @@ public interface ClientInterface {
     void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException;
     void addPropertyChangeListener(RemotePropertyChangeListener<Patron> listener);
     void removePropertyChangeListener(RemotePropertyChangeListener<Patron> listener);
-    void returnBook(Book book, Patron patron) throws SQLException, RemoteException;
+    void returnBookToDatabase(Book book, Patron patron) throws SQLException, RemoteException;
 }

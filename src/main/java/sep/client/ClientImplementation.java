@@ -42,8 +42,8 @@ public class ClientImplementation implements ClientInterface {
     }
 
     @Override
-    public void returnBook(Book book, Patron patron) throws SQLException, RemoteException {
-        library.returnBook(book, patron);
+    public void returnBookToDatabase(Book book, Patron patron) throws SQLException, RemoteException {
+        library.returnBookToDatabase(book, patron);
     }
 
   @Override public void addPropertyChangeListener(RemotePropertyChangeListener<Patron> listener)

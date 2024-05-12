@@ -26,5 +26,6 @@ public interface Model {
     String getError();
     ArrayList<Book> filter(String genre, String state, String search) throws RemoteException;
     void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException;
+    void returnBookToDatabase(Book book, Patron patron) throws RemoteException, SQLException;
 }
 
