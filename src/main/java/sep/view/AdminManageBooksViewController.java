@@ -59,7 +59,7 @@ public class AdminManageBooksViewController
         this.viewModel = viewModel;
         this.root = root;
         initializeTableView();
-        this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
+//        this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty(); //TODO view wasnt working with this
         // populate the tableView should also be here
     }
     public void initializeTableView(){

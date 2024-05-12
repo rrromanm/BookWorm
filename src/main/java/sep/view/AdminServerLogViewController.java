@@ -19,7 +19,7 @@ public class AdminServerLogViewController {
     }
     @FXML
     private void backButtonClicked(){
-        viewHandler.openView("login"); //TODO: Change it to main view page
+        viewHandler.openView("adminMainView");
     }
     public void reset(){
         // TODO: reset view

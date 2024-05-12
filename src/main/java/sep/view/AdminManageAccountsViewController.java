@@ -37,7 +37,7 @@ public class AdminManageAccountsViewController {
         this.viewModel = viewModel;
         this.root = root;
         initializeTableView();
-        this.selectedUser = UserTableView.getSelectionModel().selectedItemProperty();
+//        this.selectedUser = UserTableView.getSelectionModel().selectedItemProperty();  //todo view wasnt opening with this for some reason
     }
 
     public void initializeTableView() {
