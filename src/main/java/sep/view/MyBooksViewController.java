@@ -11,6 +11,7 @@ import javafx.scene.layout.Region;
 import sep.model.Book;
 import sep.model.Patron;
 import sep.model.State;
+import sep.model.UserSession;
 import sep.viewmodel.MyBooksViewModel;
 import sep.viewmodel.ProfileViewModel;
 
@@ -41,7 +42,8 @@ public class MyBooksViewController implements RemotePropertyChangeListener
         this.viewHandler = viewHandler;
         this.myBooksViewModel = viewModel;
         this.root = root;
-        myBooksViewModel.addPropertyChangeListener(this);
+        loggedInUser = UserSession.getInstance().getLoggedInUser();
+        //myBooksViewModel.addPropertyChangeListener(this);
         initializeTableView();
         populateTableView();
         this.myBooksViewModel.bindList(bookTableView.itemsProperty());

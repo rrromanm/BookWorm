@@ -4,6 +4,7 @@ import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
 import sep.model.Book;
 import sep.model.Patron;
+import sep.model.UserSession;
 import sep.shared.LibraryInterface;
 
 import java.rmi.RemoteException;
@@ -63,6 +64,7 @@ public class ClientImplementation implements ClientInterface {
     @Override
     public Patron login(String username, String password) throws RemoteException {
         Patron userLoggedIn = library.login(username, password);
+        UserSession.getInstance().setLoggedInUser(userLoggedIn);
         support.firePropertyChange("UserLoggedIn",null,userLoggedIn);
         return userLoggedIn;
     }
