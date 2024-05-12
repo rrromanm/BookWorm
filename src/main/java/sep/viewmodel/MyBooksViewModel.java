@@ -44,6 +44,10 @@ public class MyBooksViewModel implements RemotePropertyChangeListener<Patron>
         borrowedBookList.setAll(model.getBorrowedBooks(patron));
     }
 
+    public void returnBook(Book book, Patron patron) throws RemoteException {
+        model.returnBook(book, patron);
+    }
+
     @Override public void propertyChange(RemotePropertyChangeEvent evt) throws RemoteException
     {
         Platform.runLater(() -> {

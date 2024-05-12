@@ -99,11 +99,15 @@ public class Patron implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Patron patron = (Patron) o;
-        return phoneNumber == patron.phoneNumber && userId == patron.userId && Objects.equals(firstName, patron.firstName) && Objects.equals(lastName, patron.lastName) && Objects.equals(username, patron.username) && Objects.equals(password, patron.password) && Objects.equals(email, patron.email);
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Patron patron = (Patron) obj;
+        return this.userId == patron.userId;
     }
 
     @Override

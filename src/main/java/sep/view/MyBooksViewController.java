@@ -63,8 +63,8 @@ public class MyBooksViewController implements RemotePropertyChangeListener
     {
         myBooksViewModel.resetBookList(loggedInUser);
     }
-    @FXML public void onReturn(){
-        //myBooksViewModel.returnBook(); // it should have this method
+    @FXML public void onReturn() throws RemoteException {
+        myBooksViewModel.returnBook(selectedBook.get(), loggedInUser); // it should have this method
     }
     @FXML public void onExtend(){
         // extend the deadline for the book

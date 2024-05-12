@@ -277,6 +277,33 @@ public class BookDatabaseImplementation {
         }
     }
 
+    public void returnBook(Book book, Patron patron) throws SQLException {
+        try (Connection connection = getConnection()) {
+                PreparedStatement returnStatement = connection.prepareStatement(
+                        "UPDATE book_worm_db.borrowed_books SET return_date = CURRENT_DATE WHERE book_id = ? AND profile_id = ?"
+                );
+                returnStatement.setInt(1, book.getBookId());
+                returnStatement.setInt(2, patron.getUserID());
+
+                int rowsUpdated = returnStatement.executeUpdate();
+                if (rowsUpdated > 0) {
+                    PreparedStatement updateStatement = connection.prepareStatement(
+                            "UPDATE book_worm_db.books SET state = 'Available', borrower = NULL WHERE id = ?"
+                    );
+                    updateStatement.setInt(1, book.getBookId());
+
+                    int rowsAffected = updateStatement.executeUpdate();
+                    if (rowsAffected > 0) {
+                        System.out.println("Book returned successfully.");
+                    } else {
+                        System.out.println("Failed to update the state of the book.");
+                    }
+                } else {
+                    System.out.println("Failed to update the return date of the book.");
+                }
+            }
+        }
+
     public ArrayList<Book> readBorrowedBook(Patron patron) throws SQLException{
         try (Connection connection = getConnection()) {
             System.out.println(patron);
@@ -329,8 +356,6 @@ public class BookDatabaseImplementation {
                 books.add(book);
             }
             return books;
-
         }
     }
-
 }

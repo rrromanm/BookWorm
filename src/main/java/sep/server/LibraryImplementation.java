@@ -147,8 +147,8 @@ public class LibraryImplementation implements LibraryInterface {
     public void borrowBooks(Book book, Patron parton) throws RemoteException, SQLException {
         bookDatabase.borrowBook(book,parton);
     }
-    //@Override public void returnBook(Book book, Patron patron)
-    {
 
+    @Override public void returnBook(Book book, Patron patron) throws SQLException {
+        bookDatabase.returnBook(book,patron);
     }
 }

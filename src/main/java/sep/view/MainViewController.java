@@ -134,8 +134,6 @@ public class MainViewController implements RemotePropertyChangeListener
         bookTableView.getSelectionModel().clearSelection();
     }
 
-    //Patron testPatron = new Patron(9,"john_doe", "password123", "John", "Doe", "john.doe@example.com", "123-456-7890", 0);
-
     @FXML public void onBorrow() throws RemoteException, SQLException {
         mainViewModel.borrowBook(selectedBook.get(), loggedInUser);
         mainViewModel.resetBookList();

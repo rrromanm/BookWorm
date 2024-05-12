@@ -41,6 +41,11 @@ public class ClientImplementation implements ClientInterface {
         library.borrowBooks(book, patron);
     }
 
+    @Override
+    public void returnBook(Book book, Patron patron) throws SQLException, RemoteException {
+        library.returnBook(book, patron);
+    }
+
   @Override public void addPropertyChangeListener(RemotePropertyChangeListener<Patron> listener)
   {
     support.addPropertyChangeListener(listener);
@@ -49,11 +54,6 @@ public class ClientImplementation implements ClientInterface {
   @Override public void removePropertyChangeListener(RemotePropertyChangeListener<Patron> listener)
   {
     support.removePropertyChangeListener(listener);
-  }
-
-  @Override public void returnBook(Book book, Patron patron)
-  {
-   // library.returnBook(book,patron);
   }
 
   @Override
