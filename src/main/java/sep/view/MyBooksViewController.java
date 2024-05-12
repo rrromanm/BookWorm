@@ -1,16 +1,25 @@
 package sep.view;
 
+import dk.via.remote.observer.RemotePropertyChangeEvent;
+import dk.via.remote.observer.RemotePropertyChangeListener;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
 import sep.model.Book;
+import sep.model.Patron;
 import sep.model.State;
+import sep.model.UserSession;
 import sep.viewmodel.MyBooksViewModel;
 import sep.viewmodel.ProfileViewModel;
 
-public class MyBooksViewController {
+import java.rmi.RemoteException;
+import java.sql.SQLException;
+
+public class MyBooksViewController implements RemotePropertyChangeListener
+{
     @FXML private Button returnButton;
     @FXML private Button extendButton;
     @FXML private Button backButton;
@@ -27,13 +36,19 @@ public class MyBooksViewController {
     private ViewHandler viewHandler;
     private MyBooksViewModel myBooksViewModel;
     private ReadOnlyObjectProperty<Book> selectedBook;
+    private Patron loggedInUser;
     public void init(ViewHandler viewHandler, MyBooksViewModel viewModel, Region root)
+        throws RemoteException
     {
         this.viewHandler = viewHandler;
         this.myBooksViewModel = viewModel;
         this.root = root;
+        loggedInUser = UserSession.getInstance().getLoggedInUser();
+        //myBooksViewModel.addPropertyChangeListener(this);
         initializeTableView();
         populateTableView();
+        viewModel.addPropertyChangeListener(this);
+        this.myBooksViewModel.bindList(bookTableView.itemsProperty());
         this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
     }
     public void initializeTableView(){
@@ -46,11 +61,13 @@ public class MyBooksViewController {
         bookIdColumn.setCellValueFactory(new PropertyValueFactory<>("bookId"));
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
     }
-    public void populateTableView(){
-        // we need to get the books that this user borrowed. So if(user.equals(user) && state.equals(BORROWED))
+    public void populateTableView() throws RemoteException
+    {
+        myBooksViewModel.resetBookList(loggedInUser);
     }
-    @FXML public void onReturn(){
-        //myBooksViewModel.returnBook(); // it should have this method
+    @FXML public void onReturn() throws RemoteException, SQLException {
+        myBooksViewModel.returnBook(selectedBook.get(), loggedInUser);
+        populateTableView();
     }
     @FXML public void onExtend(){
         // extend the deadline for the book
@@ -70,5 +87,17 @@ public class MyBooksViewController {
     }
     public void reset(){
 
+    }
+
+    @Override public void propertyChange(RemotePropertyChangeEvent evt) throws RemoteException
+    {
+        Platform.runLater(() -> {
+            if ("UserLoggedIn".equals(evt.getPropertyName())) {
+                // Handle user logged-in event
+                loggedInUser = (Patron) evt.getNewValue();
+                System.out.println("User logged in: " + loggedInUser.getUsername());
+                // Perform any UI updates or actions here
+            }
+        });
     }
 }

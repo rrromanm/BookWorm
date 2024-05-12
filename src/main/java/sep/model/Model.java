@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public interface Model {
     ArrayList<Book> getAllBooks() throws RemoteException;
+    ArrayList<Book> getBorrowedBooks(Patron patron) throws RemoteException;
     void addPropertyChangeListener(RemotePropertyChangeListener<Patron> listener);
     void removePropertyChangeListener(RemotePropertyChangeListener<Patron> listener);
     void borrow(Book book, Patron patron);
@@ -25,5 +26,6 @@ public interface Model {
     String getError();
     ArrayList<Book> filter(String genre, String state, String search) throws RemoteException;
     void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException;
+    void returnBookToDatabase(Book book, Patron patron) throws RemoteException, SQLException;
 }
 

@@ -4,6 +4,7 @@ import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
 import sep.model.Book;
 import sep.model.Patron;
+import sep.model.UserSession;
 import sep.shared.LibraryInterface;
 
 import java.rmi.RemoteException;
@@ -25,7 +26,12 @@ public class ClientImplementation implements ClientInterface {
         return library.getAllBooks();
     }
 
-    @Override
+  @Override public ArrayList<Book> getBorrowedBooks(Patron patron) throws RemoteException
+  {
+    return library.getBorrowedBooks(patron);
+  }
+
+  @Override
     public ArrayList<Book> filter(String genre,String state, String search) throws RemoteException {
         return library.filter(genre, state,search);
     }
@@ -33,6 +39,11 @@ public class ClientImplementation implements ClientInterface {
     @Override
     public void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException {
         library.borrowBooks(book, patron);
+    }
+
+    @Override
+    public void returnBookToDatabase(Book book, Patron patron) throws SQLException, RemoteException {
+        library.returnBookToDatabase(book, patron);
     }
 
   @Override public void addPropertyChangeListener(RemotePropertyChangeListener<Patron> listener)
@@ -45,11 +56,6 @@ public class ClientImplementation implements ClientInterface {
     support.removePropertyChangeListener(listener);
   }
 
-  @Override public void returnBook(Book book, Patron patron)
-  {
-   // library.returnBook(book,patron);
-  }
-
   @Override
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException {
         library.createPatron(username,  password,  first_name, last_name,  email,  phone_number, fees);
@@ -58,6 +64,7 @@ public class ClientImplementation implements ClientInterface {
     @Override
     public Patron login(String username, String password) throws RemoteException {
         Patron userLoggedIn = library.login(username, password);
+        UserSession.getInstance().setLoggedInUser(userLoggedIn);
         support.firePropertyChange("UserLoggedIn",null,userLoggedIn);
         return userLoggedIn;
     }

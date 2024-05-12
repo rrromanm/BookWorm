@@ -2,6 +2,7 @@ package sep.view;
 
 import dk.via.remote.observer.RemotePropertyChangeEvent;
 import dk.via.remote.observer.RemotePropertyChangeListener;
+import dk.via.remote.observer.RemotePropertyChangeSupport;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.fxml.FXML;
@@ -45,12 +46,14 @@ public class MainViewController implements RemotePropertyChangeListener
     private MainViewModel mainViewModel;
     private ReadOnlyObjectProperty<Book> selectedBook;
     private Patron loggedInUser;
+    private RemotePropertyChangeSupport<Patron> support;
     public void init(ViewHandler viewHandler, MainViewModel viewModel, Region root)
         throws RemoteException, SQLException
     {
         this.viewHandler = viewHandler;
         this.mainViewModel = viewModel;
         this.root = root;
+        this.support = new RemotePropertyChangeSupport<>();
         initializeTableView();
         initializeStateComboBox();
         initializeGenreComboBox(); // not completed
@@ -131,8 +134,6 @@ public class MainViewController implements RemotePropertyChangeListener
         bookTableView.getSelectionModel().clearSelection();
     }
 
-    //Patron testPatron = new Patron(9,"john_doe", "password123", "John", "Doe", "john.doe@example.com", "123-456-7890", 0);
-
     @FXML public void onBorrow() throws RemoteException, SQLException {
         mainViewModel.borrowBook(selectedBook.get(), loggedInUser);
         mainViewModel.resetBookList();
@@ -177,7 +178,15 @@ public class MainViewController implements RemotePropertyChangeListener
                 // Handle user logged-in event
                 loggedInUser = (Patron) evt.getNewValue();
                 System.out.println("User logged in: " + loggedInUser.getUsername());
-                // Perform any UI updates or actions here
+              try
+              {
+                support.firePropertyChange("UserLoggedIn", null, (Patron)evt.getNewValue());
+              }
+              catch (RemoteException e)
+              {
+                throw new RuntimeException(e);
+              }
+              // Perform any UI updates or actions here
             }
         });
     }

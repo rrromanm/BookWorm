@@ -1,6 +1,7 @@
 package sep.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Book implements Serializable {
     private String title;
@@ -120,13 +121,15 @@ public class Book implements Serializable {
 
 
     @Override
-    public boolean equals(Object obj) { // I didn't add the state to the equals method since we dont have the equals method for comparing the states
-       if(obj==null || obj.getClass()!=getClass()){
-           return false;
-       }
-       Book other = (Book) obj;
-       return other.title.equals(title) && other.author.equals(author) && year == other.year && other.publisher.equals(publisher) &&
-        isbn == other.isbn && pageCount == other.pageCount && bookId == other.bookId && genre.equals(other.genre);
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Book book = (Book) obj;
+        return Objects.equals(this.borrower, book.borrower);
     }
     @Override // toString is missing the info about borrower,reservist and state
     public String toString() {

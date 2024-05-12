@@ -39,6 +39,18 @@ public class LibraryImplementation implements LibraryInterface {
         }
     }
 
+    @Override public ArrayList<Book> getBorrowedBooks(Patron patron)
+        throws RemoteException
+    {
+        try
+        {
+            return this.bookDatabase.readBorrowedBook(patron);
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException
@@ -140,8 +152,8 @@ public class LibraryImplementation implements LibraryInterface {
     public void borrowBooks(Book book, Patron parton) throws RemoteException, SQLException {
         bookDatabase.borrowBook(book,parton);
     }
-    //@Override public void returnBook(Book book, Patron patron)
-    {
 
+    @Override public void returnBookToDatabase(Book book, Patron patron) throws SQLException {
+        bookDatabase.returnBookToDatabase(book,patron);
     }
 }
