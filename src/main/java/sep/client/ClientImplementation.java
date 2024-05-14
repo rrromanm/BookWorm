@@ -120,5 +120,14 @@ public class ClientImplementation implements ClientInterface {
         }
     }
 
+    @Override
+    public void updatePassword(String oldPassword, String newPassword) throws RemoteException {
+        try{
+            library.updatePassword(oldPassword, newPassword);
+        } catch (RemoteException e){
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
 
 }

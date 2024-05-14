@@ -165,6 +165,15 @@ public class ModelManager extends UnicastRemoteObject implements Model , RemoteP
         }
     }
 
+    @Override
+    public void updatePassword(String oldPassowrd, String newPassowrd) throws RemoteException {
+        try{
+            client.updatePassword(oldPassowrd, newPassowrd);
+        }catch (Exception e){
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
     public String getError() {
         return error;
     }

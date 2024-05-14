@@ -10,8 +10,11 @@ import sep.model.Book;
 import sep.model.Patron;
 import sep.model.State;
 import sep.model.UserSession;
+import sep.model.validators.*;
 import sep.viewmodel.MainViewModel;
 import sep.viewmodel.ProfileViewModel;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 import java.util.Optional;
 
@@ -55,31 +58,61 @@ public class ProfileViewController {
     private ProfileViewModel profileViewModel;
     private boolean edit;
     private boolean showPassword;
-    private UserSession session;
+    private boolean labelsInitialized;
 
+    private String originalFirstName;
+    private String originalLastName;
+    private String originalUsername;
+    private String originalEmail;
+    private String originalPhoneNumber;
+    private String originalPassword;
+
+
+
+    //TODO: CLEAN UP THE CODE !!!
+    //TODO: CLEAN UP THE CODE !!!
+    //TODO: CLEAN UP THE CODE !!!
     public void init(ViewHandler viewHandler, ProfileViewModel viewModel, Region root)
     {
         this.viewHandler = viewHandler;
         this.profileViewModel = viewModel;
-        this.profileViewModel.setPatronData();
         this.root = root;
         initializeHistoryTableView();
         initializeWishlistTableView();
         populateHBTableView(); // not implemented
         populateWLTableView(); // not implemented
-        initializeLabels(); // not completed
-        fillTextFields();
+        initializeLabels(); // not completed (has initialization of patron details tho)
         edit = false;
         showPassword = false;
 
 
     }
     public void initializeLabels(){
-        booksReadLabel.setVisible(true);
-        feesLabel.setVisible(true);
-        // we need to get the data about the user fees and the amount of books read by him
-        //feesLabel.setText("Outstanding fees: " + /*fees amount*/);
-        //booksReadLabel.setText("Books read: " + /*amount of books read by the user*/);
+        if (!labelsInitialized) {
+
+            booksReadLabel.setVisible(true);
+            feesLabel.setVisible(true);
+            usernameTextField.setText(UserSession.getInstance().getLoggedInUser().getUsername());
+            emailTextField.setText(UserSession.getInstance().getLoggedInUser().getEmail());
+            firstNameTextField.setText(UserSession.getInstance().getLoggedInUser().getFirstName());
+            lastNameTextField.setText(UserSession.getInstance().getLoggedInUser().getLastName());
+            phoneNumberTextField.setText(UserSession.getInstance().getLoggedInUser().getPhoneNumber());
+            passwordTextField.setText(UserSession.getInstance().getLoggedInUser().getPassword());
+            userIDTextField.setText(String.valueOf(UserSession.getInstance().getLoggedInUser().getUserID()));
+
+            originalFirstName = UserSession.getInstance().getLoggedInUser().getFirstName();
+            originalLastName = UserSession.getInstance().getLoggedInUser().getLastName();
+            originalUsername = UserSession.getInstance().getLoggedInUser().getUsername();
+            originalEmail = UserSession.getInstance().getLoggedInUser().getEmail();
+            originalPhoneNumber = UserSession.getInstance().getLoggedInUser().getPhoneNumber();
+            originalPassword = UserSession.getInstance().getLoggedInUser().getPassword();
+
+            labelsInitialized = true;
+
+            // we need to get the data about the user fees and the amount of books read by him
+            //feesLabel.setText("Outstanding fees: " + /*fees amount*/);
+            //booksReadLabel.setText("Books read: " + /*amount of books read by the user*/);
+        }
     }
     public void initializeWishlistTableView(){
         WLtitleColumn.setCellValueFactory(new PropertyValueFactory<>("WLtitle"));
@@ -102,15 +135,6 @@ public class ProfileViewController {
         HBbookIdColumn.setCellValueFactory(new PropertyValueFactory<>("HBbookId"));
         HBgenreColumn.setCellValueFactory(new PropertyValueFactory<>("HBgenre"));
     }
-    public void fillTextFields(){
-        this.profileViewModel.bindUsername(usernameTextField.textProperty());
-        this.profileViewModel.bindEmail(emailTextField.textProperty());
-        this.profileViewModel.bindFirstName(firstNameTextField.textProperty());
-        this.profileViewModel.bindLastName(lastNameTextField.textProperty());
-        this.profileViewModel.bindPhoneNumber(phoneNumberTextField.textProperty());
-        this.profileViewModel.bindPassword(passwordTextField.textProperty());
-        this.profileViewModel.bindPatronID(userIDTextField.textProperty());
-    }
     public void populateWLTableView(){
         // We need to get the data about the user wishlist and populate the table with the books
     }
@@ -118,35 +142,38 @@ public class ProfileViewController {
         // We need to get the data about the user history of books and populate the table with the books
     }
     @FXML public void onEdit(){
-        if(!edit) {
-            editButton.setStyle("-fx-text-fill:red;"); // color of the clicked button can be changed
-            firstNameTextField.setEditable(true);
-            lastNameTextField.setEditable(true);
-            usernameTextField.setEditable(true);
-            passwordTextField.setEditable(true);
-            emailTextField.setEditable(true);
-            phoneNumberTextField.setEditable(true);
-            userIDTextField.setEditable(true);
-            passwordButton.setVisible(true);
-            saveButton.setVisible(true);
-            edit = true;
-        }
-        else
-        {
-            editButton.setStyle("");
-            firstNameTextField.setEditable(false);
-            lastNameTextField.setEditable(false);
-            usernameTextField.setEditable(false);
-            passwordTextField.setEditable(false);
-            emailTextField.setEditable(false);
-            phoneNumberTextField.setEditable(false);
-            userIDTextField.setEditable(false);
-            passwordButton.setVisible(false);
-            saveButton.setVisible(false);
-            reset();
-            edit = false;
+        try{
+            if(!edit) {
+                editButton.setStyle("-fx-text-fill:red;"); // color of the clicked button can be changed
+                firstNameTextField.setEditable(true);
+                lastNameTextField.setEditable(true);
+                usernameTextField.setEditable(true);
+                passwordTextField.setEditable(true);
+                emailTextField.setEditable(true);
+                phoneNumberTextField.setEditable(true);
+                userIDTextField.setEditable(true);
+                passwordButton.setVisible(true);
+                saveButton.setVisible(true);
+
+                originalFirstName = firstNameTextField.getText();
+                originalLastName = lastNameTextField.getText();
+                originalUsername = usernameTextField.getText();
+                originalEmail = emailTextField.getText();
+                originalPhoneNumber = phoneNumberTextField.getText();
+                originalPassword = passwordTextField.getText();
+
+                edit = true;
+
+            } else {
+                editButton.setStyle("");
+                reset();  // Reset fields to original values
+                edit = false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
     @FXML public void onPassword(){
         if(!showPassword){
             passwordButton.setStyle("-fx-text-fill:red;");
@@ -163,7 +190,59 @@ public class ProfileViewController {
         }
     }
     @FXML public void onSave(){
-        // we need to save the changes to the database
+        try{
+            String oldUsername = UserSession.getInstance().getLoggedInUser().getUsername();
+            String oldEmail = UserSession.getInstance().getLoggedInUser().getEmail();
+            String oldFirstName = UserSession.getInstance().getLoggedInUser().getFirstName();
+            String oldLastName = UserSession.getInstance().getLoggedInUser().getLastName();
+            String oldPhoneNumber = UserSession.getInstance().getLoggedInUser().getPhoneNumber();
+            String oldPassword = UserSession.getInstance().getLoggedInUser().getPassword();
+
+            String newUsername = usernameTextField.getText();
+            String newEmail = emailTextField.getText();
+            String newFirstName = firstNameTextField.getText();
+            String newLastName = lastNameTextField.getText();
+            String newPhoneNumber = phoneNumberTextField.getText();
+            String newPassword = passwordTextField.getText();
+
+            UsernameValidator.validate(newUsername);
+            EmailValidator.validate(newEmail);
+            PasswordValidator.validate(newPassword);
+            PhoneValidator.validate(newPhoneNumber);
+            NameValidator.validate(newFirstName);
+            NameValidator.validate(newLastName);
+
+            if(!newUsername.equals(oldUsername)){
+                profileViewModel.updateUsername(newUsername,oldUsername);
+            }
+
+            if(!newEmail.equals(oldEmail)){
+                profileViewModel.updateEmail(newEmail,oldEmail);
+            }
+
+            if(!newFirstName.equals(oldFirstName)){
+                profileViewModel.updateFirstName(newFirstName,oldFirstName);
+            }
+
+            if(!newLastName.equals(oldLastName)){
+                profileViewModel.updateLastName(newLastName,oldLastName);
+            }
+
+            if(!newPhoneNumber.equals(oldPhoneNumber)){
+                profileViewModel.updatePhoneNumber(newPhoneNumber,oldPhoneNumber);
+            }
+
+            if(!newPassword.equals(oldPassword)){
+                profileViewModel.updatePassword(newPassword,oldPassword);
+            }
+
+
+            edit = false;
+
+        }catch (Exception e){
+            showAlert(e.getMessage());
+        }
+
     }
     @FXML public void onDelete(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -183,7 +262,13 @@ public class ProfileViewController {
     }
     public void reset()
     {
-        fillTextFields(); //not implemented
+        firstNameTextField.setText(originalFirstName);
+        lastNameTextField.setText(originalLastName);
+        usernameTextField.setText(originalUsername);
+        emailTextField.setText(originalEmail);
+        phoneNumberTextField.setText(originalPhoneNumber);
+        passwordTextField.setText(originalPassword);
+
         initializeLabels();
         firstNameTextField.setEditable(false);
         lastNameTextField.setEditable(false);
@@ -195,6 +280,20 @@ public class ProfileViewController {
         passwordButton.setVisible(false);
         saveButton.setVisible(false);
         edit =false;
+
+        passwordTextField.setVisible(false);
+        passwordLabel.setVisible(false);
+        passwordButton.setStyle("");
         showPassword = false;
     }
+
+    public void showAlert(String message) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Something went wrong...");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
+
+//TODO: CLEAN UP THE CODE !!!

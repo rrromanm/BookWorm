@@ -19,7 +19,7 @@ public class PatronDatabaseImplementation {
         return instance;
     }
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "343460");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "VIAVIA");
     }
     //TODO: Implement checking if given username already exists. Can use method I used to update account details.
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws SQLException {
@@ -134,6 +134,17 @@ public class PatronDatabaseImplementation {
                     throw new SQLException("No user found with the username: " + oldUsername);
                 }
             }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updatePassword(String oldPassword, String newPassword) throws SQLException {
+        try (Connection conn = getConnection()) {
+                PreparedStatement updateStmt = conn.prepareStatement("UPDATE book_worm_db.patron SET password = ? WHERE password = ?");
+                updateStmt.setString(1, newPassword);
+                updateStmt.setString(2, oldPassword);
+                updateStmt.executeUpdate();
         }
     }
 

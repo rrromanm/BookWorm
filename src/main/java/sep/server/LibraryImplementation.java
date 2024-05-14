@@ -149,6 +149,15 @@ public class LibraryImplementation implements LibraryInterface {
     }
 
     @Override
+    public void updatePassword(String oldPassword, String newPassword) throws RemoteException {
+        try {
+            patronDatabase.updatePassword(oldPassword, newPassword);
+        }catch(SQLException e){
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
     public void borrowBooks(Book book, Patron parton) throws RemoteException, SQLException {
         bookDatabase.borrowBook(book,parton);
     }

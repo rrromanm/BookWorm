@@ -20,6 +20,7 @@ public interface ClientInterface {
     void updatePhoneNumber(String oldPhoneNumber, String newPhoneNumber) throws RemoteException;
     void updateFirstName(String oldFirstName, String newFirstName) throws RemoteException;
     void updateLastName(String oldLastName, String newLastName) throws RemoteException;
+    void updatePassword(String oldPassword, String newPassword) throws RemoteException;
     ArrayList<Book> filter(String genre, String state,String search) throws RemoteException;
     void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException;
     void addPropertyChangeListener(RemotePropertyChangeListener<Patron> listener);

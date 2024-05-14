@@ -3,6 +3,7 @@ package sep.viewmodel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import sep.model.Model;
+import sep.model.Patron;
 import sep.model.UserSession;
 
 public class ProfileViewModel {
@@ -15,7 +16,6 @@ public class ProfileViewModel {
     private final StringProperty error;
     private final StringProperty password;
     private final StringProperty patronID;
-    private UserSession session;
 
 
 
@@ -32,38 +32,88 @@ public class ProfileViewModel {
         this.error = new SimpleStringProperty("");
     }
 
-    public void setPatronData(){
-        username.set(UserSession.getInstance().getLoggedInUser().getUsername());
-        email.set(UserSession.getInstance().getLoggedInUser().getEmail());
-        first_name.set(UserSession.getInstance().getLoggedInUser().getFirstName());
-        last_name.set(UserSession.getInstance().getLoggedInUser().getLastName());
-        phone_number.set(UserSession.getInstance().getLoggedInUser().getPhoneNumber());
-        password.set(UserSession.getInstance().getLoggedInUser().getPassword());
-        patronID.set(String.valueOf(UserSession.getInstance().getLoggedInUser().getUserID()));
+    public void updateUsername(String newUsername,String oldUsername){
+        Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
+        if(loggedInUser != null){
+            try{
+                model.updateUsername(oldUsername, newUsername);
+            }catch (Exception e){
+                error.set(e.getMessage());
+                throw new IllegalStateException(e.getMessage());
+            }
+        }else{
+            throw new IllegalStateException("No user logged in.");
+        }
     }
 
-    public void bindUsername(StringProperty property){
-        property.bind(username);
+    public void updateEmail(String newEmail,String oldEmail){
+        Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
+        if(loggedInUser!= null){
+            try{
+                model.updateEmail(oldEmail, newEmail);
+            }catch (Exception e){
+                error.set(e.getMessage());
+                throw new IllegalStateException(e.getMessage());
+            }
+        }else{
+            throw new IllegalStateException("No user logged in.");
+        }
     }
-    public void bindEmail(StringProperty property){
-        property.bind(email);
+
+    public void updatePhoneNumber(String newPhoneNumber,String oldPhoneNumber){
+        Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
+        if(loggedInUser!= null){
+            try{
+                model.updatePhoneNumber(oldPhoneNumber, newPhoneNumber);
+            }catch (Exception e){
+                error.set(e.getMessage());
+                throw new IllegalStateException(e.getMessage());
+            }
+        }else{
+            throw new IllegalStateException("No user logged in.");
+        }
     }
-    public void bindFirstName(StringProperty property){
-        property.bind(first_name);
+
+    public void updateFirstName(String newFirstName,String oldFirstName){
+        Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
+        if(loggedInUser!= null){
+            try{
+                model.updateFirstName(oldFirstName, newFirstName);
+            }catch (Exception e){
+                error.set(e.getMessage());
+                throw new IllegalStateException(e.getMessage());
+            }
+        }else{
+            throw new IllegalStateException("No user logged in.");
+        }
     }
-    public void bindLastName(StringProperty property){
-        property.bind(last_name);
+
+    public void updateLastName(String newLastName,String oldLastName){
+        Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
+        if(loggedInUser!= null){
+            try{
+                model.updateLastName(oldLastName, newLastName);
+            }catch (Exception e){
+                error.set(e.getMessage());
+                throw new IllegalStateException(e.getMessage());
+            }
+        }else{
+            throw new IllegalStateException("No user logged in.");
+        }
     }
-    public void bindPhoneNumber(StringProperty property){
-        property.bind(phone_number);
+
+    public void updatePassword(String newPassword,String oldPassword){
+        Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
+        if(loggedInUser!= null){
+            try{
+                model.updatePassword(oldPassword, newPassword);
+            }catch (Exception e){
+                error.set(e.getMessage());
+                throw new IllegalStateException(e.getMessage());
+            }
+        }else{
+            throw new IllegalStateException("No user logged in.");
+        }
     }
-    public void bindError(StringProperty property){
-        property.bind(error);
-    }
-    public void bindPassword(StringProperty property){
-        property.bind(password);
-    }
-    public void bindPatronID(StringProperty property){
-        property.bind(patronID);
-    }
+
 }
