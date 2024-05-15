@@ -11,6 +11,8 @@ import javafx.scene.control.TableView;
 import sep.viewmodel.AdminManageDonatedBooksViewModel;
 import sep.viewmodel.MainViewModel;
 
+import java.rmi.RemoteException;
+
 public class AdminManageDonatedBooksViewController
 {
     @FXML
@@ -56,7 +58,7 @@ public class AdminManageDonatedBooksViewController
         stateColumn.setCellValueFactory(new PropertyValueFactory<>("state"));
     }
     @FXML
-    private void backButtonClicked()
+    private void backButtonClicked() throws RemoteException
     {
         viewHandler.openView("adminMainView");
     }

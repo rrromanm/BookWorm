@@ -6,6 +6,7 @@ import javafx.scene.layout.Region;
 
 import java.io.IOError;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.sql.SQLException;
 
 public class ViewFactory
@@ -192,7 +193,8 @@ public class ViewFactory
         helpViewController.reset();
         return helpViewController.getRoot();
     }
-    public Region loadProfileView(){
+    public Region loadProfileView() throws RemoteException
+    {
         if(profileViewController == null){
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/sep/ProfileView.fxml"));
@@ -303,7 +305,8 @@ public class ViewFactory
 
 
 
-    public Region load(String id) {
+    public Region load(String id) throws RemoteException
+    {
         Region root = switch(id) {
             case LOGIN -> loadLoginView();
             case ADMINLOGIN -> loadAdminLoginView();

@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import sep.viewmodel.LoginViewModel;
 import javafx.scene.layout.Region;
 
+import java.rmi.RemoteException;
 
 public class LoginViewController {
     private ViewHandler viewHandler;
@@ -33,7 +34,7 @@ public class LoginViewController {
         this.viewModel.bindError(error.textProperty());
     }
 
-    @FXML private void loginButtonClicked()
+    @FXML private void loginButtonClicked() throws RemoteException
     {
         if(this.viewModel.login()!=null){
             viewHandler.openView(ViewFactory.USERMAIN);
@@ -45,12 +46,12 @@ public class LoginViewController {
 
     }
 
-    @FXML private void createButtonClicked()
+    @FXML private void createButtonClicked() throws RemoteException
     {
         viewHandler.openView(ViewFactory.CREATEACCOUNT);
     }
 
-    @FXML private void loginAsAdminButtonClicked()
+    @FXML private void loginAsAdminButtonClicked() throws RemoteException
     {
         viewHandler.openView("adminLogin");
     }

@@ -5,14 +5,14 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
 
 <AnchorPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.MainViewController">
     <children>
-        <ImageView fitHeight="64.0" fitWidth="71.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="500.4" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="939.0" AnchorPane.topAnchor="14.0" />
-        <Circle fill="DODGERBLUE" layoutX="50.0" layoutY="46.0" radius="32.0" stroke="BLACK" strokeType="INSIDE" />
+        <Circle fill="#f8f8f8" layoutX="48.0" layoutY="44.0" radius="38.0" stroke="BLACK" strokeType="INSIDE" />
         <Button fx:id="notificationButton" layoutX="92.0" layoutY="33.0" mnemonicParsing="false" text="Notification" />
         <ComboBox fx:id="genreComboBox" layoutX="179.0" layoutY="33.0" onAction="#onGenreClick" prefWidth="150.0" promptText="Genre" />
         <ComboBox fx:id="stateComboBox" layoutX="329.0" layoutY="33.0" onAction="#onStateClick" prefWidth="150.0" promptText="State" />
@@ -38,5 +38,9 @@
             </columns>
         </TableView>
         <Button fx:id="borrowButton" disable="true" layoutX="23.0" layoutY="300.0" mnemonicParsing="false" onAction="#onBorrow" prefHeight="26.0" prefWidth="132.0" text="Borrow" />
+        <ImageView fitHeight="50.0" fitWidth="57.0" layoutX="22.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="509.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="952.5090522766113" AnchorPane.topAnchor="19.0">
+         <image>
+            <Image url="@bookworm2.jpg" />
+         </image></ImageView>
     </children>
 </AnchorPane>

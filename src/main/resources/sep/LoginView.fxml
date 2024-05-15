@@ -11,9 +11,9 @@
 
 <AnchorPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.LoginViewController">
    <children>
-      <ImageView fitHeight="223.0" fitWidth="292.0" layoutX="366.0" layoutY="14.0" pickOnBounds="true">
+      <ImageView fitHeight="223.0" fitWidth="292.0" layoutX="371.0" layoutY="44.0" pickOnBounds="true">
          <image>
-            <Image url="@../../../../../bookworm2.jpg" />
+            <Image url="@bookworm2.jpg" />
          </image>
       </ImageView>
       <Button layoutX="14.0" layoutY="537.0" mnemonicParsing="false" text="Exit" />
@@ -26,6 +26,11 @@
       <Label fx:id="error" layoutX="405.0" layoutY="520.0" prefHeight="49.0" prefWidth="214.0" textAlignment="CENTER" textFill="RED" wrapText="true">
          <font>
             <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="444.0" layoutY="9.0" text="Book Worm">
+         <font>
+            <Font name="System Bold" size="24.0" />
          </font>
       </Label>
    </children>

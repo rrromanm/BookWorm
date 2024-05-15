@@ -13,6 +13,7 @@ public interface Model {
     ArrayList<Book> getHistoryOfBooks(Patron patron) throws RemoteException;
     void addPropertyChangeListener(PropertyChangeListener listener);
     void removePropertyChangeListener(PropertyChangeListener listener);
+    int getAmountOfReadBooks(Patron patron) throws RemoteException;
     void borrow(Book book, Patron patron);
     void returnBook(Book book, Patron patron);
 

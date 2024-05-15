@@ -45,6 +45,9 @@ public class ProfileViewModel {
     public void resetHistoryList(Patron patron) throws RemoteException {
         historyOfBooksList.setAll(model.getHistoryOfBooks(patron));
     }
+    public int getAmountOfReadBooks(Patron patron) throws RemoteException{
+        return model.getAmountOfReadBooks(patron);
+    }
 
     public void updateUsername(String newUsername,String oldUsername){
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();

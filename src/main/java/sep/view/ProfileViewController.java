@@ -85,17 +85,21 @@ public class ProfileViewController {
         populateWLTableView(); // not implemented
         initializeLabels(); // only missing the books read information
         this.profileViewModel.bindHistoryList(historyOfBookTableView.itemsProperty());
+        historyOfBookTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
         edit = false;
         showPassword = false;
 
 
     }
-    public void initializeLabels(){ //initialize and populate
+    public void initializeLabels() throws RemoteException
+    { //initialize and populate
         if (!labelsInitialized) {
 
-            booksReadLabel.setVisible(false); //in the future we need to change it and implement the amount of books read
+            booksReadLabel.setVisible(true);
             feesLabel.setVisible(true);
             feesLabel.setText("Outstanding fees: " + UserSession.getInstance().getLoggedInUser().getFees());
+            booksReadLabel.setText("Amount of books read: " + profileViewModel.getAmountOfReadBooks(UserSession.getInstance().getLoggedInUser()));
             usernameTextField.setText(UserSession.getInstance().getLoggedInUser().getUsername());
             emailTextField.setText(UserSession.getInstance().getLoggedInUser().getEmail());
             firstNameTextField.setText(UserSession.getInstance().getLoggedInUser().getFirstName());
@@ -265,13 +269,14 @@ public class ProfileViewController {
             // here we need to implement deleting of the account
         }
     }
-    @FXML public void onBack(){
+    @FXML public void onBack() throws RemoteException
+    {
         viewHandler.openView(ViewFactory.USERMAIN);
     }
     public Region getRoot(){
         return root;
     }
-    public void reset()
+    public void reset() throws RemoteException
     {
         firstNameTextField.setText(originalFirstName);
         lastNameTextField.setText(originalLastName);

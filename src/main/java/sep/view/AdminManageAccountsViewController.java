@@ -10,6 +10,8 @@ import javafx.scene.layout.Region;
 import sep.model.Patron;
 import sep.viewmodel.AdminManageAccountsViewModel;
 
+import java.rmi.RemoteException;
+
 public class AdminManageAccountsViewController {
     private ViewHandler viewHandler;
     private AdminManageAccountsViewModel viewModel;
@@ -49,7 +51,8 @@ public class AdminManageAccountsViewController {
         phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
     }
     @FXML
-    private void backButtonClicked(){
+    private void backButtonClicked() throws RemoteException
+    {
         viewHandler.openView("adminMainView");
     }
     @FXML private void saveButtonClicked(){

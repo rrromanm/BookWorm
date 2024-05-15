@@ -42,6 +42,12 @@ public class ClientImplementation implements RemotePropertyChangeListener,Client
     return library.getHistoryOfBooks(patron);
   }
 
+  @Override public int getAmountOfReadBooks(Patron patron)
+      throws RemoteException
+  {
+    return library.getAmountOfReadBooks(patron);
+  }
+
   @Override
     public ArrayList<Book> filter(String genre,String state, String search) throws RemoteException {
         return library.filter(genre, state,search);

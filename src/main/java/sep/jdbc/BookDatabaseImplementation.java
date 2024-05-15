@@ -377,11 +377,9 @@ public class BookDatabaseImplementation {
                     "    book_worm_db.genre g ON books.genre_id = g.id " +
                     "LEFT JOIN " +
                     "    book_worm_db.borrowed_books bb ON books.id = bb.book_id " +
-                    "LEFT JOIN " +
-                    "    book_worm_db.patron p ON p.id = books.borrower " +
                     "WHERE " +
-                    "    p.id = ? "
-                    + " AND bb.return_date < CURRENT_DATE;");
+                    "    profile_id = ? "
+                    + " AND bb.return_date <= CURRENT_DATE;");
             statement.setInt(1, patron.getUserID());
             ResultSet resultSet = statement.executeQuery();
             ArrayList<Book> books = new ArrayList<>();
@@ -410,6 +408,29 @@ public class BookDatabaseImplementation {
                 books.add(book);
             }
             return books;
+        }
+    }
+    public int readAmountOfBooksRead(Patron patron) throws SQLException{
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                "SELECT COUNT(*) " +
+                    "FROM " +
+                    "    book_worm_db.books " +
+                    "JOIN " +
+                    "    book_worm_db.genre g ON books.genre_id = g.id " +
+                    "LEFT JOIN " +
+                    "    book_worm_db.borrowed_books bb ON books.id = bb.book_id " +
+                    "WHERE " +
+                    "    profile_id = ? "
+                    + " AND bb.return_date <= CURRENT_DATE;");
+            statement.setInt(1, patron.getUserID());
+            ResultSet resultSet = statement.executeQuery();
+            ArrayList<Book> books = new ArrayList<>();
+            int amount = 0;
+            while (resultSet.next()) {
+                amount = resultSet.getInt("count");
+            }
+            return amount;
         }
     }
 }

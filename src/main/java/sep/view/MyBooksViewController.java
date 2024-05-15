@@ -76,8 +76,9 @@ public class MyBooksViewController
     @FXML public void onExtend(){
         // extend the deadline for the book
     }
-
-    @FXML public void onBack(){
+    
+    @FXML public void onBack() throws RemoteException
+    {
         viewHandler.openView(ViewFactory.USERMAIN);
     }
 
