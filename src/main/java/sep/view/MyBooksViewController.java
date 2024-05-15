@@ -72,7 +72,8 @@ public class MyBooksViewController implements RemotePropertyChangeListener
     @FXML public void onExtend(){
         // extend the deadline for the book
     }
-    @FXML public void onBack(){
+    @FXML public void onBack() throws RemoteException
+    {
         viewHandler.openView(ViewFactory.USERMAIN);
     }
     @FXML public void onSelect(){

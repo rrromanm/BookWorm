@@ -13,6 +13,8 @@ import sep.model.State;
 import sep.viewmodel.AdminManageBooksViewModel;
 import sep.viewmodel.AdminManageDonatedBooksViewModel;
 
+import java.rmi.RemoteException;
+
 public class AdminManageBooksViewController
 {
    //BUTTONS
@@ -72,7 +74,7 @@ public class AdminManageBooksViewController
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
     }
     @FXML
-    private void backButtonClicked()
+    private void backButtonClicked() throws RemoteException
     {
         viewHandler.openView("adminMainView");
     }

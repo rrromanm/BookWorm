@@ -109,19 +109,19 @@ public class MainViewController implements RemotePropertyChangeListener
         mainViewModel.showFiltered(stateChoice,genreChoice,searchChoice);
     }
 
-    @FXML public void onViewProfile()
+    @FXML public void onViewProfile() throws RemoteException
     {
         viewHandler.openView(ViewFactory.PROFILE);
     }
-    @FXML public void onMyBooks()
+    @FXML public void onMyBooks() throws RemoteException
     {
         viewHandler.openView(ViewFactory.MYBOOKS);
     }
-    @FXML public void onSeeEvents()
+    @FXML public void onSeeEvents() throws RemoteException
     {
         viewHandler.openView(ViewFactory.EVENTSVIEW);
     }
-    @FXML public void onDonate()
+    @FXML public void onDonate() throws RemoteException
     {
         viewHandler.openView(ViewFactory.DONATEBOOK);
     }
@@ -141,7 +141,7 @@ public class MainViewController implements RemotePropertyChangeListener
         borrowButton.setDisable(true);
         //TODO: add alert for when book is borrowed
     }
-    @FXML public void onHelp()
+    @FXML public void onHelp() throws RemoteException
     {
         viewHandler.openView(ViewFactory.HELP);
     }

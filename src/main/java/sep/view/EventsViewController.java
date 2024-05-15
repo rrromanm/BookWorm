@@ -9,6 +9,8 @@ import sep.model.Book;
 import sep.viewmodel.AdminManageDonatedBooksViewModel;
 import sep.viewmodel.EventsViewModel;
 
+import java.rmi.RemoteException;
+
 public class EventsViewController
 {
     @FXML
@@ -32,7 +34,7 @@ public class EventsViewController
         // populate the tableView should also be here
     }
     @FXML
-    private void backButtonClicked()
+    private void backButtonClicked() throws RemoteException
     {
         viewHandler.openView("userMain");
     }

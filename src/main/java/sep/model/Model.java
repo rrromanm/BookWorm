@@ -11,6 +11,7 @@ public interface Model {
     ArrayList<Book> getAllBooks() throws RemoteException;
     ArrayList<Book> getBorrowedBooks(Patron patron) throws RemoteException;
     ArrayList<Book> getHistoryOfBooks(Patron patron) throws RemoteException;
+    int getAmountOfReadBooks(Patron patron) throws RemoteException;
     void addPropertyChangeListener(RemotePropertyChangeListener<Patron> listener);
     void removePropertyChangeListener(RemotePropertyChangeListener<Patron> listener);
     void borrow(Book book, Patron patron);

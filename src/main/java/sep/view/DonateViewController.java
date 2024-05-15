@@ -6,6 +6,8 @@ import javafx.scene.layout.Region;
 import sep.viewmodel.CreateAccountViewModel;
 import sep.viewmodel.DonateViewModel;
 
+import java.rmi.RemoteException;
+
 public class DonateViewController {
     private ViewHandler viewHandler;
     private DonateViewModel viewModel;
@@ -18,7 +20,8 @@ public class DonateViewController {
         this.root = root;
     }
     @FXML
-    private void backButtonClicked(){
+    private void backButtonClicked() throws RemoteException
+    {
         viewHandler.openView(ViewFactory.USERMAIN);
     }
     @FXML private void submitButtonClicked(){
