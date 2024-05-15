@@ -1,15 +1,11 @@
 package sep.model;
 
-
-import dk.via.remote.observer.RemotePropertyChangeEvent;
-import dk.via.remote.observer.RemotePropertyChangeListener;
-import dk.via.remote.observer.RemotePropertyChangeSupport;
-import javafx.application.Platform;
 import sep.client.ClientImplementation;
 import sep.client.ClientInterface;
 import sep.model.validators.*;
 import sep.shared.LibraryInterface;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.rmi.RemoteException;
@@ -17,29 +13,18 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class ModelManager extends UnicastRemoteObject implements Model , RemotePropertyChangeListener {
-    private final LibraryInterface library;
+public class ModelManager extends UnicastRemoteObject implements Model , PropertyChangeListener {
     private final ClientInterface client;
     private String error;
-    private RemotePropertyChangeSupport<Patron> support;
+    private final PropertyChangeSupport support;
 
     public ModelManager(LibraryInterface library) throws RemoteException {
-        super();
-        this.library = library;
         this.client = new ClientImplementation(library);
         this.error = "";
-        this.support = new RemotePropertyChangeSupport<Patron>();
         this.client.addPropertyChangeListener(this);
-    }
-    @Override
-    public void addPropertyChangeListener(RemotePropertyChangeListener<Patron> listener) {
-        support.addPropertyChangeListener(listener);
+        this.support = new PropertyChangeSupport(this);
     }
 
-    @Override
-    public void removePropertyChangeListener(RemotePropertyChangeListener<Patron> listener) {
-        support.removePropertyChangeListener(listener);
-    }
     @Override
     public synchronized void borrow(Book book, Patron patron) {
         book.borrow(book,patron);
@@ -65,6 +50,16 @@ public class ModelManager extends UnicastRemoteObject implements Model , RemoteP
         throws RemoteException
     {
         return client.getHistoryOfBooks(patron);
+    }
+
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.support.addPropertyChangeListener(listener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        this.support.removePropertyChangeListener(listener);
     }
 
     @Override
@@ -172,9 +167,9 @@ public class ModelManager extends UnicastRemoteObject implements Model , RemoteP
     }
 
     @Override
-    public void updatePassword(String oldPassowrd, String newPassowrd) throws RemoteException {
+    public void updatePassword(String oldPassword, String newPassword) throws RemoteException {
         try{
-            client.updatePassword(oldPassowrd, newPassowrd);
+            client.updatePassword(oldPassword, newPassword);
         }catch (Exception e){
             throw new RemoteException(e.getMessage());
         }
@@ -184,19 +179,9 @@ public class ModelManager extends UnicastRemoteObject implements Model , RemoteP
         return error;
     }
 
-    @Override public void propertyChange(RemotePropertyChangeEvent evt) throws RemoteException
-    {
-        Platform.runLater(() -> {
-            if ("UserLoggedIn".equals(evt.getPropertyName())) {
-              try
-              {
-                support.firePropertyChange("UserLoggedIn", null,(Patron) evt.getNewValue());
-              }
-              catch (RemoteException e)
-              {
-                throw new RuntimeException(e);
-              }
-            }
-        });
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        support.firePropertyChange(evt);
+        System.out.println("received in model manager" + evt.getPropertyName());
     }
 }

@@ -15,10 +15,11 @@ import sep.model.UserSession;
 import sep.viewmodel.MyBooksViewModel;
 import sep.viewmodel.ProfileViewModel;
 
+import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
-public class MyBooksViewController implements RemotePropertyChangeListener
+public class MyBooksViewController
 {
     @FXML private Button returnButton;
     @FXML private Button extendButton;
@@ -47,10 +48,10 @@ public class MyBooksViewController implements RemotePropertyChangeListener
         //myBooksViewModel.addPropertyChangeListener(this);
         initializeTableView();
         populateTableView();
-        viewModel.addPropertyChangeListener(this);
         this.myBooksViewModel.bindList(bookTableView.itemsProperty());
         this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
     }
+
     public void initializeTableView(){
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -61,20 +62,25 @@ public class MyBooksViewController implements RemotePropertyChangeListener
         bookIdColumn.setCellValueFactory(new PropertyValueFactory<>("bookId"));
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
     }
+
     public void populateTableView() throws RemoteException
     {
         myBooksViewModel.resetBookList(UserSession.getInstance().getLoggedInUser());
     }
+
     @FXML public void onReturn() throws RemoteException, SQLException {
         myBooksViewModel.returnBook(selectedBook.get(), UserSession.getInstance().getLoggedInUser());
         populateTableView();
     }
+
     @FXML public void onExtend(){
         // extend the deadline for the book
     }
+
     @FXML public void onBack(){
         viewHandler.openView(ViewFactory.USERMAIN);
     }
+
     @FXML public void onSelect(){
         returnButton.setDisable(false);
         /*if(selectedBook.get())
@@ -85,19 +91,8 @@ public class MyBooksViewController implements RemotePropertyChangeListener
     public Region getRoot() {
         return root;
     }
-    public void reset(){
 
-    }
+    public void reset() {
 
-    @Override public void propertyChange(RemotePropertyChangeEvent evt) throws RemoteException
-    {
-        Platform.runLater(() -> {
-            if ("UserLoggedIn".equals(evt.getPropertyName())) {
-                // Handle user logged-in event
-                loggedInUser = (Patron) evt.getNewValue();
-                System.out.println("User logged in: " + loggedInUser.getUsername());
-                // Perform any UI updates or actions here
-            }
-        });
     }
 }

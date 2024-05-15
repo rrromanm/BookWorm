@@ -1,23 +1,28 @@
 package sep.client;
 
+import dk.via.remote.observer.RemotePropertyChangeEvent;
 import dk.via.remote.observer.RemotePropertyChangeListener;
-import dk.via.remote.observer.RemotePropertyChangeSupport;
+import javafx.application.Platform;
 import sep.model.Book;
 import sep.model.Patron;
 import sep.model.UserSession;
 import sep.shared.LibraryInterface;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class ClientImplementation implements ClientInterface {
+public class ClientImplementation implements RemotePropertyChangeListener,ClientInterface, Serializable {
     private LibraryInterface library;
-    private final RemotePropertyChangeSupport<Patron> support;
+    private final PropertyChangeSupport support;
 
-    public ClientImplementation(LibraryInterface library) {
+    public ClientImplementation(LibraryInterface library) throws RemoteException {
         this.library = library;
-      this.support = new RemotePropertyChangeSupport<Patron>();
+        this.support = new PropertyChangeSupport(this);
+        this.library.addRemotePropertyChangeListener(this);
     }
 
 
@@ -52,19 +57,20 @@ public class ClientImplementation implements ClientInterface {
         library.returnBookToDatabase(book, patron);
     }
 
-  @Override public void addPropertyChangeListener(RemotePropertyChangeListener<Patron> listener)
+  @Override public void addPropertyChangeListener(PropertyChangeListener listener)
   {
-    support.addPropertyChangeListener(listener);
+    this.support.addPropertyChangeListener(listener);
+    System.out.println("client added property change listeners " + support.getPropertyChangeListeners().length);
   }
 
-  @Override public void removePropertyChangeListener(RemotePropertyChangeListener<Patron> listener)
+  @Override public void removePropertyChangeListener(PropertyChangeListener listener)
   {
     support.removePropertyChangeListener(listener);
   }
 
   @Override
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException {
-        library.createPatron(username,  password,  first_name, last_name,  email,  phone_number, fees);
+        library.createPatron(username, password, first_name, last_name, email, phone_number, fees);
    }
 
     @Override
@@ -135,5 +141,14 @@ public class ClientImplementation implements ClientInterface {
         }
     }
 
-
+    @Override
+    public void propertyChange(RemotePropertyChangeEvent event) throws RemoteException {
+        System.out.println("received" + event.getPropertyName());
+        Platform.runLater(() -> {
+            if (event.getPropertyName().equals("borrowedBook") || event.getPropertyName().equals("returnedBook")) {
+                this.support.firePropertyChange("ResetBooks", false, true);
+                System.out.println(this.support.getPropertyChangeListeners().length);
+            }
+        });
+    }
 }

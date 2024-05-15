@@ -4,6 +4,7 @@ import dk.via.remote.observer.RemotePropertyChangeListener;
 import sep.model.Book;
 import sep.model.Patron;
 
+import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public interface ClientInterface {
     void updatePassword(String oldPassword, String newPassword) throws RemoteException;
     ArrayList<Book> filter(String genre, String state,String search) throws RemoteException;
     void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException;
-    void addPropertyChangeListener(RemotePropertyChangeListener<Patron> listener);
-    void removePropertyChangeListener(RemotePropertyChangeListener<Patron> listener);
+    void addPropertyChangeListener(PropertyChangeListener listener);
+    void removePropertyChangeListener(PropertyChangeListener listener);
     void returnBookToDatabase(Book book, Patron patron) throws SQLException, RemoteException;
 }

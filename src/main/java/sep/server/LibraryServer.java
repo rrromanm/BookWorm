@@ -7,7 +7,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class LibraryServer {
     public static void main(String[] args) throws Exception {
-        Registry registry = LocateRegistry.createRegistry(1098); //change to port 1099
+        Registry registry = LocateRegistry.createRegistry(1099);
         LibraryImplementation library = new LibraryImplementation();
         Remote remote = UnicastRemoteObject.exportObject(library, 0);
         registry.bind("library", remote);
