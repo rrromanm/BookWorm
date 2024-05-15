@@ -85,6 +85,8 @@ public class ProfileViewController {
         populateWLTableView(); // not implemented
         initializeLabels(); // only missing the books read information
         this.profileViewModel.bindHistoryList(historyOfBookTableView.itemsProperty());
+        historyOfBookTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
         edit = false;
         showPassword = false;
 

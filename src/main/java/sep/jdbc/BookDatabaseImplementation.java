@@ -377,11 +377,9 @@ public class BookDatabaseImplementation {
                     "    book_worm_db.genre g ON books.genre_id = g.id " +
                     "LEFT JOIN " +
                     "    book_worm_db.borrowed_books bb ON books.id = bb.book_id " +
-                    "LEFT JOIN " +
-                    "    book_worm_db.patron p ON p.id = books.borrower " +
                     "WHERE " +
-                    "    p.id = ? "
-                    + " AND bb.return_date < CURRENT_DATE;");
+                    "    profile_id = ? "
+                    + " AND bb.return_date <= CURRENT_DATE;");
             statement.setInt(1, patron.getUserID());
             ResultSet resultSet = statement.executeQuery();
             ArrayList<Book> books = new ArrayList<>();
