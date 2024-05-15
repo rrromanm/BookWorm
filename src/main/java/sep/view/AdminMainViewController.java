@@ -6,6 +6,8 @@ import javafx.scene.layout.Region;
 import sep.viewmodel.AdminLoginViewModel;
 import sep.viewmodel.AdminMainViewModel;
 
+import java.rmi.RemoteException;
+
 public class AdminMainViewController {
     private ViewHandler viewHandler;
     private AdminMainViewModel viewModel;
@@ -26,25 +28,29 @@ public class AdminMainViewController {
     }
 
     @FXML
-    private void logoutClicked()
+    private void logoutClicked() throws RemoteException
     { //TODO i guess we need somehow to disconnect the admin from the server?
         viewHandler.openView("login");
     }
 
     @FXML
-    private void historyClicked(){
+    private void historyClicked() throws RemoteException
+    {
         viewHandler.openView("adminServerLog");
     }
     @FXML
-    private void booksClicked(){
+    private void booksClicked() throws RemoteException
+    {
         viewHandler.openView("adminManageBooksView");
     }
     @FXML
-    private void accountsClicked(){
+    private void accountsClicked() throws RemoteException
+    {
         viewHandler.openView("adminManageAccounts");
     }
     @FXML
-    private void eventsClicked(){
+    private void eventsClicked() throws RemoteException
+    {
         viewHandler.openView("adminManageEvents");
     }
 

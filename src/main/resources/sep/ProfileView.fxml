@@ -5,15 +5,15 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.ProfileViewController">
+<AnchorPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.ProfileViewController">
    <children>
-      <ImageView fitHeight="150.0" fitWidth="144.0" layoutX="14.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" />
-      <Circle fill="DODGERBLUE" layoutX="86.0" layoutY="86.0" radius="72.0" stroke="BLACK" strokeType="INSIDE" />
+      <Circle fill="#f8f8f8" layoutX="86.0" layoutY="86.0" radius="72.0" stroke="BLACK" strokeType="INSIDE" />
       <TableView fx:id="wishlistBookTableView" layoutX="14.0" layoutY="189.0" prefHeight="160.0" prefWidth="1002.0">
         <columns>
           <TableColumn fx:id="WLtitleColumn" prefWidth="171.2000093460083" text="Title" />
@@ -26,6 +26,9 @@
             <TableColumn fx:id="WLgenreColumn" prefWidth="107.199951171875" text="Genre" />
             <TableColumn fx:id="WLstateColumn" prefWidth="95.20001220703125" text="State" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
       <TableView fx:id="historyOfBookTableView" layoutX="14.0" layoutY="376.0" prefHeight="160.0" prefWidth="1002.0">
         <columns>
@@ -38,6 +41,9 @@
             <TableColumn fx:id="HBbookIdColumn" prefWidth="90.39996337890625" text="Book ID" />
             <TableColumn fx:id="HBgenreColumn" prefWidth="127.199951171875" text="Genre" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
       <Label layoutX="21.0" layoutY="171.0" prefHeight="18.0" prefWidth="110.0" text="Reading Wishlist">
          <font>
@@ -106,5 +112,9 @@
             <Font size="16.0" />
          </font>
       </Label>
+      <ImageView fitHeight="99.0" fitWidth="110.0" layoutX="35.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@bookworm2.jpg" />
+         </image></ImageView>
    </children>
 </AnchorPane>

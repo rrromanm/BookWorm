@@ -43,7 +43,7 @@ public class CreateAccountViewController {
     }
 
     @FXML
-    private void backButtonClicked()
+    private void backButtonClicked() throws RemoteException
     {
         viewHandler.openView("login");
     }

@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import sep.viewmodel.AdminManageEventsViewModel;
 
+import java.rmi.RemoteException;
 
 public class AdminManageEventsViewController
 {
@@ -38,7 +39,7 @@ public class AdminManageEventsViewController
     }
 
     @FXML
-    private void backButtonClicked()
+    private void backButtonClicked() throws RemoteException
     {
         viewHandler.openView("adminMainView");
     }

@@ -6,6 +6,8 @@ import javafx.scene.layout.Region;
 import sep.viewmodel.DonateViewModel;
 import sep.viewmodel.HelpViewModel;
 
+import java.rmi.RemoteException;
+
 public class HelpViewController {
     private ViewHandler viewHandler;
     private HelpViewModel viewModel;
@@ -19,10 +21,12 @@ public class HelpViewController {
         this.root = root;
     }
     @FXML
-    private void backButtonClicked(){
+    private void backButtonClicked() throws RemoteException
+    {
         viewHandler.openView(ViewFactory.USERMAIN); //TODO: Change to main page view
     }
-    @FXML private void UserGuideButtonClicked(){
+    @FXML private void UserGuideButtonClicked() throws RemoteException
+    {
         viewHandler.openView("UserGuide"); //TODO: Implement actual user guide
     }
     public void reset(){

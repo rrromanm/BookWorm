@@ -6,6 +6,8 @@ import javafx.scene.layout.Region;
 import sep.viewmodel.AdminServerLogViewModel;
 import sep.viewmodel.DonateViewModel;
 
+import java.rmi.RemoteException;
+
 public class AdminServerLogViewController {
     private ViewHandler viewHandler;
     private AdminServerLogViewModel viewModel;
@@ -18,7 +20,8 @@ public class AdminServerLogViewController {
         this.root = root;
     }
     @FXML
-    private void backButtonClicked(){
+    private void backButtonClicked() throws RemoteException
+    {
         viewHandler.openView("adminMainView");
     }
     public void reset(){

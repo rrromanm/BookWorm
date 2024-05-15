@@ -1,10 +1,14 @@
 package sep.viewmodel;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import sep.model.Book;
 import sep.model.Model;
 import sep.model.Patron;
 import sep.model.UserSession;
+
+import java.rmi.RemoteException;
 
 public class ProfileViewModel {
     private final Model model;
@@ -16,6 +20,7 @@ public class ProfileViewModel {
     private final StringProperty error;
     private final StringProperty password;
     private final StringProperty patronID;
+    private final ListProperty<Book> historyOfBooksList;
 
 
 
@@ -30,6 +35,18 @@ public class ProfileViewModel {
         this.password = new SimpleStringProperty("");
         this.patronID = new SimpleStringProperty("");
         this.error = new SimpleStringProperty("");
+        this.historyOfBooksList = new SimpleListProperty<>(FXCollections.observableArrayList());
+    }
+    public void bindHistoryList(ObjectProperty<ObservableList<Book>> property) throws
+        RemoteException
+    {
+        property.bindBidirectional(historyOfBooksList);
+    }
+    public void resetHistoryList(Patron patron) throws RemoteException {
+        historyOfBooksList.setAll(model.getHistoryOfBooks(patron));
+    }
+    public int getAmountOfReadBooks(Patron patron) throws RemoteException{
+        return model.getAmountOfReadBooks(patron);
     }
 
     public void updateUsername(String newUsername,String oldUsername){

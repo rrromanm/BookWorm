@@ -109,19 +109,19 @@ public class MainViewController implements RemotePropertyChangeListener
         mainViewModel.showFiltered(stateChoice,genreChoice,searchChoice);
     }
 
-    @FXML public void onViewProfile()
+    @FXML public void onViewProfile() throws RemoteException
     {
         viewHandler.openView(ViewFactory.PROFILE);
     }
-    @FXML public void onMyBooks()
+    @FXML public void onMyBooks() throws RemoteException
     {
         viewHandler.openView(ViewFactory.MYBOOKS);
     }
-    @FXML public void onSeeEvents()
+    @FXML public void onSeeEvents() throws RemoteException
     {
         viewHandler.openView(ViewFactory.EVENTSVIEW);
     }
-    @FXML public void onDonate()
+    @FXML public void onDonate() throws RemoteException
     {
         viewHandler.openView(ViewFactory.DONATEBOOK);
     }
@@ -135,13 +135,13 @@ public class MainViewController implements RemotePropertyChangeListener
     }
 
     @FXML public void onBorrow() throws RemoteException, SQLException {
-        mainViewModel.borrowBook(selectedBook.get(), loggedInUser);
+        mainViewModel.borrowBook(selectedBook.get(), UserSession.getInstance().getLoggedInUser());
         mainViewModel.resetBookList();
         bookTableView.getSelectionModel().clearSelection();
         borrowButton.setDisable(true);
         //TODO: add alert for when book is borrowed
     }
-    @FXML public void onHelp()
+    @FXML public void onHelp() throws RemoteException
     {
         viewHandler.openView(ViewFactory.HELP);
     }
@@ -177,7 +177,7 @@ public class MainViewController implements RemotePropertyChangeListener
             if ("UserLoggedIn".equals(evt.getPropertyName())) {
                 // Handle user logged-in event
                 loggedInUser = (Patron) evt.getNewValue();
-                System.out.println("User logged in: " + loggedInUser.getUsername());
+                System.out.println("User logged in: " + loggedInUser.getUsername());  //REDUNDANT
               try
               {
                 support.firePropertyChange("UserLoggedIn", null, (Patron)evt.getNewValue());

@@ -16,6 +16,7 @@ import sep.viewmodel.ProfileViewModel;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+import java.rmi.RemoteException;
 import java.util.Optional;
 
 public class ProfileViewController {
@@ -73,6 +74,7 @@ public class ProfileViewController {
     //TODO: CLEAN UP THE CODE !!!
     //TODO: CLEAN UP THE CODE !!!
     public void init(ViewHandler viewHandler, ProfileViewModel viewModel, Region root)
+        throws RemoteException
     {
         this.viewHandler = viewHandler;
         this.profileViewModel = viewModel;
@@ -81,17 +83,23 @@ public class ProfileViewController {
         initializeWishlistTableView();
         populateHBTableView(); // not implemented
         populateWLTableView(); // not implemented
-        initializeLabels(); // not completed (has initialization of patron details tho)
+        initializeLabels(); // only missing the books read information
+        this.profileViewModel.bindHistoryList(historyOfBookTableView.itemsProperty());
+        historyOfBookTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
         edit = false;
         showPassword = false;
 
 
     }
-    public void initializeLabels(){
+    public void initializeLabels() throws RemoteException
+    { //initialize and populate
         if (!labelsInitialized) {
 
             booksReadLabel.setVisible(true);
             feesLabel.setVisible(true);
+            feesLabel.setText("Outstanding fees: " + UserSession.getInstance().getLoggedInUser().getFees());
+            booksReadLabel.setText("Amount of books read: " + profileViewModel.getAmountOfReadBooks(UserSession.getInstance().getLoggedInUser()));
             usernameTextField.setText(UserSession.getInstance().getLoggedInUser().getUsername());
             emailTextField.setText(UserSession.getInstance().getLoggedInUser().getEmail());
             firstNameTextField.setText(UserSession.getInstance().getLoggedInUser().getFirstName());
@@ -126,20 +134,21 @@ public class ProfileViewController {
         WLstateColumn.setCellValueFactory(new PropertyValueFactory<>("WLstate"));
     }
     public void initializeHistoryTableView(){
-        HBtitleColumn.setCellValueFactory(new PropertyValueFactory<>("HBtitle"));
-        HBauthorColumn.setCellValueFactory(new PropertyValueFactory<>("HBauthor"));
-        HByearColumn.setCellValueFactory(new PropertyValueFactory<>("HByear"));
-        HBpublisherColumn.setCellValueFactory(new PropertyValueFactory<>("HBpublisher"));
-        HBisbnColumn.setCellValueFactory(new PropertyValueFactory<>("HBisbn"));
-        HBpageCountColumn.setCellValueFactory(new PropertyValueFactory<>("HBpageCount"));
-        HBbookIdColumn.setCellValueFactory(new PropertyValueFactory<>("HBbookId"));
-        HBgenreColumn.setCellValueFactory(new PropertyValueFactory<>("HBgenre"));
+        HBtitleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
+        HBauthorColumn.setCellValueFactory(new PropertyValueFactory<>("Author"));
+        HByearColumn.setCellValueFactory(new PropertyValueFactory<>("Year"));
+        HBpublisherColumn.setCellValueFactory(new PropertyValueFactory<>("Publisher"));
+        HBisbnColumn.setCellValueFactory(new PropertyValueFactory<>("Isbn"));
+        HBpageCountColumn.setCellValueFactory(new PropertyValueFactory<>("PageCount"));
+        HBbookIdColumn.setCellValueFactory(new PropertyValueFactory<>("BookId"));
+        HBgenreColumn.setCellValueFactory(new PropertyValueFactory<>("Genre"));
     }
     public void populateWLTableView(){
         // We need to get the data about the user wishlist and populate the table with the books
     }
-    public void populateHBTableView(){
-        // We need to get the data about the user history of books and populate the table with the books
+    public void populateHBTableView() throws RemoteException
+    {
+        profileViewModel.resetHistoryList(UserSession.getInstance().getLoggedInUser());
     }
     @FXML public void onEdit(){
         try{
@@ -151,7 +160,6 @@ public class ProfileViewController {
                 passwordTextField.setEditable(true);
                 emailTextField.setEditable(true);
                 phoneNumberTextField.setEditable(true);
-                userIDTextField.setEditable(true);
                 passwordButton.setVisible(true);
                 saveButton.setVisible(true);
 
@@ -204,6 +212,7 @@ public class ProfileViewController {
             String newLastName = lastNameTextField.getText();
             String newPhoneNumber = phoneNumberTextField.getText();
             String newPassword = passwordTextField.getText();
+            Patron newUser = new Patron(UserSession.getInstance().getLoggedInUser().getUserID(),newFirstName,newLastName,newUsername,newPassword,newEmail,newPhoneNumber,UserSession.getInstance().getLoggedInUser().getFees());
 
             UsernameValidator.validate(newUsername);
             EmailValidator.validate(newEmail);
@@ -235,9 +244,15 @@ public class ProfileViewController {
             if(!newPassword.equals(oldPassword)){
                 profileViewModel.updatePassword(newPassword,oldPassword);
             }
+            UserSession.getInstance().setLoggedInUser(newUser);
+            onEdit();
+            labelsInitialized = false;
+            initializeLabels();
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Save changes");
+            alert.setHeaderText("Changes to the account has been saved");
+            alert.show();
 
-
-            edit = false;
 
         }catch (Exception e){
             showAlert(e.getMessage());
@@ -254,13 +269,14 @@ public class ProfileViewController {
             // here we need to implement deleting of the account
         }
     }
-    @FXML public void onBack(){
+    @FXML public void onBack() throws RemoteException
+    {
         viewHandler.openView(ViewFactory.USERMAIN);
     }
     public Region getRoot(){
         return root;
     }
-    public void reset()
+    public void reset() throws RemoteException
     {
         firstNameTextField.setText(originalFirstName);
         lastNameTextField.setText(originalLastName);

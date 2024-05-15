@@ -6,9 +6,10 @@ module sep {
     requires org.postgresql.jdbc;
     requires java.desktop;
     requires remoteobserver;
+    requires javafx.swing;
 
 
-    opens sep to javafx.fxml;
+    opens sep.server to javafx.fxml;
     opens sep.view to javafx.fxml;
     opens sep.model to javafx.base;
 
@@ -16,4 +17,5 @@ module sep {
     exports sep.view;
     exports sep.shared to java.rmi;
     exports sep.model;
+    exports sep.client;
 }

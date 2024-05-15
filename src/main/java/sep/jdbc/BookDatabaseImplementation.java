@@ -20,7 +20,7 @@ public class BookDatabaseImplementation {
     }
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "VIAVIA"); //TODO: YOU NEED TO CHANGE THIS PASSWORD ON WHO IS WORKING ON CODE RN
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "via"); //TODO: YOU NEED TO CHANGE THIS PASSWORD ON WHO IS WORKING ON CODE RN
     }
 
     public Book createBook(String title, String author,int year, String publisher, long isbn, int pageCount, String genre) throws SQLException {
@@ -84,7 +84,7 @@ public class BookDatabaseImplementation {
                 sqlQuery.append(" AND genre = ?");
             }
             if (!search.isEmpty()) {
-                sqlQuery.append(" AND title LIKE ?");
+                sqlQuery.append(" AND LOWER(title) LIKE LOWER(?)");
             }
 
             statement = connection.prepareStatement(sqlQuery.toString());
@@ -97,7 +97,7 @@ public class BookDatabaseImplementation {
                 statement.setString(parameterIndex++, genres);
             }
             if (!search.isEmpty()) {
-                statement.setString(parameterIndex, "%" + search + "%");
+                statement.setString(parameterIndex, "%" + search.toLowerCase() + "%");
             }
             ResultSet resultSet = statement.executeQuery();
             ArrayList<Book> books = new ArrayList<>();
@@ -306,7 +306,6 @@ public class BookDatabaseImplementation {
 
     public ArrayList<Book> readBorrowedBook(Patron patron) throws SQLException{
         try (Connection connection = getConnection()) {
-            System.out.println(patron);
             PreparedStatement statement = connection.prepareStatement(
                 "SELECT " +
                     "    books.id,  " +
@@ -327,7 +326,8 @@ public class BookDatabaseImplementation {
                     "LEFT JOIN " +
                     "    book_worm_db.patron p ON p.id = books.borrower " +
                     "WHERE " +
-                    "    p.id = ?;");
+                    "    p.id = ? "
+                    + " AND bb.return_date > CURRENT_DATE;");
             statement.setInt(1, patron.getUserID());
             ResultSet resultSet = statement.executeQuery();
             ArrayList<Book> books = new ArrayList<>();
@@ -356,6 +356,81 @@ public class BookDatabaseImplementation {
                 books.add(book);
             }
             return books;
+        }
+    }
+    public ArrayList<Book> readHistoryOfBooks(Patron patron) throws SQLException{
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                "SELECT " +
+                    "    books.id,  " +
+                    "    books.title, " +
+                    "    books.authors, " +
+                    "    books.year, " +
+                    "    books.publisher, " +
+                    "    books.isbn, " +
+                    "    books.page_count,"
+                    + " books.state," +
+                    "    g.genre AS genre_name " +
+                    "FROM " +
+                    "    book_worm_db.books " +
+                    "JOIN " +
+                    "    book_worm_db.genre g ON books.genre_id = g.id " +
+                    "LEFT JOIN " +
+                    "    book_worm_db.borrowed_books bb ON books.id = bb.book_id " +
+                    "WHERE " +
+                    "    profile_id = ? "
+                    + " AND bb.return_date <= CURRENT_DATE;");
+            statement.setInt(1, patron.getUserID());
+            ResultSet resultSet = statement.executeQuery();
+            ArrayList<Book> books = new ArrayList<>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String title = resultSet.getString("title");
+                String author = resultSet.getString("authors");
+                int year = resultSet.getInt("year");
+                String publisher = resultSet.getString("publisher");
+                long isbn = resultSet.getLong("isbn");
+                int pageCount = resultSet.getInt("page_count");
+                String state = resultSet.getString("state");
+                String genre = resultSet.getString("genre_name");
+                State state1 = null;
+                Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
+                if (state != null) {
+                    if (state.equalsIgnoreCase("Available")){
+                        state1 = new Available();
+                    } else if(state.equalsIgnoreCase("Borrowed")){
+                        state1 = new Borrowed();
+                    }
+                }
+
+                book.setState(state1);
+                book.setBorrower(patron);
+                books.add(book);
+            }
+            return books;
+        }
+    }
+    public int readAmountOfBooksRead(Patron patron) throws SQLException{
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                "SELECT COUNT(*) " +
+                    "FROM " +
+                    "    book_worm_db.books " +
+                    "JOIN " +
+                    "    book_worm_db.genre g ON books.genre_id = g.id " +
+                    "LEFT JOIN " +
+                    "    book_worm_db.borrowed_books bb ON books.id = bb.book_id " +
+                    "WHERE " +
+                    "    profile_id = ? "
+                    + " AND bb.return_date <= CURRENT_DATE;");
+            statement.setInt(1, patron.getUserID());
+            ResultSet resultSet = statement.executeQuery();
+            ArrayList<Book> books = new ArrayList<>();
+            int amount = 0;
+            while (resultSet.next()) {
+                amount = resultSet.getInt("count");
+            }
+            return amount;
         }
     }
 }
