@@ -84,7 +84,7 @@ public class BookDatabaseImplementation {
                 sqlQuery.append(" AND genre = ?");
             }
             if (!search.isEmpty()) {
-                sqlQuery.append(" AND title LIKE ?");
+                sqlQuery.append(" AND LOWER(title) LIKE LOWER(?)");
             }
 
             statement = connection.prepareStatement(sqlQuery.toString());
@@ -97,7 +97,7 @@ public class BookDatabaseImplementation {
                 statement.setString(parameterIndex++, genres);
             }
             if (!search.isEmpty()) {
-                statement.setString(parameterIndex, "%" + search + "%");
+                statement.setString(parameterIndex, "%" + search.toLowerCase() + "%");
             }
             ResultSet resultSet = statement.executeQuery();
             ArrayList<Book> books = new ArrayList<>();
