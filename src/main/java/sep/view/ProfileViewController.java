@@ -16,6 +16,7 @@ import sep.viewmodel.ProfileViewModel;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+import java.rmi.RemoteException;
 import java.util.Optional;
 
 public class ProfileViewController {
@@ -73,6 +74,7 @@ public class ProfileViewController {
     //TODO: CLEAN UP THE CODE !!!
     //TODO: CLEAN UP THE CODE !!!
     public void init(ViewHandler viewHandler, ProfileViewModel viewModel, Region root)
+        throws RemoteException
     {
         this.viewHandler = viewHandler;
         this.profileViewModel = viewModel;
@@ -82,6 +84,7 @@ public class ProfileViewController {
         populateHBTableView(); // not implemented
         populateWLTableView(); // not implemented
         initializeLabels(); // only missing the books read information
+        this.profileViewModel.bindHistoryList(historyOfBookTableView.itemsProperty());
         edit = false;
         showPassword = false;
 
@@ -127,20 +130,21 @@ public class ProfileViewController {
         WLstateColumn.setCellValueFactory(new PropertyValueFactory<>("WLstate"));
     }
     public void initializeHistoryTableView(){
-        HBtitleColumn.setCellValueFactory(new PropertyValueFactory<>("HBtitle"));
-        HBauthorColumn.setCellValueFactory(new PropertyValueFactory<>("HBauthor"));
-        HByearColumn.setCellValueFactory(new PropertyValueFactory<>("HByear"));
-        HBpublisherColumn.setCellValueFactory(new PropertyValueFactory<>("HBpublisher"));
-        HBisbnColumn.setCellValueFactory(new PropertyValueFactory<>("HBisbn"));
-        HBpageCountColumn.setCellValueFactory(new PropertyValueFactory<>("HBpageCount"));
-        HBbookIdColumn.setCellValueFactory(new PropertyValueFactory<>("HBbookId"));
-        HBgenreColumn.setCellValueFactory(new PropertyValueFactory<>("HBgenre"));
+        HBtitleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
+        HBauthorColumn.setCellValueFactory(new PropertyValueFactory<>("Author"));
+        HByearColumn.setCellValueFactory(new PropertyValueFactory<>("Year"));
+        HBpublisherColumn.setCellValueFactory(new PropertyValueFactory<>("Publisher"));
+        HBisbnColumn.setCellValueFactory(new PropertyValueFactory<>("Isbn"));
+        HBpageCountColumn.setCellValueFactory(new PropertyValueFactory<>("PageCount"));
+        HBbookIdColumn.setCellValueFactory(new PropertyValueFactory<>("BookId"));
+        HBgenreColumn.setCellValueFactory(new PropertyValueFactory<>("Genre"));
     }
     public void populateWLTableView(){
         // We need to get the data about the user wishlist and populate the table with the books
     }
-    public void populateHBTableView(){
-        // We need to get the data about the user history of books and populate the table with the books
+    public void populateHBTableView() throws RemoteException
+    {
+        profileViewModel.resetHistoryList(UserSession.getInstance().getLoggedInUser());
     }
     @FXML public void onEdit(){
         try{

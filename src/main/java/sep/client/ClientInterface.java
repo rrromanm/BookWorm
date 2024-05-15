@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public interface ClientInterface {
     ArrayList<Book> getAllBooks() throws RemoteException;
     ArrayList<Book> getBorrowedBooks(Patron patron) throws RemoteException;
+    ArrayList<Book> getHistoryOfBooks(Patron patron) throws RemoteException;
 
     void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException;
     Patron login(String username, String password) throws RemoteException;

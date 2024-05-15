@@ -52,6 +52,19 @@ public class LibraryImplementation implements LibraryInterface {
         }
     }
 
+    @Override public ArrayList<Book> getHistoryOfBooks(Patron patron)
+        throws RemoteException
+    {
+        try
+        {
+            return this.bookDatabase.readHistoryOfBooks(patron);
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException
     {

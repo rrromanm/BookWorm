@@ -63,10 +63,10 @@ public class MyBooksViewController implements RemotePropertyChangeListener
     }
     public void populateTableView() throws RemoteException
     {
-        myBooksViewModel.resetBookList(loggedInUser);
+        myBooksViewModel.resetBookList(UserSession.getInstance().getLoggedInUser());
     }
     @FXML public void onReturn() throws RemoteException, SQLException {
-        myBooksViewModel.returnBook(selectedBook.get(), loggedInUser);
+        myBooksViewModel.returnBook(selectedBook.get(), UserSession.getInstance().getLoggedInUser());
         populateTableView();
     }
     @FXML public void onExtend(){
