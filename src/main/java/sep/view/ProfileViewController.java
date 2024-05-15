@@ -81,17 +81,18 @@ public class ProfileViewController {
         initializeWishlistTableView();
         populateHBTableView(); // not implemented
         populateWLTableView(); // not implemented
-        initializeLabels(); // not completed (has initialization of patron details tho)
+        initializeLabels(); // only missing the books read information
         edit = false;
         showPassword = false;
 
 
     }
-    public void initializeLabels(){
+    public void initializeLabels(){ //initialize and populate
         if (!labelsInitialized) {
 
-            booksReadLabel.setVisible(true);
+            booksReadLabel.setVisible(false); //in the future we need to change it and implement the amount of books read
             feesLabel.setVisible(true);
+            feesLabel.setText("Outstanding fees: " + UserSession.getInstance().getLoggedInUser().getFees());
             usernameTextField.setText(UserSession.getInstance().getLoggedInUser().getUsername());
             emailTextField.setText(UserSession.getInstance().getLoggedInUser().getEmail());
             firstNameTextField.setText(UserSession.getInstance().getLoggedInUser().getFirstName());
@@ -151,7 +152,6 @@ public class ProfileViewController {
                 passwordTextField.setEditable(true);
                 emailTextField.setEditable(true);
                 phoneNumberTextField.setEditable(true);
-                userIDTextField.setEditable(true);
                 passwordButton.setVisible(true);
                 saveButton.setVisible(true);
 
@@ -204,6 +204,7 @@ public class ProfileViewController {
             String newLastName = lastNameTextField.getText();
             String newPhoneNumber = phoneNumberTextField.getText();
             String newPassword = passwordTextField.getText();
+            Patron newUser = new Patron(UserSession.getInstance().getLoggedInUser().getUserID(),newFirstName,newLastName,newUsername,newPassword,newEmail,newPhoneNumber,UserSession.getInstance().getLoggedInUser().getFees());
 
             UsernameValidator.validate(newUsername);
             EmailValidator.validate(newEmail);
@@ -235,9 +236,15 @@ public class ProfileViewController {
             if(!newPassword.equals(oldPassword)){
                 profileViewModel.updatePassword(newPassword,oldPassword);
             }
+            UserSession.getInstance().setLoggedInUser(newUser);
+            onEdit();
+            labelsInitialized = false;
+            initializeLabels();
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Save changes");
+            alert.setHeaderText("Changes to the account has been saved");
+            alert.show();
 
-
-            edit = false;
 
         }catch (Exception e){
             showAlert(e.getMessage());
