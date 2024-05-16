@@ -139,7 +139,11 @@ public class MainViewController implements RemotePropertyChangeListener
         mainViewModel.resetBookList();
         bookTableView.getSelectionModel().clearSelection();
         borrowButton.setDisable(true);
-        //TODO: add alert for when book is borrowed
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("Book borrowed successfully, enjoy!");
+        alert.show();
     }
     @FXML public void onWishlist() throws RemoteException, SQLException{
         mainViewModel.wishlistBook(selectedBook.get(),UserSession.getInstance().getLoggedInUser());
