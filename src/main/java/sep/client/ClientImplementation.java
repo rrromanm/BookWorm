@@ -59,7 +59,18 @@ public class ClientImplementation extends UnicastRemoteObject implements RemoteP
         library.borrowBooks(book, patron);
     }
 
-    @Override
+  @Override public void wishlistBook(Book book, Patron patron) throws RemoteException, SQLException
+  {
+    library.wishlistBook(book, patron);
+  }
+
+  @Override public boolean isWishlisted(Book book, Patron patron)
+      throws RemoteException, SQLException
+  {
+    return library.isWishlisted(book, patron);
+  }
+
+  @Override
     public void returnBookToDatabase(Book book, Patron patron) throws SQLException, RemoteException {
         library.returnBookToDatabase(book, patron);
     }

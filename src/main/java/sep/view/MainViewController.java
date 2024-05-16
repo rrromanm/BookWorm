@@ -24,6 +24,7 @@ public class MainViewController implements RemotePropertyChangeListener
     @FXML private Button seeEventsButton;
     @FXML private Button donateButton;
     @FXML private Button borrowButton;
+    @FXML private Button wishlistButton;
     @FXML private Button helpButton;
     @FXML private Button logoutButton;
     @FXML private Button searchButton;
@@ -127,7 +128,7 @@ public class MainViewController implements RemotePropertyChangeListener
 
 
 
-    public void selectBook() throws RemoteException {
+    public void selectBook() throws RemoteException { // idk kacengas fix pls
         mainViewModel.bindSelectedBook(bookTableView.getSelectionModel().selectedItemProperty());
         //TODO: check if without this user can get more books
         bookTableView.getSelectionModel().clearSelection();
@@ -140,6 +141,12 @@ public class MainViewController implements RemotePropertyChangeListener
         borrowButton.setDisable(true);
         //TODO: add alert for when book is borrowed
     }
+    @FXML public void onWishlist() throws RemoteException, SQLException{
+        mainViewModel.wishlistBook(selectedBook.get(),UserSession.getInstance().getLoggedInUser());
+        mainViewModel.resetBookList();
+        bookTableView.getSelectionModel().clearSelection();
+        wishlistButton.setDisable(true);
+    }
     @FXML public void onHelp() throws RemoteException
     {
         viewHandler.openView(ViewFactory.HELP);
@@ -149,7 +156,8 @@ public class MainViewController implements RemotePropertyChangeListener
         viewHandler.closeView();
         // maybe we need to add some more so the user disconnects from the server
     }
-    @FXML public void onSelect(){
+    @FXML public void onSelect() throws SQLException, RemoteException
+    {
         if(selectedBook.get().getState() instanceof Available)
         {
             borrowButton.setDisable(false);
@@ -157,7 +165,12 @@ public class MainViewController implements RemotePropertyChangeListener
         if(selectedBook.get().getState() instanceof Borrowed) {
             borrowButton.setDisable(true);
         }
-
+        if(mainViewModel.isWishlisted(selectedBook.get(),UserSession.getInstance().getLoggedInUser())){
+            wishlistButton.setDisable(true);
+        }
+        if(!mainViewModel.isWishlisted(selectedBook.get(),UserSession.getInstance().getLoggedInUser())){
+            wishlistButton.setDisable(false);
+        }
         // we still need to figure out how to show the description of the book
     }
     public Region getRoot(){
