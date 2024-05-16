@@ -51,6 +51,12 @@ public class MainViewModel implements PropertyChangeListener
     public void borrowBook(Book book, Patron patron) throws RemoteException, SQLException {
         model.borrowBooks(book, patron);
     }
+    public void wishlistBook(Book book,Patron patron) throws RemoteException, SQLException{
+        model.wishlistBook(book,patron);
+    }
+    public boolean isWishlisted(Book book,Patron patron) throws RemoteException, SQLException{
+        return model.isWishlisted(book,patron);
+    }
      public void addPropertyChangeListener(RemotePropertyChangeListener<Patron> listener)
     {
         support.addPropertyChangeListener(listener);

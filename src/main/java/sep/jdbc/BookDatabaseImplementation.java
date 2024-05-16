@@ -433,4 +433,90 @@ public class BookDatabaseImplementation {
             return amount;
         }
     }
+    public void wishlistBook(Book book, Patron patron) throws SQLException {
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                "INSERT INTO book_worm_db.wishlist (profile_id, book_id)\n" +
+                    "VALUES (?, ?);"
+            );
+            statement.setInt(1, patron.getUserID());
+            statement.setInt(2, book.getBookId());
+            statement.executeUpdate();
+
+        }
+    }
+    public boolean isWishlisted(Book book,Patron patron) throws SQLException{
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("SELECT count(*)\n"
+                + "FROM book_worm_db.wishlist\n"
+                + "WHERE profile_id = ? AND book_id = ?;");
+            statement.setInt(1, patron.getUserID());
+            statement.setInt(2, book.getBookId());
+            ResultSet resultSet = statement.executeQuery();
+            int amount = 0;
+            while (resultSet.next()) {
+                amount = resultSet.getInt("count");
+            }
+            if(amount == 1){
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    public ArrayList<Book> readWishlistedBooks(Patron patron) throws SQLException{
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                "SELECT " +
+                    "    books.id,  " +
+                    "    books.title, " +
+                    "    books.authors, " +
+                    "    books.year, " +
+                    "    books.publisher, " +
+                    "    books.isbn, " +
+                    "    books.page_count,"
+                    + " books.state," +
+                    "    g.genre AS genre_name " +
+                    "FROM " +
+                    "    book_worm_db.books " +
+                    "JOIN " +
+                    "    book_worm_db.genre g ON books.genre_id = g.id " +
+                    "LEFT JOIN " +
+                    "    book_worm_db.wishlist bb ON books.id = bb.book_id " +
+                    "WHERE " +
+                    "    profile_id = ? ;");
+            statement.setInt(1, patron.getUserID());
+            ResultSet resultSet = statement.executeQuery();
+            ArrayList<Book> books = new ArrayList<>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String title = resultSet.getString("title");
+                String author = resultSet.getString("authors");
+                int year = resultSet.getInt("year");
+                String publisher = resultSet.getString("publisher");
+                long isbn = resultSet.getLong("isbn");
+                int pageCount = resultSet.getInt("page_count");
+                String state = resultSet.getString("state");
+                String genre = resultSet.getString("genre_name");
+                State state1 = null;
+                Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
+                if (state != null) {
+                    if (state.equalsIgnoreCase("Available")){
+                        state1 = new Available();
+                    } else if(state.equalsIgnoreCase("Borrowed")){
+                        state1 = new Borrowed();
+                    }
+                }
+
+                book.setState(state1);
+                book.setBorrower(patron);
+                books.add(book);
+            }
+            return books;
+        }
+    }
+
+
 }

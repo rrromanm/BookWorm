@@ -192,6 +192,18 @@ public class LibraryImplementation implements LibraryInterface {
 //        System.out.println("borrowing book sent from library implementation");
     }
 
+    @Override public void wishlistBook(Book book, Patron patron)
+        throws RemoteException, SQLException
+    {
+        bookDatabase.wishlistBook(book,patron);
+    }
+
+    @Override public boolean isWishlisted(Book book, Patron patron)
+        throws RemoteException, SQLException
+    {
+        return bookDatabase.isWishlisted(book,patron);
+    }
+
     @Override public void returnBookToDatabase(Book book, Patron patron) throws SQLException, RemoteException {
         bookDatabase.returnBookToDatabase(book,patron);
         this.support.firePropertyChange("returnedBook", null, patron);

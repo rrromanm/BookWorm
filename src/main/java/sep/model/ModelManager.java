@@ -24,17 +24,6 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
         this.client.addPropertyChangeListener(this);
         this.support = new PropertyChangeSupport(this);
     }
-
-    @Override
-    public synchronized void borrow(Book book, Patron patron) {
-        book.borrow(book,patron);
-    }
-
-    @Override public synchronized void returnBook(Book book, Patron patron)
-    {
-        book.returnBook(book,patron);
-    }
-
     @Override
     public ArrayList<Book> getAllBooks() throws RemoteException {
         return client.getAllBooks();
@@ -99,6 +88,18 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
     @Override
     public void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException {
         client.borrowBooks(book,patron);
+    }
+
+    @Override public void wishlistBook(Book book, Patron patron)
+        throws RemoteException, SQLException
+    {
+        client.wishlistBook(book,patron);
+    }
+
+    @Override public boolean isWishlisted(Book book, Patron patron)
+        throws RemoteException, SQLException
+    {
+        return client.isWishlisted(book,patron);
     }
 
     @Override
