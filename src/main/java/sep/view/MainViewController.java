@@ -172,21 +172,6 @@ public class MainViewController implements RemotePropertyChangeListener
 
     @Override public void propertyChange(RemotePropertyChangeEvent evt) throws RemoteException
     {
-        Platform.runLater(() -> {
-            if ("UserLoggedIn".equals(evt.getPropertyName())) {
-                // Handle user logged-in event
-                loggedInUser = (Patron) evt.getNewValue();
-                System.out.println("User logged in: " + loggedInUser.getUsername());  //REDUNDANT
-              try
-              {
-                support.firePropertyChange("UserLoggedIn", null, (Patron)evt.getNewValue());
-              }
-              catch (RemoteException e)
-              {
-                throw new RuntimeException(e);
-              }
-              // Perform any UI updates or actions here
-            }
-        });
+
     }
 }
