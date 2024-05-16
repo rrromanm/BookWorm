@@ -43,6 +43,12 @@ public class ClientImplementation extends UnicastRemoteObject implements RemoteP
     return library.getHistoryOfBooks(patron);
   }
 
+  @Override public ArrayList<Book> getWishlistedBooks(Patron patron)
+      throws RemoteException
+  {
+    return library.getWishlistedBooks(patron);
+  }
+
   @Override public int getAmountOfReadBooks(Patron patron)
       throws RemoteException
   {

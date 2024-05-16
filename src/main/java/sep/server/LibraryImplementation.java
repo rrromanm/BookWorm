@@ -67,6 +67,19 @@ public class LibraryImplementation implements LibraryInterface {
         }
     }
 
+    @Override public ArrayList<Book> getWishlistedBooks(Patron patron)
+        throws RemoteException
+    {
+        try
+        {
+            return this.bookDatabase.readWishlistedBooks(patron);
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override public int getAmountOfReadBooks(Patron patron)
         throws RemoteException
     {
