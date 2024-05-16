@@ -40,7 +40,7 @@ public class MyBooksViewModel implements PropertyChangeListener
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("ResetBooks".equals(evt.getPropertyName())) {
+        if ("BorrowBook".equals(evt.getPropertyName())) {
             try {
                 resetBookList(UserSession.getInstance().getLoggedInUser());
             } catch (RemoteException e) {

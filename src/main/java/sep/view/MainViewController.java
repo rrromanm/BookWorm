@@ -60,7 +60,6 @@ public class MainViewController implements RemotePropertyChangeListener
         this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
         this.mainViewModel.bindList(bookTableView.itemsProperty());
         viewModel.resetBookList();
-        mainViewModel.addPropertyChangeListener(this);
         // somehow we need to figure out how to change the button to an image of the bell for notification and
         // make imageView fit into the circle
         // populate the tableView should also be here (we will do it from the database)
