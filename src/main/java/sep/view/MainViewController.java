@@ -46,7 +46,6 @@ public class MainViewController implements RemotePropertyChangeListener
     private ViewHandler viewHandler;
     private MainViewModel mainViewModel;
     private ReadOnlyObjectProperty<Book> selectedBook;
-    private Patron loggedInUser;
     private RemotePropertyChangeSupport<Patron> support;
     public void init(ViewHandler viewHandler, MainViewModel viewModel, Region root)
         throws RemoteException, SQLException
@@ -124,14 +123,6 @@ public class MainViewController implements RemotePropertyChangeListener
     @FXML public void onDonate() throws RemoteException
     {
         viewHandler.openView(ViewFactory.DONATEBOOK);
-    }
-
-
-
-    public void selectBook() throws RemoteException { // idk kacengas fix pls
-        mainViewModel.bindSelectedBook(bookTableView.getSelectionModel().selectedItemProperty());
-        //TODO: check if without this user can get more books
-        bookTableView.getSelectionModel().clearSelection();
     }
 
     @FXML public void onBorrow() throws RemoteException, SQLException {
