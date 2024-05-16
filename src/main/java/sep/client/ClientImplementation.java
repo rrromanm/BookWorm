@@ -90,7 +90,6 @@ public class ClientImplementation extends UnicastRemoteObject implements RemoteP
     public Patron login(String username, String password) throws RemoteException {
         Patron userLoggedIn = library.login(username, password);
         UserSession.getInstance().setLoggedInUser(userLoggedIn);
-        support.firePropertyChange("UserLoggedIn",null,userLoggedIn);
         return userLoggedIn;
     }
 
