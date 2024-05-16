@@ -2,7 +2,6 @@ package sep.server;
 
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
-import sep.client.ClientInterface;
 import sep.jdbc.BookDatabaseImplementation;
 import sep.jdbc.PatronDatabaseImplementation;
 import sep.model.Book;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 public class LibraryImplementation implements LibraryInterface {
     private BookDatabaseImplementation bookDatabase;
     private PatronDatabaseImplementation patronDatabase;
-    private final RemotePropertyChangeSupport<Patron> support;
+    private final RemotePropertyChangeSupport support;
 
     public LibraryImplementation() {
         try
@@ -115,7 +114,6 @@ public class LibraryImplementation implements LibraryInterface {
     public Patron login(String username, String password) throws RemoteException {
         try{
             return patronDatabase.login(username, password);
-
         }catch(SQLException e){
             throw new IllegalArgumentException("Account doesn't exist.");
         }
@@ -188,8 +186,7 @@ public class LibraryImplementation implements LibraryInterface {
     @Override
     public void borrowBooks(Book book, Patron parton) throws RemoteException, SQLException {
         bookDatabase.borrowBook(book,parton);
-        this.support.firePropertyChange("BorrowBook", null,parton);
-//        System.out.println("borrowing book sent from library implementation");
+        this.support.firePropertyChange("BorrowBook", null,book);
     }
 
     @Override public void wishlistBook(Book book, Patron patron)
@@ -206,16 +203,11 @@ public class LibraryImplementation implements LibraryInterface {
 
     @Override public void returnBookToDatabase(Book book, Patron patron) throws SQLException, RemoteException {
         bookDatabase.returnBookToDatabase(book,patron);
-        this.support.firePropertyChange("returnedBook", null, patron);
-        System.out.println("returning book sent from library implementation");
+        this.support.firePropertyChange("ReturnBook", null, book);
     }
 
     @Override
-    public synchronized void addRemotePropertyChangeListener(RemotePropertyChangeListener listener) throws RemoteException
-    {
+    public void addRemotePropertyChangeListener(RemotePropertyChangeListener listener) throws RemoteException {
         this.support.addPropertyChangeListener(listener);
-        System.out.println("property change listener added" + listener.toString());
-        System.out.println(this.support.getPropertyChangeListeners().length);
-        support.firePropertyChange("something", null, null);
     }
 }

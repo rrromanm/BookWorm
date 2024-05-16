@@ -12,11 +12,12 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class ClientImplementation implements RemotePropertyChangeListener,ClientInterface, Serializable {
-    private LibraryInterface library;
+public class ClientImplementation extends UnicastRemoteObject implements RemotePropertyChangeListener,ClientInterface, Serializable {
+    private final LibraryInterface library;
     private final PropertyChangeSupport support;
 
     public ClientImplementation(LibraryInterface library) throws RemoteException {
@@ -73,17 +74,6 @@ public class ClientImplementation implements RemotePropertyChangeListener,Client
     public void returnBookToDatabase(Book book, Patron patron) throws SQLException, RemoteException {
         library.returnBookToDatabase(book, patron);
     }
-
-  @Override public void addPropertyChangeListener(PropertyChangeListener listener)
-  {
-    this.support.addPropertyChangeListener(listener);
-    System.out.println("client added property change listeners " + support.getPropertyChangeListeners().length);
-  }
-
-  @Override public void removePropertyChangeListener(PropertyChangeListener listener)
-  {
-    support.removePropertyChangeListener(listener);
-  }
 
   @Override
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException {
@@ -159,12 +149,25 @@ public class ClientImplementation implements RemotePropertyChangeListener,Client
     }
 
     @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.support.addPropertyChangeListener(listener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        this.support.removePropertyChangeListener(listener);
+    }
+
+    @Override
     public void propertyChange(RemotePropertyChangeEvent event) throws RemoteException {
-        System.out.println("received" + event.getPropertyName());
         Platform.runLater(() -> {
-            if (event.getPropertyName().equals("borrowedBook") || event.getPropertyName().equals("returnedBook")) {
-                this.support.firePropertyChange("ResetBooks", false, true);
-                System.out.println(this.support.getPropertyChangeListeners().length);
+            if (event.getPropertyName().equals("BorrowBook"))
+            {
+                this.support.firePropertyChange("BorrowBook", false, true);
+            }
+            if (event.getPropertyName().equals("ReturnBook"))
+            {
+                this.support.firePropertyChange("ReturnBook", false, true);
             }
         });
     }

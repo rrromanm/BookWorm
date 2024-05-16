@@ -11,6 +11,7 @@ module sep {
 
     opens sep.server to javafx.fxml;
     opens sep.view to javafx.fxml;
+    opens sep.client to javafx.fxml;
     opens sep.model to javafx.base;
 
     exports sep;

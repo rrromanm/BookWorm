@@ -1,5 +1,7 @@
 package sep.model;
 
+import dk.via.remote.observer.RemotePropertyChangeEvent;
+import dk.via.remote.observer.RemotePropertyChangeListener;
 import sep.client.ClientImplementation;
 import sep.client.ClientInterface;
 import sep.model.validators.*;
@@ -189,6 +191,5 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         support.firePropertyChange(evt);
-        System.out.println("received in model manager" + evt.getPropertyName());
     }
 }
