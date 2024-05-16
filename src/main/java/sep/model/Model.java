@@ -11,12 +11,10 @@ public interface Model {
     ArrayList<Book> getAllBooks() throws RemoteException;
     ArrayList<Book> getBorrowedBooks(Patron patron) throws RemoteException;
     ArrayList<Book> getHistoryOfBooks(Patron patron) throws RemoteException;
+    ArrayList<Book> getWishlistedBooks(Patron patron) throws RemoteException;
     void addPropertyChangeListener(PropertyChangeListener listener);
     void removePropertyChangeListener(PropertyChangeListener listener);
     int getAmountOfReadBooks(Patron patron) throws RemoteException;
-    void borrow(Book book, Patron patron);
-    void returnBook(Book book, Patron patron);
-
     void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException;
     Patron login(String username, String password) throws RemoteException;
     boolean loginAsAdmin(String username, String password) throws RemoteException;
@@ -28,6 +26,8 @@ public interface Model {
     void updatePassword(String oldPassowrd, String newPassowrd) throws RemoteException;
     ArrayList<Book> filter(String genre, String state, String search) throws RemoteException;
     void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException;
+    void wishlistBook(Book book, Patron patron) throws RemoteException, SQLException;
+    boolean isWishlisted(Book book, Patron patron) throws RemoteException, SQLException;
     void returnBookToDatabase(Book book, Patron patron) throws RemoteException, SQLException;
 }
 

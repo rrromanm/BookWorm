@@ -21,14 +21,12 @@ public class MainViewModel implements PropertyChangeListener
     private final Model model;
     private final ListProperty<Book> bookList;
     private final SimpleObjectProperty<Book> selectedBook;
-    private final RemotePropertyChangeSupport<Patron> support;
 
     public MainViewModel(Model model)
     {
         this.model = model;
         this.bookList = new SimpleListProperty<>(FXCollections.observableArrayList());
         this.selectedBook = new SimpleObjectProperty<>();
-        this.support = new RemotePropertyChangeSupport<>();
         model.addPropertyChangeListener(this);
     }
 
@@ -51,41 +49,27 @@ public class MainViewModel implements PropertyChangeListener
     public void borrowBook(Book book, Patron patron) throws RemoteException, SQLException {
         model.borrowBooks(book, patron);
     }
-     public void addPropertyChangeListener(RemotePropertyChangeListener<Patron> listener)
-    {
-        support.addPropertyChangeListener(listener);
+    public void wishlistBook(Book book,Patron patron) throws RemoteException, SQLException{
+        model.wishlistBook(book,patron);
     }
-
-     public void removePropertyChangeListener(RemotePropertyChangeListener<Patron> listener)
-    {
-        support.removePropertyChangeListener(listener);
+    public boolean isWishlisted(Book book,Patron patron) throws RemoteException, SQLException{
+        return model.isWishlisted(book,patron);
     }
-
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("received in view model " + evt.getPropertyName());
         Platform.runLater(() -> {
-            if ("UserLoggedIn".equals(evt.getPropertyName())){
-                try
-                {
-                    support.firePropertyChange("UserLoggedIn", null, (Patron)evt.getNewValue());
-                }
-                catch (RemoteException e)
-                {
-                    throw new RuntimeException(e);
-                }
-            }
-            if ("BookBorrowed".equals(evt.getPropertyName())){
+            if ("BorrowBook".equals(evt.getPropertyName())){
                 try {
                     resetBookList();
                     System.out.println("refreshed table");
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
-            } else if ("borrowedBook".equals(evt.getPropertyName()) || "returnedBook".equals(evt.getPropertyName())) {
+            }
+            if ("ReturnBook".equals(evt.getPropertyName())){
                 try {
                     resetBookList();
-                    support.firePropertyChange("ResetBooks", null, (Patron)evt.getNewValue());
                     System.out.println("refreshed table");
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);

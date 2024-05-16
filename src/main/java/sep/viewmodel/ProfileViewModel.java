@@ -21,6 +21,7 @@ public class ProfileViewModel {
     private final StringProperty password;
     private final StringProperty patronID;
     private final ListProperty<Book> historyOfBooksList;
+    private final ListProperty<Book> wishlistList;
 
 
 
@@ -36,14 +37,23 @@ public class ProfileViewModel {
         this.patronID = new SimpleStringProperty("");
         this.error = new SimpleStringProperty("");
         this.historyOfBooksList = new SimpleListProperty<>(FXCollections.observableArrayList());
+        this.wishlistList = new SimpleListProperty<>(FXCollections.observableArrayList());
     }
     public void bindHistoryList(ObjectProperty<ObservableList<Book>> property) throws
         RemoteException
     {
         property.bindBidirectional(historyOfBooksList);
     }
+    public void bindWishlistList(ObjectProperty<ObservableList<Book>> property) throws
+        RemoteException
+    {
+        property.bindBidirectional(wishlistList);
+    }
     public void resetHistoryList(Patron patron) throws RemoteException {
         historyOfBooksList.setAll(model.getHistoryOfBooks(patron));
+    }
+    public void resetWishlistList(Patron patron) throws RemoteException{
+        wishlistList.setAll(model.getWishlistedBooks(patron));
     }
     public int getAmountOfReadBooks(Patron patron) throws RemoteException{
         return model.getAmountOfReadBooks(patron);

@@ -13,6 +13,7 @@ public interface ClientInterface {
     ArrayList<Book> getAllBooks() throws RemoteException;
     ArrayList<Book> getBorrowedBooks(Patron patron) throws RemoteException;
     ArrayList<Book> getHistoryOfBooks(Patron patron) throws RemoteException;
+    ArrayList<Book> getWishlistedBooks(Patron patron) throws RemoteException;
     int getAmountOfReadBooks(Patron patron) throws RemoteException;
 
 
@@ -27,6 +28,8 @@ public interface ClientInterface {
     void updatePassword(String oldPassword, String newPassword) throws RemoteException;
     ArrayList<Book> filter(String genre, String state,String search) throws RemoteException;
     void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException;
+    void wishlistBook(Book book, Patron patron) throws RemoteException, SQLException;
+    boolean isWishlisted(Book book, Patron patron) throws RemoteException, SQLException;
     void addPropertyChangeListener(PropertyChangeListener listener);
     void removePropertyChangeListener(PropertyChangeListener listener);
     void returnBookToDatabase(Book book, Patron patron) throws SQLException, RemoteException;

@@ -42,5 +42,6 @@
          <image>
             <Image url="@bookworm2.jpg" />
          </image></ImageView>
+      <Button fx:id="wishlistButton" disable="true" layoutX="23.0" layoutY="336.0" mnemonicParsing="false" onAction="#onWishlist" prefHeight="25.0" prefWidth="132.0" text="Wishlist" />
     </children>
 </AnchorPane>

@@ -1,5 +1,7 @@
 package sep.model;
 
+import dk.via.remote.observer.RemotePropertyChangeEvent;
+import dk.via.remote.observer.RemotePropertyChangeListener;
 import sep.client.ClientImplementation;
 import sep.client.ClientInterface;
 import sep.model.validators.*;
@@ -24,17 +26,6 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
         this.client.addPropertyChangeListener(this);
         this.support = new PropertyChangeSupport(this);
     }
-
-    @Override
-    public synchronized void borrow(Book book, Patron patron) {
-        book.borrow(book,patron);
-    }
-
-    @Override public synchronized void returnBook(Book book, Patron patron)
-    {
-        book.returnBook(book,patron);
-    }
-
     @Override
     public ArrayList<Book> getAllBooks() throws RemoteException {
         return client.getAllBooks();
@@ -50,6 +41,12 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
         throws RemoteException
     {
         return client.getHistoryOfBooks(patron);
+    }
+
+    @Override public ArrayList<Book> getWishlistedBooks(Patron patron)
+        throws RemoteException
+    {
+        return client.getWishlistedBooks(patron);
     }
 
     @Override public int getAmountOfReadBooks(Patron patron)
@@ -99,6 +96,18 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
     @Override
     public void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException {
         client.borrowBooks(book,patron);
+    }
+
+    @Override public void wishlistBook(Book book, Patron patron)
+        throws RemoteException, SQLException
+    {
+        client.wishlistBook(book,patron);
+    }
+
+    @Override public boolean isWishlisted(Book book, Patron patron)
+        throws RemoteException, SQLException
+    {
+        return client.isWishlisted(book,patron);
     }
 
     @Override
@@ -184,6 +193,5 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         support.firePropertyChange(evt);
-        System.out.println("received in model manager" + evt.getPropertyName());
     }
 }

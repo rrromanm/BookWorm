@@ -12,11 +12,12 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class ClientImplementation implements RemotePropertyChangeListener,ClientInterface, Serializable {
-    private LibraryInterface library;
+public class ClientImplementation extends UnicastRemoteObject implements RemotePropertyChangeListener,ClientInterface, Serializable {
+    private final LibraryInterface library;
     private final PropertyChangeSupport support;
 
     public ClientImplementation(LibraryInterface library) throws RemoteException {
@@ -42,6 +43,12 @@ public class ClientImplementation implements RemotePropertyChangeListener,Client
     return library.getHistoryOfBooks(patron);
   }
 
+  @Override public ArrayList<Book> getWishlistedBooks(Patron patron)
+      throws RemoteException
+  {
+    return library.getWishlistedBooks(patron);
+  }
+
   @Override public int getAmountOfReadBooks(Patron patron)
       throws RemoteException
   {
@@ -58,21 +65,21 @@ public class ClientImplementation implements RemotePropertyChangeListener,Client
         library.borrowBooks(book, patron);
     }
 
-    @Override
+  @Override public void wishlistBook(Book book, Patron patron) throws RemoteException, SQLException
+  {
+    library.wishlistBook(book, patron);
+  }
+
+  @Override public boolean isWishlisted(Book book, Patron patron)
+      throws RemoteException, SQLException
+  {
+    return library.isWishlisted(book, patron);
+  }
+
+  @Override
     public void returnBookToDatabase(Book book, Patron patron) throws SQLException, RemoteException {
         library.returnBookToDatabase(book, patron);
     }
-
-  @Override public void addPropertyChangeListener(PropertyChangeListener listener)
-  {
-    this.support.addPropertyChangeListener(listener);
-    System.out.println("client added property change listeners " + support.getPropertyChangeListeners().length);
-  }
-
-  @Override public void removePropertyChangeListener(PropertyChangeListener listener)
-  {
-    support.removePropertyChangeListener(listener);
-  }
 
   @Override
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException {
@@ -88,7 +95,6 @@ public class ClientImplementation implements RemotePropertyChangeListener,Client
     public Patron login(String username, String password) throws RemoteException {
         Patron userLoggedIn = library.login(username, password);
         UserSession.getInstance().setLoggedInUser(userLoggedIn);
-        support.firePropertyChange("UserLoggedIn",null,userLoggedIn);
         return userLoggedIn;
     }
 
@@ -153,12 +159,25 @@ public class ClientImplementation implements RemotePropertyChangeListener,Client
     }
 
     @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.support.addPropertyChangeListener(listener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        this.support.removePropertyChangeListener(listener);
+    }
+
+    @Override
     public void propertyChange(RemotePropertyChangeEvent event) throws RemoteException {
-        System.out.println("received" + event.getPropertyName());
         Platform.runLater(() -> {
-            if (event.getPropertyName().equals("borrowedBook") || event.getPropertyName().equals("returnedBook")) {
-                this.support.firePropertyChange("ResetBooks", false, true);
-                System.out.println(this.support.getPropertyChangeListeners().length);
+            if (event.getPropertyName().equals("BorrowBook"))
+            {
+                this.support.firePropertyChange("BorrowBook", false, true);
+            }
+            if (event.getPropertyName().equals("ReturnBook"))
+            {
+                this.support.firePropertyChange("ReturnBook", false, true);
             }
         });
     }

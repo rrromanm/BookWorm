@@ -24,6 +24,7 @@ public class MainViewController implements RemotePropertyChangeListener
     @FXML private Button seeEventsButton;
     @FXML private Button donateButton;
     @FXML private Button borrowButton;
+    @FXML private Button wishlistButton;
     @FXML private Button helpButton;
     @FXML private Button logoutButton;
     @FXML private Button searchButton;
@@ -60,7 +61,6 @@ public class MainViewController implements RemotePropertyChangeListener
         this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
         this.mainViewModel.bindList(bookTableView.itemsProperty());
         viewModel.resetBookList();
-        mainViewModel.addPropertyChangeListener(this);
         // somehow we need to figure out how to change the button to an image of the bell for notification and
         // make imageView fit into the circle
         // populate the tableView should also be here (we will do it from the database)
@@ -128,7 +128,7 @@ public class MainViewController implements RemotePropertyChangeListener
 
 
 
-    public void selectBook() throws RemoteException {
+    public void selectBook() throws RemoteException { // idk kacengas fix pls
         mainViewModel.bindSelectedBook(bookTableView.getSelectionModel().selectedItemProperty());
         //TODO: check if without this user can get more books
         bookTableView.getSelectionModel().clearSelection();
@@ -139,7 +139,17 @@ public class MainViewController implements RemotePropertyChangeListener
         mainViewModel.resetBookList();
         bookTableView.getSelectionModel().clearSelection();
         borrowButton.setDisable(true);
-        //TODO: add alert for when book is borrowed
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("Book borrowed successfully, enjoy!");
+        alert.show();
+    }
+    @FXML public void onWishlist() throws RemoteException, SQLException{
+        mainViewModel.wishlistBook(selectedBook.get(),UserSession.getInstance().getLoggedInUser());
+        mainViewModel.resetBookList();
+        bookTableView.getSelectionModel().clearSelection();
+        wishlistButton.setDisable(true);
     }
     @FXML public void onHelp() throws RemoteException
     {
@@ -150,7 +160,8 @@ public class MainViewController implements RemotePropertyChangeListener
         viewHandler.closeView();
         // maybe we need to add some more so the user disconnects from the server
     }
-    @FXML public void onSelect(){
+    @FXML public void onSelect() throws SQLException, RemoteException
+    {
         if(selectedBook.get().getState() instanceof Available)
         {
             borrowButton.setDisable(false);
@@ -158,7 +169,12 @@ public class MainViewController implements RemotePropertyChangeListener
         if(selectedBook.get().getState() instanceof Borrowed) {
             borrowButton.setDisable(true);
         }
-
+        if(mainViewModel.isWishlisted(selectedBook.get(),UserSession.getInstance().getLoggedInUser())){
+            wishlistButton.setDisable(true);
+        }
+        if(!mainViewModel.isWishlisted(selectedBook.get(),UserSession.getInstance().getLoggedInUser())){
+            wishlistButton.setDisable(false);
+        }
         // we still need to figure out how to show the description of the book
     }
     public Region getRoot(){
@@ -173,21 +189,6 @@ public class MainViewController implements RemotePropertyChangeListener
 
     @Override public void propertyChange(RemotePropertyChangeEvent evt) throws RemoteException
     {
-        Platform.runLater(() -> {
-            if ("UserLoggedIn".equals(evt.getPropertyName())) {
-                // Handle user logged-in event
-                loggedInUser = (Patron) evt.getNewValue();
-                System.out.println("User logged in: " + loggedInUser.getUsername());  //REDUNDANT
-              try
-              {
-                support.firePropertyChange("UserLoggedIn", null, (Patron)evt.getNewValue());
-              }
-              catch (RemoteException e)
-              {
-                throw new RuntimeException(e);
-              }
-              // Perform any UI updates or actions here
-            }
-        });
+
     }
 }
