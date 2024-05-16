@@ -86,17 +86,14 @@ public class LibraryImplementation implements LibraryInterface {
     {
         try
         {
-            if (patronDatabase.usernameExists(username)){
-                System.out.println("Username already in use.");
-            } else {
                 this.patronDatabase.createPatron(username, password, first_name,
                     last_name, email, phone_number);
-            }
+
 
         }
         catch (SQLException ignored)
         {
-
+            throw new RuntimeException(ignored);
         }
     }
 

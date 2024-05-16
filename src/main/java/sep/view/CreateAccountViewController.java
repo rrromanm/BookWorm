@@ -1,13 +1,17 @@
 package sep.view;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import sep.viewmodel.CreateAccountViewModel;
 import javafx.scene.layout.Region;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 public class CreateAccountViewController {
     private ViewHandler viewHandler;
@@ -39,7 +43,6 @@ public class CreateAccountViewController {
         this.viewModel.bindPhoneNumber(phoneNumberTextField.textProperty());
         this.viewModel.bindRepeatPassword(repeatPasswordTextField.textProperty());
         this.viewModel.bindPassword(passwordTextField.textProperty());
-        this.viewModel.bindError(error.textProperty());
     }
 
     @FXML
@@ -47,7 +50,7 @@ public class CreateAccountViewController {
     {
         viewHandler.openView("login");
     }
-   @FXML protected void createAccountButtonClicked() {
+   @FXML protected void createAccountButtonClicked() throws RuntimeException {
 
        try {
             this.viewModel.createPatron();
@@ -69,4 +72,5 @@ public class CreateAccountViewController {
     {
         return root;
     }
+
 }

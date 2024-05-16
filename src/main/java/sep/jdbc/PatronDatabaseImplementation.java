@@ -19,11 +19,20 @@ public class PatronDatabaseImplementation {
         return instance;
     }
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "via");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "VIAVIA");
     }
-    //TODO: Implement checking if given username already exists. Can use method I used to update account details.
+
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws SQLException {
         try(Connection conn = getConnection()) {
+            if (usernameExists(username)) {
+                throw new SQLException("This username already exists: " + username);
+            }
+            if (emailExists(email)) {
+                throw new SQLException("This email is already registered: " + email);
+            }
+            if (phoneExists(phone_number)) {
+                throw new SQLException("This phone number is already registered: " + phone_number);
+            }
             PreparedStatement statement = conn.prepareStatement("INSERT INTO book_worm_db.patron(first_name, last_name, username, password, email, phone_number) VALUES (?,?,?,?,?,?)");
             statement.setString(1, first_name);
             statement.setString(2, last_name);
@@ -32,8 +41,51 @@ public class PatronDatabaseImplementation {
             statement.setString(5, email);
             statement.setString(6, phone_number);
             statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("Error creating patron: " + e.getMessage());
         }
     }
+
+
+    public boolean usernameExists(String username) throws SQLException {
+        try (Connection conn = getConnection()) {
+            PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) FROM book_worm_db.patron WHERE username = ?");
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count > 0;
+            }
+        }
+        return false;
+    }
+
+    private boolean emailExists(String email) throws SQLException {
+        try (Connection conn = getConnection()) {
+            PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) FROM book_worm_db.patron WHERE email = ?");
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count > 0;
+            }
+        }
+        return false;
+    }
+
+    private boolean phoneExists(String phone_number) throws SQLException {
+        try (Connection conn = getConnection()) {
+            PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) FROM book_worm_db.patron WHERE phone_number = ?");
+            statement.setString(1, phone_number);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count > 0;
+            }
+        }
+        return false;
+    }
+
 
     public Patron login(String username, String password) throws SQLException {
         try(Connection conn = getConnection()) {
@@ -100,19 +152,6 @@ public class PatronDatabaseImplementation {
         }
     }
 
-    public boolean usernameExists(String username) throws SQLException {
-        boolean exists = false;
-        try (Connection conn = getConnection()) {
-            PreparedStatement checkStmt = conn.prepareStatement("SELECT COUNT(*) FROM book_worm_db.patron WHERE username = ?");
-            checkStmt.setString(1, username);
-            ResultSet rs = checkStmt.executeQuery();
-            if (rs.next()) {
-                int count = rs.getInt(1);
-                exists = (count > 0);
-            }
-        }
-        return exists;
-    }
 
     public void updateUsername(String oldUsername, String newUsername) throws SQLException {
         try (Connection conn = getConnection()) {

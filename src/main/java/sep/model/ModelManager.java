@@ -181,10 +181,6 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
         }
     }
 
-    public String getError() {
-        return error;
-    }
-
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         support.firePropertyChange(evt);

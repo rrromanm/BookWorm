@@ -76,7 +76,12 @@ public class ClientImplementation implements RemotePropertyChangeListener,Client
 
   @Override
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException {
-        library.createPatron(username, password, first_name, last_name, email, phone_number, fees);
+        try{
+            library.createPatron(username, password, first_name, last_name, email, phone_number, fees);
+        }catch (Exception e){
+            throw new RemoteException(e.getMessage());
+        }
+
    }
 
     @Override
