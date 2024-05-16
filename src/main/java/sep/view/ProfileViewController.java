@@ -85,6 +85,7 @@ public class ProfileViewController {
         populateWLTableView(); // not implemented
         initializeLabels(); // only missing the books read information
         this.profileViewModel.bindHistoryList(historyOfBookTableView.itemsProperty());
+        this.profileViewModel.bindWishlistList(wishlistBookTableView.itemsProperty());
         historyOfBookTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         edit = false;
@@ -123,15 +124,15 @@ public class ProfileViewController {
         }
     }
     public void initializeWishlistTableView(){
-        WLtitleColumn.setCellValueFactory(new PropertyValueFactory<>("WLtitle"));
-        WLauthorColumn.setCellValueFactory(new PropertyValueFactory<>("WLauthor"));
-        WLyearColumn.setCellValueFactory(new PropertyValueFactory<>("WLyear"));
-        WLpublisherColumn.setCellValueFactory(new PropertyValueFactory<>("WLpublisher"));
-        WLisbnColumn.setCellValueFactory(new PropertyValueFactory<>("WLisbn"));
-        WLpageCountColumn.setCellValueFactory(new PropertyValueFactory<>("WLpageCount"));
-        WLbookIdColumn.setCellValueFactory(new PropertyValueFactory<>("WLbookId"));
-        WLgenreColumn.setCellValueFactory(new PropertyValueFactory<>("WLgenre"));
-        WLstateColumn.setCellValueFactory(new PropertyValueFactory<>("WLstate"));
+        WLtitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        WLauthorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+        WLyearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
+        WLpublisherColumn.setCellValueFactory(new PropertyValueFactory<>("publisher"));
+        WLisbnColumn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+        WLpageCountColumn.setCellValueFactory(new PropertyValueFactory<>("pageCount"));
+        WLbookIdColumn.setCellValueFactory(new PropertyValueFactory<>("bookId"));
+        WLgenreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        WLstateColumn.setCellValueFactory(new PropertyValueFactory<>("state"));
     }
     public void initializeHistoryTableView(){
         HBtitleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
@@ -143,8 +144,9 @@ public class ProfileViewController {
         HBbookIdColumn.setCellValueFactory(new PropertyValueFactory<>("BookId"));
         HBgenreColumn.setCellValueFactory(new PropertyValueFactory<>("Genre"));
     }
-    public void populateWLTableView(){
-        // We need to get the data about the user wishlist and populate the table with the books
+    public void populateWLTableView() throws RemoteException
+    {
+        profileViewModel.resetWishlistList(UserSession.getInstance().getLoggedInUser());
     }
     public void populateHBTableView() throws RemoteException
     {

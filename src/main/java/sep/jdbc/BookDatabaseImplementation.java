@@ -509,7 +509,6 @@ public class BookDatabaseImplementation {
                         state1 = new Borrowed();
                     }
                 }
-
                 book.setState(state1);
                 book.setBorrower(patron);
                 books.add(book);
