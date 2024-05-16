@@ -33,13 +33,14 @@ public class PatronDatabaseImplementation {
             if (phoneExists(phone_number)) {
                 throw new SQLException("This phone number is already registered: " + phone_number);
             }
-            PreparedStatement statement = conn.prepareStatement("INSERT INTO book_worm_db.patron(first_name, last_name, username, password, email, phone_number) VALUES (?,?,?,?,?,?)");
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO book_worm_db.patron(first_name, last_name, username, password, email, phone_number, fees) VALUES (?,?,?,?,?,?,?)");
             statement.setString(1, first_name);
             statement.setString(2, last_name);
             statement.setString(3, username);
             statement.setString(4, password);
             statement.setString(5, email);
             statement.setString(6, phone_number);
+            statement.setInt(7,0);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new SQLException("Error creating patron: " + e.getMessage());

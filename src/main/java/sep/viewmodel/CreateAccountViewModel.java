@@ -18,7 +18,7 @@ public class CreateAccountViewModel {
     private final StringProperty last_name;
     private final StringProperty phone_number;
     private final StringProperty repeatPassword;
-    
+
 
     public CreateAccountViewModel(Model model) {
         this.model = model;
