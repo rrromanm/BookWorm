@@ -21,7 +21,7 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
         return instance;
     }
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "343460");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "via");
     }
 
     //TODO: Implement checking if given username already exists. Can use method I used to update account details.

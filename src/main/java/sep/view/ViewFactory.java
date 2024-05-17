@@ -143,6 +143,8 @@ public class ViewFactory
                 donateViewController.init(viewHandler, viewModelFactory.getDonateViewModel(), root);
             } catch (IOException e) {
                 throw new IOError(e);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         }
         donateViewController.reset();

@@ -6,7 +6,7 @@ import javafx.application.Platform;
 import sep.model.Book;
 import sep.model.Patron;
 import sep.model.UserSession;
-import sep.shared.LibraryInterface;
+import sep.shared.ConnectorInterface;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -16,11 +16,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class ClientImplementation extends UnicastRemoteObject implements RemotePropertyChangeListener,ClientInterface, Serializable {
-    private final LibraryInterface library;
+public class Client extends UnicastRemoteObject implements RemotePropertyChangeListener,ClientInterface, Serializable {
+    private final ConnectorInterface library;
     private final PropertyChangeSupport support;
 
-    public ClientImplementation(LibraryInterface library) throws RemoteException {
+    public Client(ConnectorInterface library) throws RemoteException {
         this.library = library;
         this.support = new PropertyChangeSupport(this);
         this.library.addRemotePropertyChangeListener(this);
