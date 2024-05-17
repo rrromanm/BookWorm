@@ -203,6 +203,7 @@ public class LibraryImplementation implements LibraryInterface {
         throws RemoteException, SQLException
     {
         bookDatabase.wishlistBook(book,patron);
+        this.support.firePropertyChange("Wishlist",false,true);
     }
 
     @Override public boolean isWishlisted(Book book, Patron patron)
@@ -214,6 +215,12 @@ public class LibraryImplementation implements LibraryInterface {
     @Override public void returnBookToDatabase(Book book, Patron patron) throws SQLException, RemoteException {
         bookDatabase.returnBookToDatabase(book,patron);
         this.support.firePropertyChange("ReturnBook", null, book);
+    }
+
+    @Override public void deleteFromWishlist(Book book, Patron patron)
+        throws RemoteException, SQLException
+    {
+        bookDatabase.deleteFromWishlist(book, patron);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package sep.view;
 
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.Optional;
 
 public class ProfileViewController {
@@ -25,6 +27,7 @@ public class ProfileViewController {
     @FXML private Button saveButton;
     @FXML private Button deleteButton;
     @FXML private Button backButton;
+    @FXML private Button wishlistButton;
     @FXML private Label passwordLabel;
     @FXML private Label feesLabel;
     @FXML private Label booksReadLabel;
@@ -60,6 +63,7 @@ public class ProfileViewController {
     private boolean edit;
     private boolean showPassword;
     private boolean labelsInitialized;
+    private ReadOnlyObjectProperty<Book> wishlistSelectedBook;
 
     private String originalFirstName;
     private String originalLastName;
@@ -87,10 +91,11 @@ public class ProfileViewController {
         this.profileViewModel.bindHistoryList(historyOfBookTableView.itemsProperty());
         this.profileViewModel.bindWishlistList(wishlistBookTableView.itemsProperty());
         historyOfBookTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        this.wishlistSelectedBook = wishlistBookTableView.getSelectionModel().selectedItemProperty();
+        wishlistBookTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> onWishlistSelect());
 
         edit = false;
         showPassword = false;
-
 
     }
     public void initializeLabels() throws RemoteException
@@ -182,6 +187,8 @@ public class ProfileViewController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        wishlistButton.setDisable(true);
+        wishlistButton.setVisible(false);
     }
 
     @FXML public void onPassword(){
@@ -198,6 +205,8 @@ public class ProfileViewController {
             passwordLabel.setVisible(false);
             showPassword = false;
         }
+        wishlistButton.setDisable(true);
+        wishlistButton.setVisible(false);
     }
     @FXML public void onSave(){
         try{
@@ -259,6 +268,8 @@ public class ProfileViewController {
         }catch (Exception e){
             showAlert(e.getMessage());
         }
+        wishlistButton.setDisable(true);
+        wishlistButton.setVisible(false);
 
     }
     @FXML public void onDelete(){
@@ -270,10 +281,33 @@ public class ProfileViewController {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             // here we need to implement deleting of the account
         }
+        wishlistButton.setDisable(true);
+        wishlistButton.setVisible(false);
     }
     @FXML public void onBack() throws RemoteException
     {
         viewHandler.openView(ViewFactory.USERMAIN);
+    }
+    @FXML public void onWishlist() throws RemoteException, SQLException  // for removal
+    {
+        profileViewModel.removeFromWishlist(wishlistSelectedBook.get(),UserSession.getInstance().getLoggedInUser());
+        profileViewModel.resetWishlistList(UserSession.getInstance().getLoggedInUser());
+        wishlistBookTableView.getSelectionModel().clearSelection();
+        wishlistButton.setDisable(true);
+        wishlistButton.setVisible(false);
+    }
+    @FXML public void onWishlistSelect() {
+        if (wishlistSelectedBook != null) {
+            wishlistButton.setDisable(false);
+            wishlistButton.setVisible(true);
+        } else {
+            wishlistButton.setDisable(true);
+            wishlistButton.setVisible(false);
+        }
+    }
+    @FXML public void onHistorySelect(){
+        wishlistButton.setDisable(true);
+        wishlistButton.setVisible(false);
     }
     public Region getRoot(){
         return root;

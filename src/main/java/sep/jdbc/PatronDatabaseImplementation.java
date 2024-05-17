@@ -5,7 +5,7 @@ import sep.model.Patron;
 import java.sql.*;
 
 
-public class PatronDatabaseImplementation {
+public class PatronDatabaseImplementation implements PatronDatabaseInterface {
     private static PatronDatabaseImplementation instance;
 
 
@@ -22,7 +22,8 @@ public class PatronDatabaseImplementation {
         return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "via");
     }
 
-    public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws SQLException {
+    //TODO: Implement checking if given username already exists. Can use method I used to update account details.
+    public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws SQLException {  // the fees are missing and therefore the patron cant be created
         try(Connection conn = getConnection()) {
             if (usernameExists(username)) {
                 throw new SQLException("This username already exists: " + username);

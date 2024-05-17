@@ -120,6 +120,10 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
         client.donateBook(title, author, isbn, year, publisher, pageCount, genre, patron);
     }
 
+    @Override public void deleteFromWishlist(Book book, Patron patron) throws RemoteException, SQLException
+    {
+        client.deleteFromWishlist(book,patron);
+    }
 
     @Override
     public Patron login(String username, String password) throws RemoteException {

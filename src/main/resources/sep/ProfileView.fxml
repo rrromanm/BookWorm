@@ -14,7 +14,7 @@
 <AnchorPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.ProfileViewController">
    <children>
       <Circle fill="#f8f8f8" layoutX="86.0" layoutY="86.0" radius="72.0" stroke="BLACK" strokeType="INSIDE" />
-      <TableView fx:id="wishlistBookTableView" layoutX="14.0" layoutY="189.0" prefHeight="160.0" prefWidth="1002.0">
+      <TableView fx:id="wishlistBookTableView" layoutX="8.0" layoutY="382.0" onMouseClicked="#onWishlistSelect" prefHeight="152.0" prefWidth="1002.0">
         <columns>
           <TableColumn fx:id="WLtitleColumn" prefWidth="171.2000093460083" text="Title" />
           <TableColumn fx:id="WLauthorColumn" minWidth="0.0" prefWidth="155.1999969482422" text="Author" />
@@ -30,7 +30,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <TableView fx:id="historyOfBookTableView" layoutX="14.0" layoutY="376.0" prefHeight="160.0" prefWidth="1002.0">
+      <TableView fx:id="historyOfBookTableView" layoutX="8.0" layoutY="204.0" onMouseClicked="#onHistorySelect" prefHeight="152.0" prefWidth="1002.0">
         <columns>
           <TableColumn fx:id="HBtitleColumn" prefWidth="171.19997882843018" text="Title" />
           <TableColumn fx:id="HBauthorColumn" minWidth="0.0" prefWidth="169.6000518798828" text="Author" />
@@ -45,12 +45,12 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label layoutX="21.0" layoutY="171.0" prefHeight="18.0" prefWidth="110.0" text="Reading Wishlist">
+      <Label layoutX="14.0" layoutY="356.0" prefHeight="18.0" prefWidth="110.0" text="Reading Wishlist">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="21.0" layoutY="358.0" text="History of books">
+      <Label layoutX="14.0" layoutY="179.0" text="History of books">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -116,5 +116,6 @@
          <image>
             <Image url="@bookworm2.jpg" />
          </image></ImageView>
+      <Button fx:id="wishlistButton" disable="true" layoutX="8.0" layoutY="541.0" mnemonicParsing="false" onAction="#onWishlist" text="Remove from wishlist" visible="false" />
    </children>
 </AnchorPane>
