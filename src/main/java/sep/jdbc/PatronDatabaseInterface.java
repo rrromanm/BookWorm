@@ -3,6 +3,7 @@ package sep.jdbc;
 import sep.model.Patron;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public interface PatronDatabaseInterface
 {
@@ -16,5 +17,6 @@ public interface PatronDatabaseInterface
   void updatePhone(String oldPhone, String newPhone) throws SQLException;
   void updateFirstName(String oldFirst, String newFirst) throws SQLException;
   void updateLastName(String oldLast, String newLast) throws SQLException;
+  List<Patron> getAllPatrons() throws SQLException;
 
 }

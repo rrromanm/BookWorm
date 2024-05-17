@@ -1,5 +1,7 @@
 package sep.view;
 
+import dk.via.remote.observer.RemotePropertyChangeEvent;
+import dk.via.remote.observer.RemotePropertyChangeListener;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,8 +13,9 @@ import sep.model.Patron;
 import sep.viewmodel.AdminManageAccountsViewModel;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
-public class AdminManageAccountsViewController {
+public class AdminManageAccountsViewController implements RemotePropertyChangeListener {
     private ViewHandler viewHandler;
     private AdminManageAccountsViewModel viewModel;
     private Region root;
@@ -34,12 +37,21 @@ public class AdminManageAccountsViewController {
     @FXML private TableColumn<Patron, Integer> phoneNumberColumn;
     private ReadOnlyObjectProperty<Patron> selectedUser;
 
-    public void init(ViewHandler viewHandler, AdminManageAccountsViewModel viewModel, Region root) {
+    public void init(ViewHandler viewHandler, AdminManageAccountsViewModel viewModel, Region root) throws RemoteException {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
         this.root = root;
         initializeTableView();
-//        this.selectedUser = UserTableView.getSelectionModel().selectedItemProperty();  //todo view wasnt opening with this for some reason
+        this.selectedUser = UserTableView.getSelectionModel().selectedItemProperty();
+        this.viewModel.bindList(UserTableView.itemsProperty());
+        loadTableData();
+    }
+    private void loadTableData() {
+        try {
+            viewModel.loadPatrons();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void initializeTableView() {
@@ -69,5 +81,10 @@ public class AdminManageAccountsViewController {
     }
     public Region getRoot(){
         return root;
+    }
+
+    @Override
+    public void propertyChange(RemotePropertyChangeEvent remotePropertyChangeEvent) throws RemoteException {
+
     }
 }

@@ -3,6 +3,8 @@ package sep.jdbc;
 import sep.model.Patron;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PatronDatabaseImplementation implements PatronDatabaseInterface {
@@ -19,7 +21,7 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
         return instance;
     }
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "via");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "343460");
     }
 
     //TODO: Implement checking if given username already exists. Can use method I used to update account details.
@@ -251,5 +253,24 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
         }
     }
 
+    public List<Patron> getAllPatrons() throws SQLException {
+        List<Patron> patrons = new ArrayList<>();
+        try (Connection conn = getConnection()) {
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM book_worm_db.patron");
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int userID = resultSet.getInt("id");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                String username = resultSet.getString("username");
+                String email = resultSet.getString("email");
+                String phoneNumber = resultSet.getString("phone_number");
+                int fees = resultSet.getInt("fees");
+                Patron patron = new Patron(userID, firstName, lastName, username, null, email, phoneNumber, fees);
+                patrons.add(patron);
+            }
+        }
+        return patrons;
+    }
 
 }

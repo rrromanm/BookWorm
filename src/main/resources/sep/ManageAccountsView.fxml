@@ -61,7 +61,7 @@
       <Label layoutX="796.0" layoutY="396.0" text="UserID:" />
       <TextField layoutX="846.0" layoutY="392.0" />
       <Button layoutX="905.0" layoutY="440.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="98.0" text="Save changes" />
-      <TableView layoutX="19.0" layoutY="14.0" prefHeight="251.0" prefWidth="990.0">
+      <TableView fx:id="UserTableView" layoutX="19.0" layoutY="14.0" prefHeight="251.0" prefWidth="990.0">
         <columns>
           <TableColumn fx:id="IDcolumn" prefWidth="111.0" text="ID" />
           <TableColumn fx:id="UsernameColumn" prefWidth="159.0" text="Username" />
