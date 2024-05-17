@@ -35,14 +35,14 @@ public class AdminManageDonatedBooksViewController
     private AdminManageDonatedBooksViewModel donatedBooksViewModel;
     private ReadOnlyObjectProperty<Book> selectedBook;
 
-    public void init(ViewHandler viewHandler, AdminManageDonatedBooksViewModel viewModel, Region root)
-    {
+    public void init(ViewHandler viewHandler, AdminManageDonatedBooksViewModel viewModel, Region root) throws RemoteException {
         this.viewHandler = viewHandler;
         this.donatedBooksViewModel = viewModel;
         this.root = root;
         initializeTableView();
         this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
-        // populate the tableView should also be here
+        this.donatedBooksViewModel.bindList(bookTableView.itemsProperty());
+        viewModel.resetBookList();
     }
 
     public void initializeTableView(){

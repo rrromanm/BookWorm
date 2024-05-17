@@ -14,6 +14,7 @@ public interface LibraryInterface extends Remote { //TODO: Rename it please to c
     ArrayList<Book> getBorrowedBooks(Patron patron) throws RemoteException;
     ArrayList<Book> getHistoryOfBooks(Patron patron) throws RemoteException;
     ArrayList<Book> getWishlistedBooks(Patron patron) throws RemoteException;
+    ArrayList<Book> getDonatedBooks() throws RemoteException;
     int getAmountOfReadBooks(Patron patron) throws RemoteException;
     ArrayList<Book> filter(String genre,String state, String search) throws RemoteException;
     void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException;

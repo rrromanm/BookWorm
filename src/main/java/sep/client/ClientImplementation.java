@@ -49,7 +49,12 @@ public class ClientImplementation extends UnicastRemoteObject implements RemoteP
     return library.getWishlistedBooks(patron);
   }
 
-  @Override public int getAmountOfReadBooks(Patron patron)
+    @Override
+    public ArrayList<Book> getDonatedBooks() throws RemoteException {
+        return library.getDonatedBooks();
+    }
+
+    @Override public int getAmountOfReadBooks(Patron patron)
       throws RemoteException
   {
     return library.getAmountOfReadBooks(patron);
@@ -191,6 +196,10 @@ public class ClientImplementation extends UnicastRemoteObject implements RemoteP
            if (event.getPropertyName().equals("Wishlist"))
            {
             this.support.firePropertyChange("Wishlist", false, true);
+           }
+           if (event.getPropertyName().equals("BookDonate"))
+           {
+               this.support.firePropertyChange("BookDonate", false, true);
            }
         });
     }

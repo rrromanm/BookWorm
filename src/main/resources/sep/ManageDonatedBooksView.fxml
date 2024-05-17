@@ -22,9 +22,9 @@
           </Menu>
         </menus>
       </MenuBar>
-      <TableView layoutX="23.0" layoutY="43.0" prefHeight="455.0" prefWidth="989.0">
+      <TableView fx:id="bookTableView" layoutX="23.0" layoutY="43.0" prefHeight="455.0" prefWidth="989.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="Donate by" />
+          <TableColumn fx:id="donatedByColumn" prefWidth="75.0" text="Donate by" />
           <TableColumn fx:id="titleColumn" prefWidth="128.0" text="Title" />
             <TableColumn fx:id="authorColumn" prefWidth="147.0" text="Author" />
             <TableColumn fx:id="isbnColumn" prefWidth="163.0" text="ISBN" />

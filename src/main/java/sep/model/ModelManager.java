@@ -49,6 +49,11 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
         return client.getWishlistedBooks(patron);
     }
 
+    @Override
+    public ArrayList<Book> getDonatedBooks() throws RemoteException {
+        return client.getDonatedBooks();
+    }
+
     @Override public int getAmountOfReadBooks(Patron patron)
         throws RemoteException
     {

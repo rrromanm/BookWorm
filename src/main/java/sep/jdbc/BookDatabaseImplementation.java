@@ -241,9 +241,48 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
             while (resultSet.next()){
                 String genre = resultSet.getString("genre");
                 genres.add(genre);
-
             }
             return genres;
+        }
+    }
+
+    @Override
+    public ArrayList<Book> readDonatedBooks() throws SQLException {
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement1 = connection.prepareStatement(
+                    "SELECT\n" +
+                            "    books_donate.id,\n" +
+                            "    patron.username AS donated_by,\n" +
+                            "    books_donate.title,\n" +
+                            "    books_donate.author,\n" +
+                            "    books_donate.ISBN,\n" +
+                            "    books_donate.year,\n" +
+                            "    books_donate.publisher,\n" +
+                            "    books_donate.page_count,\n" +
+                            "    genre.genre AS genre\n" +
+                            "FROM\n" +
+                            "    book_worm_db.books_donate\n" +
+                            "INNER JOIN\n" +
+                            "    book_worm_db.patron ON books_donate.donated_by = patron.id\n" +
+                            "INNER JOIN\n" +
+                            "    book_worm_db.genre ON books_donate.genre_id = genre.id;");
+
+            ResultSet resultSet = statement1.executeQuery();
+            ArrayList<Book> books = new ArrayList<>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String title = resultSet.getString("title");
+                String author = resultSet.getString("author");
+                int year = resultSet.getInt("year");
+                String publisher = resultSet.getString("publisher");
+                long isbn = resultSet.getLong("isbn");
+                int pageCount = resultSet.getInt("page_count");
+                String genre = resultSet.getString("genre");
+
+                Book book = new Book(id ,title, author, year, publisher, isbn, pageCount, genre);
+                books.add(book);
+            }
+            return books;
         }
     }
 

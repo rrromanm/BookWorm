@@ -80,6 +80,17 @@ public class LibraryImplementation implements LibraryInterface {
         }
     }
 
+    @Override
+    public ArrayList<Book> getDonatedBooks() throws RemoteException {
+        {
+            try {
+                return this.bookDatabase.readDonatedBooks();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     @Override public int getAmountOfReadBooks(Patron patron)
         throws RemoteException
     {
@@ -224,7 +235,8 @@ public class LibraryImplementation implements LibraryInterface {
     }
 
     @Override
-    public Book donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException {
+    public Book donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException, RemoteException {
+        this.support.firePropertyChange("BookDonate", false, true);
         return bookDatabase.donateBook(title, author, isbn, year, publisher, pageCount, genre, patron);
     }
 

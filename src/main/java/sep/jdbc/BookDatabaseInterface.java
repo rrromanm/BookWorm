@@ -12,6 +12,7 @@ public interface BookDatabaseInterface
   ArrayList<Book> filter(String state, String genres, String search) throws SQLException;
   ArrayList<Book> readBooks() throws SQLException;
   ArrayList<String> readGenres() throws SQLException;
+  ArrayList<Book> readDonatedBooks() throws SQLException;
   void borrowBook(Book book, Patron patron) throws SQLException;
   void returnBookToDatabase(Book book, Patron patron) throws SQLException;
   ArrayList<Book> readBorrowedBook(Patron patron) throws SQLException;
@@ -21,6 +22,5 @@ public interface BookDatabaseInterface
   boolean isWishlisted(Book book,Patron patron) throws SQLException;
   ArrayList<Book> readWishlistedBooks(Patron patron) throws SQLException;
   void deleteFromWishlist(Book book,Patron patron) throws SQLException;
-
 
  }
