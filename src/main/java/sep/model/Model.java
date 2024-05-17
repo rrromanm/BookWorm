@@ -30,5 +30,6 @@ public interface Model {
     void wishlistBook(Book book, Patron patron) throws RemoteException, SQLException;
     boolean isWishlisted(Book book, Patron patron) throws RemoteException, SQLException;
     void returnBookToDatabase(Book book, Patron patron) throws RemoteException, SQLException;
+    void deleteFromWishlist(Book book, Patron patron) throws RemoteException, SQLException;
 }
 

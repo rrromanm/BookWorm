@@ -81,6 +81,12 @@ public class ClientImplementation extends UnicastRemoteObject implements RemoteP
         library.returnBookToDatabase(book, patron);
     }
 
+  @Override public void deleteFromWishlist(Book book, Patron patron)
+      throws SQLException, RemoteException
+  {
+    library.deleteFromWishlist(book,patron);
+  }
+
   @Override
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException {
         library.createPatron(username, password, first_name, last_name, email, phone_number, fees);
@@ -174,6 +180,10 @@ public class ClientImplementation extends UnicastRemoteObject implements RemoteP
             {
                 this.support.firePropertyChange("ReturnBook", false, true);
             }
+           if (event.getPropertyName().equals("Wishlist"))
+           {
+            this.support.firePropertyChange("Wishlist", false, true);
+           }
         });
     }
 }

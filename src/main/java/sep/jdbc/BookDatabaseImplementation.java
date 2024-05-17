@@ -5,7 +5,7 @@ import sep.model.*;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class BookDatabaseImplementation {
+public class BookDatabaseImplementation implements BookDatabaseInterface {
     private static BookDatabaseImplementation instance;
 
     private BookDatabaseImplementation() throws SQLException {
@@ -514,6 +514,17 @@ public class BookDatabaseImplementation {
                 books.add(book);
             }
             return books;
+        }
+    }
+    public void deleteFromWishlist(Book book,Patron patron) throws SQLException{
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                "DELETE FROM book_worm_db.wishlist " +
+                    "WHERE book_id = ? AND profile_id = ?;"
+            );
+            statement.setInt(1, book.getBookId());
+            statement.setInt(2, patron.getUserID());
+            statement.executeUpdate();
         }
     }
 

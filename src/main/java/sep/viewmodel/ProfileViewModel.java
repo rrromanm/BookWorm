@@ -1,5 +1,6 @@
 package sep.viewmodel;
 
+import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,9 +9,13 @@ import sep.model.Model;
 import sep.model.Patron;
 import sep.model.UserSession;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
-public class ProfileViewModel {
+public class ProfileViewModel implements PropertyChangeListener
+{
     private final Model model;
     private final StringProperty username;
     private final StringProperty email;
@@ -38,6 +43,7 @@ public class ProfileViewModel {
         this.error = new SimpleStringProperty("");
         this.historyOfBooksList = new SimpleListProperty<>(FXCollections.observableArrayList());
         this.wishlistList = new SimpleListProperty<>(FXCollections.observableArrayList());
+        model.addPropertyChangeListener(this);
     }
     public void bindHistoryList(ObjectProperty<ObservableList<Book>> property) throws
         RemoteException
@@ -142,5 +148,21 @@ public class ProfileViewModel {
             throw new IllegalStateException("No user logged in.");
         }
     }
+    public void removeFromWishlist(Book book, Patron patron) throws SQLException, RemoteException
+    {
+        model.deleteFromWishlist(book,patron);
+    }
 
+    @Override public void propertyChange(PropertyChangeEvent evt)
+    {
+        Platform.runLater(() -> {
+            if ("Wishlist".equals(evt.getPropertyName())) {
+                try {
+                    resetWishlistList(UserSession.getInstance().getLoggedInUser());
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
 }

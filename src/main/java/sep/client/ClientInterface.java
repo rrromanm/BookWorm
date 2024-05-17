@@ -33,4 +33,5 @@ public interface ClientInterface {
     void addPropertyChangeListener(PropertyChangeListener listener);
     void removePropertyChangeListener(PropertyChangeListener listener);
     void returnBookToDatabase(Book book, Patron patron) throws SQLException, RemoteException;
+    void deleteFromWishlist(Book book, Patron patron) throws SQLException, RemoteException;
 }
