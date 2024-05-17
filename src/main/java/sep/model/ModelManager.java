@@ -115,6 +115,11 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
         client.returnBookToDatabase(book,patron);
     }
 
+    @Override
+    public void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException, RemoteException {
+        client.donateBook(title, author, isbn, year, publisher, pageCount, genre, patron);
+    }
+
 
     @Override
     public Patron login(String username, String password) throws RemoteException {

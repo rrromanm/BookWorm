@@ -81,7 +81,12 @@ public class ClientImplementation extends UnicastRemoteObject implements RemoteP
         library.returnBookToDatabase(book, patron);
     }
 
-  @Override
+    @Override
+    public void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException, RemoteException {
+        library.donateBook(title, author, isbn, year, publisher, pageCount, genre, patron);
+    }
+
+    @Override
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException {
         try{
             library.createPatron(username, password, first_name, last_name, email, phone_number, fees);

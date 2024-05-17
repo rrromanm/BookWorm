@@ -19,7 +19,7 @@ public class PatronDatabaseImplementation {
         return instance;
     }
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "VIAVIA");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "via");
     }
 
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws SQLException {

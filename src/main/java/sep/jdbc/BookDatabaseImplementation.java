@@ -20,7 +20,7 @@ public class BookDatabaseImplementation {
     }
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "VIAVIA"); //TODO: YOU NEED TO CHANGE THIS PASSWORD ON WHO IS WORKING ON CODE RN
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "via"); //TODO: YOU NEED TO CHANGE THIS PASSWORD ON WHO IS WORKING ON CODE RN
     }
 
     public Book createBook(String title, String author,int year, String publisher, long isbn, int pageCount, String genre) throws SQLException {
@@ -466,6 +466,7 @@ public class BookDatabaseImplementation {
             }
         }
     }
+
     public ArrayList<Book> readWishlistedBooks(Patron patron) throws SQLException{
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
@@ -517,5 +518,56 @@ public class BookDatabaseImplementation {
         }
     }
 
+    public int getGenreId(String genreName) throws SQLException {
+        String query = "SELECT id FROM book_worm_db.genre WHERE genre = ?";
 
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, genreName);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            } else {
+                throw new SQLException("Genre not found: " + genreName);
+            }
+        }
+    }
+
+    public Book donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException {
+        int genreId = getGenreId(genre);
+
+        String insertSQL = "INSERT INTO book_worm_db.books_donate(donated_by, title, author, isbn, year, publisher, page_count, genre) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(insertSQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+            statement.setInt(1, patron.getUserID());
+            statement.setString(2, title);
+            statement.setString(3, author);
+            statement.setLong(4, isbn);
+            statement.setInt(5, year);
+            statement.setString(6, publisher);
+            statement.setInt(7, pageCount);
+            statement.setInt(8, genreId);
+
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating book failed, no rows affected.");
+            }
+
+            try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                if (resultSet.next()) {
+                    int bookId = resultSet.getInt(1);
+                    return new Book(bookId, title, author, year, publisher, isbn, pageCount, genre);
+                } else {
+                    throw new SQLException("Creating book failed, no ID obtained.");
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("SQL Exception: " + e.getMessage());
+            throw e;
+        }
+    }
 }

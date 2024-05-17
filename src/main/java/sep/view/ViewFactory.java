@@ -243,7 +243,7 @@ public class ViewFactory
     public Region loadAdminDonatedBooksView(){
         if(adminManageDonatedBooksViewController == null){
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/sep/AdminManageEventsView.fxml"));
+            loader.setLocation(getClass().getResource("/sep/ManageDonatedBooksView.fxml"));
             try{
                 Region root = loader.load();
                 adminManageDonatedBooksViewController = loader.getController();

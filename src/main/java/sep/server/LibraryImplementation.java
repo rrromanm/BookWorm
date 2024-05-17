@@ -217,6 +217,11 @@ public class LibraryImplementation implements LibraryInterface {
     }
 
     @Override
+    public Book donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException {
+        return bookDatabase.donateBook(title, author, isbn, year, publisher, pageCount, genre, patron);
+    }
+
+    @Override
     public void addRemotePropertyChangeListener(RemotePropertyChangeListener listener) throws RemoteException {
         this.support.addPropertyChangeListener(listener);
     }

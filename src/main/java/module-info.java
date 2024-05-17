@@ -16,6 +16,7 @@ module sep {
 
     exports sep;
     exports sep.view;
+    exports sep.viewmodel;
     exports sep.shared to java.rmi;
     exports sep.model;
     exports sep.client;

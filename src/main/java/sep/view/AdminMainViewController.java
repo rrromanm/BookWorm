@@ -18,6 +18,7 @@ public class AdminMainViewController {
     @FXML public Button eventsViewButton;
     @FXML public Button accountsViewButton;
     @FXML public Button booksViewButton;
+    @FXML public Button manageDonatedBooksButton;
 
 
     public void init(ViewHandler viewHandler, AdminMainViewModel viewModel, Region root)
@@ -52,6 +53,12 @@ public class AdminMainViewController {
     private void eventsClicked() throws RemoteException
     {
         viewHandler.openView("adminManageEvents");
+    }
+
+    @FXML
+    private void manageDonatedBooksClicked() throws RemoteException
+    {
+        viewHandler.openView("adminManageDonatedBooks");
     }
 
     public void reset()

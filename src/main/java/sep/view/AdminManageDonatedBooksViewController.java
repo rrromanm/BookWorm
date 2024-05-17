@@ -28,9 +28,8 @@ public class AdminManageDonatedBooksViewController
     @FXML private TableColumn<Book, String> publisherColumn;
     @FXML private TableColumn<Book, Integer> isbnColumn;
     @FXML private TableColumn<Book, Integer> pageCountColumn;
-    @FXML private TableColumn<Book, Integer> bookIdColumn;
+    @FXML private TableColumn<Book, String> donatedByColumn;
     @FXML private TableColumn<Book, String> genreColumn;
-    @FXML private TableColumn<Book, State> stateColumn;
     private Region root;
     private ViewHandler viewHandler;
     private AdminManageDonatedBooksViewModel donatedBooksViewModel;
@@ -53,9 +52,8 @@ public class AdminManageDonatedBooksViewController
         publisherColumn.setCellValueFactory(new PropertyValueFactory<>("publisher"));
         isbnColumn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         pageCountColumn.setCellValueFactory(new PropertyValueFactory<>("pageCount"));
-        bookIdColumn.setCellValueFactory(new PropertyValueFactory<>("bookId"));
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
-        stateColumn.setCellValueFactory(new PropertyValueFactory<>("state"));
+        donatedByColumn.setCellValueFactory(new PropertyValueFactory<>("donatedBy"));
     }
     @FXML
     private void backButtonClicked() throws RemoteException

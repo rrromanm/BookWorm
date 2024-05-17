@@ -29,5 +29,6 @@ public interface Model {
     void wishlistBook(Book book, Patron patron) throws RemoteException, SQLException;
     boolean isWishlisted(Book book, Patron patron) throws RemoteException, SQLException;
     void returnBookToDatabase(Book book, Patron patron) throws RemoteException, SQLException;
+    void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException, RemoteException;
 }
 
