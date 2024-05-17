@@ -24,14 +24,13 @@
       </MenuBar>
       <TableView fx:id="bookTableView" layoutX="23.0" layoutY="43.0" prefHeight="455.0" prefWidth="989.0">
         <columns>
-          <TableColumn fx:id="donatedByColumn" prefWidth="75.0" text="Donate by" />
-          <TableColumn fx:id="titleColumn" prefWidth="128.0" text="Title" />
-            <TableColumn fx:id="authorColumn" prefWidth="147.0" text="Author" />
-            <TableColumn fx:id="isbnColumn" prefWidth="163.0" text="ISBN" />
-            <TableColumn fx:id="yearColumn" prefWidth="75.0" text="Year" />
-            <TableColumn fx:id="pageCountColumn" prefWidth="69.0" text="Pages" />
+          <TableColumn fx:id="titleColumn" prefWidth="169.0" text="Title" />
+            <TableColumn fx:id="authorColumn" prefWidth="157.0" text="Author" />
+            <TableColumn fx:id="isbnColumn" prefWidth="138.0" text="ISBN" />
+            <TableColumn fx:id="yearColumn" prefWidth="73.0" text="Year" />
+            <TableColumn fx:id="pageCountColumn" prefWidth="45.0" text="Pages" />
             <TableColumn fx:id="genreColumn" prefWidth="150.0" text="Genre" />
-            <TableColumn fx:id="publisherColumn" prefWidth="181.0" text="Publisher" />
+            <TableColumn fx:id="publisherColumn" prefWidth="256.0" text="Publisher" />
         </columns>
       </TableView>
    </children>

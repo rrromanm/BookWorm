@@ -586,10 +586,8 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
     public Book donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException {
         int genreId = getGenreId(genre);
 
-        String insertSQL = "INSERT INTO book_worm_db.books_donate(donated_by, title, author, isbn, year, publisher, page_count, genre) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(insertSQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO book_worm_db.books_donate(donated_by, title, author, isbn, year, publisher, page_count, genre_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             statement.setInt(1, patron.getUserID());
             statement.setString(2, title);
