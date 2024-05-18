@@ -216,6 +216,9 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
            {
                this.support.firePropertyChange("BookDonate", false, true);
            }
+           if (event.getPropertyName().equals("createPatron")){
+               this.support.firePropertyChange("createPatron", false, true);
+           }
         });
     }
 }
