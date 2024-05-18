@@ -9,13 +9,14 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public interface LibraryInterface extends Remote { //TODO: Rename it please to connector or sum
+public interface ConnectorInterface extends Remote {
     ArrayList<Book> getAllBooks() throws RemoteException;
     ArrayList<Book> getBorrowedBooks(Patron patron) throws RemoteException;
     ArrayList<Book> getHistoryOfBooks(Patron patron) throws RemoteException;
     ArrayList<Book> getWishlistedBooks(Patron patron) throws RemoteException;
     ArrayList<Book> getDonatedBooks() throws RemoteException;
     int getAmountOfReadBooks(Patron patron) throws RemoteException;
+    int getAmountOfBorrowedBooks(Patron patron) throws RemoteException;
     ArrayList<Book> filter(String genre,String state, String search) throws RemoteException;
     void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException;
     Patron login(String username, String password) throws RemoteException;

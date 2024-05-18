@@ -1,11 +1,9 @@
 package sep.model;
 
-import dk.via.remote.observer.RemotePropertyChangeEvent;
-import dk.via.remote.observer.RemotePropertyChangeListener;
-import sep.client.ClientImplementation;
+import sep.client.Client;
 import sep.client.ClientInterface;
 import sep.model.validators.*;
-import sep.shared.LibraryInterface;
+import sep.shared.ConnectorInterface;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -20,8 +18,8 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
     private String error;
     private final PropertyChangeSupport support;
 
-    public ModelManager(LibraryInterface library) throws RemoteException {
-        this.client = new ClientImplementation(library);
+    public ModelManager(ConnectorInterface library) throws RemoteException {
+        this.client = new Client(library);
         this.error = "";
         this.client.addPropertyChangeListener(this);
         this.support = new PropertyChangeSupport(this);
@@ -58,6 +56,12 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
         throws RemoteException
     {
         return client.getAmountOfReadBooks(patron);
+    }
+
+    @Override public int getAmountOfBorrowedBooks(Patron patron)
+        throws RemoteException
+    {
+        return client.getAmountOfBorrowedBooks(patron);
     }
 
     @Override

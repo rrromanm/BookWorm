@@ -126,15 +126,25 @@ public class MainViewController implements RemotePropertyChangeListener
     }
 
     @FXML public void onBorrow() throws RemoteException, SQLException {
-        mainViewModel.borrowBook(selectedBook.get(), UserSession.getInstance().getLoggedInUser());
-        mainViewModel.resetBookList();
-        bookTableView.getSelectionModel().clearSelection();
-        borrowButton.setDisable(true);
+        if(mainViewModel.getAmountOfBorrowedBooks(UserSession.getInstance().getLoggedInUser()) < 3)
+        {
+            mainViewModel.borrowBook(selectedBook.get(), UserSession.getInstance().getLoggedInUser());
+            mainViewModel.resetBookList();
+            bookTableView.getSelectionModel().clearSelection();
+            borrowButton.setDisable(true);
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText("Book borrowed successfully, enjoy!");
-        alert.show();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText("Book borrowed successfully, enjoy!");
+            alert.show();
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("You cannot borrow more books");
+            alert.setHeaderText("You reached the maximum amount of borrowed books");
+            alert.setContentText("In order to borrow more books return the previous ones");
+            alert.show();
+        }
     }
     @FXML public void onWishlist() throws RemoteException, SQLException{
         mainViewModel.wishlistBook(selectedBook.get(),UserSession.getInstance().getLoggedInUser());

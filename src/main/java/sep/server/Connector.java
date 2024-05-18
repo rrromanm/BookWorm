@@ -6,18 +6,18 @@ import sep.jdbc.BookDatabaseImplementation;
 import sep.jdbc.PatronDatabaseImplementation;
 import sep.model.Book;
 import sep.model.Patron;
-import sep.shared.LibraryInterface;
+import sep.shared.ConnectorInterface;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class LibraryImplementation implements LibraryInterface {
+public class Connector implements ConnectorInterface {
     private BookDatabaseImplementation bookDatabase;
     private PatronDatabaseImplementation patronDatabase;
     private final RemotePropertyChangeSupport support;
 
-    public LibraryImplementation() {
+    public Connector() {
         try
         {
             this.bookDatabase = BookDatabaseImplementation.getInstance();
@@ -97,6 +97,19 @@ public class LibraryImplementation implements LibraryInterface {
         try
         {
             return this.bookDatabase.readAmountOfBooksRead(patron);
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override public int getAmountOfBorrowedBooks(Patron patron)
+        throws RemoteException
+    {
+        try
+        {
+            return this.bookDatabase.readAmountOfBorrowedBooks(patron);
         }
         catch (SQLException e)
         {
