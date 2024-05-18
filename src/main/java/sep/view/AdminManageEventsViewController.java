@@ -3,7 +3,6 @@ package sep.view;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
-import sep.model.Event;
 import sep.viewmodel.AdminManageEventsViewModel;
 
 import java.rmi.RemoteException;
@@ -14,12 +13,12 @@ public class AdminManageEventsViewController
     private AdminManageEventsViewModel viewModel;
     private Region root;
 
-    @FXML
-    private TableView<Event> eventsView;
-    @FXML private TableColumn<Event,Integer> idColumn;
-    @FXML private TableColumn<Event, String> titleColumn;
-    @FXML private TableColumn<Event, Integer> descriptionColumn;
-    @FXML private TableColumn<Event, Date> dateColumn;
+//    @FXML
+//    private TableView<Event> eventsView;
+//    @FXML private TableColumn<Event,Integer> idColumn;
+//    @FXML private TableColumn<Event, String> titleColumn;
+//    @FXML private TableColumn<Event, Integer> descriptionColumn;
+//    @FXML private TableColumn<Event, Date> dateColumn;
     @FXML
     private Button backButton;
     @FXML
@@ -57,7 +56,7 @@ public class AdminManageEventsViewController
 
     public void reset()
     {
-        viewModel.reset();
+//        viewModel.reset();
     }
 
     public Region getRoot()
