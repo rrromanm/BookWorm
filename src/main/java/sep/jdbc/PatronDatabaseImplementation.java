@@ -21,7 +21,7 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
         return instance;
     }
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "343460");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "VIAVIA");
     }
 
     //TODO: Implement checking if given username already exists. Can use method I used to update account details.
@@ -249,6 +249,16 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
             PreparedStatement updateStmt = conn.prepareStatement("UPDATE book_worm_db.patron SET last_name =? WHERE last_name = ?");
             updateStmt.setString(1, newLast);
             updateStmt.setString(2, oldLast);
+            updateStmt.executeUpdate();
+        }
+    }
+
+
+    public void updateFees(int oldFees, int newFees) throws SQLException{
+        try(Connection conn = getConnection()) {
+            PreparedStatement updateStmt = conn.prepareStatement("UPDATE book_worm_db.patron SET fees =? WHERE fees = ?");
+            updateStmt.setInt(1, newFees);
+            updateStmt.setInt(2, oldFees);
             updateStmt.executeUpdate();
         }
     }

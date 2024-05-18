@@ -205,6 +205,15 @@ public class LibraryImplementation implements LibraryInterface {
     }
 
     @Override
+    public void updateFees(int oldFees, int newFees) throws RemoteException {
+        try{
+            patronDatabase.updateFees(oldFees, newFees);
+        }catch(SQLException e){
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
     public void borrowBooks(Book book, Patron parton) throws RemoteException, SQLException {
         bookDatabase.borrowBook(book,parton);
         this.support.firePropertyChange("BorrowBook", null,book);

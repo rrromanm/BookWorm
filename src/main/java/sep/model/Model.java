@@ -25,6 +25,7 @@ public interface Model {
     void updateFirstName(String oldFirstName, String newFirstName) throws RemoteException;
     void updateLastName(String oldLastName, String newLastName) throws RemoteException;
     void updatePassword(String oldPassowrd, String newPassowrd) throws RemoteException;
+    void updateFees(int oldFees, int newFees) throws RemoteException;
     ArrayList<Book> filter(String genre, String state, String search) throws RemoteException;
     void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException;
     void wishlistBook(Book book, Patron patron) throws RemoteException, SQLException;

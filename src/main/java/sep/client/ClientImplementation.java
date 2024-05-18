@@ -173,6 +173,15 @@ public class ClientImplementation extends UnicastRemoteObject implements RemoteP
     }
 
     @Override
+    public void updateFees(int oldFees, int newFees) throws RemoteException {
+        try{
+            library.updateFees(oldFees, newFees);
+        }catch (RemoteException e){
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.support.addPropertyChangeListener(listener);
     }

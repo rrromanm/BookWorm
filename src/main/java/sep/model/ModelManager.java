@@ -205,6 +205,16 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
     }
 
     @Override
+    public void updateFees(int oldFees, int newFees) throws RemoteException {
+        try{
+            client.updateFees(oldFees, newFees);
+        }catch (Exception e){
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
         support.firePropertyChange(evt);
     }

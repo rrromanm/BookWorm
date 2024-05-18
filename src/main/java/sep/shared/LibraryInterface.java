@@ -26,6 +26,7 @@ public interface LibraryInterface extends Remote { //TODO: Rename it please to c
     void updateFirstName(String oldFirstName, String newFirstName) throws RemoteException;
     void updateLastName(String oldLastName, String newLastName) throws RemoteException;
     void updatePassword(String oldPassword, String newPassword) throws RemoteException;
+    void updateFees(int oldFees, int newFees) throws RemoteException;
     void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException;
     void wishlistBook(Book book, Patron patron) throws RemoteException, SQLException;
     boolean isWishlisted(Book book, Patron patron) throws RemoteException,SQLException;
