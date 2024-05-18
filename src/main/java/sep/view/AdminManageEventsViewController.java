@@ -1,11 +1,9 @@
 package sep.view;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Region;
+import sep.model.Event;
 import sep.viewmodel.AdminManageEventsViewModel;
 
 import java.rmi.RemoteException;
@@ -16,8 +14,12 @@ public class AdminManageEventsViewController
     private AdminManageEventsViewModel viewModel;
     private Region root;
 
-//    @FXML
-//    private ListView<> listView; //todo implement list of events
+    @FXML
+    private TableView<Event> eventsView;
+    @FXML private TableColumn<Event,Integer> idColumn;
+    @FXML private TableColumn<Event, String> titleColumn;
+    @FXML private TableColumn<Event, Integer> descriptionColumn;
+    @FXML private TableColumn<Event, Date> dateColumn;
     @FXML
     private Button backButton;
     @FXML
@@ -46,7 +48,6 @@ public class AdminManageEventsViewController
 
     @FXML
     private void addEvent(){
-        //TODO create event logic and add them to the list
     }
 
     @FXML
@@ -56,7 +57,7 @@ public class AdminManageEventsViewController
 
     public void reset()
     {
-
+        viewModel.reset();
     }
 
     public Region getRoot()
