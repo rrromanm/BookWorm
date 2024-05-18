@@ -124,7 +124,7 @@ public class Connector implements ConnectorInterface {
         {
                 this.patronDatabase.createPatron(username, password, first_name,
                     last_name, email, phone_number);
-
+                this.support.firePropertyChange("createPatron", false, true);
 
         }
         catch (SQLException ignored)

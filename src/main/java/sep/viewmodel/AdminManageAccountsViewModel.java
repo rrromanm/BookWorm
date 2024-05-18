@@ -1,5 +1,6 @@
 package sep.viewmodel;
 
+import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,6 +27,8 @@ public class AdminManageAccountsViewModel implements PropertyChangeListener {
         this.patronList = new SimpleListProperty<>(FXCollections.observableArrayList());
         this.selectedPatron = new SimpleObjectProperty<>();
         this.support = new PropertyChangeSupport(this);
+
+        model.addPropertyChangeListener(this);
     }
     public void bindList(ObjectProperty<ObservableList<Patron>> property) throws RemoteException {
         property.bindBidirectional(patronList);
@@ -108,6 +111,15 @@ public class AdminManageAccountsViewModel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
+        Platform.runLater(() -> {
+            if ("createPatron".equals(evt.getPropertyName())){
+                try {
+                    loadPatrons();
+                    System.out.println("refreshed patron table");
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 }
