@@ -16,6 +16,7 @@ public interface ConnectorInterface extends Remote {
     ArrayList<Book> getWishlistedBooks(Patron patron) throws RemoteException;
     ArrayList<Book> getDonatedBooks() throws RemoteException;
     int getAmountOfReadBooks(Patron patron) throws RemoteException;
+    int getAmountOfBorrowedBooks(Patron patron) throws RemoteException;
     ArrayList<Book> filter(String genre,String state, String search) throws RemoteException;
     void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException;
     Patron login(String username, String password) throws RemoteException;

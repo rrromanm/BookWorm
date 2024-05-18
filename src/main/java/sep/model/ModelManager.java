@@ -58,6 +58,12 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
         return client.getAmountOfReadBooks(patron);
     }
 
+    @Override public int getAmountOfBorrowedBooks(Patron patron)
+        throws RemoteException
+    {
+        return client.getAmountOfBorrowedBooks(patron);
+    }
+
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.support.addPropertyChangeListener(listener);

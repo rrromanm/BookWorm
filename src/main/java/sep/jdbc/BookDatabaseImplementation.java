@@ -464,7 +464,6 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
                     + " AND bb.return_date <= CURRENT_DATE;");
             statement.setInt(1, patron.getUserID());
             ResultSet resultSet = statement.executeQuery();
-            ArrayList<Book> books = new ArrayList<>();
             int amount = 0;
             while (resultSet.next()) {
                 amount = resultSet.getInt("count");
@@ -565,6 +564,32 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
             statement.setInt(1, book.getBookId());
             statement.setInt(2, patron.getUserID());
             statement.executeUpdate();
+        }
+    }
+
+    @Override public int readAmountOfBorrowedBooks(Patron patron)
+        throws SQLException
+    {
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                "SELECT " +
+                    "COUNT(*) " +
+                    "FROM " +
+                    "book_worm_db.books b " +
+                    "LEFT JOIN " +
+                    "book_worm_db.borrowed_books bb ON b.id = bb.book_id " +
+                    "LEFT JOIN " +
+                    "book_worm_db.patron p ON p.id = b.borrower " +
+                    "WHERE " +
+                    "p.id = ? " +
+                    "AND bb.return_date > CURRENT_DATE;");
+            statement.setInt(1, patron.getUserID());
+            ResultSet resultSet = statement.executeQuery();
+            int amount = 0;
+            while (resultSet.next()) {
+                amount = resultSet.getInt("count");
+            }
+            return amount;
         }
     }
 

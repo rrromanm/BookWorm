@@ -55,6 +55,9 @@ public class MainViewModel implements PropertyChangeListener
     public boolean isWishlisted(Book book,Patron patron) throws RemoteException, SQLException{
         return model.isWishlisted(book,patron);
     }
+    public int getAmountOfBorrowedBooks(Patron patron) throws RemoteException, SQLException{
+        return model.getAmountOfBorrowedBooks(patron);
+    }
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("received in view model " + evt.getPropertyName());

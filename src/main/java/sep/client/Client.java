@@ -60,6 +60,12 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     return library.getAmountOfReadBooks(patron);
   }
 
+  @Override public int getAmountOfBorrowedBooks(Patron patron)
+      throws RemoteException
+  {
+    return library.getAmountOfBorrowedBooks(patron);
+  }
+
   @Override
     public ArrayList<Book> filter(String genre,String state, String search) throws RemoteException {
         return library.filter(genre, state,search);

@@ -17,7 +17,7 @@ public interface ClientInterface {
     ArrayList<Book> getDonatedBooks() throws RemoteException;
     int getAmountOfReadBooks(Patron patron) throws RemoteException;
 
-
+    int getAmountOfBorrowedBooks(Patron patron) throws RemoteException;
     void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException;
     Patron login(String username, String password) throws RemoteException;
     boolean loginAsAdmin(String username, String password) throws RemoteException;

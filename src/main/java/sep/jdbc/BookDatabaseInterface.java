@@ -22,5 +22,8 @@ public interface BookDatabaseInterface
   boolean isWishlisted(Book book,Patron patron) throws SQLException;
   ArrayList<Book> readWishlistedBooks(Patron patron) throws SQLException;
   void deleteFromWishlist(Book book,Patron patron) throws SQLException;
+  int readAmountOfBorrowedBooks(Patron patron) throws SQLException;
+  int getGenreId(String genreName) throws SQLException;
+  Book donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException;
 
  }
