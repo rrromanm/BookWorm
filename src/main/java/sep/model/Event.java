@@ -12,7 +12,7 @@ public class Event implements Serializable {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.eventDate = eventDate;A
+        this.eventDate = eventDate;
     }
 
     public int getId() {
@@ -27,7 +27,7 @@ public class Event implements Serializable {
         return description;
     }
 
-    public String getDate() {
+    public String getEventDate() {
         return eventDate;
     }
 }

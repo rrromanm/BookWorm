@@ -26,7 +26,7 @@ public class AdminManageEventsViewController
     @FXML
     private Button addEvent;
     @FXML
-    private Button save;
+    private Button deleteButton;
     @FXML
     private TextField title;
     @FXML
@@ -63,7 +63,7 @@ public class AdminManageEventsViewController
     }
 
     @FXML
-    private void onSave(){
+    private void onDelete(){
         //TODO save the values from the fields into a new event
     }
 
