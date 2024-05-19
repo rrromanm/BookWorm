@@ -28,18 +28,22 @@ public class AdminManageEventsViewController
     @FXML
     private Button deleteButton;
     @FXML
-    private TextField title;
+    private TextField titleTextField;
     @FXML
-    private DatePicker date;
+    private DatePicker datePicker;
     @FXML
-    private TextField description;
+    private TextField descriptionTextField;
 
     public void init(ViewHandler viewHandler, AdminManageEventsViewModel viewModel, Region root) throws RemoteException {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
         this.root = root;
         initializeTableView();
+
         this.viewModel.bindList(eventsTable.itemsProperty());
+        this.viewModel.bindTitle(titleTextField.textProperty());
+        this.viewModel.bindDescription(descriptionTextField.textProperty());
+        this.viewModel.bindDate(datePicker.getEditor().textProperty());
         viewModel.resetEventList();
     }
 
@@ -59,6 +63,13 @@ public class AdminManageEventsViewController
     @FXML
     private void addEvent()
     {
+        try {
+            this.viewModel.createEvent();
+            viewModel.resetEventList();
+            reset();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -69,7 +80,9 @@ public class AdminManageEventsViewController
 
     public void reset()
     {
-//        viewModel.reset();
+        titleTextField.clear();
+        descriptionTextField.clear();
+        datePicker.getEditor().clear();
     }
 
     public Region getRoot()

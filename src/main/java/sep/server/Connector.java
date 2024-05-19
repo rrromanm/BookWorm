@@ -137,6 +137,19 @@ public class Connector implements ConnectorInterface {
         }
     }
 
+    @Override
+    public void createEvent(String title, String description, String date) throws RemoteException{
+        try
+        {
+            this.adminDatabase.createEvent(title, description, date);
+
+        }
+        catch (SQLException e)
+        {
+            throw new RemoteException("Failed to create event: " + e.getMessage());
+        }
+    }
+
     @Override public synchronized  ArrayList<Book> filter(String genre,String state, String search){
         try {
             return this.bookDatabase.filter(genre, state,search);

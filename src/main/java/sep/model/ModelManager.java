@@ -102,6 +102,19 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
         }
     }
 
+    @Override
+    public void createEvent(String title, String description, String date) throws RemoteException {
+        try
+        {
+            this.client.createEvent(title, description, date);
+
+        }
+        catch (Exception e)
+        {
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
 
     public ArrayList<Book> filter(String genre,String state, String search) throws RemoteException {
         return client.filter(genre,state,search);

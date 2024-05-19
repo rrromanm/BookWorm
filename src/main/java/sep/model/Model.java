@@ -19,6 +19,7 @@ public interface Model {
     int getAmountOfReadBooks(Patron patron) throws RemoteException;
     int getAmountOfBorrowedBooks(Patron patron) throws RemoteException;
     void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException;
+    void createEvent(String title, String description, String date) throws RemoteException;
     Patron login(String username, String password) throws RemoteException;
     boolean loginAsAdmin(String username, String password) throws RemoteException;
     void updateUsername(String oldUsername, String newUsername) throws RemoteException;

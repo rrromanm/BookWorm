@@ -1,11 +1,9 @@
 package sep.jdbc;
 
-
 import sep.model.Event;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class AdminDatabaseImplementation implements AdminDatabaseInterface
 {
@@ -42,5 +40,25 @@ public class AdminDatabaseImplementation implements AdminDatabaseInterface
             }
         }
         return events;
+    }
+
+    @Override
+    public Event createEvent(String title, String description, String eventdate) throws SQLException {
+        try (Connection connection = getConnection();){
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO book_worm_db.events(title, description, eventdate) VALUES (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            statement.setString(1, title);
+            statement.setString(2, description);
+            statement.setString(3, eventdate);
+            statement.executeUpdate();
+
+            ResultSet resultSet = statement.getGeneratedKeys();
+
+            if(resultSet.next()) {
+                return new Event(resultSet.getInt(1), title, description, eventdate);
+            }
+            else {
+                throw new SQLException();
+            }
+        }
     }
 }
