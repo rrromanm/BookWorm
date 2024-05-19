@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import sep.model.Book;
 import sep.model.Patron;
 import sep.model.UserSession;
+import sep.model.Event;
 import sep.shared.ConnectorInterface;
 
 import java.beans.PropertyChangeListener;
@@ -30,6 +31,11 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     @Override
     public ArrayList<Book> getAllBooks() throws RemoteException {
         return library.getAllBooks();
+    }
+
+    @Override
+    public ArrayList<Event> getAllEvents() throws RemoteException {
+        return library.getAllEvents();
     }
 
   @Override public ArrayList<Book> getBorrowedBooks(Patron patron) throws RemoteException

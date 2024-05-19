@@ -2,6 +2,7 @@ package sep.client;
 
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import sep.model.Book;
+import sep.model.Event;
 import sep.model.Patron;
 
 import java.beans.PropertyChangeListener;
@@ -11,6 +12,9 @@ import java.util.ArrayList;
 
 public interface ClientInterface {
     ArrayList<Book> getAllBooks() throws RemoteException;
+
+    ArrayList<Event> getAllEvents() throws RemoteException;
+
     ArrayList<Book> getBorrowedBooks(Patron patron) throws RemoteException;
     ArrayList<Book> getHistoryOfBooks(Patron patron) throws RemoteException;
     ArrayList<Book> getWishlistedBooks(Patron patron) throws RemoteException;

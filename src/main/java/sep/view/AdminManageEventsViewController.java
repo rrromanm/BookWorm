@@ -2,7 +2,9 @@ package sep.view;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
+import sep.model.Event;
 import sep.viewmodel.AdminManageEventsViewModel;
 
 import java.rmi.RemoteException;
@@ -13,12 +15,12 @@ public class AdminManageEventsViewController
     private AdminManageEventsViewModel viewModel;
     private Region root;
 
-//    @FXML
-//    private TableView<Event> eventsView;
-//    @FXML private TableColumn<Event,Integer> idColumn;
-//    @FXML private TableColumn<Event, String> titleColumn;
-//    @FXML private TableColumn<Event, Integer> descriptionColumn;
-//    @FXML private TableColumn<Event, Date> dateColumn;
+    @FXML
+    private TableView<Event> eventsTable;
+    @FXML private TableColumn<Event,Integer> idColumn;
+    @FXML private TableColumn<Event, String> titleColumn;
+    @FXML private TableColumn<Event, String> descriptionColumn;
+    @FXML private TableColumn<Event, String> dateColumn;
     @FXML
     private Button backButton;
     @FXML
@@ -32,11 +34,20 @@ public class AdminManageEventsViewController
     @FXML
     private TextField description;
 
-    public void init(ViewHandler viewHandler, AdminManageEventsViewModel viewModel, Region root)
-    {
+    public void init(ViewHandler viewHandler, AdminManageEventsViewModel viewModel, Region root) throws RemoteException {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
         this.root = root;
+        initializeTableView();
+        this.viewModel.bindList(eventsTable.itemsProperty());
+        viewModel.resetEventList();
+    }
+
+    public void initializeTableView(){
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("eventDate"));
     }
 
     @FXML
@@ -46,7 +57,9 @@ public class AdminManageEventsViewController
     }
 
     @FXML
-    private void addEvent(){
+    private void addEvent()
+    {
+
     }
 
     @FXML

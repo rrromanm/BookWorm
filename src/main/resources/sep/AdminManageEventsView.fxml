@@ -44,7 +44,7 @@
                 </Menu>
             </menus>
         </MenuBar>
-      <TableView fx:id="eventsView" layoutX="21.0" layoutY="44.0" prefHeight="296.0" prefWidth="982.0">
+      <TableView fx:id="eventsTable" layoutX="21.0" layoutY="44.0" prefHeight="296.0" prefWidth="982.0">
         <columns>
           <TableColumn fx:id="idColumn" prefWidth="75.0" text="ID" />
           <TableColumn fx:id="titleColumn" prefWidth="286.0" text="Title" />

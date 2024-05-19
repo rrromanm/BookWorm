@@ -2,6 +2,7 @@ package sep.shared;
 
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import sep.model.Book;
+import sep.model.Event;
 import sep.model.Patron;
 
 import java.rmi.Remote;
@@ -35,4 +36,5 @@ public interface ConnectorInterface extends Remote {
     void deleteFromWishlist(Book book,Patron patron) throws RemoteException, SQLException;
     void addRemotePropertyChangeListener(RemotePropertyChangeListener<Patron> listener) throws RemoteException;
     Book donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws RemoteException, SQLException;
+    ArrayList<Event> getAllEvents() throws RemoteException;
 }

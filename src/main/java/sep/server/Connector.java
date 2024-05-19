@@ -2,9 +2,11 @@ package sep.server;
 
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
+import sep.jdbc.AdminDatabaseImplementation;
 import sep.jdbc.BookDatabaseImplementation;
 import sep.jdbc.PatronDatabaseImplementation;
 import sep.model.Book;
+import sep.model.Event;
 import sep.model.Patron;
 import sep.shared.ConnectorInterface;
 
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 public class Connector implements ConnectorInterface {
     private BookDatabaseImplementation bookDatabase;
     private PatronDatabaseImplementation patronDatabase;
+    private AdminDatabaseImplementation adminDatabase;
     private final RemotePropertyChangeSupport support;
 
     public Connector() {
@@ -22,6 +25,7 @@ public class Connector implements ConnectorInterface {
         {
             this.bookDatabase = BookDatabaseImplementation.getInstance();
             this.patronDatabase = PatronDatabaseImplementation.getInstance();
+            this.adminDatabase = AdminDatabaseImplementation.getInstance();
         }
         catch (SQLException e)
         {
@@ -260,6 +264,18 @@ public class Connector implements ConnectorInterface {
     public Book donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException, RemoteException {
         this.support.firePropertyChange("BookDonate", false, true);
         return bookDatabase.donateBook(title, author, isbn, year, publisher, pageCount, genre, patron);
+    }
+
+    @Override
+    public ArrayList<Event> getAllEvents() throws RemoteException {
+        try
+        {
+            return this.adminDatabase.getAllEvents();
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

@@ -13,6 +13,7 @@ public interface Model {
     ArrayList<Book> getHistoryOfBooks(Patron patron) throws RemoteException;
     ArrayList<Book> getWishlistedBooks(Patron patron) throws RemoteException;
     ArrayList<Book> getDonatedBooks() throws RemoteException;
+    ArrayList<Event> getAllEvents() throws RemoteException;
     void addPropertyChangeListener(PropertyChangeListener listener);
     void removePropertyChangeListener(PropertyChangeListener listener);
     int getAmountOfReadBooks(Patron patron) throws RemoteException;
