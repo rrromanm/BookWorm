@@ -5,12 +5,10 @@ import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
+import sep.jdbc.BookDatabaseImplementation;
 import sep.model.Book;
 import sep.model.Patron;
 import sep.model.State;
@@ -18,6 +16,7 @@ import sep.viewmodel.AdminManageBooksViewModel;
 import sep.viewmodel.AdminManageDonatedBooksViewModel;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 public class AdminManageBooksViewController implements RemotePropertyChangeListener
 {
@@ -53,23 +52,25 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
     @FXML private TextField isbnField;
     @FXML private TextField yearField;
     @FXML private TextField pagesField;
-    @FXML private TextField genreField;
+    @FXML private ComboBox<String> genreField;
 
     private Region root;
     private ViewHandler viewHandler;
     private AdminManageBooksViewModel viewModel;
     private ReadOnlyObjectProperty<Book> selectedBook;
 
+    //TODO: Implement publisher and other details about book into scene builder cuz someone forgot to do this
+    //TODO: Implement edit, create book functionality
     public void init(ViewHandler viewHandler, AdminManageBooksViewModel viewModel, Region root)
-            throws RemoteException {
+            throws RemoteException, SQLException {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
         this.root = root;
         initializeTableView();
+        initializeGenreComboBox();
         this.viewModel.bindList(bookTableView.itemsProperty());
         this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
         viewModel.loadBooks();
-       // initializeTextFields();
 
         viewModel.addPropertyChangeListener(evt -> {
             if ("bookList".equals(evt.getPropertyName())) {
@@ -78,9 +79,19 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
             }
             if ("removeBook".equals(evt.getPropertyName())) {
                 bookTableView.refresh();
+                try {
+                    viewModel.loadBooks();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
             if("addBook".equals(evt.getPropertyName())) {
                 bookTableView.refresh();
+                try {
+                    viewModel.loadBooks();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
@@ -99,6 +110,14 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
     public void onSelect(){
         initializeTextFields();
     }
+
+    public void initializeGenreComboBox() throws SQLException
+    {
+        genreField.getItems().add("All");
+        genreField.getItems().addAll(BookDatabaseImplementation.getInstance()
+                .readGenres());
+        genreField.getSelectionModel().selectFirst();
+    }
     public void initializeTextFields() {
 
                 titleField.setText(selectedBook.get().getTitle());
@@ -106,7 +125,7 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
                 yearField.setText(String.valueOf(selectedBook.get().getYear()));
                 isbnField.setText(String.valueOf(selectedBook.get().getIsbn()));
                 pagesField.setText(String.valueOf(selectedBook.get().getPageCount()));
-                genreField.setText(String.valueOf(selectedBook.get().getGenre()));
+                genreField.getSelectionModel().select(selectedBook.get().getGenre());
                 idField.setText(String.valueOf(selectedBook.get().getBookId()));
 
 
@@ -127,7 +146,11 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
     @FXML
     private void onAdd()
     {
-        //TODO logic to add detail for the books
+        try{
+
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
     @FXML
     private void onSearch(){
@@ -138,11 +161,13 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
         }
     }
     @FXML
-    private void onRemove() //TODO: delete gets really weird error message
+    private void onRemove() throws SQLException
     {
         try{
-            viewModel.deleteBook(selectedBook.get().getTitle(), selectedBook.get().getAuthor(),selectedBook.get().getYear(),selectedBook.get().getPublisher(),
-                    selectedBook.get().getIsbn(),selectedBook.get().getPageCount(),selectedBook.get().getGenre());
+            viewModel.deleteBook(selectedBook.get().getBookId(),selectedBook.get().getTitle(), selectedBook.get().getAuthor(),String.valueOf(selectedBook.get().getYear()),selectedBook.get().getPublisher(),
+                    String.valueOf(selectedBook.get().getIsbn()),String.valueOf(selectedBook.get().getPageCount()),selectedBook.get().getGenre());
+            viewModel.loadBooks();
+            bookTableView.refresh();
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -157,7 +182,7 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
         isbnField.clear();
         yearField.clear();
         pagesField.clear();
-        genreField.clear();
+        genreField.getSelectionModel().selectFirst();
     }
 
     public void reset()
@@ -169,7 +194,7 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
         isbnField.clear();
         yearField.clear();
         pagesField.clear();
-        genreField.clear();
+        genreField.getSelectionModel().selectFirst();
     }
 
     public Region getRoot()

@@ -281,7 +281,7 @@ public class ViewFactory
                 Region root = loader.load();
                 adminManageBooksViewController = loader.getController();
                 adminManageBooksViewController.init(viewHandler, viewModelFactory.getAdminManageBooksViewModel(), root);
-            } catch (IOException e) {
+            } catch (IOException | SQLException e) {
                 throw new IOError(e);
             }
         }

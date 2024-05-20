@@ -21,6 +21,7 @@ public interface ConnectorInterface extends Remote {
     ArrayList<Book> filter(String genre,String state, String search) throws RemoteException;
     void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException;
     void createEvent(String title, String description, String eventDate) throws RemoteException;
+    void createBook(String title, String author,int year, String publisher, long isbn, int pageCount, String genre) throws SQLException, RemoteException;
     Patron login(String username, String password) throws RemoteException;
     boolean loginAsAdmin(String username, String password) throws RemoteException;
     void updateUsername(int userID, String newUsername) throws RemoteException;
@@ -34,7 +35,7 @@ public interface ConnectorInterface extends Remote {
     void wishlistBook(Book book, Patron patron) throws RemoteException, SQLException;
     boolean isWishlisted(Book book, Patron patron) throws RemoteException,SQLException;
     void returnBookToDatabase(Book book, Patron patron) throws RemoteException, SQLException;
-    void deleteBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws RemoteException, SQLException;
+    void deleteBook(int bookID,String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws RemoteException, SQLException;
     void deleteFromWishlist(Book book,Patron patron) throws RemoteException, SQLException;
     void addRemotePropertyChangeListener(RemotePropertyChangeListener<Patron> listener) throws RemoteException;
     Book donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws RemoteException, SQLException;

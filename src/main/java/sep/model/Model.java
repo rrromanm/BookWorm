@@ -17,8 +17,8 @@ public interface Model {
     ArrayList<Event> getAllEvents() throws RemoteException;
     void addPropertyChangeListener(PropertyChangeListener listener);
     void removePropertyChangeListener(PropertyChangeListener listener);
-    void deleteBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws RemoteException;
-
+    void deleteBook(int bookID,String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws RemoteException, SQLException;
+    void createBook(String title, String author,int year, String publisher, long isbn, int pageCount, String genre) throws SQLException, RemoteException;
     int getAmountOfReadBooks(Patron patron) throws RemoteException;
     int getAmountOfBorrowedBooks(Patron patron) throws RemoteException;
     void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException;

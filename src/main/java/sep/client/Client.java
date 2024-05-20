@@ -112,10 +112,21 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
 
 
     @Override
-    public void deleteBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws RemoteException, SQLException {
+    public void deleteBook(int bookID,String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException {
         try{
-            library.deleteBook(title, author, year, publisher, isbn, pageCount, genre);
+            library.deleteBook(bookID,title, author, year, publisher, isbn, pageCount, genre);
+            fileLog.log(title + " has been deleted from the database by Admin");
         } catch(Exception e){
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
+    public void createBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws SQLException, RemoteException {
+        try{
+            library.createBook(title, author, year, publisher, isbn, pageCount, genre);
+            fileLog.log(title + " has been added to the database by Admin");
+        }catch (Exception e){
             throw new IllegalArgumentException(e);
         }
     }

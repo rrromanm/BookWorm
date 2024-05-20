@@ -150,6 +150,15 @@ public class Connector implements ConnectorInterface {
         }
     }
 
+    @Override
+    public void createBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws SQLException {
+        try{
+            this.bookDatabase.createBook(title, author, year, publisher, isbn, pageCount, genre);
+        }catch (SQLException e){
+            throw new SQLException(e);
+        }
+    }
+
     @Override public synchronized  ArrayList<Book> filter(String genre,String state, String search){
         try {
             return this.bookDatabase.filter(genre, state,search);
@@ -268,9 +277,9 @@ public class Connector implements ConnectorInterface {
     }
 
     @Override
-    public void deleteBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws RemoteException, SQLException {
+    public void deleteBook(int bookID,String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException {
         try{
-            bookDatabase.deleteBook(title, author, year, publisher, isbn, pageCount, genre);
+            bookDatabase.deleteBook(bookID,title, author, year, publisher, isbn, pageCount, genre);
             this.support.firePropertyChange("DeleteBook", false, true);
         } catch(Exception e){
             throw new IllegalArgumentException(e);
