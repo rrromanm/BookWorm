@@ -11,12 +11,13 @@ public interface PatronDatabaseInterface
   Patron login(String username, String password) throws SQLException;
   boolean loginAsAdmin(String username, String password) throws SQLException;
   boolean usernameExists(String username) throws SQLException;
-  void updateUsername(String oldUsername, String newUsername) throws SQLException;
-  void updatePassword(String oldPassword, String newPassword) throws SQLException;
-  void updateEmail(String oldEmail, String newEmail) throws SQLException;
-  void updatePhone(String oldPhone, String newPhone) throws SQLException;
-  void updateFirstName(String oldFirst, String newFirst) throws SQLException;
-  void updateLastName(String oldLast, String newLast) throws SQLException;
+  void updateUsername(int userID, String newUsername) throws SQLException;
+  void updatePassword(int userID, String newPassword) throws SQLException;
+  void updateEmail(int userID, String newEmail) throws SQLException;
+  void updatePhone(int userID, String newPhone) throws SQLException;
+  void updateFirstName(int userID, String newFirst) throws SQLException;
+  void updateLastName(int userID, String newLast) throws SQLException;
+  void updateFees(int userID, int newFees) throws SQLException;
   List<Patron> getAllPatrons() throws SQLException;
 
 }

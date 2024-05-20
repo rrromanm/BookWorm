@@ -26,7 +26,7 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     private File file;
     private FileLog fileLog;
 
-    public Client(ConnectorInterface library) throws RemoteException {
+    public Client(ConnectorInterface library) throws RemoteException, SQLException, IOException {
         this.library = library;
         this.support = new PropertyChangeSupport(this);
         this.library.addRemotePropertyChangeListener(this);
@@ -108,8 +108,19 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     fileLog.log(patron.getUsername() + " has returned a \"" + book.getTitle() + "\"");
   }
 
-    @Override public void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron)
-        throws SQLException, IOException
+
+
+
+    @Override
+    public void deleteBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws RemoteException, SQLException {
+        try{
+            library.deleteBook(title, author, year, publisher, isbn, pageCount, genre);
+        } catch(Exception e){
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override public void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException, RemoteException, IOException
     {
         library.donateBook(title, author, isbn, year, publisher, pageCount, genre, patron);
         fileLog.log(patron.getUsername() + " has donated a \"" + title + "\"");
@@ -169,9 +180,9 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     }
 
     @Override
-    public void updateUsername(String oldUsername, String newUsername) throws RemoteException {
+    public void updateUsername(int userID, String newUsername) throws RemoteException {
         try{
-            library.updateUsername(oldUsername, newUsername);
+            library.updateUsername(userID, newUsername);
         }catch (RemoteException e){
             throw new RemoteException(e.getMessage());
         }
@@ -179,54 +190,54 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     }
 
     @Override
-    public void updateEmail(String oldEmail, String newEmail) throws RemoteException {
+    public void updateEmail(int userID, String newEmail) throws RemoteException {
         try{
-            library.updateEmail(oldEmail, newEmail);
+            library.updateEmail(userID, newEmail);
         }catch (RemoteException e){
             throw new RemoteException(e.getMessage());
         }
     }
 
     @Override
-    public void updatePhoneNumber(String oldPhoneNumber, String newPhoneNumber) throws RemoteException {
+    public void updatePhoneNumber(int userID, String newPhoneNumber) throws RemoteException {
         try{
-            library.updatePhoneNumber(oldPhoneNumber, newPhoneNumber);
+            library.updatePhoneNumber(userID, newPhoneNumber);
         }catch (RemoteException e){
             throw new RemoteException(e.getMessage());
         }
     }
 
     @Override
-    public void updateFirstName(String oldFirstName, String newFirstName) throws RemoteException {
+    public void updateFirstName(int userID, String newFirstName) throws RemoteException {
         try{
-            library.updateFirstName(oldFirstName, newFirstName);
+            library.updateFirstName(userID, newFirstName);
         }catch (RemoteException e){
             throw new RemoteException(e.getMessage());
         }
     }
 
     @Override
-    public void updateLastName(String oldLastName, String newLastName) throws RemoteException {
+    public void updateLastName(int userID, String newLastName) throws RemoteException {
         try{
-            library.updateLastName(oldLastName, newLastName);
+            library.updateLastName(userID, newLastName);
         } catch (RemoteException e){
             throw new RemoteException(e.getMessage());
         }
     }
 
     @Override
-    public void updatePassword(String oldPassword, String newPassword) throws RemoteException {
+    public void updatePassword(int userID, String newPassword) throws RemoteException {
         try{
-            library.updatePassword(oldPassword, newPassword);
+            library.updatePassword(userID, newPassword);
         } catch (RemoteException e){
             throw new RemoteException(e.getMessage());
         }
     }
 
     @Override
-    public void updateFees(int oldFees, int newFees) throws RemoteException {
+    public void updateFees(int userID, int newFees) throws RemoteException {
         try{
-            library.updateFees(oldFees, newFees);
+            library.updateFees(userID, newFees);
         }catch (RemoteException e){
             throw new RemoteException(e.getMessage());
         }
@@ -269,9 +280,12 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
            {
                this.support.firePropertyChange("DonatedBookApproved", false,true);
            }
-           if (event.getPropertyName().equals("DonatedBookRejected"))
-           {
-               this.support.firePropertyChange("DonatedBookRejected", false,true);
+           if (event.getPropertyName().equals("DonatedBookRejected")) {
+               this.support.firePropertyChange("DonatedBookRejected", false, true);
+           }
+           if(event.getPropertyName().equals("removeBook")){
+               this.support.firePropertyChange("removeBook", false, true);
+
            }
         });
     }

@@ -66,11 +66,11 @@ public class ProfileViewModel implements PropertyChangeListener
         return model.getAmountOfReadBooks(patron);
     }
 
-    public void updateUsername(String newUsername,String oldUsername){
+    public void updateUsername(String newUsername,int userID){
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
         if(loggedInUser != null){
             try{
-                model.updateUsername(oldUsername, newUsername);
+                model.updateUsername(userID, newUsername);
             }catch (Exception e){
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
@@ -80,11 +80,11 @@ public class ProfileViewModel implements PropertyChangeListener
         }
     }
 
-    public void updateEmail(String newEmail,String oldEmail){
+    public void updateEmail(String newEmail,int userID){
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
         if(loggedInUser!= null){
             try{
-                model.updateEmail(oldEmail, newEmail);
+                model.updateEmail(userID, newEmail);
             }catch (Exception e){
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
@@ -94,11 +94,11 @@ public class ProfileViewModel implements PropertyChangeListener
         }
     }
 
-    public void updatePhoneNumber(String newPhoneNumber,String oldPhoneNumber){
+    public void updatePhoneNumber(String newPhoneNumber,int  userID){
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
         if(loggedInUser!= null){
             try{
-                model.updatePhoneNumber(oldPhoneNumber, newPhoneNumber);
+                model.updatePhoneNumber(userID, newPhoneNumber);
             }catch (Exception e){
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
@@ -108,11 +108,11 @@ public class ProfileViewModel implements PropertyChangeListener
         }
     }
 
-    public void updateFirstName(String newFirstName,String oldFirstName){
+    public void updateFirstName(String newFirstName,int userID){
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
         if(loggedInUser!= null){
             try{
-                model.updateFirstName(oldFirstName, newFirstName);
+                model.updateFirstName(userID, newFirstName);
             }catch (Exception e){
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
@@ -122,11 +122,11 @@ public class ProfileViewModel implements PropertyChangeListener
         }
     }
 
-    public void updateLastName(String newLastName,String oldLastName){
+    public void updateLastName(String newLastName,int userID){
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
         if(loggedInUser!= null){
             try{
-                model.updateLastName(oldLastName, newLastName);
+                model.updateLastName(userID, newLastName);
             }catch (Exception e){
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
@@ -136,11 +136,11 @@ public class ProfileViewModel implements PropertyChangeListener
         }
     }
 
-    public void updatePassword(String newPassword,String oldPassword){
+    public void updatePassword(String newPassword,int userID){
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
         if(loggedInUser!= null){
             try{
-                model.updatePassword(oldPassword, newPassword);
+                model.updatePassword(userID, newPassword);
             }catch (Exception e){
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());

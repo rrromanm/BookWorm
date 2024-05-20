@@ -19,7 +19,7 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
     private String error;
     private final PropertyChangeSupport support;
 
-    public ModelManager(ConnectorInterface library) throws RemoteException {
+    public ModelManager(ConnectorInterface library) throws IOException, SQLException {
         this.client = new Client(library);
         this.error = "";
         this.client.addPropertyChangeListener(this);
@@ -189,65 +189,74 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
     }
 
     @Override
-    public void updateUsername(String oldUsername, String newUsername) throws RemoteException {
+    public void updateUsername(int userID, String newUsername) throws RemoteException {
         try{
-            client.updateUsername(oldUsername, newUsername);
+            client.updateUsername(userID, newUsername);
         }catch (Exception e){
             throw new RemoteException(e.getMessage());
         }
     }
 
     @Override
-    public void updateEmail(String oldEmail, String newEmail) throws RemoteException {
+    public void updateEmail(int userID, String newEmail) throws RemoteException {
         try{
-            client.updateEmail(oldEmail, newEmail);
+            client.updateEmail(userID, newEmail);
         }catch (Exception e){
             throw new RemoteException(e.getMessage());
         }
     }
 
     @Override
-    public void updatePhoneNumber(String oldPhoneNumber, String newPhoneNumber) throws RemoteException {
+    public void updatePhoneNumber(int userID, String newPhoneNumber) throws RemoteException {
         try{
-            client.updatePhoneNumber(oldPhoneNumber, newPhoneNumber);
+            client.updatePhoneNumber(userID, newPhoneNumber);
         }catch (Exception e){
             throw new RemoteException(e.getMessage());
         }
     }
 
     @Override
-    public void updateFirstName(String oldFirstName, String newFirstName) throws RemoteException {
+    public void updateFirstName(int userID, String newFirstName) throws RemoteException {
         try{
-            client.updateFirstName(oldFirstName, newFirstName);
+            client.updateFirstName(userID, newFirstName);
         }catch (Exception e){
             throw new RemoteException(e.getMessage());
         }
     }
 
     @Override
-    public void updateLastName(String oldLastName, String newLastName) throws RemoteException {
+    public void updateLastName(int userID, String newLastName) throws RemoteException {
         try{
-            client.updateLastName(oldLastName, newLastName);
+            client.updateLastName(userID, newLastName);
         }catch (Exception e){
             throw new RemoteException(e.getMessage());
         }
     }
 
     @Override
-    public void updatePassword(String oldPassword, String newPassword) throws RemoteException {
+    public void updatePassword(int userID, String newPassword) throws RemoteException {
         try{
-            client.updatePassword(oldPassword, newPassword);
+            client.updatePassword(userID, newPassword);
         }catch (Exception e){
             throw new RemoteException(e.getMessage());
         }
     }
 
     @Override
-    public void updateFees(int oldFees, int newFees) throws RemoteException {
+    public void updateFees(int userID, int newFees) throws RemoteException {
         try{
-            client.updateFees(oldFees, newFees);
+            client.updateFees(userID, newFees);
         }catch (Exception e){
             throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws RemoteException {
+        try{
+            client.deleteBook(title, author, year, publisher, isbn, pageCount, genre);
+        } catch(Exception e){
+            throw new IllegalArgumentException(e);
         }
     }
 

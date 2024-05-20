@@ -9,6 +9,8 @@ import java.util.ArrayList;
 public interface BookDatabaseInterface
 {
   Book createBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws SQLException;
+  void deleteBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws SQLException;
+
   ArrayList<Book> filter(String state, String genres, String search) throws SQLException;
   ArrayList<Book> readBooks() throws SQLException;
   ArrayList<String> readGenres() throws SQLException;
@@ -26,4 +28,5 @@ public interface BookDatabaseInterface
   int getGenreId(String genreName) throws SQLException;
   Book donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException;
 
- }
+
+}

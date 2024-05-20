@@ -21,7 +21,7 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
 
     private Connection getConnection() throws SQLException {
 
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "343460"); //TODO: YOU NEED TO CHANGE THIS PASSWORD ON WHO IS WORKING ON CODE RN
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "VIAVIA"); //TODO: YOU NEED TO CHANGE THIS PASSWORD ON WHO IS WORKING ON CODE RN
 
     }
 
@@ -49,6 +49,25 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
             }
         }
     }
+
+    @Override
+    public void deleteBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws SQLException {
+        try (Connection connection = getConnection()) {
+            int genreId = getGenreId(genre);
+            String sqlQuery = "DELETE FROM book_worm_db.books " +
+                    "WHERE title = ? AND authors = ? AND year = ? AND publisher = ? AND isbn = ? AND page_count = ? AND genre_id = ?";
+            PreparedStatement statement = connection.prepareStatement(sqlQuery);
+            statement.setString(1, title);
+            statement.setString(2, author);
+            statement.setInt(3, year);
+            statement.setString(4, publisher);
+            statement.setLong(5, isbn);
+            statement.setInt(6, pageCount);
+            statement.setInt(7, genreId);
+            statement.executeUpdate();
+        }
+    }
+
 
     public ArrayList<Book> filter(String state, String genres, String search) throws SQLException {
         try (Connection connection = getConnection()) {

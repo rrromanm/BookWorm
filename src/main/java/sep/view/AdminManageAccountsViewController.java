@@ -47,7 +47,6 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
     @FXML private TextField userIDTextField;
 
     @FXML private TextField feesTextField;
-    @FXML private TextField borrowingTimeTextField;
 
     private String originalFirstName;
     private String originalLastName;
@@ -136,20 +135,20 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
             NameValidator.validate(lastName);
 
             if(!username.equals(originalUsername)){
-                viewModel.updateUsername(username,originalUsername);
+                viewModel.updateUsername(username,userID);
             }
 
             if(!firstName.equals(originalFirstName)){
-                viewModel.updateFirstName(firstName,originalFirstName);
+                viewModel.updateFirstName(firstName,userID);
             }
             if(!lastName.equals(originalLastName)){
-                viewModel.updateLastName(lastName,originalLastName);
+                viewModel.updateLastName(lastName,userID);
             }
             if(!email.equals(originalEmail)){
-                viewModel.updateEmail(email,originalEmail);
+                viewModel.updateEmail(email,userID);
             }
             if(!phoneNumber.equals(originalPhoneNumber)){
-                viewModel.updatePhoneNumber(phoneNumber,originalPhoneNumber);
+                viewModel.updatePhoneNumber(phoneNumber,userID);
             }
 
             viewModel.loadPatrons();
@@ -167,10 +166,10 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
 
     @FXML private void saveButtonClicked() throws RemoteException {
         int fees = Integer.parseInt(feesTextField.getText());
-
+        int userID = Integer.parseInt(userIDTextField.getText());
         try {
 
-            viewModel.updateFees(originalFee, fees);
+            viewModel.updateFees(userID, fees);
             //viewModel.updateBorrowingTime(userID, borrowingTime);
 
             viewModel.loadPatrons();
