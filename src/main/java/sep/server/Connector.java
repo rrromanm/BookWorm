@@ -2,9 +2,11 @@ package sep.server;
 
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
+import sep.jdbc.AdminDatabaseImplementation;
 import sep.jdbc.BookDatabaseImplementation;
 import sep.jdbc.PatronDatabaseImplementation;
 import sep.model.Book;
+import sep.model.Event;
 import sep.model.Patron;
 import sep.shared.ConnectorInterface;
 
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 public class Connector implements ConnectorInterface {
     private BookDatabaseImplementation bookDatabase;
     private PatronDatabaseImplementation patronDatabase;
+    private AdminDatabaseImplementation adminDatabase;
     private final RemotePropertyChangeSupport support;
 
     public Connector() {
@@ -22,6 +25,7 @@ public class Connector implements ConnectorInterface {
         {
             this.bookDatabase = BookDatabaseImplementation.getInstance();
             this.patronDatabase = PatronDatabaseImplementation.getInstance();
+            this.adminDatabase = AdminDatabaseImplementation.getInstance();
         }
         catch (SQLException e)
         {
@@ -124,12 +128,25 @@ public class Connector implements ConnectorInterface {
         {
                 this.patronDatabase.createPatron(username, password, first_name,
                     last_name, email, phone_number);
-
+                this.support.firePropertyChange("createPatron", false, true);
 
         }
         catch (SQLException ignored)
         {
             throw new RuntimeException(ignored);
+        }
+    }
+
+    @Override
+    public void createEvent(String title, String description, String date) throws RemoteException{
+        try
+        {
+            this.adminDatabase.createEvent(title, description, date);
+
+        }
+        catch (SQLException e)
+        {
+            throw new RemoteException("Failed to create event: " + e.getMessage());
         }
     }
 
@@ -218,6 +235,15 @@ public class Connector implements ConnectorInterface {
     }
 
     @Override
+    public void updateFees(int oldFees, int newFees) throws RemoteException {
+        try{
+            patronDatabase.updateFees(oldFees, newFees);
+        }catch(SQLException e){
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
     public void borrowBooks(Book book, Patron parton) throws RemoteException, SQLException {
         bookDatabase.borrowBook(book,parton);
         this.support.firePropertyChange("BorrowBook", null,book);
@@ -254,6 +280,14 @@ public class Connector implements ConnectorInterface {
     }
 
     @Override
+    public ArrayList<Event> getAllEvents() throws RemoteException {
+        try {
+            return this.adminDatabase.getAllEvents();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException {
         bookDatabase.approveDonatedBook(id, title, author, isbn, year, publisher, pageCount, genreId);
         this.support.firePropertyChange("DonatedBookApproved", false,true);

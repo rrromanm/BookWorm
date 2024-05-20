@@ -7,6 +7,7 @@ import sep.file.FileLog;
 import sep.model.Book;
 import sep.model.Patron;
 import sep.model.UserSession;
+import sep.model.Event;
 import sep.shared.ConnectorInterface;
 
 import java.beans.PropertyChangeListener;
@@ -37,6 +38,11 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     @Override
     public ArrayList<Book> getAllBooks() throws RemoteException {
         return library.getAllBooks();
+    }
+
+    @Override
+    public ArrayList<Event> getAllEvents() throws RemoteException {
+        return library.getAllEvents();
     }
 
   @Override public ArrayList<Book> getBorrowedBooks(Patron patron) throws RemoteException
@@ -137,6 +143,15 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
 
    }
 
+   @Override
+   public void createEvent(String title, String description, String eventDate) throws RemoteException{
+        try{
+            library.createEvent(title, description, eventDate);
+        } catch (Exception e){
+            throw new RemoteException(e.getMessage());
+        }
+   }
+
     @Override
     public Patron login(String username, String password) throws IOException
     {
@@ -209,6 +224,15 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     }
 
     @Override
+    public void updateFees(int oldFees, int newFees) throws RemoteException {
+        try{
+            library.updateFees(oldFees, newFees);
+        }catch (RemoteException e){
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.support.addPropertyChangeListener(listener);
     }
@@ -236,6 +260,10 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
            if (event.getPropertyName().equals("BookDonate"))
            {
                this.support.firePropertyChange("BookDonate", false, true);
+           }
+           if (event.getPropertyName().equals("createPatron"))
+           {
+               this.support.firePropertyChange("createPatron", false, true);
            }
            if (event.getPropertyName().equals("DonatedBookApproved"))
            {

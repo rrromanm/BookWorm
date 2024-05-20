@@ -53,6 +53,11 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
         return client.getDonatedBooks();
     }
 
+    @Override
+    public ArrayList<Event> getAllEvents() throws RemoteException {
+        return client.getAllEvents();
+    }
+
     @Override public int getAmountOfReadBooks(Patron patron)
         throws RemoteException
     {
@@ -94,6 +99,19 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
         catch (Exception e)
         {
             error = e.getMessage();
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void createEvent(String title, String description, String date) throws RemoteException {
+        try
+        {
+            this.client.createEvent(title, description, date);
+
+        }
+        catch (Exception e)
+        {
             throw new RemoteException(e.getMessage());
         }
     }
@@ -223,6 +241,16 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
             throw new RemoteException(e.getMessage());
         }
     }
+
+    @Override
+    public void updateFees(int oldFees, int newFees) throws RemoteException {
+        try{
+            client.updateFees(oldFees, newFees);
+        }catch (Exception e){
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

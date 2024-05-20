@@ -1,11 +1,10 @@
 package sep.view;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
+import sep.model.Event;
 import sep.viewmodel.AdminManageEventsViewModel;
 
 import java.rmi.RemoteException;
@@ -16,26 +15,43 @@ public class AdminManageEventsViewController
     private AdminManageEventsViewModel viewModel;
     private Region root;
 
-//    @FXML
-//    private ListView<> listView; //todo implement list of events
+    @FXML
+    private TableView<Event> eventsTable;
+    @FXML private TableColumn<Event,Integer> idColumn;
+    @FXML private TableColumn<Event, String> titleColumn;
+    @FXML private TableColumn<Event, String> descriptionColumn;
+    @FXML private TableColumn<Event, String> dateColumn;
     @FXML
     private Button backButton;
     @FXML
     private Button addEvent;
     @FXML
-    private Button save;
+    private Button deleteButton;
     @FXML
-    private TextField title;
+    private TextField titleTextField;
     @FXML
-    private DatePicker date;
+    private DatePicker datePicker;
     @FXML
-    private TextField description;
+    private TextField descriptionTextField;
 
-    public void init(ViewHandler viewHandler, AdminManageEventsViewModel viewModel, Region root)
-    {
+    public void init(ViewHandler viewHandler, AdminManageEventsViewModel viewModel, Region root) throws RemoteException {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
         this.root = root;
+        initializeTableView();
+
+        this.viewModel.bindList(eventsTable.itemsProperty());
+        this.viewModel.bindTitle(titleTextField.textProperty());
+        this.viewModel.bindDescription(descriptionTextField.textProperty());
+        this.viewModel.bindDate(datePicker.getEditor().textProperty());
+        viewModel.resetEventList();
+    }
+
+    public void initializeTableView(){
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("eventDate"));
     }
 
     @FXML
@@ -45,18 +61,28 @@ public class AdminManageEventsViewController
     }
 
     @FXML
-    private void addEvent(){
-        //TODO create event logic and add them to the list
+    private void addEvent()
+    {
+        try {
+            this.viewModel.createEvent();
+            viewModel.resetEventList();
+            reset();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @FXML
-    private void onSave(){
+    private void onDelete(){
         //TODO save the values from the fields into a new event
     }
 
     public void reset()
     {
-
+        titleTextField.clear();
+        descriptionTextField.clear();
+        datePicker.getEditor().clear();
     }
 
     public Region getRoot()
