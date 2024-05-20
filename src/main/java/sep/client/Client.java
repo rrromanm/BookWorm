@@ -133,7 +133,13 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     fileLog.log(patron.getUsername() + " has deleted a \"" + book.getTitle() + "\" from the wishlist");
   }
 
-    @Override
+  @Override public ArrayList<String> getEndingBooks(Patron patron)
+      throws RemoteException
+  {
+    return library.getEndingBooks(patron);
+  }
+
+  @Override
     public void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException {
         library.approveDonatedBook(id, title, author, isbn,year, publisher, pageCount, genreId);
     }

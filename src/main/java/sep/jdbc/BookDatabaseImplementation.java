@@ -21,7 +21,9 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
 
     private Connection getConnection() throws SQLException {
 
+
         return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "VIAVIA"); //TODO: YOU NEED TO CHANGE THIS PASSWORD ON WHO IS WORKING ON CODE RN
+
 
     }
 
@@ -660,6 +662,29 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         } catch (SQLException e) {
             System.err.println("SQL Exception: " + e.getMessage());
             throw e;
+        }
+    }
+
+    @Override public ArrayList<String> checkEndingBooks(Patron patron) throws SQLException
+    {
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                "SELECT b.title " +
+                    "FROM book_worm_db.books b " +
+                    "LEFT JOIN book_worm_db.borrowed_books bb ON b.id = bb.book_id " +
+                    "LEFT JOIN book_worm_db.patron p ON p.id = bb.profile_id " +
+                    "WHERE p.id = ? " +
+                    "AND bb.return_date IS NOT NULL " +
+                    "AND bb.return_date <= CURRENT_DATE + INTERVAL '1 week' " +
+                    "AND bb.return_date > CURRENT_DATE;");
+            statement.setInt(1, patron.getUserID());
+            ResultSet resultSet = statement.executeQuery();
+            ArrayList<String> titles = new ArrayList<>();
+            while (resultSet.next()) {
+                String title = resultSet.getString("title");
+                titles.add(title);
+            }
+            return titles;
         }
     }
 

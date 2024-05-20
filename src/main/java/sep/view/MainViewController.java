@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
-public class MainViewController implements RemotePropertyChangeListener
+public class MainViewController
 {
     @FXML private Button notificationButton;
     @FXML private Button viewProfileButton;
@@ -61,6 +61,7 @@ public class MainViewController implements RemotePropertyChangeListener
         this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
         this.mainViewModel.bindList(bookTableView.itemsProperty());
         viewModel.resetBookList();
+        seeNotifications();
         // somehow we need to figure out how to change the button to an image of the bell for notification and
     }
     public void initializeTableView(){
@@ -110,6 +111,10 @@ public class MainViewController implements RemotePropertyChangeListener
     @FXML public void onViewProfile() throws RemoteException
     {
         viewHandler.openView(ViewFactory.PROFILE);
+    }
+    @FXML public void onNotification() throws SQLException, RemoteException
+    {
+        seeNotifications();
     }
     @FXML public void onMyBooks() throws RemoteException
     {
@@ -179,11 +184,38 @@ public class MainViewController implements RemotePropertyChangeListener
         if(!mainViewModel.isWishlisted(selectedBook.get(),UserSession.getInstance().getLoggedInUser())){
             wishlistButton.setDisable(false);
         }
-        // we still need to figure out how to show the description of the book
     }
 
     public Region getRoot(){
         return root;
+    }
+
+    public void seeNotifications() throws SQLException, RemoteException
+    {
+        if (UserSession.getInstance().getLoggedInUser().getFees() > 0)
+        {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Notice");
+            alert.setHeaderText("You have unpaid fees: " + UserSession.getInstance().getLoggedInUser().getFees());
+            alert.setContentText("Please pay them as soon as possible!");
+            alert.show();
+        }
+        if(!mainViewModel.getEndingBooks(UserSession.getInstance().getLoggedInUser()).isEmpty()){
+
+            StringBuilder stringBuilder = new StringBuilder();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Notice");
+            alert.setHeaderText("Your borrowing time is coming to an end");
+
+            stringBuilder.append("The books: ");
+
+            for (String bookTitle : mainViewModel.getEndingBooks(UserSession.getInstance().getLoggedInUser())) {
+                stringBuilder.append("\n").append("\"" +bookTitle + "\"");
+            }
+
+            alert.setContentText(stringBuilder.toString());
+            alert.show();
+        }
     }
 
     public void reset()
@@ -191,10 +223,5 @@ public class MainViewController implements RemotePropertyChangeListener
         searchTextField.clear();
         stateComboBox.getSelectionModel().selectFirst();
         borrowButton.setDisable(true);
-    }
-
-    @Override public void propertyChange(RemotePropertyChangeEvent evt) throws RemoteException
-    {
-
     }
 }

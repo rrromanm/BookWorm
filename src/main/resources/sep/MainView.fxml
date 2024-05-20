@@ -10,10 +10,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.MainViewController">
+<AnchorPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.MainViewController">
     <children>
         <Circle fill="#f8f8f8" layoutX="48.0" layoutY="44.0" radius="38.0" stroke="BLACK" strokeType="INSIDE" />
-        <Button fx:id="notificationButton" layoutX="92.0" layoutY="33.0" mnemonicParsing="false" text="Notification" />
+        <Button fx:id="notificationButton" layoutX="92.0" layoutY="33.0" mnemonicParsing="false" onAction="#onNotification" text="Notification" />
         <ComboBox fx:id="genreComboBox" layoutX="179.0" layoutY="33.0" onAction="#onGenreClick" prefWidth="150.0" promptText="Genre" />
         <ComboBox fx:id="stateComboBox" layoutX="329.0" layoutY="33.0" onAction="#onStateClick" prefWidth="150.0" promptText="State" />
         <TextField fx:id="searchTextField" layoutX="491.0" layoutY="34.0" prefHeight="26.0" prefWidth="429.0" />

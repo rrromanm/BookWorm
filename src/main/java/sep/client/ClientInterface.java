@@ -50,6 +50,6 @@ public interface ClientInterface {
         throws SQLException, IOException;
     void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron)
         throws SQLException, IOException;
-    void deleteFromWishlist(Book book, Patron patron)
-        throws SQLException, IOException;
+    void deleteFromWishlist(Book book, Patron patron) throws SQLException, IOException;
+    ArrayList<String> getEndingBooks(Patron patron) throws RemoteException;
 }

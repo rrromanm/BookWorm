@@ -41,5 +41,6 @@ public interface Model {
     void returnBookToDatabase(Book book, Patron patron) throws IOException, SQLException;
     void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException, IOException;
     void deleteFromWishlist(Book book, Patron patron) throws IOException, SQLException;
+    ArrayList<String> getEndingBooks(Patron patron) throws RemoteException;
 }
 
