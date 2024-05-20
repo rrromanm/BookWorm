@@ -78,6 +78,13 @@ public class MainViewModel implements PropertyChangeListener
                     throw new RuntimeException(e);
                 }
             }
+            if ("DonatedBookApproved".equals(evt.getPropertyName())) {
+                try {
+                    resetBookList();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         });
     }
 }

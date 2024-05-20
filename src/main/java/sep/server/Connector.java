@@ -254,6 +254,18 @@ public class Connector implements ConnectorInterface {
     }
 
     @Override
+    public void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException {
+        bookDatabase.approveDonatedBook(id, title, author, isbn, year, publisher, pageCount, genreId);
+        this.support.firePropertyChange("DonatedBookApproved", false,true);
+    }
+
+    @Override
+    public void rejectDonatedBook(int bookId) throws SQLException, RemoteException {
+        bookDatabase.rejectDonatedBook(bookId);
+        this.support.firePropertyChange("DonatedBookRejected", false,true);
+    }
+
+    @Override
     public void addRemotePropertyChangeListener(RemotePropertyChangeListener listener) throws RemoteException {
         this.support.addPropertyChangeListener(listener);
     }

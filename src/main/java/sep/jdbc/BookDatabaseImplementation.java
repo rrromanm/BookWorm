@@ -594,10 +594,8 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
     }
 
     public int getGenreId(String genreName) throws SQLException {
-        String query = "SELECT id FROM book_worm_db.genre WHERE genre = ?";
-
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement("SELECT id FROM book_worm_db.genre WHERE genre = ?")) {
             statement.setString(1, genreName);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -641,6 +639,61 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         } catch (SQLException e) {
             System.err.println("SQL Exception: " + e.getMessage());
             throw e;
+        }
+    }
+
+    public void approveDonatedBook(int id,String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException {
+        int genre_id = getGenreId(genreId);
+
+        try (Connection connection = getConnection();
+             PreparedStatement insertStatement = connection.prepareStatement(
+                     "INSERT INTO book_worm_db.books (title, authors, ISBN, year, publisher, page_count, genre_id, state) VALUES (?, ?, ?, ?, ?, ?, ?, 'Available')",
+                     PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+            connection.setAutoCommit(false);
+
+            insertStatement.setString(1, title);
+            insertStatement.setString(2, author);
+            insertStatement.setLong(3, isbn);
+            insertStatement.setInt(4, year);
+            insertStatement.setString(5, publisher);
+            insertStatement.setInt(6, pageCount);
+            insertStatement.setInt(7, genre_id);
+            insertStatement.executeUpdate();
+
+            ResultSet resultSet = insertStatement.getGeneratedKeys();
+            int generatedId = -1;
+            if (resultSet.next()) {
+                generatedId = resultSet.getInt(1);
+            }
+
+            if (generatedId != -1) {
+                try (PreparedStatement deleteStatement = connection.prepareStatement(
+                        "DELETE FROM book_worm_db.books_donate WHERE books_donate.id = ?")) {
+                    deleteStatement.setInt(1, id);
+                    deleteStatement.executeUpdate();
+
+                    connection.commit();
+                }
+            } else {
+                connection.rollback();
+                throw new SQLException("Failed to retrieve the generated ID for the inserted book.");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void rejectDonatedBook(int bookId){
+        try (Connection connection = getConnection();
+             PreparedStatement deleteStatement = connection.prepareStatement(
+                        "DELETE FROM book_worm_db.books_donate WHERE books_donate.id = ?")) {
+                    deleteStatement.setInt(1, bookId);
+                    deleteStatement.executeUpdate();
+
+                } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

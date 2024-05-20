@@ -34,4 +34,6 @@ public interface ConnectorInterface extends Remote {
     void deleteFromWishlist(Book book,Patron patron) throws RemoteException, SQLException;
     void addRemotePropertyChangeListener(RemotePropertyChangeListener<Patron> listener) throws RemoteException;
     Book donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws RemoteException, SQLException;
+    void approveDonatedBook(int id,String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException;
+    void rejectDonatedBook(int bookId) throws SQLException, RemoteException;
 }

@@ -61,8 +61,6 @@ public class MainViewController implements RemotePropertyChangeListener
         this.mainViewModel.bindList(bookTableView.itemsProperty());
         viewModel.resetBookList();
         // somehow we need to figure out how to change the button to an image of the bell for notification and
-        // make imageView fit into the circle
-        // populate the tableView should also be here (we will do it from the database)
     }
     public void initializeTableView(){
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -156,9 +154,8 @@ public class MainViewController implements RemotePropertyChangeListener
     {
         viewHandler.openView(ViewFactory.HELP);
     }
-    @FXML public void onLogout()
-    {
-        viewHandler.closeView();
+    @FXML public void onLogout() throws RemoteException {
+        viewHandler.openView(ViewFactory.LOGIN);
         // maybe we need to add some more so the user disconnects from the server
     }
     @FXML public void onSelect() throws SQLException, RemoteException
@@ -178,9 +175,11 @@ public class MainViewController implements RemotePropertyChangeListener
         }
         // we still need to figure out how to show the description of the book
     }
+
     public Region getRoot(){
         return root;
     }
+
     public void reset()
     {
         searchTextField.clear();

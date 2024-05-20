@@ -36,4 +36,6 @@ public interface ClientInterface {
     void returnBookToDatabase(Book book, Patron patron) throws SQLException, RemoteException;
     void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException, RemoteException;
     void deleteFromWishlist(Book book, Patron patron) throws SQLException, RemoteException;
+    void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException;
+    void rejectDonatedBook(int bookId) throws SQLException, RemoteException;
 }

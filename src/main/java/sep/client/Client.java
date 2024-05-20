@@ -101,7 +101,17 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     library.deleteFromWishlist(book,patron);
   }
 
-  @Override
+    @Override
+    public void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException {
+        library.approveDonatedBook(id, title, author, isbn,year, publisher, pageCount, genreId);
+    }
+
+    @Override
+    public void rejectDonatedBook(int bookId) throws SQLException, RemoteException {
+        library.rejectDonatedBook(bookId);
+    }
+
+    @Override
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException {
         try{
             library.createPatron(username, password, first_name, last_name, email, phone_number, fees);
@@ -206,6 +216,14 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
            if (event.getPropertyName().equals("BookDonate"))
            {
                this.support.firePropertyChange("BookDonate", false, true);
+           }
+           if (event.getPropertyName().equals("DonatedBookApproved"))
+           {
+               this.support.firePropertyChange("DonatedBookApproved", false,true);
+           }
+           if (event.getPropertyName().equals("DonatedBookRejected"))
+           {
+               this.support.firePropertyChange("DonatedBookRejected", false,true);
            }
         });
     }

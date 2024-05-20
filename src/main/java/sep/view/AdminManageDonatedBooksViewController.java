@@ -1,6 +1,7 @@
 package sep.view;
 
 import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
@@ -12,6 +13,7 @@ import sep.viewmodel.AdminManageDonatedBooksViewModel;
 import sep.viewmodel.MainViewModel;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 public class AdminManageDonatedBooksViewController
 {
@@ -60,12 +62,25 @@ public class AdminManageDonatedBooksViewController
     }
 
     @FXML
-    private void onApprove(){
-        //TODO implement logic adding a donated book to all the books
+    private void onApprove() throws SQLException, RemoteException {
+        donatedBooksViewModel.approveDonatedBook(selectedBook.get().getBookId(), selectedBook.get().getTitle(), selectedBook.get().getAuthor(),
+                selectedBook.get().getIsbn(), selectedBook.get().getYear(), selectedBook.get().getPublisher(), selectedBook.get().getPageCount(),
+                selectedBook.get().getGenre());
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("Book added to system!");
+        alert.showAndWait();
     }
+
     @FXML
-    private void onReject(){
-        //TODO add logic to remove book from the list
+    private void onReject() throws SQLException, RemoteException {
+        donatedBooksViewModel.rejectDonatedBook(selectedBook.get().getBookId());
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("Book rejected!");
+        alert.showAndWait();
     }
     public void reset()
     {
