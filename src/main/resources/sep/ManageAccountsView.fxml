@@ -27,11 +27,6 @@
             <Font size="15.0" />
          </font>
       </Button>
-      <Button fx:id="SaveUserButton" layoutX="808.0" layoutY="278.0" mnemonicParsing="false" onAction="#saveUserButtonClicked" prefHeight="29.0" prefWidth="87.0" text="Edit">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Button>
       <Label layoutX="531.0" layoutY="320.0" text="First name:" />
       <TextField fx:id="firstNameTextField" layoutX="597.0" layoutY="316.0" />
       <Label layoutX="778.0" layoutY="320.0" text="Last name:" />
