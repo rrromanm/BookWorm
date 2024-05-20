@@ -16,6 +16,7 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class MainViewModel implements PropertyChangeListener
 {
@@ -60,6 +61,9 @@ public class MainViewModel implements PropertyChangeListener
     }
     public int getAmountOfBorrowedBooks(Patron patron) throws RemoteException, SQLException{
         return model.getAmountOfBorrowedBooks(patron);
+    }
+    public ArrayList<String> getEndingBooks(Patron patron) throws RemoteException, SQLException{
+        return model.getEndingBooks(patron);
     }
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

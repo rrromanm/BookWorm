@@ -644,6 +644,29 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         }
     }
 
+    @Override public ArrayList<String> checkEndingBooks(Patron patron) throws SQLException
+    {
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                "SELECT b.title " +
+                    "FROM book_worm_db.books b " +
+                    "LEFT JOIN book_worm_db.borrowed_books bb ON b.id = bb.book_id " +
+                    "LEFT JOIN book_worm_db.patron p ON p.id = bb.profile_id " +
+                    "WHERE p.id = ? " +
+                    "AND bb.return_date IS NOT NULL " +
+                    "AND bb.return_date <= CURRENT_DATE + INTERVAL '1 week' " +
+                    "AND bb.return_date > CURRENT_DATE;");
+            statement.setInt(1, patron.getUserID());
+            ResultSet resultSet = statement.executeQuery();
+            ArrayList<String> titles = new ArrayList<>();
+            while (resultSet.next()) {
+                String title = resultSet.getString("title");
+                titles.add(title);
+            }
+            return titles;
+        }
+    }
+
     public void approveDonatedBook(int id,String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException {
         int genre_id = getGenreId(genreId);
 

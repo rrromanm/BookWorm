@@ -288,6 +288,16 @@ public class Connector implements ConnectorInterface {
         }
     }
 
+    @Override public ArrayList<String> getEndingBooks(Patron patron)
+        throws RemoteException
+    {
+        try {
+            return this.bookDatabase.checkEndingBooks(patron);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException {
         bookDatabase.approveDonatedBook(id, title, author, isbn, year, publisher, pageCount, genreId);
         this.support.firePropertyChange("DonatedBookApproved", false,true);

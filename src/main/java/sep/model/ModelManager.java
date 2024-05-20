@@ -158,6 +158,12 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
         client.deleteFromWishlist(book,patron);
     }
 
+    @Override public ArrayList<String> getEndingBooks(Patron patron)
+        throws RemoteException
+    {
+         return client.getEndingBooks(patron);
+    }
+
     @Override
     public void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException {
         client.approveDonatedBook(id, title, author, isbn, year, publisher, pageCount, genreId);

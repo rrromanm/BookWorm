@@ -112,7 +112,7 @@ public class MainViewController
     {
         viewHandler.openView(ViewFactory.PROFILE);
     }
-    @FXML public void onNotification()
+    @FXML public void onNotification() throws SQLException, RemoteException
     {
         seeNotifications();
     }
@@ -190,7 +190,7 @@ public class MainViewController
         return root;
     }
 
-    public void seeNotifications()
+    public void seeNotifications() throws SQLException, RemoteException
     {
         if (UserSession.getInstance().getLoggedInUser().getFees() > 0)
         {
@@ -198,6 +198,22 @@ public class MainViewController
             alert.setTitle("Notice");
             alert.setHeaderText("You have unpaid fees: " + UserSession.getInstance().getLoggedInUser().getFees());
             alert.setContentText("Please pay them as soon as possible!");
+            alert.show();
+        }
+        if(!mainViewModel.getEndingBooks(UserSession.getInstance().getLoggedInUser()).isEmpty()){
+
+            StringBuilder stringBuilder = new StringBuilder();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Notice");
+            alert.setHeaderText("Your borrowing time is coming to an end");
+
+            stringBuilder.append("The books: ");
+
+            for (String bookTitle : mainViewModel.getEndingBooks(UserSession.getInstance().getLoggedInUser())) {
+                stringBuilder.append("\n").append("\"" +bookTitle + "\"");
+            }
+
+            alert.setContentText(stringBuilder.toString());
             alert.show();
         }
     }
