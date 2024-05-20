@@ -61,6 +61,7 @@ public class MainViewController
         this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
         this.mainViewModel.bindList(bookTableView.itemsProperty());
         viewModel.resetBookList();
+        checkFees();
         // somehow we need to figure out how to change the button to an image of the bell for notification and
     }
     public void initializeTableView(){
@@ -183,6 +184,17 @@ public class MainViewController
 
     public Region getRoot(){
         return root;
+    }
+
+    public void checkFees()
+    {
+        if (UserSession.getInstance().getLoggedInUser().getFees() > 0)
+        {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Notice");
+            alert.setHeaderText("You have unpaid fees: " + UserSession.getInstance().getLoggedInUser().getFees());
+            alert.show();
+        }
     }
 
     public void reset()
