@@ -8,6 +8,7 @@ import sep.shared.ConnectorInterface;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
@@ -121,12 +122,13 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
     }
 
     @Override
-    public void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException {
+    public void borrowBooks(Book book, Patron patron)
+        throws IOException, SQLException {
         client.borrowBooks(book,patron);
     }
 
     @Override public void wishlistBook(Book book, Patron patron)
-        throws RemoteException, SQLException
+        throws IOException, SQLException
     {
         client.wishlistBook(book,patron);
     }
@@ -138,18 +140,32 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
     }
 
     @Override
-    public void returnBookToDatabase(Book book, Patron patron) throws RemoteException, SQLException {
+    public void returnBookToDatabase(Book book, Patron patron)
+        throws IOException, SQLException {
         client.returnBookToDatabase(book,patron);
     }
 
     @Override
-    public void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException, RemoteException {
+    public void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron)
+        throws SQLException, IOException
+    {
         client.donateBook(title, author, isbn, year, publisher, pageCount, genre, patron);
     }
 
-    @Override public void deleteFromWishlist(Book book, Patron patron) throws RemoteException, SQLException
+    @Override public void deleteFromWishlist(Book book, Patron patron)
+        throws IOException, SQLException
     {
         client.deleteFromWishlist(book,patron);
+    }
+
+    @Override
+    public void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException {
+        client.approveDonatedBook(id, title, author, isbn, year, publisher, pageCount, genreId);
+    }
+
+    @Override
+    public void rejectDonatedBook(int bookId) throws SQLException, RemoteException {
+        client.rejectDonatedBook(bookId);
     }
 
     @Override

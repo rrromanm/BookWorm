@@ -13,6 +13,7 @@ import sep.model.Patron;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
@@ -46,10 +47,12 @@ public class MainViewModel implements PropertyChangeListener
         bookList.setAll(model.filter(genre, state, search));
     }
 
-    public void borrowBook(Book book, Patron patron) throws RemoteException, SQLException {
+    public void borrowBook(Book book, Patron patron)
+        throws IOException, SQLException {
         model.borrowBooks(book, patron);
     }
-    public void wishlistBook(Book book,Patron patron) throws RemoteException, SQLException{
+    public void wishlistBook(Book book,Patron patron)
+        throws IOException, SQLException{
         model.wishlistBook(book,patron);
     }
     public boolean isWishlisted(Book book,Patron patron) throws RemoteException, SQLException{
@@ -74,6 +77,13 @@ public class MainViewModel implements PropertyChangeListener
                 try {
                     resetBookList();
                     System.out.println("refreshed table");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if ("DonatedBookApproved".equals(evt.getPropertyName())) {
+                try {
+                    resetBookList();
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }

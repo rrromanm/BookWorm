@@ -11,6 +11,7 @@ import sep.model.UserSession;
 import sep.viewmodel.CreateAccountViewModel;
 import sep.viewmodel.DonateViewModel;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
@@ -42,7 +43,8 @@ public class DonateViewController {
     }
 
     @FXML
-    private void submitButtonClicked() {
+    private void submitButtonClicked() throws IOException
+    {
         try {
             String title = bookTitle.getText();
             String author = bookAuthor.getText();

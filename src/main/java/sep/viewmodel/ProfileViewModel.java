@@ -11,6 +11,7 @@ import sep.model.UserSession;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
@@ -148,7 +149,8 @@ public class ProfileViewModel implements PropertyChangeListener
             throw new IllegalStateException("No user logged in.");
         }
     }
-    public void removeFromWishlist(Book book, Patron patron) throws SQLException, RemoteException
+    public void removeFromWishlist(Book book, Patron patron)
+        throws SQLException, IOException
     {
         model.deleteFromWishlist(book,patron);
     }

@@ -13,6 +13,7 @@ import sep.jdbc.BookDatabaseImplementation;
 import sep.model.*;
 import sep.viewmodel.MainViewModel;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
@@ -61,8 +62,6 @@ public class MainViewController implements RemotePropertyChangeListener
         this.mainViewModel.bindList(bookTableView.itemsProperty());
         viewModel.resetBookList();
         // somehow we need to figure out how to change the button to an image of the bell for notification and
-        // make imageView fit into the circle
-        // populate the tableView should also be here (we will do it from the database)
     }
     public void initializeTableView(){
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -125,7 +124,7 @@ public class MainViewController implements RemotePropertyChangeListener
         viewHandler.openView(ViewFactory.DONATEBOOK);
     }
 
-    @FXML public void onBorrow() throws RemoteException, SQLException {
+    @FXML public void onBorrow() throws IOException, SQLException {
         if(mainViewModel.getAmountOfBorrowedBooks(UserSession.getInstance().getLoggedInUser()) < 3)
         {
             mainViewModel.borrowBook(selectedBook.get(), UserSession.getInstance().getLoggedInUser());
@@ -146,19 +145,23 @@ public class MainViewController implements RemotePropertyChangeListener
             alert.show();
         }
     }
-    @FXML public void onWishlist() throws RemoteException, SQLException{
+    @FXML public void onWishlist() throws IOException, SQLException{
         mainViewModel.wishlistBook(selectedBook.get(),UserSession.getInstance().getLoggedInUser());
         mainViewModel.resetBookList();
         bookTableView.getSelectionModel().clearSelection();
         wishlistButton.setDisable(true);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("Book wishlisted!");
+        alert.show();
     }
     @FXML public void onHelp() throws RemoteException
     {
         viewHandler.openView(ViewFactory.HELP);
     }
-    @FXML public void onLogout()
-    {
-        viewHandler.closeView();
+    @FXML public void onLogout() throws RemoteException {
+        viewHandler.openView(ViewFactory.LOGIN);
         // maybe we need to add some more so the user disconnects from the server
     }
     @FXML public void onSelect() throws SQLException, RemoteException
@@ -178,9 +181,11 @@ public class MainViewController implements RemotePropertyChangeListener
         }
         // we still need to figure out how to show the description of the book
     }
+
     public Region getRoot(){
         return root;
     }
+
     public void reset()
     {
         searchTextField.clear();

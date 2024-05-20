@@ -3,6 +3,7 @@ package sep.client;
 import dk.via.remote.observer.RemotePropertyChangeEvent;
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import javafx.application.Platform;
+import sep.file.FileLog;
 import sep.model.Book;
 import sep.model.Patron;
 import sep.model.UserSession;
@@ -11,6 +12,8 @@ import sep.shared.ConnectorInterface;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -20,11 +23,15 @@ import java.util.ArrayList;
 public class Client extends UnicastRemoteObject implements RemotePropertyChangeListener,ClientInterface, Serializable {
     private final ConnectorInterface library;
     private final PropertyChangeSupport support;
+    private File file;
+    private FileLog fileLog;
 
     public Client(ConnectorInterface library) throws RemoteException {
         this.library = library;
         this.support = new PropertyChangeSupport(this);
         this.library.addRemotePropertyChangeListener(this);
+        this.file =  new File("src/main/java/sep/file/LibraryLog");
+        this.fileLog = FileLog.getInstance(file);
     }
 
 
@@ -78,13 +85,15 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     }
 
     @Override
-    public void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException {
+    public void borrowBooks(Book book, Patron patron) throws IOException, SQLException {
         library.borrowBooks(book, patron);
+        fileLog.log(patron.getUsername() + " has borrowed a \"" + book.getTitle() + "\"");
     }
 
-  @Override public void wishlistBook(Book book, Patron patron) throws RemoteException, SQLException
+  @Override public void wishlistBook(Book book, Patron patron) throws IOException, SQLException
   {
     library.wishlistBook(book, patron);
+    fileLog.log(patron.getUsername() + " has added a \"" + book.getTitle() + "\" to the wishlist");
   }
 
   @Override public boolean isWishlisted(Book book, Patron patron) throws RemoteException, SQLException
@@ -92,25 +101,42 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     return library.isWishlisted(book, patron);
   }
 
-  @Override public void returnBookToDatabase(Book book, Patron patron) throws SQLException, RemoteException
+  @Override public void returnBookToDatabase(Book book, Patron patron)
+      throws SQLException, IOException
   {
-      library.returnBookToDatabase(book, patron);
+    library.returnBookToDatabase(book, patron);
+    fileLog.log(patron.getUsername() + " has returned a \"" + book.getTitle() + "\"");
   }
 
-    @Override public void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException, RemoteException
+    @Override public void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron)
+        throws SQLException, IOException
     {
         library.donateBook(title, author, isbn, year, publisher, pageCount, genre, patron);
+        fileLog.log(patron.getUsername() + " has donated a \"" + title + "\"");
     }
 
-  @Override public void deleteFromWishlist(Book book, Patron patron) throws SQLException, RemoteException
+  @Override public void deleteFromWishlist(Book book, Patron patron)
+      throws SQLException, IOException
   {
     library.deleteFromWishlist(book,patron);
+    fileLog.log(patron.getUsername() + " has deleted a \"" + book.getTitle() + "\" from the wishlist");
   }
 
-  @Override
+    @Override
+    public void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException {
+        library.approveDonatedBook(id, title, author, isbn,year, publisher, pageCount, genreId);
+    }
+
+    @Override
+    public void rejectDonatedBook(int bookId) throws SQLException, RemoteException {
+        library.rejectDonatedBook(bookId);
+    }
+
+    @Override
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException {
         try{
             library.createPatron(username, password, first_name, last_name, email, phone_number, fees);
+            fileLog.log("New user has been created: " + username );
         }catch (Exception e){
             throw new RemoteException(e.getMessage());
         }
@@ -127,14 +153,18 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
    }
 
     @Override
-    public Patron login(String username, String password) throws RemoteException {
+    public Patron login(String username, String password) throws IOException
+    {
         Patron userLoggedIn = library.login(username, password);
         UserSession.getInstance().setLoggedInUser(userLoggedIn);
+        fileLog.log(userLoggedIn.getUsername() + " has logged in");
         return userLoggedIn;
     }
 
     @Override
-    public boolean loginAsAdmin(String username, String password) throws RemoteException {
+    public boolean loginAsAdmin(String username, String password) throws IOException
+    {
+        fileLog.log("Admin has logged in");
         return library.loginAsAdmin(username, password);
     }
 
@@ -231,8 +261,17 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
            {
                this.support.firePropertyChange("BookDonate", false, true);
            }
-           if (event.getPropertyName().equals("createPatron")){
+           if (event.getPropertyName().equals("createPatron"))
+           {
                this.support.firePropertyChange("createPatron", false, true);
+           }
+           if (event.getPropertyName().equals("DonatedBookApproved"))
+           {
+               this.support.firePropertyChange("DonatedBookApproved", false,true);
+           }
+           if (event.getPropertyName().equals("DonatedBookRejected"))
+           {
+               this.support.firePropertyChange("DonatedBookRejected", false,true);
            }
         });
     }
