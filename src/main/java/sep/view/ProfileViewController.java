@@ -296,6 +296,11 @@ public class ProfileViewController {
         wishlistBookTableView.getSelectionModel().clearSelection();
         wishlistButton.setDisable(true);
         wishlistButton.setVisible(false);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("Book removed from wishlist!");
+        alert.show();
     }
     @FXML public void onWishlistSelect() {
         if (wishlistSelectedBook != null) {

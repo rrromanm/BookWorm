@@ -150,6 +150,11 @@ public class MainViewController implements RemotePropertyChangeListener
         mainViewModel.resetBookList();
         bookTableView.getSelectionModel().clearSelection();
         wishlistButton.setDisable(true);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("Book wishlisted!");
+        alert.show();
     }
     @FXML public void onHelp() throws RemoteException
     {
