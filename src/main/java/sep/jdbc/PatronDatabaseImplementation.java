@@ -22,7 +22,7 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
     }
     private Connection getConnection() throws SQLException {
 
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "343460");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "via");
 
 
 

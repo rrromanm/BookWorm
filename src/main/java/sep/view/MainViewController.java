@@ -61,7 +61,7 @@ public class MainViewController
         this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
         this.mainViewModel.bindList(bookTableView.itemsProperty());
         viewModel.resetBookList();
-        checkFees();
+        seeNotifications();
         // somehow we need to figure out how to change the button to an image of the bell for notification and
     }
     public void initializeTableView(){
@@ -111,6 +111,10 @@ public class MainViewController
     @FXML public void onViewProfile() throws RemoteException
     {
         viewHandler.openView(ViewFactory.PROFILE);
+    }
+    @FXML public void onNotification()
+    {
+        seeNotifications();
     }
     @FXML public void onMyBooks() throws RemoteException
     {
@@ -186,13 +190,14 @@ public class MainViewController
         return root;
     }
 
-    public void checkFees()
+    public void seeNotifications()
     {
         if (UserSession.getInstance().getLoggedInUser().getFees() > 0)
         {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Notice");
             alert.setHeaderText("You have unpaid fees: " + UserSession.getInstance().getLoggedInUser().getFees());
+            alert.setContentText("Please pay them as soon as possible!");
             alert.show();
         }
     }
