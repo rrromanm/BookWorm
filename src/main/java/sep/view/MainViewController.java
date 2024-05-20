@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
-public class MainViewController implements RemotePropertyChangeListener
+public class MainViewController
 {
     @FXML private Button notificationButton;
     @FXML private Button viewProfileButton;
@@ -179,7 +179,6 @@ public class MainViewController implements RemotePropertyChangeListener
         if(!mainViewModel.isWishlisted(selectedBook.get(),UserSession.getInstance().getLoggedInUser())){
             wishlistButton.setDisable(false);
         }
-        // we still need to figure out how to show the description of the book
     }
 
     public Region getRoot(){
@@ -191,10 +190,5 @@ public class MainViewController implements RemotePropertyChangeListener
         searchTextField.clear();
         stateComboBox.getSelectionModel().selectFirst();
         borrowButton.setDisable(true);
-    }
-
-    @Override public void propertyChange(RemotePropertyChangeEvent evt) throws RemoteException
-    {
-
     }
 }
