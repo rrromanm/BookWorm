@@ -149,6 +149,14 @@ public class Connector implements ConnectorInterface {
             throw new RemoteException("Failed to create event: " + e.getMessage());
         }
     }
+    @Override
+    public void deleteEvent(Event event) throws RemoteException {
+        try {
+            this.adminDatabase.deleteEvent(event);
+        } catch (SQLException e) {
+            throw new RemoteException("Failed to delete event: " + e.getMessage());
+        }
+    }
 
     @Override
     public void createBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws SQLException {

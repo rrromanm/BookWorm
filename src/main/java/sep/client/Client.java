@@ -181,6 +181,15 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
    }
 
     @Override
+    public void deleteEvent(Event event) throws RemoteException{
+        try{
+            library.deleteEvent(event);
+        } catch (Exception e){
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
     public Patron login(String username, String password) throws IOException
     {
         Patron userLoggedIn = library.login(username, password);

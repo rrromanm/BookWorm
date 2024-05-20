@@ -9,4 +9,6 @@ public interface AdminDatabaseInterface
 {
     List<Event> getAllEvents() throws SQLException;
     Event createEvent(String title, String description, String eventDate) throws SQLException;
+
+    void deleteEvent(Event event) throws SQLException;
 }

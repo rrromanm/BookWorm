@@ -24,7 +24,7 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
     @FXML
     private Button SaveButton;
     @FXML
-        private Button savePatronChangesButton;
+    private Button savePatronChangesButton;
     @FXML
     private Button DeleteButton;
     @FXML
