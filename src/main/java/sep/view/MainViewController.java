@@ -13,6 +13,7 @@ import sep.jdbc.BookDatabaseImplementation;
 import sep.model.*;
 import sep.viewmodel.MainViewModel;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
@@ -123,7 +124,7 @@ public class MainViewController implements RemotePropertyChangeListener
         viewHandler.openView(ViewFactory.DONATEBOOK);
     }
 
-    @FXML public void onBorrow() throws RemoteException, SQLException {
+    @FXML public void onBorrow() throws IOException, SQLException {
         if(mainViewModel.getAmountOfBorrowedBooks(UserSession.getInstance().getLoggedInUser()) < 3)
         {
             mainViewModel.borrowBook(selectedBook.get(), UserSession.getInstance().getLoggedInUser());
@@ -144,7 +145,7 @@ public class MainViewController implements RemotePropertyChangeListener
             alert.show();
         }
     }
-    @FXML public void onWishlist() throws RemoteException, SQLException{
+    @FXML public void onWishlist() throws IOException, SQLException{
         mainViewModel.wishlistBook(selectedBook.get(),UserSession.getInstance().getLoggedInUser());
         mainViewModel.resetBookList();
         bookTableView.getSelectionModel().clearSelection();

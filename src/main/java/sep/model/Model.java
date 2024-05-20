@@ -3,6 +3,7 @@ package sep.model;
 import dk.via.remote.observer.RemotePropertyChangeListener;
 
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,13 +28,13 @@ public interface Model {
     void updateLastName(String oldLastName, String newLastName) throws RemoteException;
     void updatePassword(String oldPassowrd, String newPassowrd) throws RemoteException;
     ArrayList<Book> filter(String genre, String state, String search) throws RemoteException;
-    void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException;
-    void wishlistBook(Book book, Patron patron) throws RemoteException, SQLException;
+    void borrowBooks(Book book, Patron patron) throws IOException, SQLException;
+    void wishlistBook(Book book, Patron patron) throws IOException, SQLException;
     boolean isWishlisted(Book book, Patron patron) throws RemoteException, SQLException;
-    void returnBookToDatabase(Book book, Patron patron) throws RemoteException, SQLException;
-    void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException, RemoteException;
-    void deleteFromWishlist(Book book, Patron patron) throws RemoteException, SQLException;
     void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException;
     void rejectDonatedBook(int bookId) throws SQLException, RemoteException;
+    void returnBookToDatabase(Book book, Patron patron) throws IOException, SQLException;
+    void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException, IOException;
+    void deleteFromWishlist(Book book, Patron patron) throws IOException, SQLException;
 }
 

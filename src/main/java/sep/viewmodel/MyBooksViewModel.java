@@ -12,6 +12,7 @@ import sep.model.UserSession;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
@@ -34,7 +35,8 @@ public class MyBooksViewModel implements PropertyChangeListener
         borrowedBookList.setAll(model.getBorrowedBooks(patron));
     }
 
-    public void returnBook(Book book, Patron patron) throws RemoteException, SQLException {
+    public void returnBook(Book book, Patron patron)
+        throws IOException, SQLException {
         model.returnBookToDatabase(book, patron);
     }
 

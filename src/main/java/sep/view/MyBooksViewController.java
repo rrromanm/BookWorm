@@ -16,6 +16,7 @@ import sep.viewmodel.MyBooksViewModel;
 import sep.viewmodel.ProfileViewModel;
 
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
@@ -68,7 +69,7 @@ public class MyBooksViewController
         myBooksViewModel.resetBookList(UserSession.getInstance().getLoggedInUser());
     }
 
-    @FXML public void onReturn() throws RemoteException, SQLException {
+    @FXML public void onReturn() throws IOException, SQLException {
         myBooksViewModel.returnBook(selectedBook.get(), UserSession.getInstance().getLoggedInUser());
         populateTableView();
     }
