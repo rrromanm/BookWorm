@@ -17,6 +17,7 @@ import sep.viewmodel.ProfileViewModel;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -288,7 +289,7 @@ public class ProfileViewController {
     {
         viewHandler.openView(ViewFactory.USERMAIN);
     }
-    @FXML public void onWishlist() throws RemoteException, SQLException  // for removal
+    @FXML public void onWishlist() throws IOException, SQLException  // for removal
     {
         profileViewModel.removeFromWishlist(wishlistSelectedBook.get(),UserSession.getInstance().getLoggedInUser());
         profileViewModel.resetWishlistList(UserSession.getInstance().getLoggedInUser());
