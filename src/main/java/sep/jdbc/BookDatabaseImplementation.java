@@ -667,6 +667,36 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         }
     }
 
+    @Override
+    public void extendBook(Book book, Patron patron) {
+        try (Connection connection = getConnection();
+             PreparedStatement selectStatement = connection.prepareStatement(
+                     "SELECT id FROM book_worm_db.borrowed_books " +
+                             "WHERE book_id = ? AND profile_id = ? AND return_date > CURRENT_DATE;");
+             PreparedStatement updateStatement = connection.prepareStatement(
+                     "UPDATE book_worm_db.borrowed_books " +
+                             "SET return_date = return_date + interval '10 days' " +
+                             "WHERE id = ?;")) {
+
+            selectStatement.setInt(1, book.getBookId());
+            selectStatement.setInt(2, patron.getUserID());
+
+            ResultSet resultSet = selectStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int borrowingId = resultSet.getInt("id");
+
+                updateStatement.setInt(1, borrowingId);
+                updateStatement.executeUpdate();
+            } else {
+                throw new RuntimeException("No active borrowing record found for this book and user.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public void approveDonatedBook(int id,String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException {
         int genre_id = getGenreId(genreId);
 

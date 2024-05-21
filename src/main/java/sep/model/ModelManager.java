@@ -133,6 +133,11 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
         client.wishlistBook(book,patron);
     }
 
+    @Override
+    public void extendBook(Book book, Patron patron) throws RemoteException, SQLException {
+        client.extendBook(book, patron);
+    }
+
     @Override public boolean isWishlisted(Book book, Patron patron)
         throws RemoteException, SQLException
     {
