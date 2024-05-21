@@ -33,7 +33,8 @@ public interface ClientInterface {
     Patron login(String username, String password) throws IOException;
     boolean loginAsAdmin(String username, String password) throws IOException;
     void deleteBook(int bookID,String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException;
-    void createBook(String title, String author,int year, String publisher, long isbn, int pageCount, String genre) throws SQLException, RemoteException;
+    void createBook(String title, String author,String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException;
+    void updateBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException;
 
     void updateUsername(int userID, String newUsername) throws RemoteException;
     void updateEmail(int userID, String newEmail) throws RemoteException;

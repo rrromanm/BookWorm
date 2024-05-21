@@ -125,6 +125,14 @@ public class AdminManageAccountsViewModel implements PropertyChangeListener {
                     throw new RuntimeException(e);
                 }
             }
+            if("updatePatron".equals(evt.getPropertyName())){
+                try {
+                    loadPatrons();
+                    System.out.println("refreshed patron table");
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         });
     }
 }
