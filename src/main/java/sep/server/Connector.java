@@ -159,9 +159,18 @@ public class Connector implements ConnectorInterface {
     }
 
     @Override
-    public void createBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws SQLException {
+    public void createBook(String title, String author,String year, String publisher, String isbn, String pageCount, String genre) throws SQLException {
         try{
             this.bookDatabase.createBook(title, author, year, publisher, isbn, pageCount, genre);
+        }catch (SQLException e){
+            throw new SQLException(e);
+        }
+    }
+
+    @Override
+    public void updateBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException {
+        try{
+            this.bookDatabase.updateBook(bookID, title, author, year, publisher, isbn, pageCount, genre);
         }catch (SQLException e){
             throw new SQLException(e);
         }

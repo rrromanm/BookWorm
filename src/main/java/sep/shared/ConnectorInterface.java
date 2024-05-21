@@ -22,7 +22,8 @@ public interface ConnectorInterface extends Remote {
     void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException;
     void createEvent(String title, String description, String eventDate) throws RemoteException;
     void deleteEvent(Event event) throws RemoteException;
-    void createBook(String title, String author,int year, String publisher, long isbn, int pageCount, String genre) throws SQLException, RemoteException;
+    void createBook(String title, String author,String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException;
+    void updateBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException;
     Patron login(String username, String password) throws RemoteException;
     boolean loginAsAdmin(String username, String password) throws RemoteException;
     void updateUsername(int userID, String newUsername) throws RemoteException;

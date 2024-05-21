@@ -22,23 +22,24 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
     private Connection getConnection() throws SQLException {
 
 
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "343460"); //TODO: YOU NEED TO CHANGE THIS PASSWORD ON WHO IS WORKING ON CODE RN
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "VIAVIA"); //TODO: YOU NEED TO CHANGE THIS PASSWORD ON WHO IS WORKING ON CODE RN
 
 
     }
 
-    public void createBook(String title, String author,int year, String publisher, long isbn, int pageCount, String genre) throws SQLException {
+    public void createBook(String title, String author,String year, String publisher, String isbn, String pageCount, String genre) throws SQLException {
         try (Connection connection = getConnection();){
+            int genreId = getGenreId(genre);
             PreparedStatement statement = connection.prepareStatement("INSERT INTO book_worm_db.books(title, isbn, year, publisher, page_count, genre_id, borrower, state, authors) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setString(1, title);
-            statement.setString(2, author);
-            statement.setInt(3, year);
+            statement.setString(2, isbn);
+            statement.setString(3, year);
             statement.setString(4, publisher);
-            statement.setLong(5, isbn);
-            statement.setInt(6, pageCount);
-            statement.setString(7, genre);
-            statement.setString(8, null);
-            statement.setString(9, "available");
+            statement.setString(5, pageCount);
+            statement.setInt(6, genreId);
+            statement.setNull(7, Types.NULL);
+            statement.setString(8, "available");
+            statement.setString(9, author);
             statement.executeUpdate();
 
         }catch (SQLException e) {
@@ -66,9 +67,25 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
     }
 
     @Override
-    public void updateBook(int bookID, String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws SQLException {
-
+    public void updateBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException {
+        try (Connection connection = getConnection()) {
+            int genreId = getGenreId(genre);
+            String sqlQuery = "UPDATE book_worm_db.books " +
+                    "SET title = ?, authors = ?, year = ?, publisher = ?, isbn = ?, page_count = ?, genre_id = ? " +
+                    "WHERE id = ?";
+            PreparedStatement statement = connection.prepareStatement(sqlQuery);
+            statement.setString(1, title);
+            statement.setString(2, author);
+            statement.setString(3, year);
+            statement.setString(4, publisher);
+            statement.setString(5, isbn);
+            statement.setString(6, pageCount);
+            statement.setInt(7, genreId);
+            statement.setInt(8, bookID);
+            statement.executeUpdate();
+        }
     }
+
 
 
     public ArrayList<Book> filter(String state, String genres, String search) throws SQLException {

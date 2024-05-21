@@ -280,9 +280,18 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
     }
 
     @Override
-    public void createBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws SQLException, RemoteException {
+    public void createBook(String title, String author,String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException {
         try{
             client.createBook(title, author, year, publisher, isbn, pageCount, genre);
+        }catch (Exception e){
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException {
+        try{
+            client.updateBook(bookID, title, author, year, publisher, isbn, pageCount, genre);
         }catch (Exception e){
             throw new RemoteException(e.getMessage());
         }
