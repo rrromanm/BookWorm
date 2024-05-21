@@ -18,6 +18,7 @@ import sep.viewmodel.AdminManageDonatedBooksViewModel;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class AdminManageBooksViewController implements RemotePropertyChangeListener
 {
@@ -252,16 +253,34 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
             throw new RuntimeException(e);
         }
     }
+
+
     @FXML
-    private void onRemove() throws SQLException
-    {
-        try{
-            viewModel.deleteBook(selectedBook.get().getBookId(),selectedBook.get().getTitle(), selectedBook.get().getAuthor(),String.valueOf(selectedBook.get().getYear()),selectedBook.get().getPublisher(),
-                    String.valueOf(selectedBook.get().getIsbn()),String.valueOf(selectedBook.get().getPageCount()),selectedBook.get().getGenre());
-            viewModel.loadBooks();
-            bookTableView.refresh();
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+    private void onRemove() throws SQLException {
+        if (selectedBook.get().getState().equals("Borrowed")) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Cannot Remove Book");
+            alert.setHeaderText("Cannot Remove Book");
+            alert.setContentText("This book is borrowed, thus not available to remove.");
+            alert.showAndWait();
+        } else {
+            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationAlert.setTitle("Confirm Deletion");
+            confirmationAlert.setHeaderText("Are you sure you want to delete this book?");
+            confirmationAlert.setContentText("Title: " + selectedBook.get().getTitle() + "\nAuthor: " + selectedBook.get().getAuthor() + "?");
+
+            Optional<ButtonType> result = confirmationAlert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                try {
+                    viewModel.deleteBook(selectedBook.get().getBookId(), selectedBook.get().getTitle(), selectedBook.get().getAuthor(),
+                            String.valueOf(selectedBook.get().getYear()), selectedBook.get().getPublisher(),
+                            String.valueOf(selectedBook.get().getIsbn()), String.valueOf(selectedBook.get().getPageCount()), selectedBook.get().getGenre());
+                    viewModel.loadBooks();
+                    bookTableView.refresh();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
     @FXML
@@ -289,7 +308,7 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
     }
 
     @Override
-    public void propertyChange(RemotePropertyChangeEvent remotePropertyChangeEvent) throws RemoteException {
+    public void propertyChange(RemotePropertyChangeEvent evt) throws RemoteException {
 
     }
 }

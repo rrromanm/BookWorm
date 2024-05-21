@@ -321,7 +321,15 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
            }
            if(event.getPropertyName().equals("removeBook")){
                this.support.firePropertyChange("removeBook", false, true);
-
+           }
+           if(event.getPropertyName().equals("updateBook")){
+               this.support.firePropertyChange("updateBook", false, true);
+           }
+           if(event.getPropertyName().equals("createBook")){
+               this.support.firePropertyChange("createBook", false, true);
+           }
+           if(event.getPropertyName().equals("updatePatron")){
+               this.support.firePropertyChange("updatePatron", false, true);
            }
         });
     }

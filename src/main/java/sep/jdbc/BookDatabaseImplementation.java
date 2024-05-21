@@ -38,7 +38,7 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
             statement.setString(5, pageCount);
             statement.setInt(6, genreId);
             statement.setNull(7, Types.NULL);
-            statement.setString(8, "available");
+            statement.setString(8, "Available");
             statement.setString(9, author);
             statement.executeUpdate();
 

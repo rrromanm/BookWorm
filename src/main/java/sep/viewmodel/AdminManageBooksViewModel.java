@@ -101,6 +101,30 @@ public class AdminManageBooksViewModel implements PropertyChangeListener
                     throw new RuntimeException(e);
                 }
             }
+            if("BorrowBook".equals(evt.getPropertyName())) {
+                try {
+                    loadBooks();
+                    System.out.println("refreshed books table");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if("ReturnBook".equals(evt.getPropertyName())){
+                try {
+                    loadBooks();
+                    System.out.println("refreshed books table");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if("DonatedBookApproved".equals(evt.getPropertyName())){
+                try {
+                    loadBooks();
+                    System.out.println("refreshed books table");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         });
     }
 }

@@ -92,6 +92,27 @@ public class MainViewModel implements PropertyChangeListener
                     throw new RuntimeException(e);
                 }
             }
+            if("removeBook".equals(evt.getPropertyName())){
+                try {
+                    resetBookList();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if("createBook".equals(evt.getPropertyName())){
+                try {
+                    resetBookList();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if("updateBook".equals(evt.getPropertyName())){
+                try {
+                    resetBookList();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         });
     }
 }
