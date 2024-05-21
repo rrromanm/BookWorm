@@ -149,6 +149,23 @@ public class Connector implements ConnectorInterface {
             throw new RemoteException("Failed to create event: " + e.getMessage());
         }
     }
+    @Override
+    public void deleteEvent(Event event) throws RemoteException {
+        try {
+            this.adminDatabase.deleteEvent(event);
+        } catch (SQLException e) {
+            throw new RemoteException("Failed to delete event: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void createBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws SQLException {
+        try{
+            this.bookDatabase.createBook(title, author, year, publisher, isbn, pageCount, genre);
+        }catch (SQLException e){
+            throw new SQLException(e);
+        }
+    }
 
     @Override public synchronized  ArrayList<Book> filter(String genre,String state, String search){
         try {
@@ -181,63 +198,63 @@ public class Connector implements ConnectorInterface {
     }
 
     @Override
-    public void updateUsername(String oldUsername, String newUsername) throws RemoteException {
+    public void updateUsername(int userID, String newUsername) throws RemoteException {
         try{
-            patronDatabase.updateUsername(oldUsername, newUsername);
+            patronDatabase.updateUsername(userID, newUsername);
         }catch(SQLException e){
             throw new IllegalArgumentException(e);
         }
     }
 
     @Override
-    public void updateEmail(String oldEmail, String newEmail) throws RemoteException {
+    public void updateEmail(int userID, String newEmail) throws RemoteException {
         try{
-            patronDatabase.updateEmail(oldEmail, newEmail);
+            patronDatabase.updateEmail(userID, newEmail);
         }catch(SQLException e){
             throw new IllegalArgumentException(e);
         }
     }
 
     @Override
-    public void updatePhoneNumber(String oldPhoneNumber, String newPhoneNumber) throws RemoteException {
+    public void updatePhoneNumber(int userID, String newPhoneNumber) throws RemoteException {
         try{
-            patronDatabase.updatePhone(oldPhoneNumber, newPhoneNumber);
+            patronDatabase.updatePhone(userID, newPhoneNumber);
         } catch (SQLException e){
             throw new IllegalArgumentException(e);
         }
     }
 
     @Override
-    public void updateFirstName(String oldFirstName, String newFirstName) throws RemoteException {
+    public void updateFirstName(int userID, String newFirstName) throws RemoteException {
         try{
-            patronDatabase.updateFirstName(oldFirstName, newFirstName);
+            patronDatabase.updateFirstName(userID, newFirstName);
         }catch(SQLException e){
             throw new IllegalArgumentException(e);
         }
     }
 
     @Override
-    public void updateLastName(String oldLastName, String newLastName) throws RemoteException {
+    public void updateLastName(int userID, String newLastName) throws RemoteException {
         try{
-            patronDatabase.updateLastName(oldLastName, newLastName);
+            patronDatabase.updateLastName(userID, newLastName);
         }catch(SQLException e){
             throw new IllegalArgumentException(e);
         }
     }
 
     @Override
-    public void updatePassword(String oldPassword, String newPassword) throws RemoteException {
+    public void updatePassword(int userID, String newPassword) throws RemoteException {
         try {
-            patronDatabase.updatePassword(oldPassword, newPassword);
+            patronDatabase.updatePassword(userID, newPassword);
         }catch(SQLException e){
             throw new IllegalArgumentException(e);
         }
     }
 
     @Override
-    public void updateFees(int oldFees, int newFees) throws RemoteException {
+    public void updateFees(int useriD, int newFees) throws RemoteException {
         try{
-            patronDatabase.updateFees(oldFees, newFees);
+            patronDatabase.updateFees(useriD, newFees);
         }catch(SQLException e){
             throw new IllegalArgumentException(e);
         }
@@ -272,6 +289,17 @@ public class Connector implements ConnectorInterface {
         bookDatabase.returnBookToDatabase(book,patron);
         this.support.firePropertyChange("ReturnBook", null, book);
     }
+
+    @Override
+    public void deleteBook(int bookID,String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException {
+        try{
+            bookDatabase.deleteBook(bookID,title, author, year, publisher, isbn, pageCount, genre);
+            this.support.firePropertyChange("DeleteBook", false, true);
+        } catch(Exception e){
+            throw new IllegalArgumentException(e);
+        }
+    }
+
 
     @Override public void deleteFromWishlist(Book book, Patron patron)
         throws RemoteException, SQLException

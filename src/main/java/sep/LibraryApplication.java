@@ -12,10 +12,11 @@ import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.sql.SQLException;
 
 public class LibraryApplication extends Application {
     @Override
-    public void start(Stage primaryStage) throws IOException, NotBoundException {
+    public void start(Stage primaryStage) throws IOException, NotBoundException, SQLException {
         Registry registry = LocateRegistry.getRegistry(1099);
         ConnectorInterface library = (ConnectorInterface) registry.lookup("library");
         Model model = new ModelManager(library);

@@ -21,7 +21,9 @@ public class AdminDatabaseImplementation implements AdminDatabaseInterface
 
     private Connection getConnection() throws SQLException {
 
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "via"); //TODO: YOU NEED TO CHANGE THIS PASSWORD ON WHO IS WORKING ON CODE RN
+
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "343460"); //TODO: YOU NEED TO CHANGE THIS PASSWORD ON WHO IS WORKING ON CODE RN
+
 
     }
 
@@ -31,11 +33,10 @@ public class AdminDatabaseImplementation implements AdminDatabaseInterface
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM book_worm_db.events");
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                int eventID = resultSet.getInt("id");
                 String title = resultSet.getString("title");
                 String description = resultSet.getString("description");
                 String date = resultSet.getString("eventDate");
-                Event event = new Event(eventID, title, description, date);
+                Event event = new Event(title, description, date);
                 events.add(event);
             }
         }
@@ -54,11 +55,27 @@ public class AdminDatabaseImplementation implements AdminDatabaseInterface
             ResultSet resultSet = statement.getGeneratedKeys();
 
             if(resultSet.next()) {
-                return new Event(resultSet.getInt(1), title, description, eventdate);
+                return new Event(title, description, eventdate);
             }
             else {
                 throw new SQLException();
             }
         }
     }
+
+    @Override
+    public void deleteEvent(Event event) throws SQLException {
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM book_worm_db.events WHERE title = ? AND description = ? AND eventDate = ?");
+            statement.setString(1, event.getTitle());
+            statement.setString(2, event.getDescription());
+            statement.setString(3, event.getEventDate());
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("No event found with the specified title, description, and date.");
+            }
+        }
+    }
+
+
 }

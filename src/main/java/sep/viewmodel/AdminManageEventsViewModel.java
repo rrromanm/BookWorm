@@ -46,4 +46,13 @@ public class AdminManageEventsViewModel
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    public void deleteEvent(Event event) throws RemoteException {
+        try {
+            model.deleteEvent(event);
+            resetEventList(); // Refresh the event list after deletion
+        } catch (Exception e) {
+            throw new RemoteException("Failed to delete event: " + e.getMessage());
+        }
+    }
 }

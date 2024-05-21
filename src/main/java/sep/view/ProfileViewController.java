@@ -72,6 +72,7 @@ public class ProfileViewController {
     private String originalEmail;
     private String originalPhoneNumber;
     private String originalPassword;
+    private int originalID;
 
 
 
@@ -121,6 +122,7 @@ public class ProfileViewController {
             originalEmail = UserSession.getInstance().getLoggedInUser().getEmail();
             originalPhoneNumber = UserSession.getInstance().getLoggedInUser().getPhoneNumber();
             originalPassword = UserSession.getInstance().getLoggedInUser().getPassword();
+            originalID = UserSession.getInstance().getLoggedInUser().getUserID();
 
             labelsInitialized = true;
 
@@ -234,27 +236,27 @@ public class ProfileViewController {
             NameValidator.validate(newLastName);
 
             if(!newUsername.equals(oldUsername)){
-                profileViewModel.updateUsername(newUsername,oldUsername);
+                profileViewModel.updateUsername(newUsername,originalID);
             }
 
             if(!newEmail.equals(oldEmail)){
-                profileViewModel.updateEmail(newEmail,oldEmail);
+                profileViewModel.updateEmail(newEmail,originalID);
             }
 
             if(!newFirstName.equals(oldFirstName)){
-                profileViewModel.updateFirstName(newFirstName,oldFirstName);
+                profileViewModel.updateFirstName(newFirstName,originalID);
             }
 
             if(!newLastName.equals(oldLastName)){
-                profileViewModel.updateLastName(newLastName,oldLastName);
+                profileViewModel.updateLastName(newLastName,originalID);
             }
 
             if(!newPhoneNumber.equals(oldPhoneNumber)){
-                profileViewModel.updatePhoneNumber(newPhoneNumber,oldPhoneNumber);
+                profileViewModel.updatePhoneNumber(newPhoneNumber,originalID);
             }
 
             if(!newPassword.equals(oldPassword)){
-                profileViewModel.updatePassword(newPassword,oldPassword);
+                profileViewModel.updatePassword(newPassword,originalID);
             }
             UserSession.getInstance().setLoggedInUser(newUser);
             onEdit();

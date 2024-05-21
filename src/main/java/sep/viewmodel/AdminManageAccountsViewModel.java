@@ -38,67 +38,72 @@ public class AdminManageAccountsViewModel implements PropertyChangeListener {
         selectedPatron.bind(property);
     }
 
-    public void updateUsername(String newUsername,String oldUsername) throws RemoteException {
+    public void updateUsername(String newUsername,int userID) throws RemoteException {
             try{
-                model.updateUsername(oldUsername, newUsername);
+                model.updateUsername(userID, newUsername);
             }catch (Exception e){
                 throw new IllegalStateException(e.getMessage());
             }
     }
-    public void updateEmail(String newEmail,String oldEmail) throws RemoteException{
+    public void updateEmail(String newEmail,int userID) throws RemoteException{
 
             try{
-                model.updateEmail(oldEmail, newEmail);
+                model.updateEmail(userID, newEmail);
             }catch (Exception e){
                 throw new IllegalStateException(e.getMessage());
             }
         }
 
-    public void updatePhoneNumber(String newPhoneNumber,String oldPhoneNumber) throws RemoteException{
+    public void updatePhoneNumber(String newPhoneNumber,int userID) throws RemoteException{
 
             try{
-                model.updatePhoneNumber(oldPhoneNumber, newPhoneNumber);
+                model.updatePhoneNumber(userID, newPhoneNumber);
             }catch (Exception e){
                 throw new IllegalStateException(e.getMessage());
             }
     }
-    public void updateFirstName(String newFirstName,String oldFirstName) throws RemoteException{
+    public void updateFirstName(String newFirstName,int userID) throws RemoteException{
 
             try{
-                model.updateFirstName(oldFirstName, newFirstName);
+                model.updateFirstName(userID, newFirstName);
             }catch (Exception e){
                 throw new IllegalStateException(e.getMessage());
             }
     }
-    public void updateLastName(String newLastName,String oldLastName) throws RemoteException{
+    public void updateLastName(String newLastName,int userID) throws RemoteException{
 
             try{
-                model.updateLastName(oldLastName, newLastName);
+                model.updateLastName(userID, newLastName);
             }catch (Exception e){
                 throw new IllegalStateException(e.getMessage());
             }
     }
-    public void updatePassword(String newPassword,String oldPassword) throws RemoteException{
+    public void updatePassword(int userID,String newPassword) throws RemoteException{
             try{
-                model.updatePassword(oldPassword, newPassword);
+                model.updatePassword(userID, newPassword);
             }catch (Exception e){
                 throw new IllegalStateException(e.getMessage());
             }
     }
-    public void updateFees(int oldFees, int newFees) throws RemoteException{
+    public void updateFees(int userID, int newFees) throws RemoteException{
             try{
-                model.updateFees(oldFees, newFees);
+                model.updateFees(userID, newFees);
             }catch (Exception e){
                 throw new IllegalStateException(e.getMessage());
             }
     }
     public void deletePatron(Patron patron){
-
+        //TODO: IMPLEMENT DELETE PATRON
     }
     public void loadPatrons() throws SQLException {
-        List<Patron> patrons = PatronDatabaseImplementation.getInstance().getAllPatrons();
-        patronList.setAll(patrons);
-        support.firePropertyChange("patronList", null, patronList);
+        try{
+            List<Patron> patrons = PatronDatabaseImplementation.getInstance().getAllPatrons();
+            patronList.setAll(patrons);
+            support.firePropertyChange("patronList", null, patronList);
+        }catch (Exception e){
+            throw new IllegalStateException(e.getMessage());
+        }
+
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

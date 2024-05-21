@@ -3,20 +3,14 @@ package sep.model;
 import java.io.Serializable;
 
 public class Event implements Serializable {
-    private int id;
     private String title;
     private String description;
     private String eventDate;
 
-    public Event(int id, String title, String description, String eventDate) {
-        this.id = id;
+    public Event(String title, String description, String eventDate) {
         this.title = title;
         this.description = description;
         this.eventDate = eventDate;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getTitle() {

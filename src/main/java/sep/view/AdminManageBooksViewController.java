@@ -1,21 +1,24 @@
 package sep.view;
 
+import dk.via.remote.observer.RemotePropertyChangeEvent;
+import dk.via.remote.observer.RemotePropertyChangeListener;
+import dk.via.remote.observer.RemotePropertyChangeSupport;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
+import sep.jdbc.BookDatabaseImplementation;
 import sep.model.Book;
+import sep.model.Patron;
 import sep.model.State;
 import sep.viewmodel.AdminManageBooksViewModel;
 import sep.viewmodel.AdminManageDonatedBooksViewModel;
 
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
-public class AdminManageBooksViewController
+public class AdminManageBooksViewController implements RemotePropertyChangeListener
 {
    //BUTTONS
     @FXML
@@ -49,21 +52,50 @@ public class AdminManageBooksViewController
     @FXML private TextField isbnField;
     @FXML private TextField yearField;
     @FXML private TextField pagesField;
-    @FXML private TextField genreField;
+    @FXML private ComboBox<String> genreField;
 
     private Region root;
     private ViewHandler viewHandler;
     private AdminManageBooksViewModel viewModel;
     private ReadOnlyObjectProperty<Book> selectedBook;
+
+    //TODO: Implement publisher and other details about book into scene builder cuz someone forgot to do this
+    //TODO: Implement edit, create book functionality
     public void init(ViewHandler viewHandler, AdminManageBooksViewModel viewModel, Region root)
-    {
+            throws RemoteException, SQLException {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
         this.root = root;
         initializeTableView();
-//        this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty(); //TODO view wasnt working with this
-        // populate the tableView should also be here
+        initializeGenreComboBox();
+        this.viewModel.bindList(bookTableView.itemsProperty());
+        this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
+        viewModel.loadBooks();
+
+        viewModel.addPropertyChangeListener(evt -> {
+            if ("bookList".equals(evt.getPropertyName())) {
+                bookTableView.refresh();
+                initializeTextFields();
+            }
+            if ("removeBook".equals(evt.getPropertyName())) {
+                bookTableView.refresh();
+                try {
+                    viewModel.loadBooks();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if("addBook".equals(evt.getPropertyName())) {
+                bookTableView.refresh();
+                try {
+                    viewModel.loadBooks();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
+
     public void initializeTableView(){
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -73,6 +105,34 @@ public class AdminManageBooksViewController
         bookIdColumn.setCellValueFactory(new PropertyValueFactory<>("bookId"));
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
     }
+
+    @FXML
+    public void onSelect(){
+        initializeTextFields();
+    }
+
+    public void initializeGenreComboBox() throws SQLException
+    {
+        genreField.getItems().add("All");
+        genreField.getItems().addAll(BookDatabaseImplementation.getInstance()
+                .readGenres());
+        genreField.getSelectionModel().selectFirst();
+    }
+    public void initializeTextFields() {
+
+                titleField.setText(selectedBook.get().getTitle());
+                authorField.setText(selectedBook.get().getAuthor());
+                yearField.setText(String.valueOf(selectedBook.get().getYear()));
+                isbnField.setText(String.valueOf(selectedBook.get().getIsbn()));
+                pagesField.setText(String.valueOf(selectedBook.get().getPageCount()));
+                genreField.getSelectionModel().select(selectedBook.get().getGenre());
+                idField.setText(String.valueOf(selectedBook.get().getBookId()));
+
+
+    }
+
+
+
     @FXML
     private void backButtonClicked() throws RemoteException
     {
@@ -86,13 +146,31 @@ public class AdminManageBooksViewController
     @FXML
     private void onAdd()
     {
-        //TODO logic to add detail for the books
-    }
+        try{
 
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
     @FXML
-    private void onRemove()
+    private void onSearch(){
+        try {
+            viewModel.showFiltered("All","All",searchField.getText());
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @FXML
+    private void onRemove() throws SQLException
     {
-        //TODO logic to remove a book
+        try{
+            viewModel.deleteBook(selectedBook.get().getBookId(),selectedBook.get().getTitle(), selectedBook.get().getAuthor(),String.valueOf(selectedBook.get().getYear()),selectedBook.get().getPublisher(),
+                    String.valueOf(selectedBook.get().getIsbn()),String.valueOf(selectedBook.get().getPageCount()),selectedBook.get().getGenre());
+            viewModel.loadBooks();
+            bookTableView.refresh();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
     @FXML
     private void onClear()
@@ -104,16 +182,28 @@ public class AdminManageBooksViewController
         isbnField.clear();
         yearField.clear();
         pagesField.clear();
-        genreField.clear();
+        genreField.getSelectionModel().selectFirst();
     }
 
     public void reset()
     {
-
+        searchField.clear();
+        idField.clear();
+        titleField.clear();
+        authorField.clear();
+        isbnField.clear();
+        yearField.clear();
+        pagesField.clear();
+        genreField.getSelectionModel().selectFirst();
     }
 
     public Region getRoot()
     {
         return root;
+    }
+
+    @Override
+    public void propertyChange(RemotePropertyChangeEvent remotePropertyChangeEvent) throws RemoteException {
+
     }
 }
