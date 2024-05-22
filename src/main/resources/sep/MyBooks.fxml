@@ -17,13 +17,14 @@
       <TableView fx:id="bookTableView" layoutX="7.0" layoutY="60.0" onMouseClicked="#onSelect" prefHeight="507.0" prefWidth="892.0">
         <columns>
           <TableColumn fx:id="titleColumn" prefWidth="178.39999103546143" text="Title" />
-          <TableColumn fx:id="authorColumn" prefWidth="153.59999084472656" text="Author" />
-            <TableColumn fx:id="yearColumn" prefWidth="64.0" text="Year" />
-            <TableColumn fx:id="publisherColumn" prefWidth="165.60003662109375" text="Publisher" />
-            <TableColumn fx:id="isbnColumn" prefWidth="73.60003662109375" text="ISBN" />
-            <TableColumn fx:id="pageCountColumn" prefWidth="86.39996337890625" text="Page count" />
-            <TableColumn fx:id="bookIdColumn" prefWidth="77.5999755859375" text="Book ID" />
-            <TableColumn fx:id="genreColumn" prefWidth="93.60009765625" text="Genre" />
+          <TableColumn fx:id="authorColumn" prefWidth="117.0" text="Author" />
+            <TableColumn fx:id="yearColumn" prefWidth="81.0" text="Year" />
+            <TableColumn fx:id="publisherColumn" prefWidth="146.0" text="Publisher" />
+            <TableColumn fx:id="isbnColumn" prefWidth="56.0" text="ISBN" />
+            <TableColumn fx:id="pageCountColumn" prefWidth="78.0" text="Page count" />
+            <TableColumn fx:id="bookIdColumn" prefWidth="73.0" text="Book ID" />
+            <TableColumn fx:id="genreColumn" prefWidth="66.0" text="Genre" />
+            <TableColumn fx:id="returnDateColumn" prefWidth="95.0" text="Return date" />
         </columns>
       </TableView>
       <Button fx:id="returnButton" disable="true" layoutX="932.0" layoutY="60.0" mnemonicParsing="false" onAction="#onReturn" prefHeight="26.0" prefWidth="80.0" text="Return" />
