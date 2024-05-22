@@ -30,7 +30,7 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
 
     }
 
-    public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws SQLException {  // the fees are missing and therefore the patron cant be created
+    public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws SQLException {
         try(Connection conn = getConnection()) {
             if (usernameExists(username)) {
                 throw new SQLException("This username already exists: " + username);

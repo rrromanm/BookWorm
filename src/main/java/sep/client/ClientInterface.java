@@ -24,7 +24,7 @@ public interface ClientInterface {
 
 
     int getAmountOfBorrowedBooks(Patron patron) throws RemoteException;
-    void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException;
+    void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException, SQLException;
 
     void createEvent(String title, String description, String eventDate) throws RemoteException;
 

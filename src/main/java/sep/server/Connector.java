@@ -131,9 +131,9 @@ public class Connector implements ConnectorInterface {
                 this.support.firePropertyChange("createPatron", false, true);
 
         }
-        catch (SQLException ignored)
+        catch (SQLException e)
         {
-            throw new RuntimeException(ignored);
+            throw new RuntimeException(e.getMessage());
         }
     }
 

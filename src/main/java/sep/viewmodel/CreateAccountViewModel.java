@@ -36,14 +36,13 @@ public class CreateAccountViewModel {
         try{
 
             if(!password.get().equals(repeatPassword.get())){
-                throw new Exception("Passwords do not match!");
+                throw new IllegalArgumentException("Passwords must match!");
             }
-            model.createPatron(username.get(), password.get(), first_name.get(), last_name.get(), email.get(), phone_number.get(),0); // TODO userID logic needs to be changed
+            model.createPatron(username.get(), password.get(), first_name.get(), last_name.get(), email.get(), phone_number.get(),0);
             reset();
             System.out.println("Patron created!");
         }catch(Exception e){
-            showAlert(e.getMessage());
-            throw new RuntimeException(e.getMessage());
+            throw new RemoteException(e.getMessage());
         }
     }
     public void bindEmail(StringProperty property){

@@ -19,7 +19,7 @@ public interface ConnectorInterface extends Remote {
     int getAmountOfReadBooks(Patron patron) throws RemoteException;
     int getAmountOfBorrowedBooks(Patron patron) throws RemoteException;
     ArrayList<Book> filter(String genre,String state, String search) throws RemoteException;
-    void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException;
+    void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException, SQLException;
     void createEvent(String title, String description, String eventDate) throws RemoteException;
     void deleteEvent(Event event) throws RemoteException;
     void createBook(String title, String author,String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException;
