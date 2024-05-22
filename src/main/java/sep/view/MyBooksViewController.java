@@ -80,7 +80,9 @@ public class MyBooksViewController
         myBooksViewModel.extendBook(selectedBook.get(), UserSession.getInstance().getLoggedInUser());
         bookTableView.getSelectionModel().clearSelection();
         extendButton.setDisable(true);
+        booksToExtend = myBooksViewModel.checkBooksToExtend(UserSession.getInstance().getLoggedInUser());
         populateTableView();
+
 
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -97,15 +99,16 @@ public class MyBooksViewController
 
     @FXML public void onSelect(){
         returnButton.setDisable(false);
-        for (int i = 0; i < booksToExtend.size(); i++) {
-            if (booksToExtend.get(i).equals(selectedBook.get().getTitle())) {
-                extendButton.setDisable(false);
-            }
-            else {
-                extendButton.setDisable(true);
+        boolean canExtend = false;
+        for (String bookTitle : booksToExtend) {
+            if (bookTitle.equals(selectedBook.get().getTitle())) {
+                canExtend = true;
+                break;
             }
         }
+        extendButton.setDisable(!canExtend);
     }
+
 
     public Region getRoot() {
         return root;
