@@ -165,6 +165,9 @@ public class ProfileViewModel implements PropertyChangeListener
                     throw new RuntimeException(e);
                 }
             }
+            if("updatePatron".equals(evt.getPropertyName())){
+                //TODO: IMPLEMENT IDK HOW TO
+            }
         });
     }
 }

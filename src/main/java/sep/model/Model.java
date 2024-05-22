@@ -18,7 +18,8 @@ public interface Model {
     void addPropertyChangeListener(PropertyChangeListener listener);
     void removePropertyChangeListener(PropertyChangeListener listener);
     void deleteBook(int bookID,String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws RemoteException, SQLException;
-    void createBook(String title, String author,int year, String publisher, long isbn, int pageCount, String genre) throws SQLException, RemoteException;
+    void createBook(String title, String author,String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException;
+    void updateBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException;
     int getAmountOfReadBooks(Patron patron) throws RemoteException;
     int getAmountOfBorrowedBooks(Patron patron) throws RemoteException;
     void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException;
@@ -37,6 +38,7 @@ public interface Model {
     ArrayList<Book> filter(String genre, String state, String search) throws RemoteException;
     void borrowBooks(Book book, Patron patron) throws IOException, SQLException;
     void wishlistBook(Book book, Patron patron) throws IOException, SQLException;
+    void extendBook(Book book, Patron patron) throws RemoteException, SQLException;
     boolean isWishlisted(Book book, Patron patron) throws RemoteException, SQLException;
     void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException;
     void rejectDonatedBook(int bookId) throws SQLException, RemoteException;

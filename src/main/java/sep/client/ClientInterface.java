@@ -24,7 +24,7 @@ public interface ClientInterface {
 
 
     int getAmountOfBorrowedBooks(Patron patron) throws RemoteException;
-    void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException;
+    void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException, SQLException;
 
     void createEvent(String title, String description, String eventDate) throws RemoteException;
 
@@ -35,7 +35,8 @@ public interface ClientInterface {
     Patron login(String username, String password) throws IOException;
     boolean loginAsAdmin(String username, String password) throws IOException;
     void deleteBook(int bookID,String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException;
-    void createBook(String title, String author,int year, String publisher, long isbn, int pageCount, String genre) throws SQLException, RemoteException;
+    void createBook(String title, String author,String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException;
+    void updateBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException;
 
     void updateUsername(int userID, String newUsername) throws RemoteException;
     void updateEmail(int userID, String newEmail) throws RemoteException;
@@ -47,6 +48,7 @@ public interface ClientInterface {
     ArrayList<Book> filter(String genre, String state,String search) throws RemoteException;
     void borrowBooks(Book book, Patron patron) throws IOException, SQLException;
     void wishlistBook(Book book, Patron patron) throws IOException, SQLException;
+    void extendBook(Book book, Patron patron) throws RemoteException, SQLException;
     boolean isWishlisted(Book book, Patron patron) throws RemoteException, SQLException;
     void addPropertyChangeListener(PropertyChangeListener listener);
     void removePropertyChangeListener(PropertyChangeListener listener);

@@ -53,16 +53,17 @@ public class AdminManageBooksViewModel implements PropertyChangeListener
     public void setSelectedBook(Book book) {
         selectedBook.set(book);
     }
-    public void updateBook(){
-        //TODO: IMPLEMENT
+    public void updateBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException{
+        model.updateBook(bookID, title, author, year, publisher, isbn,pageCount,genre);
+        support.firePropertyChange("updateBook", false, true);
     }
     public void deleteBook(int bookID,String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException {
         model.deleteBook(bookID,title,author,year,publisher,isbn,pageCount,genre);
         support.firePropertyChange("removeBook", false, true);
     }
-    public void createBook(String title, String author,int year, String publisher, long isbn, int pageCount, String genre) throws SQLException, RemoteException {
+    public void createBook(String title, String author,String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException {
         model.createBook(title,author,year,publisher,isbn,pageCount,genre);
-        support.firePropertyChange("addBook", false, true);
+        support.firePropertyChange("addBook", null, bookList);
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -77,6 +78,46 @@ public class AdminManageBooksViewModel implements PropertyChangeListener
     public void propertyChange(PropertyChangeEvent evt) {
         Platform.runLater(() -> {
             if ("removeBook".equals(evt.getPropertyName())){
+                try {
+                    loadBooks();
+                    System.out.println("refreshed books table");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if("addBook".equals(evt.getPropertyName())) {
+                try {
+                    loadBooks();
+                    System.out.println("refreshed books table");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if ("updateBook".equals(evt.getPropertyName())) {
+                try {
+                    loadBooks();
+                    System.out.println("refreshed books table");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if("BorrowBook".equals(evt.getPropertyName())) {
+                try {
+                    loadBooks();
+                    System.out.println("refreshed books table");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if("ReturnBook".equals(evt.getPropertyName())){
+                try {
+                    loadBooks();
+                    System.out.println("refreshed books table");
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if("DonatedBookApproved".equals(evt.getPropertyName())){
                 try {
                     loadBooks();
                     System.out.println("refreshed books table");

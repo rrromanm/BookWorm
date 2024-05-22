@@ -57,7 +57,11 @@ public class CreateAccountViewController {
             viewHandler.openView("login");
            reset();
         } catch (RemoteException e) {
-           throw new RuntimeException(e);
+           Alert alert = new Alert(Alert.AlertType.WARNING);
+           alert.setTitle("Ooops there is an issue!");
+           alert.setHeaderText("Warning!");
+           alert.setContentText(e.getMessage());
+           alert.showAndWait();
        }
     }
 

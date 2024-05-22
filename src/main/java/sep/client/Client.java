@@ -96,7 +96,13 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     fileLog.log(patron.getUsername() + " has added a \"" + book.getTitle() + "\" to the wishlist");
   }
 
-  @Override public boolean isWishlisted(Book book, Patron patron) throws RemoteException, SQLException
+  @Override
+  public void extendBook(Book book, Patron patron) throws RemoteException, SQLException
+  {
+      library.extendBook(book, patron);
+  }
+
+    @Override public boolean isWishlisted(Book book, Patron patron) throws RemoteException, SQLException
   {
     return library.isWishlisted(book, patron);
   }
@@ -122,10 +128,20 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     }
 
     @Override
-    public void createBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws SQLException, RemoteException {
+    public void createBook(String title, String author,String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException{
         try{
             library.createBook(title, author, year, publisher, isbn, pageCount, genre);
             fileLog.log(title + " has been added to the database by Admin");
+        }catch (Exception e){
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
+    public void updateBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException {
+        try{
+            library.updateBook(bookID, title, author, year, publisher, isbn, pageCount, genre);
+            fileLog.log(title + " has been updated in the database by Admin");
         }catch (Exception e){
             throw new IllegalArgumentException(e);
         }
@@ -320,7 +336,19 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
            }
            if(event.getPropertyName().equals("removeBook")){
                this.support.firePropertyChange("removeBook", false, true);
-
+           }
+           if(event.getPropertyName().equals("updateBook")){
+               this.support.firePropertyChange("updateBook", false, true);
+           }
+           if(event.getPropertyName().equals("createBook")){
+               this.support.firePropertyChange("createBook", false, true);
+           }
+           if(event.getPropertyName().equals("updatePatron")){
+               this.support.firePropertyChange("updatePatron", false, true);
+           }
+           if (event.getPropertyName().equals("ExtendBook"))
+           {
+               this.support.firePropertyChange("ExtendBook", false, true);
            }
         });
     }

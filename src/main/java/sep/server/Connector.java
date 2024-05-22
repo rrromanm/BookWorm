@@ -131,9 +131,9 @@ public class Connector implements ConnectorInterface {
                 this.support.firePropertyChange("createPatron", false, true);
 
         }
-        catch (SQLException ignored)
+        catch (SQLException e)
         {
-            throw new RuntimeException(ignored);
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -168,9 +168,20 @@ public class Connector implements ConnectorInterface {
     }
 
     @Override
-    public void createBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws SQLException {
+    public void createBook(String title, String author,String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException {
         try{
             this.bookDatabase.createBook(title, author, year, publisher, isbn, pageCount, genre);
+            this.support.firePropertyChange("createBook", false, true);
+        }catch (SQLException | RemoteException e){
+            throw new SQLException(e);
+        }
+    }
+
+    @Override
+    public void updateBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException {
+        try{
+            this.bookDatabase.updateBook(bookID, title, author, year, publisher, isbn, pageCount, genre);
+            this.support.firePropertyChange("updateBook", false, true);
         }catch (SQLException e){
             throw new SQLException(e);
         }
@@ -210,6 +221,7 @@ public class Connector implements ConnectorInterface {
     public void updateUsername(int userID, String newUsername) throws RemoteException {
         try{
             patronDatabase.updateUsername(userID, newUsername);
+            this.support.firePropertyChange("updatePatron", false, true);
         }catch(SQLException e){
             throw new IllegalArgumentException(e);
         }
@@ -219,6 +231,7 @@ public class Connector implements ConnectorInterface {
     public void updateEmail(int userID, String newEmail) throws RemoteException {
         try{
             patronDatabase.updateEmail(userID, newEmail);
+            this.support.firePropertyChange("updatePatron", false, true);
         }catch(SQLException e){
             throw new IllegalArgumentException(e);
         }
@@ -228,6 +241,7 @@ public class Connector implements ConnectorInterface {
     public void updatePhoneNumber(int userID, String newPhoneNumber) throws RemoteException {
         try{
             patronDatabase.updatePhone(userID, newPhoneNumber);
+            this.support.firePropertyChange("updatePatron", false, true);
         } catch (SQLException e){
             throw new IllegalArgumentException(e);
         }
@@ -237,6 +251,7 @@ public class Connector implements ConnectorInterface {
     public void updateFirstName(int userID, String newFirstName) throws RemoteException {
         try{
             patronDatabase.updateFirstName(userID, newFirstName);
+            this.support.firePropertyChange("updatePatron", false, true);
         }catch(SQLException e){
             throw new IllegalArgumentException(e);
         }
@@ -246,6 +261,7 @@ public class Connector implements ConnectorInterface {
     public void updateLastName(int userID, String newLastName) throws RemoteException {
         try{
             patronDatabase.updateLastName(userID, newLastName);
+            this.support.firePropertyChange("updatePatron", false, true);
         }catch(SQLException e){
             throw new IllegalArgumentException(e);
         }
@@ -255,6 +271,7 @@ public class Connector implements ConnectorInterface {
     public void updatePassword(int userID, String newPassword) throws RemoteException {
         try {
             patronDatabase.updatePassword(userID, newPassword);
+            this.support.firePropertyChange("updatePatron", false, true);
         }catch(SQLException e){
             throw new IllegalArgumentException(e);
         }
@@ -264,6 +281,7 @@ public class Connector implements ConnectorInterface {
     public void updateFees(int useriD, int newFees) throws RemoteException {
         try{
             patronDatabase.updateFees(useriD, newFees);
+            this.support.firePropertyChange("updatePatron", false, true);
         }catch(SQLException e){
             throw new IllegalArgumentException(e);
         }
@@ -282,6 +300,12 @@ public class Connector implements ConnectorInterface {
         this.support.firePropertyChange("Wishlist",false,true);
     }
 
+    @Override
+    public void extendBook(Book book, Patron patron) throws RemoteException, SQLException {
+        bookDatabase.extendBook(book, patron);
+        this.support.firePropertyChange("ExtendBook",false,true);
+    }
+
     @Override public boolean isWishlisted(Book book, Patron patron)
         throws RemoteException, SQLException
     {
@@ -297,7 +321,7 @@ public class Connector implements ConnectorInterface {
     public void deleteBook(int bookID,String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException {
         try{
             bookDatabase.deleteBook(bookID,title, author, year, publisher, isbn, pageCount, genre);
-            this.support.firePropertyChange("DeleteBook", false, true);
+            this.support.firePropertyChange("removeBook", false, true);
         } catch(Exception e){
             throw new IllegalArgumentException(e);
         }
