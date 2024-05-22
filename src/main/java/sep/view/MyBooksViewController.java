@@ -78,6 +78,10 @@ public class MyBooksViewController
 
     @FXML public void onExtend() throws SQLException, RemoteException {
         myBooksViewModel.extendBook(selectedBook.get(), UserSession.getInstance().getLoggedInUser());
+        bookTableView.getSelectionModel().clearSelection();
+        extendButton.setDisable(true);
+        populateTableView();
+
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Success");
