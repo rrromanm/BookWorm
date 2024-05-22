@@ -117,10 +117,10 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
     }
 
     @Override
-    public void deleteEvent(Event event) throws RemoteException {
+    public void deleteEvent(int id) throws RemoteException {
         try
         {
-            this.client.deleteEvent(event);
+            this.client.deleteEvent(id);
 
         }
         catch (Exception e)

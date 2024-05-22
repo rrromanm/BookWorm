@@ -129,7 +129,7 @@ public class AdminManageEventsViewController
         Event selectedEvent = eventsTable.getSelectionModel().getSelectedItem();
         if (selectedEvent != null) {
             try {
-                viewModel.deleteEvent(new Event(selectedEvent.getTitle(), selectedEvent.getDescription(), selectedEvent.getEventDate()));
+                viewModel.deleteEvent(selectedEvent.getId());
                 viewModel.resetEventList();
                 reset();
             } catch (RemoteException e) {

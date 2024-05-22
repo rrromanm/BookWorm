@@ -28,7 +28,7 @@ public interface ClientInterface {
 
     void createEvent(String title, String description, String eventDate) throws RemoteException;
 
-    void deleteEvent(Event event) throws RemoteException;
+    void deleteEvent(int id) throws RemoteException;
 
     void deletePatron(int id) throws RemoteException;
 

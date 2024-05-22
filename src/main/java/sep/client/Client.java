@@ -197,9 +197,9 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
    }
 
     @Override
-    public void deleteEvent(Event event) throws RemoteException{
+    public void deleteEvent(int id) throws RemoteException{
         try{
-            library.deleteEvent(event);
+            library.deleteEvent(id);
         } catch (Exception e){
             throw new RemoteException(e.getMessage());
         }

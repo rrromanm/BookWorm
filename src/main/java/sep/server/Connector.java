@@ -150,9 +150,9 @@ public class Connector implements ConnectorInterface {
         }
     }
     @Override
-    public void deleteEvent(Event event) throws RemoteException {
+    public void deleteEvent(int id) throws RemoteException {
         try {
-            this.adminDatabase.deleteEvent(event);
+            this.adminDatabase.deleteEvent(id);
         } catch (SQLException e) {
             throw new RemoteException("Failed to delete event: " + e.getMessage());
         }
