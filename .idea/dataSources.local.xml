@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-<<<<<<< Updated upstream
-  <component name="dataSourceStorageLocal" created-in="IU-233.14475.28">
-    <data-source name="postgres@localhost" uuid="694e63eb-c60b-4b4c-926e-5f5c95e3ca0f">
-=======
   <component name="dataSourceStorageLocal" created-in="IU-241.14494.240">
-    <data-source name="postgres@localhost" uuid="c536c10c-431f-4772-a605-99526604eca8">
->>>>>>> Stashed changes
+    <data-source name="postgres@localhost" uuid="96207903-954e-4200-aa86-607d5b40cc27">
       <database-info product="PostgreSQL" version="16.1" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.6.0" dbms="POSTGRES" exact-version="16.1" exact-driver-version="42.6">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>

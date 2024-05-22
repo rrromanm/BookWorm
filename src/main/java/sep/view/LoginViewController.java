@@ -1,9 +1,7 @@
 package sep.view;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import sep.viewmodel.LoginViewModel;
 import javafx.scene.layout.Region;
 
@@ -15,11 +13,16 @@ public class LoginViewController {
     private Region root;
 
     @FXML private TextField usernameTextField;
-    @FXML private TextField passwordTextField;
+    @FXML private PasswordField passwordField;
+    @FXML private Tooltip passwordTip;
 
     @FXML private Button loginButton;
     @FXML private Button loginAsAdminButton;
     @FXML private Button createAccountButton;
+    @FXML private Button exitButton;
+
+    @FXML private CheckBox showPasswordCheckBox;
+    @FXML private TextField passwordVisibleField;
 
     @FXML private Label error;
 
@@ -30,8 +33,13 @@ public class LoginViewController {
         this.root = root;
 
         this.viewModel.bindUsername(usernameTextField.textProperty());
-        this.viewModel.bindPassword(passwordTextField.textProperty());
+        this.viewModel.bindPassword(passwordField.textProperty());
         this.viewModel.bindError(error.textProperty());
+
+        passwordVisibleField.textProperty().bindBidirectional(passwordField.textProperty());
+
+        passwordVisibleField.setVisible(false);
+        passwordVisibleField.managedProperty().bind(passwordVisibleField.visibleProperty());
     }
 
     @FXML private void loginButtonClicked() throws RemoteException
@@ -43,7 +51,17 @@ public class LoginViewController {
         else {
             System.out.println("Login unsuccessful");
         }
+    }
 
+    @FXML
+    private void onShowPassword() {
+        if (showPasswordCheckBox.isSelected()) {
+            passwordVisibleField.setVisible(true);
+            passwordField.setVisible(false);
+        } else {
+            passwordVisibleField.setVisible(false);
+            passwordField.setVisible(true);
+        }
     }
 
     @FXML private void createButtonClicked() throws RemoteException
@@ -56,6 +74,10 @@ public class LoginViewController {
         viewHandler.openView("adminLogin");
     }
 
+    @FXML private void onExit()
+    {
+        viewHandler.closeView();
+    }
 
     public void reset()
     {
