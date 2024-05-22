@@ -92,8 +92,13 @@ public class AdminManageAccountsViewModel implements PropertyChangeListener {
                 throw new IllegalStateException(e.getMessage());
             }
     }
-    public void deletePatron(Patron patron){
-        //TODO: IMPLEMENT DELETE PATRON
+    public void deletePatron(int id) throws RemoteException {
+        try {
+            model.deletePatron(id);
+            loadPatrons(); // Refresh the event list after deletion
+        } catch (Exception e) {
+            throw new RemoteException("Failed to delete patron: " + e.getMessage());
+        }
     }
     public void loadPatrons() throws SQLException {
         try{

@@ -76,6 +76,17 @@ public class AdminDatabaseImplementation implements AdminDatabaseInterface
             }
         }
     }
+    @Override
+    public void deletePatron(int id) throws SQLException {
+        try (Connection connection = getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM book_worm_db.patron WHERE id = ?");
+            statement.setInt(1, id);
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("No patron found with the specified id.");
+            }
+        }
+    }
 
 
 }

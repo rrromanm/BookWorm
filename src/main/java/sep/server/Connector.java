@@ -159,6 +159,15 @@ public class Connector implements ConnectorInterface {
     }
 
     @Override
+    public void deletePatron(int id) throws RemoteException {
+        try {
+            this.adminDatabase.deletePatron(id);
+        } catch (SQLException e) {
+            throw new RemoteException("Failed to delete patron: " + e.getMessage());
+        }
+    }
+
+    @Override
     public void createBook(String title, String author, int year, String publisher, long isbn, int pageCount, String genre) throws SQLException {
         try{
             this.bookDatabase.createBook(title, author, year, publisher, isbn, pageCount, genre);

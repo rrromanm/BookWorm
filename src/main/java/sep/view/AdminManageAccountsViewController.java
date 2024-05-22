@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
+import sep.model.Event;
 import sep.model.Patron;
 import sep.model.UserSession;
 import sep.model.validators.*;
@@ -187,8 +188,23 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
 
 
     @FXML
-    private void deleteButtonClicked() {
-        //TODO: Implement working delete
+    private void deleteButtonClicked() throws RemoteException {
+        Patron selectedEvent = UserTableView.getSelectionModel().getSelectedItem();
+        if (selectedEvent != null) {
+            try {
+                viewModel.deletePatron(selectedEvent.getUserID());
+                viewModel.loadPatrons();
+                reset();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No Patron Selected");
+            alert.setHeaderText(null);
+            alert.setContentText("Please select a patron to delete.");
+            alert.showAndWait();
+        }
     }
 
     @FXML

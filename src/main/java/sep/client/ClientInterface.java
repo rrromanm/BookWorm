@@ -30,6 +30,8 @@ public interface ClientInterface {
 
     void deleteEvent(Event event) throws RemoteException;
 
+    void deletePatron(int id) throws RemoteException;
+
     Patron login(String username, String password) throws IOException;
     boolean loginAsAdmin(String username, String password) throws IOException;
     void deleteBook(int bookID,String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException;
