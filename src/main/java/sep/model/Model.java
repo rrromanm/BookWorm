@@ -37,6 +37,7 @@ public interface Model {
     ArrayList<Book> filter(String genre, String state, String search) throws RemoteException;
     void borrowBooks(Book book, Patron patron) throws IOException, SQLException;
     void wishlistBook(Book book, Patron patron) throws IOException, SQLException;
+    void extendBook(Book book, Patron patron) throws RemoteException, SQLException;
     boolean isWishlisted(Book book, Patron patron) throws RemoteException, SQLException;
     void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException;
     void rejectDonatedBook(int bookId) throws SQLException, RemoteException;

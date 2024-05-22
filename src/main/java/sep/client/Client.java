@@ -96,7 +96,13 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     fileLog.log(patron.getUsername() + " has added a \"" + book.getTitle() + "\" to the wishlist");
   }
 
-  @Override public boolean isWishlisted(Book book, Patron patron) throws RemoteException, SQLException
+  @Override
+  public void extendBook(Book book, Patron patron) throws RemoteException, SQLException
+  {
+      library.extendBook(book, patron);
+  }
+
+    @Override public boolean isWishlisted(Book book, Patron patron) throws RemoteException, SQLException
   {
     return library.isWishlisted(book, patron);
   }
@@ -330,6 +336,10 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
            }
            if(event.getPropertyName().equals("updatePatron")){
                this.support.firePropertyChange("updatePatron", false, true);
+           }
+           if (event.getPropertyName().equals("ExtendBook"))
+           {
+               this.support.firePropertyChange("ExtendBook", false, true);
            }
         });
     }

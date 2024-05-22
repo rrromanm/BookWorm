@@ -28,6 +28,5 @@ public interface BookDatabaseInterface
   int getGenreId(String genreName) throws SQLException;
   Book donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException;
   ArrayList<String> checkEndingBooks(Patron patron) throws SQLException;
-
-
+  void extendBook(Book book, Patron patron) throws SQLException;
 }

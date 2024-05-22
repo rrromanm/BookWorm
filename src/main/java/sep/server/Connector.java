@@ -291,6 +291,12 @@ public class Connector implements ConnectorInterface {
         this.support.firePropertyChange("Wishlist",false,true);
     }
 
+    @Override
+    public void extendBook(Book book, Patron patron) throws RemoteException, SQLException {
+        bookDatabase.extendBook(book, patron);
+        this.support.firePropertyChange("ExtendBook",false,true);
+    }
+
     @Override public boolean isWishlisted(Book book, Patron patron)
         throws RemoteException, SQLException
     {

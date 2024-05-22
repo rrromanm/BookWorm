@@ -19,6 +19,7 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class MyBooksViewController
 {
@@ -39,18 +40,19 @@ public class MyBooksViewController
     private MyBooksViewModel myBooksViewModel;
     private ReadOnlyObjectProperty<Book> selectedBook;
     private Patron loggedInUser;
-    public void init(ViewHandler viewHandler, MyBooksViewModel viewModel, Region root)
-        throws RemoteException
+    private ArrayList<String> booksToExtend;
+
+    public void init(ViewHandler viewHandler, MyBooksViewModel viewModel, Region root) throws RemoteException
     {
         this.viewHandler = viewHandler;
         this.myBooksViewModel = viewModel;
         this.root = root;
         loggedInUser = UserSession.getInstance().getLoggedInUser();
-        //myBooksViewModel.addPropertyChangeListener(this);
         initializeTableView();
         populateTableView();
         this.myBooksViewModel.bindList(bookTableView.itemsProperty());
         this.selectedBook = bookTableView.getSelectionModel().selectedItemProperty();
+        booksToExtend = viewModel.checkBooksToExtend(UserSession.getInstance().getLoggedInUser());
     }
 
     public void initializeTableView(){
@@ -74,10 +76,22 @@ public class MyBooksViewController
         populateTableView();
     }
 
-    @FXML public void onExtend(){
-        // extend the deadline for the book
+    @FXML public void onExtend() throws SQLException, RemoteException {
+        myBooksViewModel.extendBook(selectedBook.get(), UserSession.getInstance().getLoggedInUser());
+        bookTableView.getSelectionModel().clearSelection();
+        extendButton.setDisable(true);
+        booksToExtend = myBooksViewModel.checkBooksToExtend(UserSession.getInstance().getLoggedInUser());
+        populateTableView();
+
+
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText("Book successfully extended, enjoy!");
+        alert.setContentText("PS: The book return date was extended by 10 days.");
+        alert.show();
     }
-    
+
     @FXML public void onBack() throws RemoteException
     {
         viewHandler.openView(ViewFactory.USERMAIN);
@@ -85,10 +99,16 @@ public class MyBooksViewController
 
     @FXML public void onSelect(){
         returnButton.setDisable(false);
-        /*if(selectedBook.get())
-            here we need to implement so the extendButton appears based on the remaining deadline
-         */
+        boolean canExtend = false;
+        for (String bookTitle : booksToExtend) {
+            if (bookTitle.equals(selectedBook.get().getTitle())) {
+                canExtend = true;
+                break;
+            }
+        }
+        extendButton.setDisable(!canExtend);
     }
+
 
     public Region getRoot() {
         return root;

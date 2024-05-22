@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class MyBooksViewModel implements PropertyChangeListener
 {
@@ -38,6 +39,14 @@ public class MyBooksViewModel implements PropertyChangeListener
     public void returnBook(Book book, Patron patron)
         throws IOException, SQLException {
         model.returnBookToDatabase(book, patron);
+    }
+
+    public ArrayList<String> checkBooksToExtend(Patron patron) throws RemoteException {
+        return model.getEndingBooks(patron);
+    }
+
+    public void extendBook(Book book, Patron patron) throws SQLException, RemoteException {
+        model.extendBook(book, patron);
     }
 
     @Override

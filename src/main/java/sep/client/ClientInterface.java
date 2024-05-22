@@ -46,6 +46,7 @@ public interface ClientInterface {
     ArrayList<Book> filter(String genre, String state,String search) throws RemoteException;
     void borrowBooks(Book book, Patron patron) throws IOException, SQLException;
     void wishlistBook(Book book, Patron patron) throws IOException, SQLException;
+    void extendBook(Book book, Patron patron) throws RemoteException, SQLException;
     boolean isWishlisted(Book book, Patron patron) throws RemoteException, SQLException;
     void addPropertyChangeListener(PropertyChangeListener listener);
     void removePropertyChangeListener(PropertyChangeListener listener);

@@ -35,6 +35,7 @@ public interface ConnectorInterface extends Remote {
     void updateFees(int userID, int newFees) throws RemoteException;
     void borrowBooks(Book book, Patron patron) throws RemoteException, SQLException;
     void wishlistBook(Book book, Patron patron) throws RemoteException, SQLException;
+    void extendBook(Book book, Patron patron) throws RemoteException, SQLException;
     boolean isWishlisted(Book book, Patron patron) throws RemoteException,SQLException;
     void returnBookToDatabase(Book book, Patron patron) throws RemoteException, SQLException;
     void deleteBook(int bookID,String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws RemoteException, SQLException;
