@@ -17,12 +17,14 @@ import sep.viewmodel.ProfileViewModel;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.Optional;
 
-public class ProfileViewController {
+public class ProfileViewController implements PropertyChangeListener {
     @FXML private Button editButton;
     @FXML private Button passwordButton;
     @FXML private Button saveButton;
@@ -87,50 +89,39 @@ public class ProfileViewController {
         this.root = root;
         initializeHistoryTableView();
         initializeWishlistTableView();
-        populateHBTableView(); // not implemented
-        populateWLTableView(); // not implemented
-        initializeLabels(); // only missing the books read information
+        populateHBTableView();
+        populateWLTableView();
+        populateTextFields();
         this.profileViewModel.bindHistoryList(historyOfBookTableView.itemsProperty());
         this.profileViewModel.bindWishlistList(wishlistBookTableView.itemsProperty());
         historyOfBookTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         this.wishlistSelectedBook = wishlistBookTableView.getSelectionModel().selectedItemProperty();
         wishlistBookTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> onWishlistSelect());
 
+        booksReadLabel.setVisible(true);
+        feesLabel.setVisible(true);
+        feesLabel.setText("Outstanding fees: " + UserSession.getInstance().getLoggedInUser().getFees());
+        booksReadLabel.setText("Amount of books read: " + profileViewModel.getAmountOfReadBooks(UserSession.getInstance().getLoggedInUser()));
+
+        this.profileViewModel.bindPassword(passwordTextField.textProperty());
+        this.profileViewModel.bindFirstName(firstNameTextField.textProperty());
+        this.profileViewModel.bindLastName(lastNameTextField.textProperty());
+        this.profileViewModel.bindUsername(usernameTextField.textProperty());
+        this.profileViewModel.bindEmail(emailTextField.textProperty());
+        this.profileViewModel.bindPhoneNumber(phoneNumberTextField.textProperty());
+        this.profileViewModel.bindUserId(userIDTextField.textProperty());
+
+
         edit = false;
         showPassword = false;
-
+        viewModel.addPropertyChangeListener(this);
     }
-    public void initializeLabels() throws RemoteException
-    { //initialize and populate
-        if (!labelsInitialized) {
 
-            booksReadLabel.setVisible(true);
-            feesLabel.setVisible(true);
-            feesLabel.setText("Outstanding fees: " + UserSession.getInstance().getLoggedInUser().getFees());
-            booksReadLabel.setText("Amount of books read: " + profileViewModel.getAmountOfReadBooks(UserSession.getInstance().getLoggedInUser()));
-            usernameTextField.setText(UserSession.getInstance().getLoggedInUser().getUsername());
-            emailTextField.setText(UserSession.getInstance().getLoggedInUser().getEmail());
-            firstNameTextField.setText(UserSession.getInstance().getLoggedInUser().getFirstName());
-            lastNameTextField.setText(UserSession.getInstance().getLoggedInUser().getLastName());
-            phoneNumberTextField.setText(UserSession.getInstance().getLoggedInUser().getPhoneNumber());
-            passwordTextField.setText(UserSession.getInstance().getLoggedInUser().getPassword());
-            userIDTextField.setText(String.valueOf(UserSession.getInstance().getLoggedInUser().getUserID()));
-
-            originalFirstName = UserSession.getInstance().getLoggedInUser().getFirstName();
-            originalLastName = UserSession.getInstance().getLoggedInUser().getLastName();
-            originalUsername = UserSession.getInstance().getLoggedInUser().getUsername();
-            originalEmail = UserSession.getInstance().getLoggedInUser().getEmail();
-            originalPhoneNumber = UserSession.getInstance().getLoggedInUser().getPhoneNumber();
-            originalPassword = UserSession.getInstance().getLoggedInUser().getPassword();
-            originalID = UserSession.getInstance().getLoggedInUser().getUserID();
-
-            labelsInitialized = true;
-
-            // we need to get the data about the user fees and the amount of books read by him
-            //feesLabel.setText("Outstanding fees: " + /*fees amount*/);
-            //booksReadLabel.setText("Books read: " + /*amount of books read by the user*/);
-        }
+    public void populateTextFields() throws RemoteException
+    {
+        profileViewModel.fillData();
     }
+
     public void initializeWishlistTableView(){
         WLtitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         WLauthorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -261,7 +252,7 @@ public class ProfileViewController {
             UserSession.getInstance().setLoggedInUser(newUser);
             onEdit();
             labelsInitialized = false;
-            initializeLabels();
+            populateTextFields();
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Save changes");
             alert.setHeaderText("Changes to the account has been saved");
@@ -329,7 +320,7 @@ public class ProfileViewController {
         phoneNumberTextField.setText(originalPhoneNumber);
         passwordTextField.setText(originalPassword);
 
-        initializeLabels();
+        populateTextFields();
         firstNameTextField.setEditable(false);
         lastNameTextField.setEditable(false);
         usernameTextField.setEditable(false);
@@ -353,6 +344,17 @@ public class ProfileViewController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("updatePatron".equals(evt.getPropertyName())) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Notice");
+            alert.setHeaderText("Changes made to your account!");
+            alert.setContentText("Please logout and login with new credentials.");
+            alert.show();
+        }
     }
 }
 
