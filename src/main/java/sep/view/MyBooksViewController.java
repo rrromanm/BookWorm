@@ -71,10 +71,47 @@ public class MyBooksViewController
         myBooksViewModel.resetBookList(UserSession.getInstance().getLoggedInUser());
     }
 
-    @FXML public void onReturn() throws IOException, SQLException {
-        myBooksViewModel.returnBook(selectedBook.get(), UserSession.getInstance().getLoggedInUser());
-        populateTableView();
+    @FXML
+    public void onReturn() throws IOException, SQLException {
+
+            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationAlert.setTitle("Confirm Return");
+            confirmationAlert.setHeaderText(null);
+            confirmationAlert.setContentText("Are you sure you want to return the selected book?");
+
+            ButtonType yesButton = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
+            ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+            confirmationAlert.getButtonTypes().setAll(yesButton, noButton);
+
+            confirmationAlert.showAndWait().ifPresent(type -> {
+                if (type == yesButton) {
+                    try {
+                        myBooksViewModel.returnBook(selectedBook.get(), UserSession.getInstance().getLoggedInUser());
+                        populateTableView();
+
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Book Returned");
+                        alert.setHeaderText(null);
+                        alert.setContentText("The book has been successfully returned.");
+                        alert.showAndWait();
+                    } catch (SQLException e) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Failed to return the book.");
+                        alert.setContentText("An error occurred while processing the return. Please try again.");
+                        alert.showAndWait();
+                    } catch (Exception e) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("An unexpected error occurred.");
+                        alert.setContentText(e.getMessage());
+                        alert.showAndWait();
+                    }
+                }
+            });
     }
+
+
 
     @FXML public void onExtend() throws SQLException, RemoteException {
         myBooksViewModel.extendBook(selectedBook.get(), UserSession.getInstance().getLoggedInUser());

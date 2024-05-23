@@ -184,6 +184,7 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
                 try{
                     viewModel.updateBook(Integer.valueOf(idField.getText()),titleField.getText(),authorField.getText(),yearField.getText(),
                             publisherField.getText(),isbnField.getText(),pagesField.getText(),genreField.getSelectionModel().getSelectedItem());
+                    reset();
                 }catch (Exception e){
                     throw new RuntimeException(e);
                 }
@@ -192,6 +193,11 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
     }
     @FXML
     private void onAdd() {
+        Alert alert3 = new Alert(Alert.AlertType.INFORMATION);
+        alert3.setTitle("WAIT A MINUTE!");
+        alert3.setHeaderText("You are about to add a new book!");
+        alert3.setContentText("Please mind that book ID is AUTO-GENERATED! That's why ID field is empty!");
+        alert3.showAndWait();
         if (titleField.getText().isEmpty() ||
                 authorField.getText().isEmpty() ||
                 yearField.getText().isEmpty() ||
@@ -238,6 +244,7 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
                     );
                     viewModel.loadBooks();
                     bookTableView.refresh();
+                    reset();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -277,6 +284,7 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
                             String.valueOf(selectedBook.get().getIsbn()), String.valueOf(selectedBook.get().getPageCount()), selectedBook.get().getGenre());
                     viewModel.loadBooks();
                     bookTableView.refresh();
+                    reset();
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
@@ -300,6 +308,7 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
         pagesField.clear();
         genreField.getSelectionModel().selectFirst();
         publisherField.clear();
+        bookTableView.getSelectionModel().clearSelection();
     }
 
     public Region getRoot()

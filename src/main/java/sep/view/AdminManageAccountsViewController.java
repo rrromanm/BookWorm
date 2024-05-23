@@ -72,6 +72,14 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
             if ("patronList".equals(evt.getPropertyName())) {
                 UserTableView.refresh();
             }
+            if ("removePatron".equals(evt.getPropertyName())) {
+                UserTableView.refresh();
+                initializeTextFields();
+            }
+            if ("updatePatron".equals(evt.getPropertyName())) {
+                UserTableView.refresh();
+                initializeTextFields();
+            }
         });
     }
 
@@ -120,7 +128,7 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
     }
 
     @FXML
-    private void savePatronChangesButtonClicked() throws RemoteException {
+    private void savePatronChangesButtonClicked() throws RemoteException, SQLException {
         int userID = Integer.parseInt(userIDTextField.getText());
         String firstName = firstNameTextField.getText();
         String lastName = lastNameTextField.getText();
@@ -128,76 +136,150 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
         String email = emailTextField.getText();
         String phoneNumber = phoneNumberTextField.getText();
 
-        try{
+        try {
             UsernameValidator.validate(username);
             EmailValidator.validate(email);
             PhoneValidator.validate(phoneNumber);
             NameValidator.validate(firstName);
             NameValidator.validate(lastName);
-
-            if(!username.equals(originalUsername)){
-                viewModel.updateUsername(username,userID);
-            }
-
-            if(!firstName.equals(originalFirstName)){
-                viewModel.updateFirstName(firstName,userID);
-            }
-            if(!lastName.equals(originalLastName)){
-                viewModel.updateLastName(lastName,userID);
-            }
-            if(!email.equals(originalEmail)){
-                viewModel.updateEmail(email,userID);
-            }
-            if(!phoneNumber.equals(originalPhoneNumber)){
-                viewModel.updatePhoneNumber(phoneNumber,userID);
-            }
-
-            viewModel.loadPatrons();
-            UserTableView.refresh();
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Save changes");
-            alert.setHeaderText("Changes to the account has been saved");
-            alert.show();
-
-        }catch (Exception e) {
-            throw new RemoteException(e.getMessage());
+        } catch (Exception e) {
+            Alert validationAlert = new Alert(Alert.AlertType.WARNING);
+            validationAlert.setTitle("Validation Error");
+            validationAlert.setHeaderText("Invalid input");
+            validationAlert.setContentText(e.getMessage());
+            validationAlert.showAndWait();
+            return;
         }
+
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirm Changes");
+        confirmationAlert.setHeaderText(null);
+        confirmationAlert.setContentText("Are you sure you want to save changes to the patron: " + username + "?");
+
+        ButtonType yesButton = new ButtonType("Yes");
+        ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+        confirmationAlert.getButtonTypes().setAll(yesButton, noButton);
+
+        confirmationAlert.showAndWait().ifPresent(type -> {
+            if (type == yesButton) {
+                try {
+                    if (!username.equals(originalUsername)) {
+                        viewModel.updateUsername(username, userID);
+                    }
+                    if (!firstName.equals(originalFirstName)) {
+                        viewModel.updateFirstName(firstName, userID);
+                    }
+                    if (!lastName.equals(originalLastName)) {
+                        viewModel.updateLastName(lastName, userID);
+                    }
+                    if (!email.equals(originalEmail)) {
+                        viewModel.updateEmail(email, userID);
+                    }
+                    if (!phoneNumber.equals(originalPhoneNumber)) {
+                        viewModel.updatePhoneNumber(phoneNumber, userID);
+                    }
+
+                    viewModel.loadPatrons();
+                    UserTableView.refresh();
+                    reset();
+
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Save changes");
+                    alert.setHeaderText("Changes to the account have been saved");
+                    alert.show();
+                } catch (RemoteException | SQLException e) {
+                    Alert alert3 = new Alert(Alert.AlertType.WARNING);
+                    alert3.setTitle("Oops! Something went wrong...");
+                    alert3.setHeaderText(e.getMessage());
+                    alert3.show();
+                }
+            }
+        });
     }
 
-    @FXML private void saveButtonClicked() throws RemoteException {
-        int fees = Integer.parseInt(feesTextField.getText());
-        int userID = Integer.parseInt(userIDTextField.getText());
+
+
+    @FXML
+    private void saveButtonClicked() throws RemoteException {
         try {
+            int fees = Integer.parseInt(feesTextField.getText());
+            int userID = Integer.parseInt(userIDTextField.getText());
 
-            viewModel.updateFees(userID, fees);
-            //viewModel.updateBorrowingTime(userID, borrowingTime);
+            if (fees < 0) {
+                throw new IllegalArgumentException("Fee must be higher or equal to zero!");
+            }
 
-            viewModel.loadPatrons();
-            UserTableView.refresh();
+            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationAlert.setTitle("Confirm Changes");
+            confirmationAlert.setHeaderText(null);
+            confirmationAlert.setContentText("Are you sure you want to save changes to the fees for user ID: " + userID + "?");
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Save changes");
-            alert.setHeaderText("Changes to the fees and borrowing time have been saved");
-            alert.show();
+            ButtonType yesButton = new ButtonType("Yes");
+            ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+            confirmationAlert.getButtonTypes().setAll(yesButton, noButton);
 
-        } catch (Exception e) {
-            throw new RemoteException(e.getMessage());
+            confirmationAlert.showAndWait().ifPresent(type -> {
+                if (type == yesButton) {
+                    try {
+                        viewModel.updateFees(userID, fees);
+
+                        viewModel.loadPatrons();
+                        UserTableView.refresh();
+                        reset();
+
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Save changes");
+                        alert.setHeaderText("Changes to the fees and borrowing time have been saved");
+                        alert.showAndWait();
+                    } catch (RemoteException | SQLException e) {
+                        Alert errorAlert = new Alert(Alert.AlertType.WARNING);
+                        errorAlert.setTitle("Error");
+                        errorAlert.setHeaderText("An error occurred while saving changes.");
+                        errorAlert.setContentText(e.getMessage());
+                        errorAlert.showAndWait();
+                    }
+                }
+            });
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Invalid Input");
+            alert.setHeaderText("Fee must be a number.");
+            alert.setContentText("Please enter a valid fee.");
+            alert.showAndWait();
+        } catch (IllegalArgumentException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Invalid Fees");
+            alert.setHeaderText(e.getMessage());
+            alert.setContentText("Please enter a valid fee.");
+            alert.showAndWait();
         }
     }
 
 
     @FXML
     private void deleteButtonClicked() throws RemoteException {
-        Patron selectedEvent = UserTableView.getSelectionModel().getSelectedItem();
-        if (selectedEvent != null) {
-            try {
-                viewModel.deletePatron(selectedEvent.getUserID());
-                viewModel.loadPatrons();
-                reset();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        Patron selectedPatron = UserTableView.getSelectionModel().getSelectedItem();
+        if (selectedPatron != null) {
+            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationAlert.setTitle("Confirm Deletion");
+            confirmationAlert.setHeaderText(null);
+            confirmationAlert.setContentText("Are you sure you want to delete the patron: " + selectedPatron.getFirstName() + " " + selectedPatron.getLastName() + "?");
+
+            ButtonType yesButton = new ButtonType("Yes");
+            ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+            confirmationAlert.getButtonTypes().setAll(yesButton, noButton);
+
+            confirmationAlert.showAndWait().ifPresent(type -> {
+                if (type == yesButton) {
+                    try {
+                        viewModel.deletePatron(selectedPatron.getUserID());
+                        viewModel.loadPatrons();
+                        reset();
+                    } catch (SQLException | RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("No Patron Selected");
@@ -207,13 +289,21 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
         }
     }
 
+
     @FXML
     private void saveUserButtonClicked() {
         //TODO: Implement working save user data after editing
     }
 
     public void reset() {
-        // TODO: reset view
+        firstNameTextField.clear();
+        lastNameTextField.clear();
+        usernameTextField.clear();
+        emailTextField.clear();
+        phoneNumberTextField.clear();
+        feesTextField.clear();
+        userIDTextField.clear();
+        UserTableView.getSelectionModel().clearSelection();
     }
 
     public Region getRoot() {
