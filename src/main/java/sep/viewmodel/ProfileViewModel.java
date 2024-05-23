@@ -110,6 +110,15 @@ public class ProfileViewModel implements PropertyChangeListener
         return model.getAmountOfReadBooks(patron);
     }
 
+    public void deletePatron() throws RemoteException{
+        try{
+            model.deletePatron(UserSession.getInstance().getLoggedInUser().getUserID());
+        }catch(RemoteException e)
+            {
+                throw new RemoteException(e.getMessage());
+            }
+    }
+
     public void updateUsername(String newUsername,int userID){
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
         if(loggedInUser != null){
@@ -250,6 +259,9 @@ public class ProfileViewModel implements PropertyChangeListener
             if (event.getPropertyName().equals("ExtendBook"))
             {
                 this.support.firePropertyChange("ExtendBook", false, true);
+            }
+            if (event.getPropertyName().equals("removePatron")){
+                this.support.firePropertyChange("removePatron", false, true);
             }
         });
     }

@@ -80,22 +80,20 @@ public class AdminDatabaseImplementation implements AdminDatabaseInterface
     @Override
     public void deletePatron(int id) throws SQLException {
         try (Connection connection = getConnection()) {
-            boolean hasBorrowedBooks = false;
-            String checkBorrowedBooksQuery = "SELECT COUNT(*) FROM borrowed_books WHERE profile_id = ?";
-            try (PreparedStatement checkBorrowedBooksStatement = connection.prepareStatement(checkBorrowedBooksQuery)) {
-                checkBorrowedBooksStatement.setInt(1, id);
-                try (ResultSet resultSet = checkBorrowedBooksStatement.executeQuery()) {
+            boolean isCurrentlyBorrowing = false;
+            String checkCurrentBorrowingQuery = "SELECT COUNT(*) FROM books WHERE borrower = ?";
+            try (PreparedStatement checkCurrentBorrowingStatement = connection.prepareStatement(checkCurrentBorrowingQuery)) {
+                checkCurrentBorrowingStatement.setInt(1, id);
+                try (ResultSet resultSet = checkCurrentBorrowingStatement.executeQuery()) {
                     if (resultSet.next()) {
-                        hasBorrowedBooks = resultSet.getInt(1) > 0;
+                        isCurrentlyBorrowing = resultSet.getInt(1) > 0;
                     }
                 }
             }
 
-
-            if (hasBorrowedBooks) {
-                throw new SQLException("Cannot delete patron with borrowed books.");
+            if (isCurrentlyBorrowing) {
+                throw new SQLException("Cannot delete patron with currently borrowed books.");
             }
-
 
             boolean hasDonatedBooks = false;
             String checkDonatedBooksQuery = "SELECT COUNT(*) FROM books_donate WHERE donated_by = ?";
@@ -108,9 +106,7 @@ public class AdminDatabaseImplementation implements AdminDatabaseInterface
                 }
             }
 
-
             if (hasDonatedBooks) {
-
                 String deleteBooksDonateQuery = "DELETE FROM books_donate WHERE donated_by = ?";
                 try (PreparedStatement booksDonateStatement = connection.prepareStatement(deleteBooksDonateQuery)) {
                     booksDonateStatement.setInt(1, id);
@@ -124,6 +120,12 @@ public class AdminDatabaseImplementation implements AdminDatabaseInterface
                 wishlistStatement.executeUpdate();
             }
 
+            String deleteBorrowedBooksQuery = "DELETE FROM borrowed_books WHERE profile_id = ?";
+            try (PreparedStatement borrowedBooksStatement = connection.prepareStatement(deleteBorrowedBooksQuery)) {
+                borrowedBooksStatement.setInt(1, id);
+                borrowedBooksStatement.executeUpdate();
+            }
+
             String deletePatronQuery = "DELETE FROM patron WHERE id = ?";
             try (PreparedStatement patronStatement = connection.prepareStatement(deletePatronQuery)) {
                 patronStatement.setInt(1, id);
@@ -134,6 +136,8 @@ public class AdminDatabaseImplementation implements AdminDatabaseInterface
             }
         }
     }
+
+
 
 
 

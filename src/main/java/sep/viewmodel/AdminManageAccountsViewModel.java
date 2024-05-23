@@ -95,7 +95,7 @@ public class AdminManageAccountsViewModel implements PropertyChangeListener {
     public void deletePatron(int id) throws RemoteException {
         try {
             model.deletePatron(id);
-            loadPatrons(); // Refresh the event list after deletion
+            loadPatrons();
         } catch (Exception e) {
             throw new RemoteException("Failed to delete patron: " + e.getMessage());
         }
@@ -149,9 +149,7 @@ public class AdminManageAccountsViewModel implements PropertyChangeListener {
             }
             if (evt.getPropertyName().equals("ReturnBook"))
             {
-                System.out.println("ZRETURNOWALEM JAK COS BYQ");
                 try {
-                    System.out.println("ZRETURNOWALEM JAK COS BYQ");
                     loadPatrons();
                 } catch (SQLException e) {
                     throw new RuntimeException(e);

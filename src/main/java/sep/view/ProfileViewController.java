@@ -1,8 +1,6 @@
 package sep.view;
 
 import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -12,7 +10,6 @@ import sep.model.Patron;
 import sep.model.State;
 import sep.model.UserSession;
 import sep.model.validators.*;
-import sep.viewmodel.MainViewModel;
 import sep.viewmodel.ProfileViewModel;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -115,6 +112,7 @@ public class ProfileViewController implements PropertyChangeListener {
         edit = false;
         showPassword = false;
         viewModel.addPropertyChangeListener(this);
+
     }
 
     public void populateTextFields() throws RemoteException
@@ -151,9 +149,9 @@ public class ProfileViewController implements PropertyChangeListener {
     {
         profileViewModel.resetHistoryList(UserSession.getInstance().getLoggedInUser());
     }
-    @FXML public void onEdit(){
-        try{
-            if(!edit) {
+    @FXML public void onEdit() {
+        try {
+            if (!edit) {
                 editButton.setStyle("-fx-text-fill:red;");
                 firstNameTextField.setEditable(true);
                 lastNameTextField.setEditable(true);
@@ -173,10 +171,9 @@ public class ProfileViewController implements PropertyChangeListener {
                 originalPassword = passwordTextField.getText();
 
                 edit = true;
-
             } else {
                 editButton.setStyle("");
-                reset();  // Reset fields to original values
+                reset();
                 edit = false;
             }
         } catch (Exception e) {
@@ -184,8 +181,8 @@ public class ProfileViewController implements PropertyChangeListener {
         }
         wishlistButton.setDisable(true);
         wishlistButton.setVisible(false);
-        deleteButton.setVisible(false);
     }
+
 
     @FXML public void onPassword(){
         if(!showPassword){
@@ -268,18 +265,30 @@ public class ProfileViewController implements PropertyChangeListener {
         wishlistButton.setVisible(false);
 
     }
-    @FXML public void onDelete(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Delete Account");
-        alert.setHeaderText("Are you sure you want to delete your account?");
-        alert.setContentText("WARNING: ACCOUNT WILL BE PERMANENTLY DELETED");
-        Optional<ButtonType> result = alert.showAndWait();
+    @FXML
+    public void onDelete() throws RemoteException{
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Delete Account");
+        confirmationAlert.setHeaderText("Are you sure you want to delete your account?");
+        confirmationAlert.setContentText("WARNING: ACCOUNT WILL BE PERMANENTLY DELETED");
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            // here we need to implement deleting of the account
+            try {
+                profileViewModel.deletePatron();
+                viewHandler.openView(ViewFactory.LOGIN);
+            } catch (Exception e) {
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText("An error occurred while trying to delete your account");
+                errorAlert.setContentText(e.getMessage());
+                errorAlert.show();
+            }
         }
         wishlistButton.setDisable(true);
         wishlistButton.setVisible(false);
     }
+
     @FXML public void onBack() throws RemoteException
     {
         viewHandler.openView(ViewFactory.USERMAIN);
@@ -332,6 +341,7 @@ public class ProfileViewController implements PropertyChangeListener {
         userIDTextField.setEditable(false);
         passwordButton.setVisible(false);
         saveButton.setVisible(false);
+        deleteButton.setVisible(false);
         edit =false;
 
         passwordTextField.setVisible(false);

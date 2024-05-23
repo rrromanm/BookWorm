@@ -285,7 +285,6 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
             ButtonType yesButton = new ButtonType("Yes");
             ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
             confirmationAlert.getButtonTypes().setAll(yesButton, noButton);
-
             confirmationAlert.showAndWait().ifPresent(type -> {
                 if (type == yesButton) {
                     try {
