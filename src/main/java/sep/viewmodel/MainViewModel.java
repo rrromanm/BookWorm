@@ -67,7 +67,7 @@ public class MainViewModel implements PropertyChangeListener
     }
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("received in view model " + evt.getPropertyName());
+        System.out.println("received in main model " + evt.getPropertyName());
         Platform.runLater(() -> {
             if ("BorrowBook".equals(evt.getPropertyName())){
                 try {

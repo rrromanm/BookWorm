@@ -35,6 +35,8 @@ public class MyBooksViewController
     @FXML private TableColumn<Book, Integer> pageCountColumn;
     @FXML private TableColumn<Book, Integer> bookIdColumn;
     @FXML private TableColumn<Book, String> genreColumn;
+    @FXML private TableColumn<Book, String> returnDateColumn;
+
     private Region root;
     private ViewHandler viewHandler;
     private MyBooksViewModel myBooksViewModel;
@@ -64,6 +66,7 @@ public class MyBooksViewController
         pageCountColumn.setCellValueFactory(new PropertyValueFactory<>("pageCount"));
         bookIdColumn.setCellValueFactory(new PropertyValueFactory<>("bookId"));
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        returnDateColumn.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
     }
 
     public void populateTableView() throws RemoteException

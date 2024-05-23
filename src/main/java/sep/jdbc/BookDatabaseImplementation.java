@@ -395,8 +395,9 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
                     "    books.isbn, " +
                     "    books.page_count,"
                     + " books.state," +
-                    "    g.genre AS genre_name " +
-                    "FROM " +
+                    "    g.genre AS genre_name, " +
+                        "TO_CHAR(bb.return_date, 'DD/MM/YYYY') as return_date " +
+                    "FROM" +
                     "    book_worm_db.books " +
                     "JOIN " +
                     "    book_worm_db.genre g ON books.genre_id = g.id " +
@@ -420,6 +421,8 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
                 int pageCount = resultSet.getInt("page_count");
                 String state = resultSet.getString("state");
                 String genre = resultSet.getString("genre_name");
+                String returnDate = resultSet.getString("return_date");
+
                 State state1 = null;
                 Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
                 if (state != null) {
@@ -432,6 +435,7 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
 
                 book.setState(state1);
                 book.setBorrower(patron);
+                book.setReturnDate(returnDate);
                 books.add(book);
             }
             return books;

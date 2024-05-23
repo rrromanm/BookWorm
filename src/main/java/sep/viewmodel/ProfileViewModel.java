@@ -11,6 +11,7 @@ import sep.model.UserSession;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
@@ -28,7 +29,7 @@ public class ProfileViewModel implements PropertyChangeListener
     private final StringProperty patronID;
     private final ListProperty<Book> historyOfBooksList;
     private final ListProperty<Book> wishlistList;
-
+    private final PropertyChangeSupport support;
 
 
     public ProfileViewModel(Model model)
@@ -45,6 +46,7 @@ public class ProfileViewModel implements PropertyChangeListener
         this.historyOfBooksList = new SimpleListProperty<>(FXCollections.observableArrayList());
         this.wishlistList = new SimpleListProperty<>(FXCollections.observableArrayList());
         model.addPropertyChangeListener(this);
+        this.support = new PropertyChangeSupport(this);
     }
     public void bindHistoryList(ObjectProperty<ObservableList<Book>> property) throws
         RemoteException
@@ -56,6 +58,48 @@ public class ProfileViewModel implements PropertyChangeListener
     {
         property.bindBidirectional(wishlistList);
     }
+
+    public void bindUsername(StringProperty property) {
+        property.bindBidirectional(username);
+    }
+
+    public void bindEmail(StringProperty property) {
+        property.bindBidirectional(email);
+    }
+
+    public void bindFirstName(StringProperty property) {
+        property.bindBidirectional(first_name);
+    }
+
+    public void bindLastName(StringProperty property) {
+        property.bindBidirectional(last_name);
+    }
+
+    public void bindPhoneNumber(StringProperty property) {
+        property.bindBidirectional(phone_number);
+    }
+
+    public void bindPassword(StringProperty property) {
+        property.bindBidirectional(password);
+    }
+
+    public void bindUserId(StringProperty property){
+        property.bindBidirectional(patronID);
+    }
+
+    public void fillData() {
+        Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
+        if (loggedInUser != null) {
+            username.set(loggedInUser.getUsername());
+            email.set(loggedInUser.getEmail());
+            first_name.set(loggedInUser.getFirstName());
+            last_name.set(loggedInUser.getLastName());
+            phone_number.set(loggedInUser.getPhoneNumber());
+            password.set(loggedInUser.getPassword());
+            patronID.set(String.valueOf(loggedInUser.getUserID()));
+        }
+    }
+
     public void resetHistoryList(Patron patron) throws RemoteException {
         historyOfBooksList.setAll(model.getHistoryOfBooks(patron));
     }
@@ -155,18 +199,25 @@ public class ProfileViewModel implements PropertyChangeListener
         model.deleteFromWishlist(book,patron);
     }
 
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.support.addPropertyChangeListener(listener);
+    }
+
+
     @Override public void propertyChange(PropertyChangeEvent evt)
     {
         Platform.runLater(() -> {
-            if ("Wishlist".equals(evt.getPropertyName())) {
+            if ("Wishlist".equals(evt.getPropertyName()))
+            {
                 try {
                     resetWishlistList(UserSession.getInstance().getLoggedInUser());
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
             }
-            if("updatePatron".equals(evt.getPropertyName())){
-                //TODO: IMPLEMENT IDK HOW TO
+            if("updatePatron".equals(evt.getPropertyName()))
+            {
+                support.firePropertyChange("updatePatron", false, true);
             }
         });
     }

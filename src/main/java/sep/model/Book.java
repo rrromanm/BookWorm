@@ -12,6 +12,7 @@ public class Book implements Serializable {
     private int pageCount;
     private int bookId;
     private String genre;
+    private String returnDate;
 
     private State state;
     private Patron borrower;
@@ -28,6 +29,7 @@ public class Book implements Serializable {
         this.genre = genre;
         this.state = new Available();
         this.borrower = null;
+        this.returnDate = null;
     }
 
     public String getTitle() {
@@ -110,6 +112,14 @@ public class Book implements Serializable {
         return borrower;
     }
 
+    public String getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(String returnDate) {
+        this.returnDate = returnDate;
+    }
+
     public void borrow(Book book, Patron patron)
     {
         state.borrow(book,patron);
@@ -131,7 +141,7 @@ public class Book implements Serializable {
         Book book = (Book) obj;
         return Objects.equals(this.borrower, book.borrower);
     }
-    @Override // toString is missing the info about borrower,reservist and state
+    @Override // toString is missing the info about borrower and state
     public String toString() {
         return "Book{" +
                 "title='" + title + '\'' +
