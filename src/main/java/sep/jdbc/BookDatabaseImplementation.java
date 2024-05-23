@@ -22,7 +22,7 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
     private Connection getConnection() throws SQLException {
 
 
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "VIAVIA"); //TODO: YOU NEED TO CHANGE THIS PASSWORD ON WHO IS WORKING ON CODE RN
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_worm_db", "postgres", "VIAVIA"); //TODO: YOU NEED TO CHANGE THIS PASSWORD ON WHO IS WORKING ON CODE RN
 
 
     }
@@ -51,20 +51,30 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
     public void deleteBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException {
         try (Connection connection = getConnection()) {
             int genreId = getGenreId(genre);
-            String sqlQuery = "DELETE FROM book_worm_db.books " +
-                    "WHERE title = ? AND authors = ? AND year = ? AND publisher = ? AND isbn = ? AND page_count = ? AND genre_id = ? AND id = ?";
-            PreparedStatement statement = connection.prepareStatement(sqlQuery);
-            statement.setString(1, title);
-            statement.setString(2, author);
-            statement.setString(3, year);
-            statement.setString(4, publisher);
-            statement.setString(5, isbn);
-            statement.setString(6, pageCount);
-            statement.setInt(7, genreId);
-            statement.setInt(8, bookID);
-            statement.executeUpdate();
+
+            // Delete from wishlist
+            String deleteWishlistQuery = "DELETE FROM wishlist WHERE book_id = ?";
+            try (PreparedStatement wishlistStatement = connection.prepareStatement(deleteWishlistQuery)) {
+                wishlistStatement.setInt(1, bookID);
+                wishlistStatement.executeUpdate();
+            }
+
+            // Delete from borrowed_books
+            String deleteBorrowedBooksQuery = "DELETE FROM borrowed_books WHERE book_id = ?";
+            try (PreparedStatement borrowedBooksStatement = connection.prepareStatement(deleteBorrowedBooksQuery)) {
+                borrowedBooksStatement.setInt(1, bookID);
+                borrowedBooksStatement.executeUpdate();
+            }
+
+            // Delete from books
+            String deleteBooksQuery = "DELETE FROM books WHERE id = ?";
+            try (PreparedStatement booksStatement = connection.prepareStatement(deleteBooksQuery)) {
+                booksStatement.setInt(1, bookID);
+                booksStatement.executeUpdate();
+            }
         }
     }
+
 
     @Override
     public void updateBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException {

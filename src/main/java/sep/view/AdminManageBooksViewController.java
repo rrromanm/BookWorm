@@ -9,9 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
 import sep.jdbc.BookDatabaseImplementation;
-import sep.model.Book;
-import sep.model.Patron;
-import sep.model.State;
+import sep.model.*;
 import sep.model.validators.BookValidator;
 import sep.viewmodel.AdminManageBooksViewModel;
 import sep.viewmodel.AdminManageDonatedBooksViewModel;
@@ -96,6 +94,58 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
                 }
             }
             if("updateBook".equals(evt.getPropertyName())) {
+                bookTableView.refresh();
+                try {
+                    viewModel.loadBooks();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if("ReturnBook".equals(evt.getPropertyName())) {
+                bookTableView.refresh();
+                try {
+                    viewModel.loadBooks();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if("BorrowBook".equals(evt.getPropertyName())){
+                bookTableView.refresh();
+                try {
+                    viewModel.loadBooks();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            if (evt.getPropertyName().equals("Wishlist"))
+            {
+                bookTableView.refresh();
+                try {
+                    viewModel.loadBooks();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (evt.getPropertyName().equals("BookDonate"))
+            {
+                bookTableView.refresh();
+                try {
+                    viewModel.loadBooks();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (evt.getPropertyName().equals("DonatedBookApproved"))
+            {
+                bookTableView.refresh();
+                try {
+                    viewModel.loadBooks();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(evt.getPropertyName().equals("createBook")){
                 bookTableView.refresh();
                 try {
                     viewModel.loadBooks();
@@ -264,7 +314,7 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
 
     @FXML
     private void onRemove() throws SQLException {
-        if (selectedBook.get().getState().equals("Borrowed")) {
+        if (selectedBook.get().getState() instanceof Borrowed) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Cannot Remove Book");
             alert.setHeaderText("Cannot Remove Book");

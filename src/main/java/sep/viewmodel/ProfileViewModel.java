@@ -204,10 +204,22 @@ public class ProfileViewModel implements PropertyChangeListener
     }
 
 
-    @Override public void propertyChange(PropertyChangeEvent evt)
+    @Override public void propertyChange(PropertyChangeEvent event)
     {
         Platform.runLater(() -> {
-            if ("Wishlist".equals(evt.getPropertyName()))
+            if (event.getPropertyName().equals("BorrowBook"))
+            {
+                this.support.firePropertyChange("BorrowBook", false, true);
+            }
+            if (event.getPropertyName().equals("ReturnBook"))
+            {
+                try {
+                    resetHistoryList(UserSession.getInstance().getLoggedInUser());
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (event.getPropertyName().equals("Wishlist"))
             {
                 try {
                     resetWishlistList(UserSession.getInstance().getLoggedInUser());
@@ -215,9 +227,29 @@ public class ProfileViewModel implements PropertyChangeListener
                     throw new RuntimeException(e);
                 }
             }
-            if("updatePatron".equals(evt.getPropertyName()))
+            if(event.getPropertyName().equals("removeBook")){
+                try {
+                    resetHistoryList(UserSession.getInstance().getLoggedInUser());
+                    resetWishlistList(UserSession.getInstance().getLoggedInUser());
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if(event.getPropertyName().equals("updateBook")){
+                try {
+                    resetHistoryList(UserSession.getInstance().getLoggedInUser());
+                    resetWishlistList(UserSession.getInstance().getLoggedInUser());
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+            if(event.getPropertyName().equals("updatePatron")){
+                this.support.firePropertyChange("updatePatron", false, true);
+            }
+            if (event.getPropertyName().equals("ExtendBook"))
             {
-                support.firePropertyChange("updatePatron", false, true);
+                this.support.firePropertyChange("ExtendBook", false, true);
             }
         });
     }

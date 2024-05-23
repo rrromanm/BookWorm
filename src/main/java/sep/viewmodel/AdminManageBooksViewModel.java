@@ -75,55 +75,50 @@ public class AdminManageBooksViewModel implements PropertyChangeListener
 
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void propertyChange(PropertyChangeEvent event) {
         Platform.runLater(() -> {
-            if ("removeBook".equals(evt.getPropertyName())){
-                try {
-                    loadBooks();
-                    System.out.println("refreshed books table");
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+            if (event.getPropertyName().equals("BorrowBook"))
+            {
+                this.support.firePropertyChange("BorrowBook", false, true);
             }
-            if("addBook".equals(evt.getPropertyName())) {
-                try {
-                    loadBooks();
-                    System.out.println("refreshed books table");
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+            if (event.getPropertyName().equals("ReturnBook"))
+            {
+                this.support.firePropertyChange("ReturnBook", false, true);
             }
-            if ("updateBook".equals(evt.getPropertyName())) {
-                try {
-                    loadBooks();
-                    System.out.println("refreshed books table");
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+            if (event.getPropertyName().equals("Wishlist"))
+            {
+                this.support.firePropertyChange("Wishlist", false, true);
             }
-            if("BorrowBook".equals(evt.getPropertyName())) {
-                try {
-                    loadBooks();
-                    System.out.println("refreshed books table");
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+            if (event.getPropertyName().equals("BookDonate"))
+            {
+                this.support.firePropertyChange("BookDonate", false, true);
             }
-            if("ReturnBook".equals(evt.getPropertyName())){
-                try {
-                    loadBooks();
-                    System.out.println("refreshed books table");
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+            if (event.getPropertyName().equals("createPatron"))
+            {
+                this.support.firePropertyChange("createPatron", false, true);
             }
-            if("DonatedBookApproved".equals(evt.getPropertyName())){
-                try {
-                    loadBooks();
-                    System.out.println("refreshed books table");
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
+            if (event.getPropertyName().equals("DonatedBookApproved"))
+            {
+                this.support.firePropertyChange("DonatedBookApproved", false,true);
+            }
+            if (event.getPropertyName().equals("DonatedBookRejected")) {
+                this.support.firePropertyChange("DonatedBookRejected", false, true);
+            }
+            if(event.getPropertyName().equals("removeBook")){
+                this.support.firePropertyChange("removeBook", false, true);
+            }
+            if(event.getPropertyName().equals("updateBook")){
+                this.support.firePropertyChange("updateBook", false, true);
+            }
+            if(event.getPropertyName().equals("createBook")){
+                this.support.firePropertyChange("createBook", false, true);
+            }
+            if(event.getPropertyName().equals("updatePatron")){
+                this.support.firePropertyChange("updatePatron", false, true);
+            }
+            if (event.getPropertyName().equals("ExtendBook"))
+            {
+                this.support.firePropertyChange("ExtendBook", false, true);
             }
         });
     }
