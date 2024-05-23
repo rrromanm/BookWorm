@@ -22,7 +22,7 @@ public class AdminDatabaseImplementation implements AdminDatabaseInterface
     private Connection getConnection() throws SQLException {
 
 
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_work_db", "postgres", "VIAVIA");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_worm_db", "postgres", "VIAVIA");
 
 
     }
@@ -75,17 +75,68 @@ public class AdminDatabaseImplementation implements AdminDatabaseInterface
             }
         }
     }
+
+    //Wipes out data about Patron from dbs completely
     @Override
     public void deletePatron(int id) throws SQLException {
         try (Connection connection = getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM book_worm_db.patron WHERE id = ?");
-            statement.setInt(1, id);
-            int rowsAffected = statement.executeUpdate();
-            if (rowsAffected == 0) {
-                throw new SQLException("No patron found with the specified id.");
+            boolean hasBorrowedBooks = false;
+            String checkBorrowedBooksQuery = "SELECT COUNT(*) FROM borrowed_books WHERE profile_id = ?";
+            try (PreparedStatement checkBorrowedBooksStatement = connection.prepareStatement(checkBorrowedBooksQuery)) {
+                checkBorrowedBooksStatement.setInt(1, id);
+                try (ResultSet resultSet = checkBorrowedBooksStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        hasBorrowedBooks = resultSet.getInt(1) > 0;
+                    }
+                }
+            }
+
+
+            if (hasBorrowedBooks) {
+                throw new SQLException("Cannot delete patron with borrowed books.");
+            }
+
+
+            boolean hasDonatedBooks = false;
+            String checkDonatedBooksQuery = "SELECT COUNT(*) FROM books_donate WHERE donated_by = ?";
+            try (PreparedStatement checkDonatedBooksStatement = connection.prepareStatement(checkDonatedBooksQuery)) {
+                checkDonatedBooksStatement.setInt(1, id);
+                try (ResultSet resultSet = checkDonatedBooksStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        hasDonatedBooks = resultSet.getInt(1) > 0;
+                    }
+                }
+            }
+
+
+            if (hasDonatedBooks) {
+
+                String deleteBooksDonateQuery = "DELETE FROM books_donate WHERE donated_by = ?";
+                try (PreparedStatement booksDonateStatement = connection.prepareStatement(deleteBooksDonateQuery)) {
+                    booksDonateStatement.setInt(1, id);
+                    booksDonateStatement.executeUpdate();
+                }
+            }
+
+            String deleteWishlistQuery = "DELETE FROM wishlist WHERE profile_id = ?";
+            try (PreparedStatement wishlistStatement = connection.prepareStatement(deleteWishlistQuery)) {
+                wishlistStatement.setInt(1, id);
+                wishlistStatement.executeUpdate();
+            }
+
+            String deletePatronQuery = "DELETE FROM patron WHERE id = ?";
+            try (PreparedStatement patronStatement = connection.prepareStatement(deletePatronQuery)) {
+                patronStatement.setInt(1, id);
+                int rowsAffected = patronStatement.executeUpdate();
+                if (rowsAffected == 0) {
+                    throw new SQLException("No patron found with the specified id.");
+                }
             }
         }
     }
+
+
+
 
 
 }

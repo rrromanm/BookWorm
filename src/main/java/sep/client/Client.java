@@ -169,11 +169,21 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
   @Override
     public void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException {
         library.approveDonatedBook(id, title, author, isbn,year, publisher, pageCount, genreId);
-    }
+      try {
+          fileLog.log("Donated book: " + title + " has been approved by Admin");
+      } catch (IOException e) {
+          throw new RuntimeException(e);
+      }
+  }
 
     @Override
     public void rejectDonatedBook(int bookId) throws SQLException, RemoteException {
         library.rejectDonatedBook(bookId);
+        try {
+            fileLog.log("Donated book has been rejected by Admin");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

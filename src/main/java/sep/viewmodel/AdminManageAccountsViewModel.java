@@ -138,6 +138,26 @@ public class AdminManageAccountsViewModel implements PropertyChangeListener {
                     throw new RuntimeException(e);
                 }
             }
+            if (evt.getPropertyName().equals("BorrowBook"))
+            {
+                try {
+                    loadPatrons();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                this.support.firePropertyChange("BorrowBook", false, true);
+            }
+            if (evt.getPropertyName().equals("ReturnBook"))
+            {
+                System.out.println("ZRETURNOWALEM JAK COS BYQ");
+                try {
+                    System.out.println("ZRETURNOWALEM JAK COS BYQ");
+                    loadPatrons();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                this.support.firePropertyChange("ReturnBook", false, true);
+            }
         });
     }
 }

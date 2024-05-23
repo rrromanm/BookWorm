@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
+import sep.file.FileLog;
 import sep.model.Event;
 import sep.model.Patron;
 import sep.model.UserSession;
@@ -79,6 +80,22 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
             if ("updatePatron".equals(evt.getPropertyName())) {
                 UserTableView.refresh();
                 initializeTextFields();
+            }
+            if("ReturnBook".equals(evt.getPropertyName())) {
+                UserTableView.refresh();
+                try {
+                    viewModel.loadPatrons();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if("BorrowBook".equals(evt.getPropertyName())){
+                UserTableView.refresh();
+                try {
+                    viewModel.loadPatrons();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
@@ -276,7 +293,11 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
                         viewModel.loadPatrons();
                         reset();
                     } catch (SQLException | RemoteException e) {
-                        throw new RuntimeException(e);
+                        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                        errorAlert.setTitle("Deletion Error");
+                        errorAlert.setHeaderText(null);
+                        errorAlert.setContentText(e.getMessage());
+                        errorAlert.showAndWait();
                     }
                 }
             });
@@ -288,6 +309,7 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
             alert.showAndWait();
         }
     }
+
 
 
     @FXML
