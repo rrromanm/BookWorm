@@ -96,7 +96,7 @@
       <TextField fx:id="usernameTextField" editable="false" layoutX="272.0" layoutY="91.0" />
       <Button fx:id="editButton" layoutX="915.0" layoutY="37.0" mnemonicParsing="false" onAction="#onEdit" text="Edit" />
       <Button fx:id="saveButton" layoutX="913.0" layoutY="108.0" mnemonicParsing="false" onAction="#onSave" text="Save" visible="false" />
-      <Button fx:id="deleteButton" layoutX="866.0" layoutY="148.0" mnemonicParsing="false" onAction="#onDelete" prefHeight="26.0" prefWidth="132.0" text="Delete Account" />
+      <Button fx:id="deleteButton" layoutX="866.0" layoutY="148.0" mnemonicParsing="false" onAction="#onDelete" prefHeight="26.0" prefWidth="132.0" text="Delete Account" visible="false" />
       <TextField fx:id="emailTextField" editable="false" layoutX="601.0" layoutY="19.0" />
       <TextField fx:id="phoneNumberTextField" editable="false" layoutX="601.0" layoutY="57.0" />
       <TextField fx:id="userIDTextField" editable="false" layoutX="601.0" layoutY="91.0" />

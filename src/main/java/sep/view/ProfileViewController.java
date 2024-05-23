@@ -154,7 +154,7 @@ public class ProfileViewController implements PropertyChangeListener {
     @FXML public void onEdit(){
         try{
             if(!edit) {
-                editButton.setStyle("-fx-text-fill:red;"); // color of the clicked button can be changed
+                editButton.setStyle("-fx-text-fill:red;");
                 firstNameTextField.setEditable(true);
                 lastNameTextField.setEditable(true);
                 usernameTextField.setEditable(true);
@@ -163,6 +163,7 @@ public class ProfileViewController implements PropertyChangeListener {
                 phoneNumberTextField.setEditable(true);
                 passwordButton.setVisible(true);
                 saveButton.setVisible(true);
+                deleteButton.setVisible(true);
 
                 originalFirstName = firstNameTextField.getText();
                 originalLastName = lastNameTextField.getText();
@@ -183,6 +184,7 @@ public class ProfileViewController implements PropertyChangeListener {
         }
         wishlistButton.setDisable(true);
         wishlistButton.setVisible(false);
+        deleteButton.setVisible(false);
     }
 
     @FXML public void onPassword(){
