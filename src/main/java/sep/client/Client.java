@@ -226,7 +226,7 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     public void deletePatron(int id) throws RemoteException{
         try{
             library.deletePatron(id);
-            fileLog.log("Patron got deleted by admin");
+            fileLog.log("Patron got deleted from database!");
         } catch (Exception e){
             throw new RemoteException(e.getMessage());
         }

@@ -123,7 +123,7 @@ public class ProfileViewModel implements PropertyChangeListener
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
         if(loggedInUser != null){
             try{
-                model.updateUsername(userID, newUsername);
+                model.updateUsername(loggedInUser.getUserID(), newUsername);
             }catch (Exception e){
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
@@ -137,7 +137,7 @@ public class ProfileViewModel implements PropertyChangeListener
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
         if(loggedInUser!= null){
             try{
-                model.updateEmail(userID, newEmail);
+                model.updateEmail(loggedInUser.getUserID(), newEmail);
             }catch (Exception e){
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
@@ -151,7 +151,7 @@ public class ProfileViewModel implements PropertyChangeListener
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
         if(loggedInUser!= null){
             try{
-                model.updatePhoneNumber(userID, newPhoneNumber);
+                model.updatePhoneNumber(loggedInUser.getUserID(), newPhoneNumber);
             }catch (Exception e){
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
@@ -165,7 +165,7 @@ public class ProfileViewModel implements PropertyChangeListener
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
         if(loggedInUser!= null){
             try{
-                model.updateFirstName(userID, newFirstName);
+                model.updateFirstName(loggedInUser.getUserID(), newFirstName);
             }catch (Exception e){
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
@@ -179,7 +179,7 @@ public class ProfileViewModel implements PropertyChangeListener
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
         if(loggedInUser!= null){
             try{
-                model.updateLastName(userID, newLastName);
+                model.updateLastName(loggedInUser.getUserID(), newLastName);
             }catch (Exception e){
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
@@ -193,7 +193,7 @@ public class ProfileViewModel implements PropertyChangeListener
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
         if(loggedInUser!= null){
             try{
-                model.updatePassword(userID, newPassword);
+                model.updatePassword(loggedInUser.getUserID(), newPassword);
             }catch (Exception e){
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
