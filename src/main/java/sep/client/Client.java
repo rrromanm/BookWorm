@@ -100,6 +100,11 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
   public void extendBook(Book book, Patron patron) throws RemoteException, SQLException
   {
       library.extendBook(book, patron);
+      try {
+          fileLog.log(patron.getUsername() + " has extended a \"" + book.getTitle() + "\"");
+      } catch (IOException e) {
+          throw new RuntimeException(e);
+      }
   }
 
     @Override public boolean isWishlisted(Book book, Patron patron) throws RemoteException, SQLException
@@ -201,6 +206,7 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
    public void createEvent(String title, String description, String eventDate) throws RemoteException{
         try{
             library.createEvent(title, description, eventDate);
+            fileLog.log("New event has been created by admin: " + title );
         } catch (Exception e){
             throw new RemoteException(e.getMessage());
         }
@@ -210,6 +216,7 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     public void deleteEvent(int id) throws RemoteException{
         try{
             library.deleteEvent(id);
+            fileLog.log("Event has been deleted by admin");
         } catch (Exception e){
             throw new RemoteException(e.getMessage());
         }
@@ -219,6 +226,7 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     public void deletePatron(int id) throws RemoteException{
         try{
             library.deletePatron(id);
+            fileLog.log("Patron got deleted by admin");
         } catch (Exception e){
             throw new RemoteException(e.getMessage());
         }
@@ -244,7 +252,8 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     public void updateUsername(int userID, String newUsername) throws RemoteException {
         try{
             library.updateUsername(userID, newUsername);
-        }catch (RemoteException e){
+            fileLog.log(newUsername + " has been updated");
+        }catch (IOException e){
             throw new RemoteException(e.getMessage());
         }
 
@@ -254,7 +263,8 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     public void updateEmail(int userID, String newEmail) throws RemoteException {
         try{
             library.updateEmail(userID, newEmail);
-        }catch (RemoteException e){
+            fileLog.log(newEmail + " has been updated");
+        }catch (IOException e){
             throw new RemoteException(e.getMessage());
         }
     }
@@ -263,7 +273,8 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     public void updatePhoneNumber(int userID, String newPhoneNumber) throws RemoteException {
         try{
             library.updatePhoneNumber(userID, newPhoneNumber);
-        }catch (RemoteException e){
+            fileLog.log(newPhoneNumber + " has been updated");
+        }catch (IOException e){
             throw new RemoteException(e.getMessage());
         }
     }
@@ -272,7 +283,8 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     public void updateFirstName(int userID, String newFirstName) throws RemoteException {
         try{
             library.updateFirstName(userID, newFirstName);
-        }catch (RemoteException e){
+            fileLog.log(newFirstName + " has been updated");
+        }catch (IOException e){
             throw new RemoteException(e.getMessage());
         }
     }
@@ -281,8 +293,11 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     public void updateLastName(int userID, String newLastName) throws RemoteException {
         try{
             library.updateLastName(userID, newLastName);
+            fileLog.log(newLastName + " has been updated");
         } catch (RemoteException e){
             throw new RemoteException(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -299,7 +314,8 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     public void updateFees(int userID, int newFees) throws RemoteException {
         try{
             library.updateFees(userID, newFees);
-        }catch (RemoteException e){
+            fileLog.log(newFees + " has been updated by Admin");
+        }catch (IOException e){
             throw new RemoteException(e.getMessage());
         }
     }
