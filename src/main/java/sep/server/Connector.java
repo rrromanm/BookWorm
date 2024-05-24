@@ -142,7 +142,7 @@ public class Connector implements ConnectorInterface {
         try
         {
             this.adminDatabase.createEvent(title, description, date);
-
+            this.support.firePropertyChange("CreateEvent", false, true);
         }
         catch (SQLException e)
         {
@@ -153,6 +153,7 @@ public class Connector implements ConnectorInterface {
     public void deleteEvent(int id) throws RemoteException {
         try {
             this.adminDatabase.deleteEvent(id);
+            this.support.firePropertyChange("DeleteEvent", false, true);
         } catch (SQLException e) {
             throw new RemoteException("Failed to delete event: " + e.getMessage());
         }
@@ -164,6 +165,16 @@ public class Connector implements ConnectorInterface {
             this.adminDatabase.deletePatron(id);
         } catch (SQLException e) {
             throw new RemoteException("Failed to delete patron: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateEvent(int id, String title, String description, String eventDate) throws SQLException, RemoteException {
+        try {
+            this.adminDatabase.updateEvent( id,  title,  description,  eventDate);
+            this.support.firePropertyChange("UpdateEvent", false, true);
+        } catch (SQLException e) {
+            throw new SQLException(e);
         }
     }
 

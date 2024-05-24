@@ -130,6 +130,16 @@ public class ModelManager extends UnicastRemoteObject implements Model , Propert
     }
 
     @Override
+    public void updateEvent(int id, String title, String description, String eventDate) throws RemoteException {
+        try{
+            this.client.updateEvent( id,  title,  description,  eventDate);
+        } catch (Exception e)
+        {
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
+    @Override
     public void deletePatron(int id) throws RemoteException {
         try
         {

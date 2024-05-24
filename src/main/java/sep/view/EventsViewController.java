@@ -1,11 +1,15 @@
 package sep.view;
 
+import dk.via.remote.observer.RemotePropertyChangeSupport;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
 import sep.model.Book;
+import sep.model.Event;
+import sep.model.Patron;
 import sep.viewmodel.AdminManageDonatedBooksViewModel;
 import sep.viewmodel.EventsViewModel;
 
@@ -15,23 +19,29 @@ public class EventsViewController
 {
     @FXML
     private Button back;
-    //TODO create a class event so its possible to populate de table
-//    @FXML private TableView<Event> eventTableView;
-//    @FXML private TableColumn<Event,String> titleColumn;
-//    @FXML private TableColumn<Event,Date> dateColumn;
-//    @FXML private TableColumn<Event,String> descriptionTable;
+    @FXML private TableView<Event> eventTableView;
+    @FXML private TableColumn<Event,String> titleColumn;
+    @FXML private TableColumn<Event,String> descriptionColumn;
+    @FXML private TableColumn<Event,String> dateColumn;
 
     private Region root;
     private ViewHandler viewHandler;
     private EventsViewModel eventsViewModel;
 
-    public void init(ViewHandler viewHandler, EventsViewModel viewModel, Region root)
-    {
+    public void init(ViewHandler viewHandler, EventsViewModel viewModel, Region root) throws RemoteException {
         this.viewHandler = viewHandler;
         this.eventsViewModel = viewModel;
         this.root = root;
-        // TODO create a initialize method for thew table;
-        // populate the tableView should also be here
+        initializeTableView();
+
+        this.eventsViewModel.bindList(eventTableView.itemsProperty());
+        viewModel.resetEventList();
+    }
+
+    public void initializeTableView(){
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("eventDate"));
     }
     @FXML
     private void backButtonClicked() throws RemoteException

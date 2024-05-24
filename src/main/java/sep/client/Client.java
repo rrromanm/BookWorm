@@ -223,6 +223,17 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
     }
 
     @Override
+    public void updateEvent(int id, String title, String description, String eventDate) throws RemoteException {
+        try {
+            library.updateEvent( id,  title,  description,  eventDate);
+            fileLog.log("A event has been updated!");
+        }catch (Exception e){
+            throw new RemoteException(e.getMessage());
+        }
+
+    }
+
+    @Override
     public void deletePatron(int id) throws RemoteException{
         try{
             library.deletePatron(id);
@@ -376,6 +387,18 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
            {
                this.support.firePropertyChange("ExtendBook", false, true);
            }
+            if (event.getPropertyName().equals("CreateEvent"))
+            {
+                this.support.firePropertyChange("CreateEvent", false, true);
+            }
+            if (event.getPropertyName().equals("UpdateEvent"))
+            {
+                this.support.firePropertyChange("UpdateEvent", false, true);
+            }
+            if (event.getPropertyName().equals("DeleteEvent"))
+            {
+                this.support.firePropertyChange("DeleteEvent", false, true);
+            }
         });
     }
 }

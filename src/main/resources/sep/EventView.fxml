@@ -8,7 +8,6 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane prefHeight="576.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sep.view.EventsViewController">
     <children>
         <MenuBar layoutY="2.0" prefHeight="9.0" prefWidth="1024.0">
@@ -20,11 +19,11 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <TableView layoutX="14.0" layoutY="37.0" prefHeight="490.0" prefWidth="1002.0">
+        <TableView fx:id="eventTableView" layoutX="14.0" layoutY="37.0" prefHeight="490.0" prefWidth="1002.0">
             <columns>
-                <TableColumn fx:id="titleColumn" prefWidth="217.0" text="Title" />
-                <TableColumn fx:id="dateColumn" minWidth="0.0" prefWidth="106.0" text="Date" />
-                <TableColumn fx:id="descriptionColumn" prefWidth="678.0" text="Description" />
+                <TableColumn fx:id="titleColumn" prefWidth="277.0" text="Title" />
+                <TableColumn fx:id="descriptionColumn" prefWidth="557.0" text="Description" />
+                <TableColumn fx:id="dateColumn" minWidth="0.0" prefWidth="167.0" text="Date" />
             </columns>
         </TableView>
         <Button fx:id="back" layoutX="14.0" layoutY="537.0" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" />

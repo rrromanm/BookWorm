@@ -22,7 +22,7 @@ public class AdminDatabaseImplementation implements AdminDatabaseInterface
     private Connection getConnection() throws SQLException {
 
 
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_worm_db", "postgres", "VIAVIA");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_worm_db", "postgres", "343460");
 
 
     }
@@ -75,6 +75,8 @@ public class AdminDatabaseImplementation implements AdminDatabaseInterface
             }
         }
     }
+
+
 
     //Wipes out data about Patron from dbs completely
     @Override
@@ -137,9 +139,20 @@ public class AdminDatabaseImplementation implements AdminDatabaseInterface
         }
     }
 
-
-
-
+    @Override
+    public void updateEvent(int id, String title, String description, String eventDate) throws SQLException {
+        try (Connection connection = getConnection()) {
+            String sqlQuery = "UPDATE book_worm_db.events " +
+                    "SET title = ?, description = ?, eventdate = ? " +
+                    "WHERE id = ?";
+            PreparedStatement statement = connection.prepareStatement(sqlQuery);
+            statement.setString(1, title);
+            statement.setString(2, description);
+            statement.setString(3, eventDate);
+            statement.setInt(4, id);
+            statement.executeUpdate();
+        }
+    }
 
 
 

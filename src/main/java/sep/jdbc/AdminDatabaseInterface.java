@@ -12,4 +12,5 @@ public interface AdminDatabaseInterface
 
     void deleteEvent(int id) throws SQLException;
     void deletePatron(int id) throws SQLException;
+    void updateEvent(int id, String title, String description, String eventDate) throws SQLException;
 }
