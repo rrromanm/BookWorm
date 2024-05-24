@@ -129,13 +129,22 @@
             });
         }
 
+        public boolean emptyTextFields() {
+            String title = titleTextField.getText();
+            String description = descriptionTextField.getText();
+            String eventDate = datePicker.getEditor().getText();
+            if (title.isEmpty() || description.isEmpty() || eventDate.isEmpty()){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
 
         @FXML
         private void addEvent() {
-            String title = titleTextField.getText();
-            String description = descriptionTextField.getText();
-
-            if (title.isEmpty() || description.isEmpty()) {
+            if (emptyTextFields()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Empty Fields");
                 alert.setHeaderText(null);
@@ -145,7 +154,7 @@
             }
 
             Alert lengthAlert = new Alert(Alert.AlertType.WARNING);
-            if (title.length() > 50) {
+            if (titleTextField.getText().length() > 50) {
                 lengthAlert.setTitle("Title too long");
                 lengthAlert.setHeaderText(null);
                 lengthAlert.setContentText("The title must be less than 50 characters.");
@@ -153,7 +162,7 @@
                 return;
             }
 
-            if (description.length() > 200) {
+            if (descriptionTextField.getText().length() > 200) {
                 lengthAlert.setTitle("Description too long");
                 lengthAlert.setHeaderText(null);
                 lengthAlert.setContentText("The description must be less than 200 characters.");
@@ -227,7 +236,16 @@
             String description = descriptionTextField.getText();
             String eventDate = datePicker.getEditor().getText();
 
-            if (title.equals(selectedEvent.getTitle())
+            if (emptyTextFields()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Empty Fields");
+                alert.setHeaderText(null);
+                alert.setContentText("Title, description or date cannot be empty.");
+                alert.showAndWait();
+                return;
+            }
+
+            if(title.equals(selectedEvent.getTitle())
                     && description.equals(selectedEvent.getDescription())
                     && eventDate.equals(selectedEvent.getEventDate())) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
