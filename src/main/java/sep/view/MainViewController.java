@@ -86,19 +86,7 @@ public class MainViewController
             .readGenres());
         genreComboBox.getSelectionModel().selectFirst();
     }
-    @FXML public void onStateClick() throws RemoteException {
-        String genreChoice = genreComboBox.getSelectionModel().getSelectedItem();
-        String stateChoice = stateComboBox.getSelectionModel().getSelectedItem();
-        String searchChoice = searchTextField.getText();
-        mainViewModel.showFiltered(stateChoice,genreChoice,searchChoice);
-    }
 
-    @FXML public void onGenreClick() throws RemoteException {
-        String genreChoice = genreComboBox.getSelectionModel().getSelectedItem();
-        String stateChoice = stateComboBox.getSelectionModel().getSelectedItem();
-        String searchChoice = searchTextField.getText();
-        mainViewModel.showFiltered(stateChoice,genreChoice,searchChoice);
-    }
     @FXML public void onSearch() throws RemoteException
     {
         String genreChoice = genreComboBox.getSelectionModel().getSelectedItem();
