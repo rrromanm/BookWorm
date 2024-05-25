@@ -22,7 +22,9 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
     private Connection getConnection() throws SQLException {
 
 
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_worm_db", "postgres", "VIAVIA");
+
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_worm_db", "postgres", "via"); //TODO: YOU NEED TO CHANGE THIS PASSWORD ON WHO IS WORKING ON CODE RN
+
 
 
     }
@@ -100,7 +102,6 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
 
     public ArrayList<Book> filter(String state, String genres, String search) throws SQLException {
         try (Connection connection = getConnection()) {
-            PreparedStatement statement;
             StringBuilder sqlQuery = new StringBuilder("SELECT\n" +
                 "    books.id,\n" +
                 "    books.title,\n" +
@@ -127,17 +128,18 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
                 "    book_worm_db.patron p on books.borrower = p.id\n" +
                 "WHERE 1=1");
 
+            
             if (!"All".equals(state)) {
-                sqlQuery.append(" AND state = ?");
+                sqlQuery.append(" AND books.state = ?");
             }
             if (!"All".equals(genres)) {
-                sqlQuery.append(" AND genre = ?");
+                sqlQuery.append(" AND g.genre = ?");
             }
             if (!search.isEmpty()) {
-                sqlQuery.append(" AND LOWER(title) LIKE LOWER(?)");
+                sqlQuery.append(" AND LOWER(books.title) LIKE LOWER(?)");
             }
 
-            statement = connection.prepareStatement(sqlQuery.toString());
+            PreparedStatement statement = connection.prepareStatement(sqlQuery.toString());
 
             int parameterIndex = 1;
             if (!"All".equals(state)) {
@@ -147,8 +149,9 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
                 statement.setString(parameterIndex++, genres);
             }
             if (!search.isEmpty()) {
-                statement.setString(parameterIndex, "%" + search.toLowerCase() + "%");
+                statement.setString(parameterIndex++, "%" + search.toLowerCase() + "%");
             }
+
             ResultSet resultSet = statement.executeQuery();
             ArrayList<Book> books = new ArrayList<>();
             while (resultSet.next()) {
@@ -171,35 +174,26 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
                 String phoneNumber = resultSet.getString("pNo");
                 int fee = resultSet.getInt("fees");
 
-                if (username == null) {
-                    State state1 = null;
-                    Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
-                    if (state2.equalsIgnoreCase("Available")){
-                        state1 = new Available();
-                    }
-                    else if(state2.equalsIgnoreCase("Borrowed")){
-                        state1 = new Borrowed();
-                    }
-                    book.setState(state1);
-                    books.add(book);
-                } else {
-                    State state1 = null;
-                    Patron patron = new Patron(borrowerId, firstname, lastname, username, password, email, phoneNumber, fee);
-                    Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
-                    if (state.equalsIgnoreCase("Available")){
-                        state1 = new Available();
-                    }
-                    else if(state.equalsIgnoreCase("Borrowed")){
-                        state1 = new Borrowed();
-                    }
-                    book.setState(state1);
-                    book.setBorrower(patron);
-                    books.add(book);
+                State bookState = null;
+                if ("Available".equalsIgnoreCase(state2)) {
+                    bookState = new Available();
+                } else if ("Borrowed".equalsIgnoreCase(state2)) {
+                    bookState = new Borrowed();
                 }
+
+                Book book = new Book(id, title, author, year, publisher, isbn, pageCount, genre);
+                book.setState(bookState);
+                if (username != null) {
+                    Patron patron = new Patron(borrowerId, firstname, lastname, username, password, email, phoneNumber, fee);
+                    book.setBorrower(patron);
+                }
+
+                books.add(book);
             }
             return books;
         }
     }
+
 
 
     public ArrayList<Book> readBooks() throws SQLException {
