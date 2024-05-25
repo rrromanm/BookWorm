@@ -181,7 +181,14 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
             if (type == yesButton) {
                 try {
                     if (!username.equals(originalUsername)) {
-                        viewModel.updateUsername(username, userID);
+                        try{
+                            viewModel.updateUsername(username, userID);
+                        }catch (Exception e){
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle("Oops! Something went wrong...");
+                            alert.setHeaderText(e.getMessage());
+                            alert.show();
+                        }
                     }
                     if (!firstName.equals(originalFirstName)) {
                         viewModel.updateFirstName(firstName, userID);
@@ -190,10 +197,25 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
                         viewModel.updateLastName(lastName, userID);
                     }
                     if (!email.equals(originalEmail)) {
-                        viewModel.updateEmail(email, userID);
+                        try{
+                            viewModel.updateEmail(email, userID);
+                        }catch (Exception e){
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle("Oops! Something went wrong...");
+                            alert.setHeaderText(e.getMessage());
+                            alert.show();
+                        }
+
                     }
                     if (!phoneNumber.equals(originalPhoneNumber)) {
-                        viewModel.updatePhoneNumber(phoneNumber, userID);
+                        try{
+                            viewModel.updatePhoneNumber(phoneNumber, userID);
+                        }catch (Exception e){
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle("Oops! Something went wrong...");
+                            alert.setHeaderText(e.getMessage());
+                            alert.show();
+                        }
                     }
 
                     viewModel.loadPatrons();
