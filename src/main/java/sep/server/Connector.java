@@ -212,6 +212,7 @@ public class Connector implements ConnectorInterface {
     @Override
     public Patron login(String username, String password) throws RemoteException {
         try{
+            support.firePropertyChange("login",false,true);
             return patronDatabase.login(username, password);
         }catch(SQLException e){
             throw new IllegalArgumentException("Account doesn't exist.");

@@ -399,6 +399,10 @@ public class Client extends UnicastRemoteObject implements RemotePropertyChangeL
             {
                 this.support.firePropertyChange("DeleteEvent", false, true);
             }
+          if (event.getPropertyName().equals("login"))
+          {
+            this.support.firePropertyChange("login", false, true);
+          }
         });
     }
 }

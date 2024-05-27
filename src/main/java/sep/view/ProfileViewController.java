@@ -94,6 +94,7 @@ public class ProfileViewController implements PropertyChangeListener {
         historyOfBookTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         this.wishlistSelectedBook = wishlistBookTableView.getSelectionModel().selectedItemProperty();
         wishlistBookTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> onWishlistSelect());
+        profileViewModel.addPropertyChangeListener(this);
 
         booksReadLabel.setVisible(true);
         feesLabel.setVisible(true);
@@ -366,6 +367,15 @@ public class ProfileViewController implements PropertyChangeListener {
             alert.setHeaderText("Changes made to your account!");
             alert.setContentText("Please logout and login with new credentials.");
             alert.show();
+        }
+        if("login".equals(evt.getPropertyName())){
+            try {
+                feesLabel.setText("Outstanding fees: " + UserSession.getInstance().getLoggedInUser().getFees());
+                booksReadLabel.setText("Amount of books read: " + profileViewModel.getAmountOfReadBooks(UserSession.getInstance().getLoggedInUser()));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 }

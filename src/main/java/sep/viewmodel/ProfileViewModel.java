@@ -263,6 +263,15 @@ public class ProfileViewModel implements PropertyChangeListener
             if (event.getPropertyName().equals("removePatron")){
                 this.support.firePropertyChange("removePatron", false, true);
             }
+            if (event.getPropertyName().equals("login")){
+                this.support.firePropertyChange("login", false, true);
+                try {
+                    resetHistoryList(UserSession.getInstance().getLoggedInUser());
+                    resetWishlistList(UserSession.getInstance().getLoggedInUser());
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         });
     }
 }
