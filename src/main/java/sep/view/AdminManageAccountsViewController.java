@@ -307,7 +307,7 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
 
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Save changes");
-                        alert.setHeaderText("Changes to the fees and borrowing time have been saved");
+                        alert.setHeaderText("Changes to the fees have been saved");
                         alert.showAndWait();
                     } catch (RemoteException | SQLException e) {
                         Alert errorAlert = new Alert(Alert.AlertType.WARNING);

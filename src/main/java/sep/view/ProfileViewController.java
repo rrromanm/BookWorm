@@ -380,4 +380,3 @@ public class ProfileViewController implements PropertyChangeListener {
     }
 }
 
-//TODO: CLEAN UP THE CODE !!!
