@@ -7,6 +7,13 @@ import javafx.scene.layout.Region;
 
 import java.rmi.RemoteException;
 
+/**
+ * This class is the controller for the login view. It handles user interactions for the login process,
+ * including login as a regular user, login as an admin, creating a new account, and exiting the application.
+ * It also manages the display of password visibility and binds the view elements to the view model.
+ *
+ * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+ */
 public class LoginViewController {
     private ViewHandler viewHandler;
     private LoginViewModel viewModel;
@@ -26,6 +33,13 @@ public class LoginViewController {
 
     @FXML private Label error;
 
+    /**
+     * Initializes the view with the provided view handler, view model, and root region.
+     *
+     * @param viewHandler The view handler for managing views.
+     * @param viewModel   The view model for binding and managing data.
+     * @param root        The root region of the view.
+     */
     public void init(ViewHandler viewHandler, LoginViewModel viewModel, Region root)
     {
         this.viewHandler = viewHandler;
@@ -42,17 +56,26 @@ public class LoginViewController {
         passwordVisibleField.managedProperty().bind(passwordVisibleField.visibleProperty());
     }
 
+    /**
+     * Handles the login button click event.
+     * Attempts to log in with the provided credentials and navigates to the main user view if successful.
+     *
+     * @throws RemoteException if a remote communication error occurs.
+     */
     @FXML private void loginButtonClicked() throws RemoteException
     {
-        if(this.viewModel.login()!=null){
+        if(this.viewModel.login() != null){
             viewHandler.openView(ViewFactory.USERMAIN);
             System.out.println("Login successful");
-        }
-        else {
+        } else {
             System.out.println("Login unsuccessful");
         }
     }
 
+    /**
+     * Toggles the visibility of the password.
+     * Shows the password in a text field if the checkbox is selected, otherwise shows it in a password field.
+     */
     @FXML
     private void onShowPassword() {
         if (showPasswordCheckBox.isSelected()) {
@@ -64,26 +87,50 @@ public class LoginViewController {
         }
     }
 
+    /**
+     * Handles the create account button click event.
+     * Navigates to the create account view.
+     *
+     * @throws RemoteException if a remote communication error occurs.
+     */
     @FXML private void createButtonClicked() throws RemoteException
     {
         viewHandler.openView(ViewFactory.CREATEACCOUNT);
     }
 
+    /**
+     * Handles the login as admin button click event.
+     * Navigates to the admin login view.
+     *
+     * @throws RemoteException if a remote communication error occurs.
+     */
     @FXML private void loginAsAdminButtonClicked() throws RemoteException
     {
         viewHandler.openView("adminLogin");
     }
 
+    /**
+     * Handles the exit button click event.
+     * Closes the application.
+     */
     @FXML private void onExit()
     {
         viewHandler.closeView();
     }
 
+    /**
+     * Resets the view model.
+     */
     public void reset()
     {
         this.viewModel.reset();
     }
 
+    /**
+     * Returns the root region of the view.
+     *
+     * @return the root region.
+     */
     public Region getRoot()
     {
         return root;

@@ -9,6 +9,12 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
+/**
+ * The ViewFactory class is responsible for loading different views of the application.
+ * It uses JavaFX FXMLLoader to load FXML files and initialize corresponding controllers.
+ *
+ * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+ */
 public class ViewFactory
 {
     public static final String ADMINLOGIN = "adminLogin";
@@ -46,7 +52,12 @@ public class ViewFactory
     private AdminManageBooksViewController adminManageBooksViewController;
     private EventsViewController eventsViewController;
 
-
+    /**
+     * Constructs a new ViewFactory object with the specified ViewHandler and ViewModelFactory.
+     *
+     * @param viewHandler       the ViewHandler responsible for managing views
+     * @param viewModelFactory  the ViewModelFactory responsible for creating view models
+     */
     public ViewFactory(ViewHandler viewHandler, ViewModelFactory viewModelFactory)
     {
         this.viewHandler = viewHandler;
@@ -68,6 +79,17 @@ public class ViewFactory
         this.eventsViewController = null;
     }
 
+    /**
+     * Loads the main view of the application.
+     *
+     * If the main view controller is not initialized, it loads the FXML file,
+     * initializes the controller, and sets up the necessary dependencies.
+     * Then it resets the controller and returns the root Region of the view.
+     *
+     * @return the root Region of the main view
+     * @throws IOError if an I/O error occurs while loading the FXML file
+     * @throws RuntimeException if a SQL exception occurs while initializing the controller
+     */
     public Region loadMainView() {
         if (mainViewController == null) {
             FXMLLoader loader = new FXMLLoader();
@@ -86,6 +108,17 @@ public class ViewFactory
         return mainViewController.getRoot();
     }
 
+    /**
+     * Loads the login view of the application.
+     *
+     * If the login view controller is not initialized, it loads the FXML file,
+     * initializes the controller, and sets up the necessary dependencies.
+     * Then it resets the controller and returns the root Region of the view.
+     *
+     * @return the root Region of the login view
+     * @throws IOError if an I/O error occurs while loading the FXML file
+     * @throws RuntimeException if a SQL exception occurs while initializing the controller
+     */
     public Region loadLoginView() {
         if (loginViewController == null) {
             FXMLLoader loader = new FXMLLoader();
@@ -102,6 +135,17 @@ public class ViewFactory
         return loginViewController.getRoot();
     }
 
+    /**
+     * Loads the admin login view of the application.
+     *
+     * If the admin login view controller is not initialized, it loads the FXML file,
+     * initializes the controller, and sets up the necessary dependencies.
+     * Then it resets the controller and returns the root Region of the view.
+     *
+     * @return the root Region of the admin login view
+     * @throws IOError if an I/O error occurs while loading the FXML file
+     * @throws RuntimeException if a SQL exception occurs while initializing the controller
+     */
     public Region loadAdminLoginView() {
         if (adminLoginViewController == null) {
             FXMLLoader loader = new FXMLLoader();
@@ -118,6 +162,17 @@ public class ViewFactory
         return adminLoginViewController.getRoot();
     }
 
+    /**
+     * Loads the create account view of the application.
+     *
+     * If the create account view controller is not initialized, it loads the FXML file,
+     * initializes the controller, and sets up the necessary dependencies.
+     * Then it resets the controller and returns the root Region of the view.
+     *
+     * @return the root Region of the create account view
+     * @throws IOError if an I/O error occurs while loading the FXML file
+     * @throws RuntimeException if a SQL exception occurs while initializing the controller
+     */
     public Region loadCreateAccountView() {
         if (createAccountViewController == null) {
             FXMLLoader loader = new FXMLLoader();
@@ -133,6 +188,18 @@ public class ViewFactory
         createAccountViewController.reset();
         return createAccountViewController.getRoot();
     }
+
+    /**
+     * Loads the donate view of the application.
+     *
+     * If the donate view controller is not initialized, it loads the FXML file,
+     * initializes the controller, and sets up the necessary dependencies.
+     * Then it resets the controller and returns the root Region of the view.
+     *
+     * @return the root Region of the donate view
+     * @throws IOError if an I/O error occurs while loading the FXML file
+     * @throws RuntimeException if a SQL exception occurs while initializing the controller
+     */
     public Region loadDonateView() {
         if (donateViewController == null) {
             FXMLLoader loader = new FXMLLoader();
@@ -150,6 +217,18 @@ public class ViewFactory
         donateViewController.reset();
         return donateViewController.getRoot();
     }
+
+    /**
+     * Loads the admin server log view of the application.
+     *
+     * If the admin server log view controller is not initialized, it loads the FXML file,
+     * initializes the controller, and sets up the necessary dependencies.
+     * Then it resets the controller and returns the root Region of the view.
+     *
+     * @return the root Region of the admin server log view
+     * @throws IOError if an I/O error occurs while loading the FXML file
+     * @throws RuntimeException if a SQL exception occurs while initializing the controller
+     */
     public Region loadAdminServerLogView(){
         if(adminServerLogViewController == null){
             FXMLLoader loader = new FXMLLoader();
@@ -165,6 +244,18 @@ public class ViewFactory
         adminServerLogViewController.reset();
         return adminServerLogViewController.getRoot();
     }
+
+    /**
+     * Loads the admin manage accounts view of the application.
+     *
+     * If the admin manage accounts view controller is not initialized, it loads the FXML file,
+     * initializes the controller, and sets up the necessary dependencies.
+     * Then it resets the controller and returns the root Region of the view.
+     *
+     * @return the root Region of the admin manage accounts view
+     * @throws IOError if an I/O error occurs while loading the FXML file
+     * @throws RuntimeException if a SQL exception occurs while initializing the controller
+     */
     public Region loadAdminManageAccountsView(){
         if(adminManageAccountsViewController == null){
             FXMLLoader loader = new FXMLLoader();
@@ -180,6 +271,18 @@ public class ViewFactory
         adminManageAccountsViewController.reset();
         return adminManageAccountsViewController.getRoot();
     }
+
+    /**
+     * Loads the help view of the application.
+     *
+     * If the help view controller is not initialized, it loads the FXML file,
+     * initializes the controller, and sets up the necessary dependencies.
+     * Then it resets the controller and returns the root Region of the view.
+     *
+     * @return the root Region of the help view
+     * @throws IOError if an I/O error occurs while loading the FXML file
+     * @throws RuntimeException if a SQL exception occurs while initializing the controller
+     */
     public Region loadHelpView(){
         if(helpViewController == null){
             FXMLLoader loader = new FXMLLoader();
@@ -195,6 +298,18 @@ public class ViewFactory
         helpViewController.reset();
         return helpViewController.getRoot();
     }
+
+    /**
+     * Loads the profile view of the application.
+     *
+     * If the profile view controller is not initialized, it loads the FXML file,
+     * initializes the controller, and sets up the necessary dependencies.
+     * Then it resets the controller and returns the root Region of the view.
+     *
+     * @return the root Region of the profile view
+     * @throws IOError if an I/O error occurs while loading the FXML file
+     * @throws RuntimeException if a SQL exception occurs while initializing the controller
+     */
     public Region loadProfileView() throws RemoteException
     {
         if(profileViewController == null){
@@ -211,6 +326,18 @@ public class ViewFactory
         profileViewController.reset();
         return profileViewController.getRoot();
     }
+
+    /**
+     * Loads the my books view of the application.
+     *
+     * If the my books view controller is not initialized, it loads the FXML file,
+     * initializes the controller, and sets up the necessary dependencies.
+     * Then it resets the controller and returns the root Region of the view.
+     *
+     * @return the root Region of the my books view
+     * @throws IOError if an I/O error occurs while loading the FXML file
+     * @throws RuntimeException if a SQL exception occurs while initializing the controller
+     */
     public Region loadMyBooksView(){
         if(myBooksViewController == null){
             FXMLLoader loader = new FXMLLoader();
@@ -227,6 +354,17 @@ public class ViewFactory
         return myBooksViewController.getRoot();
     }
 
+    /**
+     * Loads the admin manage events view of the application.
+     *
+     * If the admin manage events view controller is not initialized, it loads the FXML file,
+     * initializes the controller, and sets up the necessary dependencies.
+     * Then it resets the controller and returns the root Region of the view.
+     *
+     * @return the root Region of the admin manage events view
+     * @throws IOError if an I/O error occurs while loading the FXML file
+     * @throws RuntimeException if a SQL exception occurs while initializing the controller
+     */
     public Region loadAdminManageEventsView(){
         if(adminManageEventsViewController == null){
             FXMLLoader loader = new FXMLLoader();
@@ -242,6 +380,18 @@ public class ViewFactory
         adminManageEventsViewController.reset();
         return adminManageEventsViewController.getRoot();
     }
+
+    /**
+     * Loads the admin donated books view of the application.
+     *
+     * If the admin donated books view controller is not initialized, it loads the FXML file,
+     * initializes the controller, and sets up the necessary dependencies.
+     * Then it resets the controller and returns the root Region of the view.
+     *
+     * @return the root Region of the admin donated books view
+     * @throws IOError if an I/O error occurs while loading the FXML file
+     * @throws RuntimeException if a SQL exception occurs while initializing the controller
+     */
     public Region loadAdminDonatedBooksView(){
         if(adminManageDonatedBooksViewController == null){
             FXMLLoader loader = new FXMLLoader();
@@ -258,6 +408,17 @@ public class ViewFactory
         return adminManageDonatedBooksViewController.getRoot();
     }
 
+    /**
+     * Loads the admin main view of the application.
+     *
+     * If the admin main view controller is not initialized, it loads the FXML file,
+     * initializes the controller, and sets up the necessary dependencies.
+     * Then it resets the controller and returns the root Region of the view.
+     *
+     * @return the root Region of the admin main view
+     * @throws IOError if an I/O error occurs while loading the FXML file
+     * @throws RuntimeException if a SQL exception occurs while initializing the controller
+     */
     public Region loadAdminMainView(){
         if(adminMainViewController == null){
             FXMLLoader loader = new FXMLLoader();
@@ -273,6 +434,18 @@ public class ViewFactory
         adminMainViewController.reset();
         return adminMainViewController.getRoot();
     }
+
+    /**
+     * Loads the admin manage books view of the application.
+     *
+     * If the admin manage books view  controller is not initialized, it loads the FXML file,
+     * initializes the controller, and sets up the necessary dependencies.
+     * Then it resets the controller and returns the root Region of the view.
+     *
+     * @return the root Region of the admin manage books view
+     * @throws IOError if an I/O error occurs while loading the FXML file
+     * @throws RuntimeException if a SQL exception occurs while initializing the controller
+     */
     public Region loadAdminManageBooksView(){
         if(adminManageBooksViewController == null){
             FXMLLoader loader = new FXMLLoader();
@@ -289,6 +462,17 @@ public class ViewFactory
         return adminManageBooksViewController.getRoot();
     }
 
+    /**
+     * Loads the events view of the application.
+     *
+     * If the events view  controller is not initialized, it loads the FXML file,
+     * initializes the controller, and sets up the necessary dependencies.
+     * Then it resets the controller and returns the root Region of the view.
+     *
+     * @return the root Region of the events view
+     * @throws IOError if an I/O error occurs while loading the FXML file
+     * @throws RuntimeException if a SQL exception occurs while initializing the controller
+     */
     public Region loadEventsView(){
         if(eventsViewController == null){
             FXMLLoader loader = new FXMLLoader();
@@ -306,7 +490,19 @@ public class ViewFactory
     }
 
 
-
+    /**
+     * Loads the specified view based on the provided identifier.
+     *
+     * This method delegates the loading of different views based on the given identifier.
+     * The identifier determines which view to load by switching between different cases
+     * and invoking the corresponding load methods for each view. If the provided identifier
+     * does not match any known views, it throws an IllegalArgumentException.
+     *
+     * @param id the identifier of the view to load
+     * @return the root Region of the loaded view
+     * @throws RemoteException if a remote exception occurs while loading the view
+     * @throws IllegalArgumentException if the provided identifier does not match any known views
+     */
     public Region load(String id) throws RemoteException
     {
         Region root = switch(id) {

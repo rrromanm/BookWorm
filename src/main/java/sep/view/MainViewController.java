@@ -1,9 +1,6 @@
 package sep.view;
 
-import dk.via.remote.observer.RemotePropertyChangeEvent;
-import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
-import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -17,6 +14,15 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
+/**
+ *
+ * This class is the controller for the main view. It handles user interactions for various functionalities
+ * such as viewing the user's profile, notifications, borrowed books, events, donating books, borrowing books,
+ * wishlisting books, getting help, and logging out. It also manages the display of books in a table view,
+ * searching for books, and updating book states based on user actions.
+ *
+ * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+ */
 public class MainViewController
 {
     @FXML private Button notificationButton;
@@ -48,6 +54,20 @@ public class MainViewController
     private MainViewModel mainViewModel;
     private ReadOnlyObjectProperty<Book> selectedBook;
     private RemotePropertyChangeSupport<Patron> support;
+
+    /**
+     * Initializes the components of the application, including setting up the view handler, main view model,
+     * and root region. It also initializes the table view, state combo box, and genre combo box. Additionally,
+     * it binds the selected book property to the table view's selected item property, binds the main view model's
+     * book list to the table view's items property, resets the book list in the view model, and finally,
+     * triggers the method to see notifications.
+     *
+     * @param viewHandler The view handler responsible for managing views in the application.
+     * @param viewModel The main view model containing the application's data and logic.
+     * @param root The root region where the UI components will be displayed.
+     * @throws RemoteException If a communication-related exception occurs during method invocation.
+     * @throws SQLException If an SQL exception occurs while interacting with the database.
+     */
     public void init(ViewHandler viewHandler, MainViewModel viewModel, Region root)
         throws RemoteException, SQLException
     {
@@ -63,7 +83,13 @@ public class MainViewController
         viewModel.resetBookList();
         seeNotifications();
     }
-    public void initializeTableView(){
+    /**
+     * Initializes the table view by setting up cell value factories for each column:
+     * title, author, year, publisher, ISBN, page count, book ID, genre, and state.
+     * Each cell value factory is set to retrieve the corresponding property value
+     * from the Book model object.
+     */
+    public void initializeTableView() {
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
@@ -74,51 +100,107 @@ public class MainViewController
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
         stateColumn.setCellValueFactory(new PropertyValueFactory<>("state"));
     }
-    public void initializeStateComboBox(){
-        String[] stateString = {"All","Available", "Borrowed"};
+
+    /**
+     * Initializes the state combo box by populating it with options "All", "Available",
+     * and "Borrowed". The default selection is set to "All".
+     */
+    public void initializeStateComboBox() {
+        String[] stateString = {"All", "Available", "Borrowed"};
         stateComboBox.getItems().addAll(stateString);
         stateComboBox.getSelectionModel().selectFirst();
     }
-    public void initializeGenreComboBox() throws SQLException
-    {
+
+    /**
+     * Initializes the genre combo box by populating it with options "All" and genres
+     * retrieved from the database. The default selection is set to "All".
+     *
+     * @throws SQLException If an SQL exception occurs while retrieving genres from the database.
+     */
+    public void initializeGenreComboBox() throws SQLException {
         genreComboBox.getItems().add("All");
-        genreComboBox.getItems().addAll(BookDatabaseImplementation.getInstance()
-            .readGenres());
+        genreComboBox.getItems().addAll(BookDatabaseImplementation.getInstance().readGenres());
         genreComboBox.getSelectionModel().selectFirst();
     }
 
-    @FXML public void onSearch() throws RemoteException
-    {
+
+    /**
+     * Handles the search action by retrieving the selected genre, state, and search text,
+     * then instructs the main view model to display filtered results based on the provided criteria.
+     *
+     * @throws RemoteException If a communication-related exception occurs during method invocation.
+     */
+    @FXML
+    public void onSearch() throws RemoteException {
         String genreChoice = genreComboBox.getSelectionModel().getSelectedItem();
         String stateChoice = stateComboBox.getSelectionModel().getSelectedItem();
         String searchChoice = searchTextField.getText();
-        mainViewModel.showFiltered(stateChoice,genreChoice,searchChoice);
+        mainViewModel.showFiltered(stateChoice, genreChoice, searchChoice);
     }
 
-    @FXML public void onViewProfile() throws RemoteException
-    {
+    /**
+     * Handles the action to view the user profile by opening the profile view using the view handler.
+     *
+     * @throws RemoteException If a communication-related exception occurs during method invocation.
+     */
+    @FXML
+    public void onViewProfile() throws RemoteException {
         viewHandler.openView(ViewFactory.PROFILE);
     }
-    @FXML public void onNotification() throws SQLException, RemoteException
-    {
+
+    /**
+     * Handles the action to view notifications by triggering the method to display notifications.
+     *
+     * @throws SQLException If an SQL exception occurs while interacting with the database.
+     * @throws RemoteException If a communication-related exception occurs during method invocation.
+     */
+    @FXML
+    public void onNotification() throws SQLException, RemoteException {
         seeNotifications();
     }
-    @FXML public void onMyBooks() throws RemoteException
-    {
+
+    /**
+     * Handles the action to view the user's books by opening the my books view using the view handler.
+     *
+     * @throws RemoteException If a communication-related exception occurs during method invocation.
+     */
+    @FXML
+    public void onMyBooks() throws RemoteException {
         viewHandler.openView(ViewFactory.MYBOOKS);
     }
-    @FXML public void onSeeEvents() throws RemoteException
-    {
+
+    /**
+     * Handles the action to view events by opening the events view using the view handler.
+     *
+     * @throws RemoteException If a communication-related exception occurs during method invocation.
+     */
+    @FXML
+    public void onSeeEvents() throws RemoteException {
         viewHandler.openView(ViewFactory.EVENTSVIEW);
     }
-    @FXML public void onDonate() throws RemoteException
-    {
+
+    /**
+     * Handles the action to donate a book by opening the donate book view using the view handler.
+     *
+     * @throws RemoteException If a communication-related exception occurs during method invocation.
+     */
+    @FXML
+    public void onDonate() throws RemoteException {
         viewHandler.openView(ViewFactory.DONATEBOOK);
     }
 
-    @FXML public void onBorrow() throws IOException, SQLException {
-        if(mainViewModel.getAmountOfBorrowedBooks(UserSession.getInstance().getLoggedInUser()) < 3)
-        {
+
+    /**
+     * Handles the action to borrow a book. Checks if the user has not reached the maximum limit of borrowed books.
+     * If the condition is met, the book is borrowed for the logged-in user, and a success message is displayed.
+     * Otherwise, a message indicating that the user cannot borrow more books is shown.
+     *
+     * @throws IOException If an I/O exception occurs while performing the action.
+     * @throws SQLException If an SQL exception occurs while interacting with the database.
+     */
+    @FXML
+    public void onBorrow() throws IOException, SQLException {
+        if (mainViewModel.getAmountOfBorrowedBooks(UserSession.getInstance().getLoggedInUser()) < 3) {
             mainViewModel.borrowBook(selectedBook.get(), UserSession.getInstance().getLoggedInUser());
             mainViewModel.resetBookList();
             bookTableView.getSelectionModel().clearSelection();
@@ -128,8 +210,7 @@ public class MainViewController
             alert.setTitle("Success");
             alert.setHeaderText("Book borrowed successfully, enjoy!");
             alert.show();
-        }
-        else {
+        } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("You cannot borrow more books");
             alert.setHeaderText("You reached the maximum amount of borrowed books");
@@ -137,8 +218,18 @@ public class MainViewController
             alert.show();
         }
     }
-    @FXML public void onWishlist() throws IOException, SQLException{
-        mainViewModel.wishlistBook(selectedBook.get(),UserSession.getInstance().getLoggedInUser());
+
+    /**
+     * Handles the action to add a book to the wishlist for the logged-in user.
+     * After adding the book, the book list is reset, and the wishlist button is disabled.
+     * A success message is displayed to inform the user about the action.
+     *
+     * @throws IOException If an I/O exception occurs while performing the action.
+     * @throws SQLException If an SQL exception occurs while interacting with the database.
+     */
+    @FXML
+    public void onWishlist() throws IOException, SQLException {
+        mainViewModel.wishlistBook(selectedBook.get(), UserSession.getInstance().getLoggedInUser());
         mainViewModel.resetBookList();
         bookTableView.getSelectionModel().clearSelection();
         wishlistButton.setDisable(true);
@@ -148,67 +239,96 @@ public class MainViewController
         alert.setHeaderText("Book wishlisted!");
         alert.show();
     }
-    @FXML public void onHelp() throws RemoteException
-    {
+
+    /**
+     * Handles the action to open the help view using the view handler.
+     *
+     * @throws RemoteException If a communication-related exception occurs during method invocation.
+     */
+    @FXML
+    public void onHelp() throws RemoteException {
         viewHandler.openView(ViewFactory.HELP);
     }
-    @FXML public void onLogout() throws RemoteException {
+
+    /**
+     * Handles the action to log out by opening the login view using the view handler.
+     *
+     * @throws RemoteException If a communication-related exception occurs during method invocation.
+     */
+    @FXML
+    public void onLogout() throws RemoteException {
         viewHandler.openView(ViewFactory.LOGIN);
-        // maybe we need to add some more so the user disconnects from the server
     }
-    @FXML public void onSelect() throws SQLException, RemoteException
-    {
-        if(selectedBook.get().getState() instanceof Available)
-        {
+
+    /**
+     * Handles the action when a book is selected in the table view. It checks the state of the selected book
+     * and enables or disables the borrow button accordingly. It also checks if the book is wishlisted for the
+     * logged-in user and disables the wishlist button accordingly.
+     *
+     * @throws SQLException If an SQL exception occurs while interacting with the database.
+     * @throws RemoteException If a communication-related exception occurs during method invocation.
+     */
+    @FXML
+    public void onSelect() throws SQLException, RemoteException {
+        if (selectedBook.get().getState() instanceof Available) {
             borrowButton.setDisable(false);
         }
-        if(selectedBook.get().getState() instanceof Borrowed) {
+        if (selectedBook.get().getState() instanceof Borrowed) {
             borrowButton.setDisable(true);
         }
-        if(mainViewModel.isWishlisted(selectedBook.get(),UserSession.getInstance().getLoggedInUser())){
+        if (mainViewModel.isWishlisted(selectedBook.get(), UserSession.getInstance().getLoggedInUser())) {
             wishlistButton.setDisable(true);
         }
-        if(!mainViewModel.isWishlisted(selectedBook.get(),UserSession.getInstance().getLoggedInUser())){
+        if (!mainViewModel.isWishlisted(selectedBook.get(), UserSession.getInstance().getLoggedInUser())) {
             wishlistButton.setDisable(false);
         }
     }
 
-    public Region getRoot(){
+    /**
+     * Retrieves the root region of the UI.
+     *
+     * @return The root region of the UI.
+     */
+    public Region getRoot() {
         return root;
     }
 
-    public void seeNotifications() throws SQLException, RemoteException
-    {
-        if (UserSession.getInstance().getLoggedInUser().getFees() > 0)
-        {
+    /**
+     * Displays notifications to the user, including information about unpaid fees and books whose borrowing time is ending.
+     *
+     * @throws SQLException If an SQL exception occurs while interacting with the database.
+     * @throws RemoteException If a communication-related exception occurs during method invocation.
+     */
+    public void seeNotifications() throws SQLException, RemoteException {
+        if (UserSession.getInstance().getLoggedInUser().getFees() > 0) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Notice");
             alert.setHeaderText("You have unpaid fees: " + UserSession.getInstance().getLoggedInUser().getFees());
             alert.setContentText("Please pay them as soon as possible!");
             alert.show();
         }
-        if(!mainViewModel.getEndingBooks(UserSession.getInstance().getLoggedInUser()).isEmpty()){
-
+        if (!mainViewModel.getEndingBooks(UserSession.getInstance().getLoggedInUser()).isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Notice");
             alert.setHeaderText("Your borrowing time is coming to an end");
-
             stringBuilder.append("The books: ");
-
             for (String bookTitle : mainViewModel.getEndingBooks(UserSession.getInstance().getLoggedInUser())) {
-                stringBuilder.append("\n").append("\"" +bookTitle + "\"");
+                stringBuilder.append("\n").append("\"" + bookTitle + "\"");
             }
-
             alert.setContentText(stringBuilder.toString());
             alert.show();
         }
     }
 
-    public void reset()
-    {
+    /**
+     * Resets the UI components, clearing the search text field and resetting the state combo box.
+     * Additionally, it disables the borrow button.
+     */
+    public void reset() {
         searchTextField.clear();
         stateComboBox.getSelectionModel().selectFirst();
         borrowButton.setDisable(true);
     }
+
 }

@@ -21,6 +21,13 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.Optional;
 
+/**
+ * The controller class for the Profile view.
+ * Manages the user's profile information and interactions, such as editing, saving, deleting the account,
+ * managing the wishlist, and displaying user details.
+ *
+ * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+ */
 public class ProfileViewController implements PropertyChangeListener {
     @FXML private Button editButton;
     @FXML private Button passwordButton;
@@ -73,11 +80,14 @@ public class ProfileViewController implements PropertyChangeListener {
     private String originalPassword;
     private int originalID;
 
-
-
-    //TODO: CLEAN UP THE CODE !!!
-    //TODO: CLEAN UP THE CODE !!!
-    //TODO: CLEAN UP THE CODE !!!
+    /**
+     * Initializes the ProfileViewController with necessary dependencies and sets up initial UI state.
+     *
+     * @param viewHandler   The ViewHandler instance for managing view navigation.
+     * @param viewModel     The ProfileViewModel instance for managing profile-related operations.
+     * @param root          The root Region representing the Profile view.
+     * @throws RemoteException If a communication-related exception occurs during method invocation.
+     */
     public void init(ViewHandler viewHandler, ProfileViewModel viewModel, Region root)
         throws RemoteException
     {
@@ -116,12 +126,21 @@ public class ProfileViewController implements PropertyChangeListener {
 
     }
 
-    public void populateTextFields() throws RemoteException
-    {
+    /**
+     * Populates the text fields in the profile view with the user's profile data.
+     * Invokes the ProfileViewModel to fill the data.
+     *
+     * @throws RemoteException If a communication-related exception occurs during method invocation.
+     */
+    public void populateTextFields() throws RemoteException {
         profileViewModel.fillData();
     }
 
-    public void initializeWishlistTableView(){
+    /**
+     * Initializes the columns of the wishlist table view with appropriate cell value factories.
+     * Associates each column with the corresponding Book properties for displaying wishlist items.
+     */
+    public void initializeWishlistTableView() {
         WLtitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         WLauthorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         WLyearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
@@ -132,7 +151,12 @@ public class ProfileViewController implements PropertyChangeListener {
         WLgenreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
         WLstateColumn.setCellValueFactory(new PropertyValueFactory<>("state"));
     }
-    public void initializeHistoryTableView(){
+
+    /**
+     * Initializes the columns of the history table view with appropriate cell value factories.
+     * Associates each column with the corresponding Book properties for displaying historical book data.
+     */
+    public void initializeHistoryTableView() {
         HBtitleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
         HBauthorColumn.setCellValueFactory(new PropertyValueFactory<>("Author"));
         HByearColumn.setCellValueFactory(new PropertyValueFactory<>("Year"));
@@ -142,15 +166,34 @@ public class ProfileViewController implements PropertyChangeListener {
         HBbookIdColumn.setCellValueFactory(new PropertyValueFactory<>("BookId"));
         HBgenreColumn.setCellValueFactory(new PropertyValueFactory<>("Genre"));
     }
-    public void populateWLTableView() throws RemoteException
-    {
+
+    /**
+     * Populates the wishlist table view with the current user's wishlist items.
+     * Invokes the ProfileViewModel to reset the wishlist list.
+     *
+     * @throws RemoteException If a communication-related exception occurs during method invocation.
+     */
+    public void populateWLTableView() throws RemoteException {
         profileViewModel.resetWishlistList(UserSession.getInstance().getLoggedInUser());
     }
-    public void populateHBTableView() throws RemoteException
-    {
+
+    /**
+     * Populates the history table view with the current user's historical book data.
+     * Invokes the ProfileViewModel to reset the history list.
+     *
+     * @throws RemoteException If a communication-related exception occurs during method invocation.
+     */
+    public void populateHBTableView() throws RemoteException {
         profileViewModel.resetHistoryList(UserSession.getInstance().getLoggedInUser());
     }
-    @FXML public void onEdit() {
+
+    /**
+     * Handles the action event when the user clicks the "Edit" button.
+     * Toggles between edit mode and view mode for user profile details.
+     * Enables editing of profile fields and displays relevant buttons accordingly.
+     */
+    @FXML
+    public void onEdit() {
         try {
             if (!edit) {
                 editButton.setStyle("-fx-text-fill:red;");
@@ -185,6 +228,12 @@ public class ProfileViewController implements PropertyChangeListener {
     }
 
 
+    /**
+     * Handles the action event when the user clicks the "Password" button.
+     * Toggles the visibility of the password field and label based on the current state.
+     * Changes the style of the password button to indicate visibility status.
+     * Disables and hides the wishlist button during password management.
+     */
     @FXML public void onPassword(){
         if(!showPassword){
             passwordButton.setStyle("-fx-text-fill:red;");
@@ -202,6 +251,15 @@ public class ProfileViewController implements PropertyChangeListener {
         wishlistButton.setDisable(true);
         wishlistButton.setVisible(false);
     }
+
+    /**
+     * Saves the changes made to the user profile.
+     * Validates the updated user data before saving.
+     * Updates the user's information in the system.
+     * Resets the editing state after saving changes.
+     * Displays an alert indicating successful save or error messages if validation fails.
+     * Disables and hides the wishlist button after saving changes.
+     */
     @FXML public void onSave(){
         try{
             String oldUsername = UserSession.getInstance().getLoggedInUser().getUsername();
@@ -266,6 +324,16 @@ public class ProfileViewController implements PropertyChangeListener {
         wishlistButton.setVisible(false);
 
     }
+
+    /**
+     * Deletes the user account after confirming with the user.
+     * Displays a confirmation dialog to confirm account deletion.
+     * If confirmed, deletes the account and navigates to the login view.
+     * Displays an error message if account deletion fails.
+     * Disables and hides the wishlist button after account deletion.
+     *
+     * @throws RemoteException if an error occurs during remote communication
+     */
     @FXML
     public void onDelete() throws RemoteException{
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -290,13 +358,30 @@ public class ProfileViewController implements PropertyChangeListener {
         wishlistButton.setVisible(false);
     }
 
+    /**
+     * Navigates back to the user main view.
+     * Opens the user main view using the ViewHandler.
+     *
+     * @throws RemoteException if an error occurs during remote communication
+     */
     @FXML public void onBack() throws RemoteException
     {
         viewHandler.openView(ViewFactory.USERMAIN);
     }
-    @FXML public void onWishlist() throws IOException, SQLException  // for removal
-    {
-        profileViewModel.removeFromWishlist(wishlistSelectedBook.get(),UserSession.getInstance().getLoggedInUser());
+
+
+    /**
+     * Handles the action of removing a book from the wishlist.
+     * Removes the selected book from the wishlist using the ProfileViewModel.
+     * Resets the wishlist view and clears the selection in the wishlist table view.
+     * Displays a success alert.
+     *
+     * @throws IOException  if an I/O error occurs
+     * @throws SQLException if a SQL error occurs
+     */
+    @FXML
+    public void onWishlist() throws IOException, SQLException {
+        profileViewModel.removeFromWishlist(wishlistSelectedBook.get(), UserSession.getInstance().getLoggedInUser());
         profileViewModel.resetWishlistList(UserSession.getInstance().getLoggedInUser());
         wishlistBookTableView.getSelectionModel().clearSelection();
         wishlistButton.setDisable(true);
@@ -307,7 +392,13 @@ public class ProfileViewController implements PropertyChangeListener {
         alert.setHeaderText("Book removed from wishlist!");
         alert.show();
     }
-    @FXML public void onWishlistSelect() {
+
+    /**
+     * Handles the selection of a book in the wishlist.
+     * Enables or disables the wishlist button based on whether a book is selected.
+     */
+    @FXML
+    public void onWishlistSelect() {
         if (wishlistSelectedBook != null) {
             wishlistButton.setDisable(false);
             wishlistButton.setVisible(true);
@@ -316,15 +407,33 @@ public class ProfileViewController implements PropertyChangeListener {
             wishlistButton.setVisible(false);
         }
     }
-    @FXML public void onHistorySelect(){
+
+    /**
+     * Handles the selection of a book in the history.
+     * Disables the wishlist button.
+     */
+    @FXML
+    public void onHistorySelect() {
         wishlistButton.setDisable(true);
         wishlistButton.setVisible(false);
     }
-    public Region getRoot(){
+
+    /**
+     * Gets the root of the profile view.
+     *
+     * @return the root of the profile view
+     */
+    public Region getRoot() {
         return root;
     }
-    public void reset() throws RemoteException
-    {
+
+    /**
+     * Resets the profile view to its initial state.
+     * Sets text fields to their original values, disables editing, and hides password fields.
+     *
+     * @throws RemoteException if a remote error occurs
+     */
+    public void reset() throws RemoteException {
         firstNameTextField.setText(originalFirstName);
         lastNameTextField.setText(originalLastName);
         usernameTextField.setText(originalUsername);
@@ -343,7 +452,7 @@ public class ProfileViewController implements PropertyChangeListener {
         passwordButton.setVisible(false);
         saveButton.setVisible(false);
         deleteButton.setVisible(false);
-        edit =false;
+        edit = false;
 
         passwordTextField.setVisible(false);
         passwordLabel.setVisible(false);
@@ -351,6 +460,11 @@ public class ProfileViewController implements PropertyChangeListener {
         showPassword = false;
     }
 
+    /**
+     * Displays an alert with the given message.
+     *
+     * @param message the message to display in the alert
+     */
     public void showAlert(String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Something went wrong...");
@@ -359,6 +473,13 @@ public class ProfileViewController implements PropertyChangeListener {
         alert.showAndWait();
     }
 
+    /**
+     * Responds to property change events.
+     * Displays a notification when the patron's account is updated.
+     * Updates the fees and books read labels when the user logs in.
+     *
+     * @param evt the property change event
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("updatePatron".equals(evt.getPropertyName())) {
@@ -368,14 +489,13 @@ public class ProfileViewController implements PropertyChangeListener {
             alert.setContentText("Please logout and login with new credentials.");
             alert.show();
         }
-        if("login".equals(evt.getPropertyName())){
+        if ("login".equals(evt.getPropertyName())) {
             try {
                 feesLabel.setText("Outstanding fees: " + UserSession.getInstance().getLoggedInUser().getFees());
                 booksReadLabel.setText("Amount of books read: " + profileViewModel.getAmountOfReadBooks(UserSession.getInstance().getLoggedInUser()));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-
         }
     }
 }

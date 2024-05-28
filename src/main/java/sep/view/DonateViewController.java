@@ -8,19 +8,25 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import sep.jdbc.BookDatabaseImplementation;
 import sep.model.UserSession;
-import sep.viewmodel.CreateAccountViewModel;
 import sep.viewmodel.DonateViewModel;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
+/**
+ * Controller class for the book donation view.
+ * Handles user interactions and updates the view based on changes in the underlying data.
+ *
+ * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+ */
 public class DonateViewController {
     private ViewHandler viewHandler;
     private DonateViewModel viewModel;
     private Region root;
+
     @FXML private Button backButton;
-    @FXML private Button SubmitButton;
+    @FXML private Button submitButton;
     @FXML private TextField bookTitle;
     @FXML private TextField bookAuthor;
     @FXML private TextField bookISBN;
@@ -29,6 +35,14 @@ public class DonateViewController {
     @FXML private TextField bookPages;
     @FXML private ComboBox<String> genreComboBox;
 
+    /**
+     * Initializes the view with the provided view handler, view model, and root region.
+     *
+     * @param viewHandler The view handler for managing views.
+     * @param viewModel   The view model for donating books.
+     * @param root        The root region of the view.
+     * @throws SQLException if a database access error occurs
+     */
     public void init(ViewHandler viewHandler, DonateViewModel viewModel, Region root) throws SQLException {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
@@ -36,15 +50,28 @@ public class DonateViewController {
         initializeGenreComboBox();
     }
 
+    /**
+     * Handles the event when the back button is clicked.
+     * This method is triggered when the back button in the user interface is clicked.
+     * It navigates back to the user main view.
+     *
+     * @throws RemoteException if a remote communication-related exception occurs
+     */
     @FXML
-    public void backButtonClicked() throws RemoteException
-    {
+    public void backButtonClicked() throws RemoteException {
         viewHandler.openView(ViewFactory.USERMAIN);
     }
 
+    /**
+     * Handles the event when the submit button is clicked.
+     * This method is triggered when the submit button in the user interface is clicked.
+     * It collects input data and calls the view model to donate a book.
+     * Handles any exceptions that may occur during the process.
+     *
+     * @throws IOException if an input/output error occurs
+     */
     @FXML
-    private void submitButtonClicked() throws IOException
-    {
+    private void submitButtonClicked() throws IOException {
         try {
             String title = bookTitle.getText();
             String author = bookAuthor.getText();
@@ -55,11 +82,7 @@ public class DonateViewController {
             String genre = genreComboBox.getSelectionModel().getSelectedItem();
 
             if (title.isEmpty() || author.isEmpty() || isbn.isEmpty() || yearStr.isEmpty() || publisher.isEmpty() || pagesStr.isEmpty() || genre == null) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Input Error");
-                alert.setHeaderText(null);
-                alert.setContentText("All fields must be filled out.");
-                alert.showAndWait();
+                showAlert(Alert.AlertType.ERROR, "Input Error", "All fields must be filled out.");
                 return;
             }
 
@@ -70,11 +93,7 @@ public class DonateViewController {
                     throw new NumberFormatException();
                 }
             } catch (NumberFormatException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Input Error");
-                alert.setHeaderText(null);
-                alert.setContentText("ISBN must be a 13-digit number.");
-                alert.showAndWait();
+                showAlert(Alert.AlertType.ERROR, "Input Error", "ISBN must be a 13-digit number.");
                 return;
             }
 
@@ -85,11 +104,7 @@ public class DonateViewController {
                     throw new NumberFormatException();
                 }
             } catch (NumberFormatException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Input Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Year must be between 1000 and 2025.");
-                alert.showAndWait();
+                showAlert(Alert.AlertType.ERROR, "Input Error", "Year must be between 1000 and 2025.");
                 return;
             }
 
@@ -100,40 +115,36 @@ public class DonateViewController {
                     throw new NumberFormatException();
                 }
             } catch (NumberFormatException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Input Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Page count must be a positive number.");
-                alert.showAndWait();
+                showAlert(Alert.AlertType.ERROR, "Input Error", "Page count must be a positive number.");
                 return;
             }
 
             viewModel.donateBook(title, author, isbnLong, year, publisher, pages, genre, UserSession.getInstance().getLoggedInUser());
             reset();
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText("Book donated successfully! \nPS: You need to deliver the book to library and it has to be approved!");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Book donated successfully! \nPS: You need to deliver the book to the library and it has to be approved!");
 
         } catch (SQLException | RemoteException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Submission Error");
-            alert.setHeaderText(null);
-            alert.setContentText("An error occurred while donating the book.");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.ERROR, "Submission Error", "An error occurred while donating the book.");
             e.printStackTrace();
         }
     }
 
-    public void initializeGenreComboBox() throws SQLException
-    {
+    /**
+     * Initializes the genre combo box with genres from the database.
+     *
+     * @throws SQLException if a database access error occurs
+     */
+    public void initializeGenreComboBox() throws SQLException {
         genreComboBox.getItems().add("All");
-        genreComboBox.getItems().addAll(BookDatabaseImplementation.getInstance()
-                .readGenres());
+        genreComboBox.getItems().addAll(BookDatabaseImplementation.getInstance().readGenres());
         genreComboBox.getSelectionModel().selectFirst();
     }
 
+    /**
+     * Resets the input fields in the view.
+     * This method clears the input fields, allowing the user to start with a fresh form.
+     */
     public void reset() {
         bookTitle.clear();
         bookAuthor.clear();
@@ -144,7 +155,28 @@ public class DonateViewController {
         genreComboBox.getSelectionModel().selectFirst();
     }
 
-    public Region getRoot(){
+    /**
+     * Gets the root node of the view.
+     * This method returns the root node of the view, which is used to display the entire view.
+     *
+     * @return the root node of the view
+     */
+    public Region getRoot() {
         return root;
+    }
+
+    /**
+     * Shows an alert with the specified type, title, and content.
+     *
+     * @param alertType The type of the alert.
+     * @param title     The title of the alert.
+     * @param content   The content of the alert.
+     */
+    private void showAlert(Alert.AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }
