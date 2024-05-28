@@ -17,6 +17,13 @@ import sep.viewmodel.AdminManageAccountsViewModel;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
+/**
+ * The AdminManageAccountsViewController class controls the interaction between the admin manage accounts view and its corresponding view model.
+ * It communicates with the AdminManageAccountsViewModel to perform necessary operations.
+ *
+ * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+ */
+
 public class AdminManageAccountsViewController implements RemotePropertyChangeListener {
     private ViewHandler viewHandler;
     private AdminManageAccountsViewModel viewModel;
@@ -59,6 +66,13 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
 
     private ReadOnlyObjectProperty<Patron> selectedUser;
 
+    /**
+     * Initializes the controller with necessary components and data.
+     * @param viewHandler The view handler for navigation.
+     * @param viewModel The view model for handling business logic.
+     * @param root The root region of the view.
+     * @throws RemoteException If a remote communication error occurs.
+     */
     public void init(ViewHandler viewHandler, AdminManageAccountsViewModel viewModel, Region root) throws RemoteException {
         this.viewHandler = viewHandler;
         this.viewModel = viewModel;
@@ -100,6 +114,10 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
         });
     }
 
+    /**
+     * Loads data into the table view by calling the loadPatrons() method of the viewModel.
+     * If a SQLException occurs during the data loading process, it prints the stack trace.
+     */
     private void loadTableData() {
         try {
             viewModel.loadPatrons();
@@ -108,6 +126,10 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
         }
     }
 
+    /**
+     * Initializes the table view with appropriate cell value factories for each column.
+     * Binds each column to the corresponding property of the Patron object.
+     */
     public void initializeTableView() {
         IDcolumn.setCellValueFactory(new PropertyValueFactory<>("userID"));
         FirstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -118,6 +140,10 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
         FeeColumn.setCellValueFactory(new PropertyValueFactory<>("fees"));
     }
 
+    /**
+     * Initializes the text fields with data from the selected user in the table view.
+     * Stores the original values for comparison during editing.
+     */
     public void initializeTextFields() {
         selectedUser.addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
@@ -139,11 +165,22 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
         });
     }
 
+    /**
+     * Event handler for the back button click event.
+     * Navigates to the admin main view.
+     * @throws RemoteException If a remote communication error occurs.
+     */
     @FXML
     private void backButtonClicked() throws RemoteException {
         viewHandler.openView("adminMainView");
     }
 
+    /**
+     * Event handler for the save patron changes button click event.
+     * Saves changes made to a patron's account.
+     * @throws RemoteException If a remote communication error occurs.
+     * @throws SQLException If a SQL error occurs.
+     */
     @FXML
     private void savePatronChangesButtonClicked() throws RemoteException, SQLException {
         int userID = Integer.parseInt(userIDTextField.getText());
@@ -236,8 +273,10 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
         });
     }
 
-
-
+    /**
+     * Event handler for the save button click event to save changes to a patron's fees.
+     * @throws RemoteException If a remote communication error occurs.
+     */
     @FXML
     private void saveButtonClicked() throws RemoteException {
         try {
@@ -294,7 +333,10 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
         }
     }
 
-
+    /**
+     * Event handler for the delete button click event to delete a selected patron.
+     * @throws RemoteException If a remote communication error occurs.
+     */
     @FXML
     private void deleteButtonClicked() throws RemoteException {
         Patron selectedPatron = UserTableView.getSelectionModel().getSelectedItem();
@@ -331,13 +373,9 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
         }
     }
 
-
-
-    @FXML
-    private void saveUserButtonClicked() {
-        //TODO: Implement working save user data after editing
-    }
-
+    /**
+     * Clears the input fields and selection in the user interface.
+     */
     public void reset() {
         firstNameTextField.clear();
         lastNameTextField.clear();
@@ -349,12 +387,22 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
         UserTableView.getSelectionModel().clearSelection();
     }
 
+    /**
+     * Returns the root region of the view.
+     * @return The root region of the view.
+     */
     public Region getRoot() {
         return root;
     }
 
+    /**
+     * Implementation of the propertyChange method of RemotePropertyChangeListener interface.
+     * This method is not currently used and does nothing.
+     * @param remotePropertyChangeEvent The property change event.
+     * @throws RemoteException If a remote communication error occurs.
+     */
     @Override
     public void propertyChange(RemotePropertyChangeEvent remotePropertyChangeEvent) throws RemoteException {
-        // Implement this method if needed for remote property change events
+
     }
 }

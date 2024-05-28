@@ -18,6 +18,13 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.Optional;
 
+/**
+ * Controller class for the libarian interface to manage books.
+ * This class handles user interactions and updates the view based on changes in the underlying data.
+ *
+ * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+ */
+
 public class AdminManageBooksViewController implements RemotePropertyChangeListener
 {
    //BUTTONS
@@ -61,6 +68,16 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
     private AdminManageBooksViewModel viewModel;
     private ReadOnlyObjectProperty<Book> selectedBook;
 
+
+  /**
+   * Initializes the controller with necessary objects and sets up event listeners.
+   *
+   * @param viewHandler The ViewHandler instance for navigating between views.
+   * @param viewModel   The AdminManageBooksViewModel instance for handling book-related operations.
+   * @param root        The root region of the view.
+   * @throws RemoteException If a remote communication error occurs.
+   * @throws SQLException    If a SQL-related error occurs.
+   */
     public void init(ViewHandler viewHandler, AdminManageBooksViewModel viewModel, Region root)
             throws RemoteException, SQLException {
         this.viewHandler = viewHandler;
@@ -156,6 +173,10 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
         });
     }
 
+  /**
+   * Initializes the table view by setting up the cell value factories for each column.
+   * This method binds the cell value factories to the corresponding properties of the Book object.
+   */
     public void initializeTableView(){
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -167,11 +188,23 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
         publisherColumn.setCellValueFactory(new PropertyValueFactory<>("publisher"));
     }
 
+  /**
+   * Handles the event when an item is selected in the table view.
+   * This method calls the initializeTextFields
+   * method to populate the text fields
+   * with the details of the selected book.
+   */
     @FXML
     public void onSelect(){
         initializeTextFields();
     }
 
+  /**
+   * Initializes the genre combo box by adding all available genres retrieved from the database.
+   * The combo box is populated with genres, with the default selection set to "All".
+   *
+   * @throws SQLException if an SQL exception occurs while reading genres from the database.
+   */
     public void initializeGenreComboBox() throws SQLException
     {
         genreField.getItems().add("All");
@@ -179,6 +212,15 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
                 .readGenres());
         genreField.getSelectionModel().selectFirst();
     }
+  /**
+   * Initializes the text fields with the data of the currently selected book.
+   * Retrieves the title, author, year, ISBN, page count, genre, book ID, and publisher
+   * of the selected book and sets the corresponding values in the text fields.
+   *
+   * Note: This method assumes that a book is selected in the table view.
+   *
+   * If no book is selected, this method will throw a NullPointerException.
+   */
     public void initializeTextFields() {
                 titleField.setText(selectedBook.get().getTitle());
                 authorField.setText(selectedBook.get().getAuthor());
@@ -190,13 +232,34 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
                 publisherField.setText(selectedBook.get().getPublisher());
     }
 
-
-
+  /**
+   * Handles the action when the back button is clicked.
+   *
+   * This method invokes the `openView` method of the `viewHandler` object
+   * to navigate to the admin main view.
+   *
+   * @throws RemoteException If a remote communication error occurs during the navigation process.
+   */
     @FXML
     private void backButtonClicked() throws RemoteException
     {
         viewHandler.openView("adminMainView");
     }
+
+  /**
+   * Handles the action when the save button is clicked.
+   *
+   * This method first checks if all required fields are filled out.
+   * If any field is empty, it displays a warning alert prompting the user to fill out all fields.
+   *
+   * If all fields are filled out, it validates the book details using the `BookValidator` class.
+   * If any detail is invalid, it displays a warning alert with the specific error message.
+   *
+   * If all details are valid, it invokes the `updateBook` method of the `viewModel` object
+   * to update the book details based on the entered information.
+   *
+   * @throws RuntimeException If an unexpected error occurs during the update process.
+   */
     @FXML
     private void onSave()
     {
@@ -241,6 +304,23 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
             }
         }
     }
+
+  /**
+   * Handles the action when the add button is clicked to add a new book.
+   *
+   * Displays an information alert notifying the user about auto-generated book ID.
+   *
+   * Checks if all required fields are filled out. If any field is empty,
+   * it displays a warning alert prompting the user to fill out all fields.
+   *
+   * If all fields are filled out, it validates the book details using the `BookValidator` class.
+   * If any detail is invalid, it displays a warning alert with the specific error message.
+   *
+   * If all details are valid, it invokes the `createBook` method of the `viewModel` object
+   * to create a new book based on the entered information.
+   *
+   * @throws RuntimeException If an unexpected error occurs during the book creation process.
+   */
     @FXML
     private void onAdd() {
         Alert alert3 = new Alert(Alert.AlertType.INFORMATION);
@@ -302,6 +382,14 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
         }
     }
 
+  /**
+   * Handles the action when the search button is clicked to filter books based on the search criteria.
+   *
+   * Retrieves the search criteria from the search field.
+   * Invokes the `showFiltered` method of the `viewModel` object to filter books based on the search criteria.
+   *
+   * @throws RuntimeException If an unexpected error occurs during the filtering process.
+   */
     @FXML
     private void onSearch(){
         try {
@@ -311,7 +399,16 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
         }
     }
 
-
+  /**
+   * Handles the action when the remove button is clicked to delete a book from the system.
+   *
+   * Checks if the selected book is currently borrowed.
+   * If the book is borrowed, displays a warning alert indicating that the book cannot be removed.
+   * If the book is not borrowed, displays a confirmation alert to confirm the deletion.
+   * Deletes the book from the system if confirmed, then refreshes the book table and resets input fields.
+   *
+   * @throws RuntimeException If an unexpected error occurs during the deletion process.
+   */
     @FXML
     private void onRemove() throws SQLException {
         if (selectedBook.get().getState() instanceof Borrowed) {
@@ -341,12 +438,19 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
             }
         }
     }
+
+  /**
+   * Handles the action when the clear button is clicked to reset input fields and clear the selection in the book table.
+   */
     @FXML
     private void onClear()
     {
         reset();
     }
 
+  /**
+   * Resets the input fields and clears the selection in the book table.
+   */
     public void reset()
     {
         searchField.clear();
@@ -361,13 +465,24 @@ public class AdminManageBooksViewController implements RemotePropertyChangeListe
         bookTableView.getSelectionModel().clearSelection();
     }
 
+  /**
+   * Retrieves the root region of the view.
+   *
+   * @return The root region of the view.
+   */
     public Region getRoot()
     {
         return root;
     }
 
+  /**
+   * Handles changes in remote properties.
+   *
+   * @param evt The event representing the change in the remote property.
+   * @throws RemoteException If there is a problem with the remote communication.
+   */
     @Override
     public void propertyChange(RemotePropertyChangeEvent evt) throws RemoteException {
-
+      // Implementation for handling changes in remote properties
     }
 }
