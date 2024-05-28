@@ -15,6 +15,12 @@ import sep.viewmodel.MainViewModel;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 
+/**
+ * Controller class for the librarian interface to manage donated books.
+ * This class handles user interactions and updates the view based on changes in the underlying data.
+ *
+ * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+ */
 public class AdminManageDonatedBooksViewController
 {
     @FXML
@@ -36,6 +42,14 @@ public class AdminManageDonatedBooksViewController
     private AdminManageDonatedBooksViewModel donatedBooksViewModel;
     private ReadOnlyObjectProperty<Book> selectedBook;
 
+    /**
+     * Initializes the view with the provided view handler, view model, and root region.
+     *
+     * @param viewHandler The view handler for managing views.
+     * @param viewModel   The view model for managing donated books.
+     * @param root        The root region of the view.
+     * @throws RemoteException If there is a problem with remote communication.
+     */
     public void init(ViewHandler viewHandler, AdminManageDonatedBooksViewModel viewModel, Region root) throws RemoteException {
         this.viewHandler = viewHandler;
         this.donatedBooksViewModel = viewModel;
@@ -46,6 +60,11 @@ public class AdminManageDonatedBooksViewController
         viewModel.resetBookList();
     }
 
+    /**
+     * Initializes the table view for displaying donated books.
+     * This method sets up the cell value factories for each column in the table view.
+     * Each column is bound to a property of the Book object.
+     */
     public void initializeTableView(){
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
@@ -55,12 +74,28 @@ public class AdminManageDonatedBooksViewController
         pageCountColumn.setCellValueFactory(new PropertyValueFactory<>("pageCount"));
         genreColumn.setCellValueFactory(new PropertyValueFactory<>("genre"));
     }
+    /**
+     * Handles the event when the back button is clicked.
+     * This method is triggered when the back button in the user interface is clicked.
+     * It navigates back to the admin main view.
+     *
+     * @throws RemoteException if a remote communication-related exception occurs
+     */
     @FXML
     private void backButtonClicked() throws RemoteException
     {
         viewHandler.openView("adminMainView");
     }
 
+    /**
+     * Handles the event when the approve button is clicked.
+     * This method is triggered when the approve button in the user interface is clicked.
+     * It calls the viewModel to approve the donated book with the selected book's details.
+     * If successful, it displays a success message using an alert dialog.
+     *
+     * @throws SQLException    if a database access error occurs
+     * @throws RemoteException if a remote communication-related exception occurs
+     */
     @FXML
     private void onApprove() throws SQLException, RemoteException {
         donatedBooksViewModel.approveDonatedBook(selectedBook.get().getBookId(), selectedBook.get().getTitle(), selectedBook.get().getAuthor(),
@@ -73,6 +108,15 @@ public class AdminManageDonatedBooksViewController
         alert.showAndWait();
     }
 
+    /**
+     * Handles the event when the reject button is clicked.
+     * This method is triggered when the reject button in the user interface is clicked.
+     * It calls the viewModel to reject the donated book with the selected book's ID.
+     * If successful, it displays a success message using an alert dialog.
+     *
+     * @throws SQLException    if a database access error occurs
+     * @throws RemoteException if a remote communication-related exception occurs
+     */
     @FXML
     private void onReject() throws SQLException, RemoteException {
         donatedBooksViewModel.rejectDonatedBook(selectedBook.get().getBookId());
@@ -82,11 +126,23 @@ public class AdminManageDonatedBooksViewController
         alert.setHeaderText("Book rejected!");
         alert.showAndWait();
     }
+
+    /**
+     * Resets the input fields and selection in the user interface.
+     * This method clears the input fields and selection in the user interface,
+     * allowing the user to reset the form or selection.
+     */
     public void reset()
     {
 
     }
 
+    /**
+     * Gets the root node of the view.
+     * This method returns the root node of the view, which is used to display the entire view.
+     *
+     * @return the root node of the view
+     */
     public Region getRoot()
     {
         return root;

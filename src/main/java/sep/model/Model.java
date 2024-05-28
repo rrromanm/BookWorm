@@ -1,13 +1,14 @@
 package sep.model;
 
-import dk.via.remote.observer.RemotePropertyChangeListener;
-
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Interface defining the methods for the library management model.
+ */
 public interface Model {
     ArrayList<Book> getAllBooks() throws RemoteException;
     ArrayList<Book> getBorrowedBooks(Patron patron) throws RemoteException;
