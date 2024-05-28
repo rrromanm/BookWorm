@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
-  <title>Coverage Report > PhoneValidator</title>
+  <title>Coverage Report > ModelManager</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -19,10 +19,10 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">sep.model.validators</a>
+    <a href="../index.html">sep.model</a>
 </div>
 
-<h1>Coverage Summary for Class: PhoneValidator (sep.model.validators)</h1>
+<h1>Coverage Summary for Class: ModelManager (sep.model)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -37,15 +37,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 <th class="coverageStat 
 ">
-  Branch, %
-</th>
-<th class="coverageStat 
-">
   Line, %
 </th>
 </tr>
 <tr>
-  <td class="name">PhoneValidator</td>
+  <td class="name">ModelManager</td>
 <td class="coverageStat">
   <span class="percent">
     0%
@@ -59,7 +55,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     0%
   </span>
   <span class="absValue">
-    (0/2)
+    (0/40)
   </span>
 </td>
 <td class="coverageStat">
@@ -67,15 +63,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     0%
   </span>
   <span class="absValue">
-    (0/6)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/6)
+    (0/85)
   </span>
 </td>
 </tr>
@@ -87,19 +75,671 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<code class="sourceCode" id="sourceCode">&nbsp;package sep.model.validators;
+<code class="sourceCode" id="sourceCode">&nbsp;package sep.model;
 &nbsp;
-<b class="nc">&nbsp;public class PhoneValidator {</b>
-&nbsp;   public static void validate(String phone){
-<b class="nc">&nbsp;       if(phone.length()!= 8){</b>
-<b class="nc">&nbsp;           throw new IllegalArgumentException(&quot;Phone number must be 8 digits&quot;);</b>
-&nbsp;       }
-<b class="nc">&nbsp;       for(int i = 0; i &lt; phone.length(); i++){</b>
-<b class="nc">&nbsp;           if(!Character.isDigit(phone.charAt(i))){</b>
-<b class="nc">&nbsp;               throw new IllegalArgumentException(&quot;Phone number must only contain digits&quot;);</b>
-&nbsp;           }
-&nbsp;       }
-&nbsp;   }
+&nbsp;import sep.client.Client;
+&nbsp;import sep.client.ClientInterface;
+&nbsp;import sep.model.validators.*;
+&nbsp;import sep.shared.ConnectorInterface;
+&nbsp;
+&nbsp;import java.beans.PropertyChangeEvent;
+&nbsp;import java.beans.PropertyChangeListener;
+&nbsp;import java.beans.PropertyChangeSupport;
+&nbsp;import java.io.IOException;
+&nbsp;import java.rmi.RemoteException;
+&nbsp;import java.rmi.server.UnicastRemoteObject;
+&nbsp;import java.sql.SQLException;
+&nbsp;import java.util.ArrayList;
+&nbsp;
+&nbsp;/**
+&nbsp; * The ModelManager class implements the Model interface and serves as a manager for interacting with the underlying data model
+&nbsp; * via a remote client interface. It provides methods for accessing and manipulating various entities such as books, events, and patrons.
+&nbsp; * Additionally, it handles property change events and acts as a bridge between the client and the underlying data source.
+&nbsp; *
+&nbsp; * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+&nbsp; */
+&nbsp;
+&nbsp;public class ModelManager extends UnicastRemoteObject implements Model , PropertyChangeListener {
+&nbsp;    private final ClientInterface client;
+&nbsp;    private String error;
+&nbsp;    private final PropertyChangeSupport support;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a ModelManager object with the specified connector interface to the underlying data source.
+&nbsp;     *
+&nbsp;     * @param library The connector interface providing access to the underlying data source
+&nbsp;     * @throws IOException  If an I/O error occurs
+&nbsp;     * @throws SQLException If a SQL error occurs
+&nbsp;     */
+<b class="nc">&nbsp;    public ModelManager(ConnectorInterface library) throws IOException, SQLException {</b>
+<b class="nc">&nbsp;        this.client = new Client(library);</b>
+<b class="nc">&nbsp;        this.error = &quot;&quot;;</b>
+<b class="nc">&nbsp;        this.client.addPropertyChangeListener(this);</b>
+<b class="nc">&nbsp;        this.support = new PropertyChangeSupport(this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves all books from the data source.
+&nbsp;     *
+&nbsp;     * @return An ArrayList containing all books
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public ArrayList&lt;Book&gt; getAllBooks() throws RemoteException {
+<b class="nc">&nbsp;        return client.getAllBooks();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves all books borrowed by the specified patron.
+&nbsp;     *
+&nbsp;     * @param patron The patron whose borrowed books are to be retrieved
+&nbsp;     * @return An ArrayList containing all borrowed books of the specified patron
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override public ArrayList&lt;Book&gt; getBorrowedBooks(Patron patron)
+&nbsp;        throws RemoteException
+&nbsp;    {
+<b class="nc">&nbsp;        return client.getBorrowedBooks(patron);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves history of books by the specified patron.
+&nbsp;     *
+&nbsp;     * @param patron The patron whose history of books are to be retrieved
+&nbsp;     * @return An ArrayList containing all books of the specified patron
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override public ArrayList&lt;Book&gt; getHistoryOfBooks(Patron patron)
+&nbsp;        throws RemoteException
+&nbsp;    {
+<b class="nc">&nbsp;        return client.getHistoryOfBooks(patron);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves books wishlist by the specified patron.
+&nbsp;     *
+&nbsp;     * @param patron The patron whose wishlist of books are to be retrieved
+&nbsp;     * @return An ArrayList containing all wishlisted books of the specified patron
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override public ArrayList&lt;Book&gt; getWishlistedBooks(Patron patron)
+&nbsp;        throws RemoteException
+&nbsp;    {
+<b class="nc">&nbsp;        return client.getWishlistedBooks(patron);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves all donated books.
+&nbsp;     *
+&nbsp;     * @return An ArrayList containing all donated books
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public ArrayList&lt;Book&gt; getDonatedBooks() throws RemoteException {
+<b class="nc">&nbsp;        return client.getDonatedBooks();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves all events.
+&nbsp;     *
+&nbsp;     * @return An ArrayList containing all events
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public ArrayList&lt;Event&gt; getAllEvents() throws RemoteException {
+<b class="nc">&nbsp;        return client.getAllEvents();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves amount of book read by the specified patron.
+&nbsp;     *
+&nbsp;     * @param patron The patron whose amount of read books are to be retrieved
+&nbsp;     * @return An integer of all read book by specified patron
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override public int getAmountOfReadBooks(Patron patron)
+&nbsp;        throws RemoteException
+&nbsp;    {
+<b class="nc">&nbsp;        return client.getAmountOfReadBooks(patron);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves amount of borrowed books by the specified patron.
+&nbsp;     *
+&nbsp;     * @param patron The patron whose amount of borrowed books are to be retrieved
+&nbsp;     * @return An integer of all borrowed books by specified patron
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override public int getAmountOfBorrowedBooks(Patron patron)
+&nbsp;        throws RemoteException
+&nbsp;    {
+<b class="nc">&nbsp;        return client.getAmountOfBorrowedBooks(patron);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds a property change listener to this model.
+&nbsp;     *
+&nbsp;     * @param listener The property change listener to be added
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void addPropertyChangeListener(PropertyChangeListener listener) {
+<b class="nc">&nbsp;        this.support.addPropertyChangeListener(listener);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes a property change listener from this model.
+&nbsp;     *
+&nbsp;     * @param listener The property change listener to be removed
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void removePropertyChangeListener(PropertyChangeListener listener) {
+<b class="nc">&nbsp;        this.support.removePropertyChangeListener(listener);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new patron with the provided information.
+&nbsp;     *
+&nbsp;     * @param username     The username of the patron
+&nbsp;     * @param password     The password of the patron
+&nbsp;     * @param first_name   The first name of the patron
+&nbsp;     * @param last_name    The last name of the patron
+&nbsp;     * @param email        The email address of the patron
+&nbsp;     * @param phone_number The phone number of the patron
+&nbsp;     * @param fees         The fees associated with the patron&#39;s account
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException
+&nbsp;    {
+&nbsp;        try
+&nbsp;        {
+&nbsp;
+<b class="nc">&nbsp;            UsernameValidator.validate(username);</b>
+<b class="nc">&nbsp;            EmailValidator.validate(email);</b>
+<b class="nc">&nbsp;            PasswordValidator.validate(password);</b>
+<b class="nc">&nbsp;            PhoneValidator.validate(phone_number);</b>
+<b class="nc">&nbsp;            NameValidator.validate(first_name);</b>
+<b class="nc">&nbsp;            NameValidator.validate(last_name);</b>
+&nbsp;
+<b class="nc">&nbsp;            this.client.createPatron(username,  password,  first_name,  last_name,  email,  phone_number,  fees);</b>
+&nbsp;
+&nbsp;        }
+<b class="nc">&nbsp;        catch (Exception e)</b>
+&nbsp;        {
+<b class="nc">&nbsp;            error = e.getMessage();</b>
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new event with the provided information.
+&nbsp;     *
+&nbsp;     * @param title     The username of the patron
+&nbsp;     * @param description     The password of the patron
+&nbsp;     * @param date   The first name of the patron
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void createEvent(String title, String description, String date) throws RemoteException {
+&nbsp;        try
+&nbsp;        {
+<b class="nc">&nbsp;            this.client.createEvent(title, description, date);</b>
+&nbsp;
+&nbsp;        }
+<b class="nc">&nbsp;        catch (Exception e)</b>
+&nbsp;        {
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Deletes the event with the specified ID.
+&nbsp;     *
+&nbsp;     * @param id The ID of the event to be deleted
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void deleteEvent(int id) throws RemoteException {
+&nbsp;        try
+&nbsp;        {
+<b class="nc">&nbsp;            this.client.deleteEvent(id);</b>
+&nbsp;
+&nbsp;        }
+<b class="nc">&nbsp;        catch (Exception e)</b>
+&nbsp;        {
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the event with the specified ID with the provided details.
+&nbsp;     *
+&nbsp;     * @param id          The ID of the event to be updated
+&nbsp;     * @param title       The new title for the event
+&nbsp;     * @param description The new description for the event
+&nbsp;     * @param eventDate   The new date for the event
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updateEvent(int id, String title, String description, String eventDate) throws RemoteException {
+&nbsp;        try{
+<b class="nc">&nbsp;            this.client.updateEvent( id,  title,  description,  eventDate);</b>
+<b class="nc">&nbsp;        } catch (Exception e)</b>
+&nbsp;        {
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Deletes the patron with the specified ID.
+&nbsp;     *
+&nbsp;     * @param id The ID of the patron to be deleted
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void deletePatron(int id) throws RemoteException {
+&nbsp;        try
+&nbsp;        {
+<b class="nc">&nbsp;            this.client.deletePatron(id);</b>
+&nbsp;
+&nbsp;        }
+<b class="nc">&nbsp;        catch (Exception e)</b>
+&nbsp;        {
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Filters books based on the provided genre, state, and search criteria.
+&nbsp;     *
+&nbsp;     * @param genre  The genre to filter by
+&nbsp;     * @param state  The state to filter by
+&nbsp;     * @param search The search criteria to filter by
+&nbsp;     * @return An ArrayList containing the filtered books
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    public ArrayList&lt;Book&gt; filter(String genre,String state, String search) throws RemoteException {
+<b class="nc">&nbsp;        return client.filter(genre,state,search);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Allows a patron to borrow a book.
+&nbsp;     *
+&nbsp;     * @param book   The book to be borrowed
+&nbsp;     * @param patron The patron borrowing the book
+&nbsp;     * @throws IOException  If an I/O error occurs
+&nbsp;     * @throws SQLException If a SQL error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void borrowBooks(Book book, Patron patron)
+&nbsp;        throws IOException, SQLException {
+<b class="nc">&nbsp;        client.borrowBooks(book,patron);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds a book to the wishlist of a patron.
+&nbsp;     *
+&nbsp;     * @param book   The book to be added to the wishlist
+&nbsp;     * @param patron The patron whose wishlist the book will be added to
+&nbsp;     * @throws IOException  If an I/O error occurs
+&nbsp;     * @throws SQLException If a SQL error occurs
+&nbsp;     */
+&nbsp;    @Override public void wishlistBook(Book book, Patron patron)
+&nbsp;        throws IOException, SQLException
+&nbsp;    {
+<b class="nc">&nbsp;        client.wishlistBook(book,patron);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Extends the borrowing period for a book by a patron.
+&nbsp;     *
+&nbsp;     * @param book   The book for which the borrowing period will be extended
+&nbsp;     * @param patron The patron who is extending the borrowing period
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     * @throws SQLException    If a SQL error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void extendBook(Book book, Patron patron) throws RemoteException, SQLException {
+<b class="nc">&nbsp;        client.extendBook(book, patron);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Checks if a book is wishlisted by a patron.
+&nbsp;     *
+&nbsp;     * @param book   The book to check for being wishlisted
+&nbsp;     * @param patron The patron whose wishlist is being checked
+&nbsp;     * @return true if the book is wishlisted by the patron, false otherwise
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     * @throws SQLException    If a SQL error occurs
+&nbsp;     */
+&nbsp;    @Override public boolean isWishlisted(Book book, Patron patron)
+&nbsp;        throws RemoteException, SQLException
+&nbsp;    {
+<b class="nc">&nbsp;        return client.isWishlisted(book,patron);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Returns a borrowed book to the database, marking it as returned by the patron.
+&nbsp;     *
+&nbsp;     * @param book   The book to be returned to the database
+&nbsp;     * @param patron The patron who is returning the book
+&nbsp;     * @throws IOException  If an I/O error occurs
+&nbsp;     * @throws SQLException If a SQL error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void returnBookToDatabase(Book book, Patron patron)
+&nbsp;        throws IOException, SQLException {
+<b class="nc">&nbsp;        client.returnBookToDatabase(book,patron);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Donates a book to the library.
+&nbsp;     *
+&nbsp;     * @param title       The title of the book to be donated
+&nbsp;     * @param author      The author of the book to be donated
+&nbsp;     * @param isbn        The ISBN of the book to be donated
+&nbsp;     * @param year        The publication year of the book to be donated
+&nbsp;     * @param publisher   The publisher of the book to be donated
+&nbsp;     * @param pageCount   The page count of the book to be donated
+&nbsp;     * @param genre       The genre of the book to be donated
+&nbsp;     * @param patron      The patron who is donating the book
+&nbsp;     * @throws SQLException If a SQL error occurs
+&nbsp;     * @throws IOException  If an I/O error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron)
+&nbsp;        throws SQLException, IOException
+&nbsp;    {
+<b class="nc">&nbsp;        client.donateBook(title, author, isbn, year, publisher, pageCount, genre, patron);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes a book from the wishlist of a patron.
+&nbsp;     *
+&nbsp;     * @param book   The book to be removed from the wishlist
+&nbsp;     * @param patron The patron whose wishlist the book will be removed from
+&nbsp;     * @throws IOException  If an I/O error occurs
+&nbsp;     * @throws SQLException If a SQL error occurs
+&nbsp;     */
+&nbsp;    @Override public void deleteFromWishlist(Book book, Patron patron)
+&nbsp;        throws IOException, SQLException
+&nbsp;    {
+<b class="nc">&nbsp;        client.deleteFromWishlist(book,patron);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves a list of books that are ending soon from a patron&#39;s wishlist.
+&nbsp;     *
+&nbsp;     * @param patron The patron whose wishlist is being checked for ending books
+&nbsp;     * @return An ArrayList containing titles of books that are ending soon from the patron&#39;s wishlist
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override public ArrayList&lt;String&gt; getEndingBooks(Patron patron)
+&nbsp;        throws RemoteException
+&nbsp;    {
+<b class="nc">&nbsp;         return client.getEndingBooks(patron);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Approves a donated book and adds it to the library collection.
+&nbsp;     *
+&nbsp;     * @param id         The ID of the donated book to be approved
+&nbsp;     * @param title      The title of the donated book
+&nbsp;     * @param author     The author of the donated book
+&nbsp;     * @param isbn       The ISBN of the donated book
+&nbsp;     * @param year       The publication year of the donated book
+&nbsp;     * @param publisher  The publisher of the donated book
+&nbsp;     * @param pageCount  The page count of the donated book
+&nbsp;     * @param genreId    The genre ID of the donated book
+&nbsp;     * @throws SQLException    If a SQL error occurs
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException {
+<b class="nc">&nbsp;        client.approveDonatedBook(id, title, author, isbn, year, publisher, pageCount, genreId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Rejects a donated book and removes it from the library&#39;s consideration.
+&nbsp;     *
+&nbsp;     * @param bookId The ID of the donated book to be rejected
+&nbsp;     * @throws SQLException    If a SQL error occurs
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void rejectDonatedBook(int bookId) throws SQLException, RemoteException {
+<b class="nc">&nbsp;        client.rejectDonatedBook(bookId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Allows a patron to log in with the provided username and password.
+&nbsp;     *
+&nbsp;     * @param username The username of the patron
+&nbsp;     * @param password The password of the patron
+&nbsp;     * @return The logged-in patron if successful, null otherwise
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public Patron login(String username, String password) throws RemoteException {
+&nbsp;        try{
+&nbsp;
+<b class="nc">&nbsp;            return this.client.login(username, password);</b>
+&nbsp;
+<b class="nc">&nbsp;        }catch (Exception e){</b>
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Allows an administrator to log in with the provided username and password.
+&nbsp;     *
+&nbsp;     * @param username The username of the administrator
+&nbsp;     * @param password The password of the administrator
+&nbsp;     * @return true if login is successful, false otherwise
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    public boolean loginAsAdmin(String username, String password) throws RemoteException{
+&nbsp;        try{
+<b class="nc">&nbsp;            return this.client.loginAsAdmin(username, password);</b>
+<b class="nc">&nbsp;        }catch (Exception e){</b>
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the username of a user identified by the given userID.
+&nbsp;     *
+&nbsp;     * @param userID      The ID of the user whose username will be updated
+&nbsp;     * @param newUsername The new username to be set for the user
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updateUsername(int userID, String newUsername) throws RemoteException {
+&nbsp;        try{
+<b class="nc">&nbsp;            client.updateUsername(userID, newUsername);</b>
+<b class="nc">&nbsp;        }catch (Exception e){</b>
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the email of a user identified by the given userID.
+&nbsp;     *
+&nbsp;     * @param userID   The ID of the user whose email will be updated
+&nbsp;     * @param newEmail The new email to be set for the user
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updateEmail(int userID, String newEmail) throws RemoteException {
+&nbsp;        try{
+<b class="nc">&nbsp;            client.updateEmail(userID, newEmail);</b>
+<b class="nc">&nbsp;        }catch (Exception e){</b>
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the phone number of a user identified by the given userID.
+&nbsp;     *
+&nbsp;     * @param userID         The ID of the user whose phone number will be updated
+&nbsp;     * @param newPhoneNumber The new phone number to be set for the user
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updatePhoneNumber(int userID, String newPhoneNumber) throws RemoteException {
+&nbsp;        try{
+<b class="nc">&nbsp;            client.updatePhoneNumber(userID, newPhoneNumber);</b>
+<b class="nc">&nbsp;        }catch (Exception e){</b>
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the first name of a user identified by the given userID.
+&nbsp;     *
+&nbsp;     * @param userID      The ID of the user whose first name will be updated
+&nbsp;     * @param newFirstName The new first name to be set for the user
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updateFirstName(int userID, String newFirstName) throws RemoteException {
+&nbsp;        try{
+<b class="nc">&nbsp;            client.updateFirstName(userID, newFirstName);</b>
+<b class="nc">&nbsp;        }catch (Exception e){</b>
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the last name of a user identified by the given userID.
+&nbsp;     *
+&nbsp;     * @param userID     The ID of the user whose last name will be updated
+&nbsp;     * @param newLastName The new last name to be set for the user
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updateLastName(int userID, String newLastName) throws RemoteException {
+&nbsp;        try{
+<b class="nc">&nbsp;            client.updateLastName(userID, newLastName);</b>
+<b class="nc">&nbsp;        }catch (Exception e){</b>
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the password of a user identified by the given userID.
+&nbsp;     *
+&nbsp;     * @param userID      The ID of the user whose password will be updated
+&nbsp;     * @param newPassword The new password to be set for the user
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updatePassword(int userID, String newPassword) throws RemoteException {
+&nbsp;        try{
+<b class="nc">&nbsp;            client.updatePassword(userID, newPassword);</b>
+<b class="nc">&nbsp;        }catch (Exception e){</b>
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the fees associated with a user identified by the given userID.
+&nbsp;     *
+&nbsp;     * @param userID  The ID of the user whose fees will be updated
+&nbsp;     * @param newFees The new fees to be set for the user
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updateFees(int userID, int newFees) throws RemoteException {
+&nbsp;        try{
+<b class="nc">&nbsp;            client.updateFees(userID, newFees);</b>
+<b class="nc">&nbsp;        }catch (Exception e){</b>
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Deletes a book from the library&#39;s collection.
+&nbsp;     *
+&nbsp;     * @param bookID    The ID of the book to be deleted
+&nbsp;     * @param title     The title of the book to be deleted
+&nbsp;     * @param author    The author of the book to be deleted
+&nbsp;     * @param year      The publication year of the book to be deleted
+&nbsp;     * @param publisher The publisher of the book to be deleted
+&nbsp;     * @param isbn      The ISBN of the book to be deleted
+&nbsp;     * @param pageCount The page count of the book to be deleted
+&nbsp;     * @param genre     The genre of the book to be deleted
+&nbsp;     * @throws SQLException If a SQL error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void deleteBook(int bookID,String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException {
+&nbsp;        try{
+<b class="nc">&nbsp;            client.deleteBook(bookID,title, author, year, publisher, isbn, pageCount, genre);</b>
+<b class="nc">&nbsp;        } catch(Exception e){</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(e);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new book in the library&#39;s collection.
+&nbsp;     *
+&nbsp;     * @param title      The title of the book to be created
+&nbsp;     * @param author     The author of the book to be created
+&nbsp;     * @param year       The publication year of the book to be created
+&nbsp;     * @param publisher  The publisher of the book to be created
+&nbsp;     * @param isbn       The ISBN of the book to be created
+&nbsp;     * @param pageCount  The page count of the book to be created
+&nbsp;     * @param genre      The genre of the book to be created
+&nbsp;     * @throws SQLException    If a SQL error occurs
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void createBook(String title, String author,String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException {
+&nbsp;        try{
+<b class="nc">&nbsp;            client.createBook(title, author, year, publisher, isbn, pageCount, genre);</b>
+<b class="nc">&nbsp;        }catch (Exception e){</b>
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the information of an existing book in the library&#39;s collection.
+&nbsp;     *
+&nbsp;     * @param bookID     The ID of the book to be updated
+&nbsp;     * @param title      The new title of the book
+&nbsp;     * @param author     The new author of the book
+&nbsp;     * @param year       The new publication year of the book
+&nbsp;     * @param publisher  The new publisher of the book
+&nbsp;     * @param isbn       The new ISBN of the book
+&nbsp;     * @param pageCount  The new page count of the book
+&nbsp;     * @param genre      The new genre of the book
+&nbsp;     * @throws SQLException    If a SQL error occurs
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void updateBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException {
+&nbsp;        try{
+<b class="nc">&nbsp;            client.updateBook(bookID, title, author, year, publisher, isbn, pageCount, genre);</b>
+<b class="nc">&nbsp;        }catch (Exception e){</b>
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Notifies listeners of a property change event.
+&nbsp;     *
+&nbsp;     * @param evt The property change event
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void propertyChange(PropertyChangeEvent evt) {
+<b class="nc">&nbsp;        support.firePropertyChange(evt);</b>
+&nbsp;    }
 &nbsp;}
 </code>
 </pre>
@@ -124,7 +764,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-28 14:11</div>
+    <div style="float:right;">generated on 2024-05-28 17:57</div>
 </div>
 </body>
 </html>
