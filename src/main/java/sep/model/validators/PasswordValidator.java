@@ -29,7 +29,7 @@ public class PasswordValidator {
             }
         }
 
-        if(!hasUpper && !hasLower && !hasDigit && !hasSpecial){
+        if(!hasUpper || !hasLower || !hasDigit || !hasSpecial){
             throw new IllegalArgumentException("Password must have at least one uppercase character, " +
                     "one digit and one special character!");
         };
