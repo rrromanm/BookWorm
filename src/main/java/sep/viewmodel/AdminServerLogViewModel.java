@@ -4,7 +4,7 @@ import sep.model.Model;
 
 /**
  * The AdminServerLogViewModel class provides the view model for managing the server log in the admin view.
- * <p>
+ *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 public class AdminServerLogViewModel {

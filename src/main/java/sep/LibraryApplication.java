@@ -14,7 +14,21 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.sql.SQLException;
 
+/**
+ * Main class for the library application.
+ *
+ * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
+ */
 public class LibraryApplication extends Application {
+
+    /**
+     * Starts the JavaFX application.
+     *
+     * @param primaryStage The primary stage of the JavaFX application.
+     * @throws IOException       If an I/O error occurs.
+     * @throws NotBoundException If the requested name is not currently bound in the registry.
+     * @throws SQLException      If a database access error occurs.
+     */
     @Override
     public void start(Stage primaryStage) throws IOException, NotBoundException, SQLException {
         Registry registry = LocateRegistry.getRegistry(1099);
@@ -25,6 +39,11 @@ public class LibraryApplication extends Application {
         viewHandler.start(primaryStage);
     }
 
+    /**
+     * The entry point of the application.
+     *
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         launch(args);
     }

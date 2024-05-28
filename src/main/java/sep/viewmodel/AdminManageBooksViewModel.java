@@ -21,7 +21,7 @@ import java.util.List;
  * It handles the logic for managing books, including updating, deleting, and adding new books,
  * as well as filtering and loading the list of books from the database.
  * This class listens for property changes from the model and updates the view accordingly.
- * <p>
+ *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 public class AdminManageBooksViewModel implements PropertyChangeListener

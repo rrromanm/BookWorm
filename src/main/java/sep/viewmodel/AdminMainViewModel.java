@@ -5,7 +5,7 @@ import sep.model.Model;
 /**
  * The AdminMainViewModel class provides the view model for the admin main view.
  * It handles the interaction between the admin main view and the underlying model.
- * <p>
+ *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 

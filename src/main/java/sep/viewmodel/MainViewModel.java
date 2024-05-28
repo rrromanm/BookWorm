@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * The MainViewModel class provides the view model for managing the main functionality of the application.
  * It handles borrowing, wishlisting and is used as home window that leads to all features.
  * It interacts with the model to perform operations related to books and patrons.
- * <p>
+ *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 public class MainViewModel implements PropertyChangeListener

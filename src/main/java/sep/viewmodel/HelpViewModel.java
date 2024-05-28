@@ -4,7 +4,7 @@ import sep.model.Model;
 
 /**
  * The HelpViewModel class provides the view model for accessing help information.
- * <p>
+ *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 public class HelpViewModel {

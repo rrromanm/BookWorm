@@ -16,7 +16,7 @@ import java.rmi.RemoteException;
 /**
  * The LoginViewModel class provides the view model for handling user login functionality.
  * It interacts with the model to perform login operations and manages the login view state.
- * <p>
+ *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 public class LoginViewModel

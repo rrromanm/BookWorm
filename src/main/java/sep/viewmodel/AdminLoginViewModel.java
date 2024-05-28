@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
  * The AdminLoginViewModel class provides the view model for the admin login view.
  * It handles the logic for admin login, including binding properties to the view,
  * performing the login action, and resetting the view model state.
- * <p>
+ *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 

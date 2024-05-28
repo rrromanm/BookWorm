@@ -16,7 +16,7 @@ import java.rmi.RemoteException;
 /**
  * The EventsViewModel class provides the view model for managing events in the system.
  * It interacts with the model to retrieve and update events, and listens for changes to events.
- * <p>
+ *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 public class EventsViewModel implements PropertyChangeListener

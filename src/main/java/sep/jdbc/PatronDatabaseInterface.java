@@ -5,6 +5,10 @@ import sep.model.Patron;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Interface defining methods for managing patron information in the database.
+ * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+ */
 public interface PatronDatabaseInterface
 {
   void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws SQLException;

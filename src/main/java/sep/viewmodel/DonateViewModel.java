@@ -10,7 +10,7 @@ import java.sql.SQLException;
 /**
  * The DonateViewModel class provides the view model for handling book donation operations.
  * It interacts with the model to donate a book with the provided details.
- * <p>
+ *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 public class DonateViewModel {

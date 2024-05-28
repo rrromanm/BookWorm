@@ -18,7 +18,7 @@ import java.sql.SQLException;
  * The AdminManageDonatedBooksViewModel class provides the view model for managing donated books in the admin view.
  * It handles the logic for approving and rejecting donated books, as well as loading the list of donated books from the model.
  * This class listens for property changes from the model and updates the view accordingly.
- * <p>
+ *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 public class AdminManageDonatedBooksViewModel implements PropertyChangeListener

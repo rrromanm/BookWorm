@@ -12,7 +12,7 @@ import java.rmi.RemoteException;
 /**
  * The CreateAccountViewModel class provides the view model for creating a new patron account in the system.
  * It interacts with the model to create a new patron account.
- * <p>
+ *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 public class CreateAccountViewModel {

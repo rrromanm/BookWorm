@@ -20,7 +20,7 @@ import java.util.ArrayList;
 /**
  * The MyBooksViewModel class provides the view model for managing a patron's borrowed books.
  * It allows patrons to return books, check for books that are borrowed by him, and extend book borrowing periods.
- * <p>
+ *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 public class MyBooksViewModel implements PropertyChangeListener

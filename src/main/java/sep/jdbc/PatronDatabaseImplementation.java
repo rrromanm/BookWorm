@@ -6,32 +6,61 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of the PatronDatabaseInterface for managing patron information in the database.
+ * This class provides methods to create, update, and retrieve patron data from the database.
+ * It also includes methods for user authentication.
+ *
+ * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+ */
 
 public class PatronDatabaseImplementation implements PatronDatabaseInterface {
     private static PatronDatabaseImplementation instance;
 
-
+    /**
+     * Private constructor to prevent instantiation from outside the class.
+     * This constructor registers the PostgreSQL JDBC driver.
+     *
+     * @throws SQLException If a database access error occurs.
+     */
     private PatronDatabaseImplementation() throws SQLException {
         DriverManager.registerDriver(new org.postgresql.Driver());
     }
+
+    /**
+     * Retrieves the singleton instance of the PatronDatabaseImplementation class.
+     *
+     * @return The singleton instance of the PatronDatabaseImplementation class.
+     * @throws SQLException If a database access error occurs.
+     */
     public static synchronized PatronDatabaseImplementation getInstance() throws SQLException {
         if (instance == null) {
             instance = new PatronDatabaseImplementation();
         }
         return instance;
     }
+
+    /**
+     * Establishes a connection to the book_worm database.
+     *
+     * @return The Connection object representing the database connection.
+     * @throws SQLException If a database access error occurs or this method is called on a closed connection.
+     */
     private Connection getConnection() throws SQLException {
-
-
-
         return DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres?currentSchema=book_worm_db", "postgres", "via");
-
-
-
-
-
     }
 
+    /**
+     * Creates a new patron record in the database with the specified details.
+     *
+     * @param username      The username of the patron.
+     * @param password      The password of the patron.
+     * @param first_name    The first name of the patron.
+     * @param last_name     The last name of the patron.
+     * @param email         The email address of the patron.
+     * @param phone_number  The phone number of the patron.
+     * @throws SQLException If a database access error occurs or the username, email, or phone number already exists.
+     */
     public void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number) throws SQLException {
         try(Connection conn = getConnection()) {
             if (usernameExists(username)) {
@@ -57,7 +86,13 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
         }
     }
 
-
+    /**
+     * Checks if a username already exists in the database.
+     *
+     * @param username The username to check.
+     * @return True if the username already exists, otherwise false.
+     * @throws SQLException If a database access error occurs.
+     */
     public boolean usernameExists(String username) throws SQLException {
         try (Connection conn = getConnection()) {
             PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) FROM book_worm_db.patron WHERE username = ?");
@@ -71,6 +106,13 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
         return false;
     }
 
+    /**
+     * Checks if an email address already exists in the database.
+     *
+     * @param email The email address to check.
+     * @return True if the email address already exists, otherwise false.
+     * @throws SQLException If a database access error occurs.
+     */
     private boolean emailExists(String email) throws SQLException {
         try (Connection conn = getConnection()) {
             PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) FROM book_worm_db.patron WHERE email = ?");
@@ -84,6 +126,13 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
         return false;
     }
 
+    /**
+     * Checks if a phone number already exists in the database.
+     *
+     * @param phone_number The phone number to check.
+     * @return True if the phone number already exists, otherwise false.
+     * @throws SQLException If a database access error occurs.
+     */
     private boolean phoneExists(String phone_number) throws SQLException {
         try (Connection conn = getConnection()) {
             PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) FROM book_worm_db.patron WHERE phone_number = ?");
@@ -97,7 +146,14 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
         return false;
     }
 
-
+    /**
+     * Authenticates a patron based on the provided username and password.
+     *
+     * @param username The username of the patron.
+     * @param password The password of the patron.
+     * @return The authenticated patron if successful, otherwise null.
+     * @throws SQLException If a database access error occurs.
+     */
     public Patron login(String username, String password) throws SQLException {
         try(Connection conn = getConnection()) {
 
@@ -139,6 +195,14 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
         }
     }
 
+    /**
+     * Authenticates an administrator based on the provided username and password.
+     *
+     * @param username The username of the administrator.
+     * @param password The password of the administrator.
+     * @return True if the authentication is successful, otherwise false.
+     * @throws SQLException If a database access error occurs.
+     */
     public boolean loginAsAdmin(String username, String password) throws SQLException {
         try(Connection conn = getConnection()) {
             PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) FROM book_worm_db.librarian WHERE username = ? AND password = ?;");
@@ -164,6 +228,13 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
     }
 
 
+    /**
+     * Updates the username of a patron in the database.
+     *
+     * @param userID      The ID of the patron whose username needs to be updated.
+     * @param newUsername The new username to set.
+     * @throws SQLException If a database access error occurs or the new username already exists.
+     */
     public void updateUsername(int userID, String newUsername) throws SQLException {
         try (Connection conn = getConnection()) {
 
@@ -187,8 +258,13 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
         }
     }
 
-
-
+    /**
+     * Updates the password of a patron in the database.
+     *
+     * @param userID     The ID of the patron whose password needs to be updated.
+     * @param newPassword The new password to set.
+     * @throws SQLException If a database access error occurs.
+     */
     public void updatePassword(int userID, String newPassword) throws SQLException {
         try (Connection conn = getConnection()) {
                 PreparedStatement updateStmt = conn.prepareStatement("UPDATE book_worm_db.patron SET password = ? WHERE id = ?");
@@ -198,6 +274,13 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
         }
     }
 
+    /**
+     * Updates the email address of a patron in the database.
+     *
+     * @param userID   The ID of the patron whose email address needs to be updated.
+     * @param newEmail The new email address to set.
+     * @throws SQLException If a database access error occurs or the new email already exists.
+     */
     public void updateEmail(int userID, String newEmail) throws SQLException {
         try (Connection conn = getConnection()) {
 
@@ -217,6 +300,14 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
 
         }
     }
+
+    /**
+     * Updates the phone number of a patron in the database.
+     *
+     * @param userID     The ID of the patron whose phone number needs to be updated.
+     * @param newPhone   The new phone number to set.
+     * @throws SQLException If a database access error occurs or the new phone number already exists.
+     */
     public void updatePhone(int userID, String newPhone) throws SQLException {
         try (Connection conn = getConnection()) {
 
@@ -236,6 +327,13 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
         }
     }
 
+    /**
+     * Updates the first name of a patron in the database.
+     *
+     * @param userID  The ID of the patron whose first name needs to be updated.
+     * @param newFirst The new first name to set.
+     * @throws SQLException If a database access error occurs.
+     */
     public void updateFirstName(int userID, String newFirst) throws SQLException{
         try(Connection conn = getConnection()) {
             PreparedStatement updateStmt = conn.prepareStatement("UPDATE book_worm_db.patron SET first_name =? WHERE id = ?");
@@ -244,6 +342,14 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
             updateStmt.executeUpdate();
         }
     }
+
+    /**
+     * Updates the last name of a patron in the database.
+     *
+     * @param userID The ID of the patron whose last name needs to be updated.
+     * @param newLast The new last name to set.
+     * @throws SQLException If a database access error occurs.
+     */
     public void updateLastName(int userID, String newLast) throws SQLException{
         try(Connection conn = getConnection()) {
             PreparedStatement updateStmt = conn.prepareStatement("UPDATE book_worm_db.patron SET last_name =? WHERE id = ?");
@@ -253,7 +359,13 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
         }
     }
 
-
+    /**
+     * Updates the fees of a patron in the database.
+     *
+     * @param userID  The ID of the patron whose fees need to be updated.
+     * @param newFees The new fees to set.
+     * @throws SQLException If a database access error occurs.
+     */
     public void updateFees(int userID, int newFees) throws SQLException{
         try(Connection conn = getConnection()) {
             PreparedStatement updateStmt = conn.prepareStatement("UPDATE book_worm_db.patron SET fees =? WHERE id = ?");
@@ -263,6 +375,12 @@ public class PatronDatabaseImplementation implements PatronDatabaseInterface {
         }
     }
 
+    /**
+     * Retrieves a list of all patrons from the database.
+     *
+     * @return A list containing all patron objects.
+     * @throws SQLException If a database access error occurs.
+     */
     public List<Patron> getAllPatrons() throws SQLException {
         List<Patron> patrons = new ArrayList<>();
         try (Connection conn = getConnection()) {

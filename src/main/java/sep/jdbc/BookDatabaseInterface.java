@@ -5,7 +5,10 @@ import sep.model.Patron;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+/**
+ * Interface representing defining methods for managing a book information in the database.
+ * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+ */
 public interface BookDatabaseInterface
 {
   void createBook(String title, String author,String year, String publisher, String isbn, String pageCount, String genre) throws SQLException;

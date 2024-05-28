@@ -5,13 +5,31 @@ import sep.model.*;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * The BookDatabaseImplementation class provides an implementation of the BookDatabaseInterface
+ * for interacting with the database related to book operations.
+ * It handles operations for books, including filtering, borrowing, returning, wishlisting, and reading history.
+ *
+ * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+ */
 public class BookDatabaseImplementation implements BookDatabaseInterface {
     private static BookDatabaseImplementation instance;
 
+    /**
+     * Constructs a new BookDatabaseImplementation instance.
+     *
+     * @throws SQLException If a database access error occurs
+     */
     private BookDatabaseImplementation() throws SQLException {
         DriverManager.registerDriver(new org.postgresql.Driver());
     }
 
+    /**
+     * Retrieves the singleton instance of BookDatabaseImplementation.
+     *
+     * @return The BookDatabaseImplementation instance
+     * @throws SQLException If a database access error occurs
+     */
     public static synchronized BookDatabaseImplementation getInstance() throws SQLException {
         if (instance == null) {
             instance = new BookDatabaseImplementation();
@@ -19,6 +37,12 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         return instance;
     }
 
+    /**
+     * Establishes a connection to the database.
+     *
+     * @return A Connection object representing the database connection
+     * @throws SQLException If a database access error occurs
+     */
     private Connection getConnection() throws SQLException {
 
 
@@ -29,6 +53,18 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
 
     }
 
+    /**
+     * Creates a new book in the database.
+     *
+     * @param title       The title of the book
+     * @param author      The author of the book
+     * @param year        The year of publication of the book
+     * @param publisher   The publisher of the book
+     * @param isbn        The ISBN of the book
+     * @param pageCount   The page count of the book
+     * @param genre       The genre of the book
+     * @throws SQLException If a database access error occurs
+     */
     public void createBook(String title, String author,String year, String publisher, String isbn, String pageCount, String genre) throws SQLException {
         try (Connection connection = getConnection();){
             int genreId = getGenreId(genre);
@@ -49,6 +85,19 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         }
     }
 
+    /**
+     * Deletes a book from the database based on its ID.
+     *
+     * @param bookID      The ID of the book to delete
+     * @param title       The title of the book to delete
+     * @param author      The author of the book to delete
+     * @param year        The year of publication of the book to delete
+     * @param publisher   The publisher of the book to delete
+     * @param isbn        The ISBN of the book to delete
+     * @param pageCount   The page count of the book to delete
+     * @param genre       The genre of the book to delete
+     * @throws SQLException If a database access error occurs
+     */
     @Override
     public void deleteBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException {
         try (Connection connection = getConnection()) {
@@ -78,6 +127,19 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
     }
 
 
+    /**
+     * Updates the information of a book in the database.
+     *
+     * @param bookID      The ID of the book to update
+     * @param title       The updated title of the book
+     * @param author      The updated author of the book
+     * @param year        The updated year of publication of the book
+     * @param publisher   The updated publisher of the book
+     * @param isbn        The updated ISBN of the book
+     * @param pageCount   The updated page count of the book
+     * @param genre       The updated genre of the book
+     * @throws SQLException If a database access error occurs
+     */
     @Override
     public void updateBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException {
         try (Connection connection = getConnection()) {
@@ -99,7 +161,15 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
     }
 
 
-
+    /**
+     * Retrieves books from the database based on state, genre, and search.
+     *
+     * @param state       The state of the books to filter (e.g., "Available", "Borrowed")
+     * @param genres      The genre of the books to filter
+     * @param search      The search query to filter books by title
+     * @return An ArrayList of Book objects matching the filter criteria
+     * @throws SQLException If a database access error occurs
+     */
     public ArrayList<Book> filter(String state, String genres, String search) throws SQLException {
         try (Connection connection = getConnection()) {
             StringBuilder sqlQuery = new StringBuilder("SELECT\n" +
@@ -195,7 +265,12 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
     }
 
 
-
+    /**
+     * Retrieves all books from the database.
+     *
+     * @return An ArrayList of all Book objects in the database
+     * @throws SQLException If a database access error occurs
+     */
     public ArrayList<Book> readBooks() throws SQLException {
         try (Connection connection = getConnection())
         {
@@ -277,6 +352,13 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         return books;
         }
     }
+
+    /**
+     * Retrieves all available genres from the database.
+     *
+     * @return An ArrayList of genre names
+     * @throws SQLException If a database access error occurs
+     */
     public ArrayList<String> readGenres() throws SQLException{
         try (Connection connection = getConnection()){
             PreparedStatement statement1 = connection.prepareStatement("SELECT genre FROM book_worm_db.genre");
@@ -290,6 +372,12 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         }
     }
 
+    /**
+     * Retrieves all donated books from the database.
+     *
+     * @return An ArrayList of Book objects representing donated books
+     * @throws SQLException If a database access error occurs
+     */
     @Override
     public ArrayList<Book> readDonatedBooks() throws SQLException {
         try (Connection connection = getConnection()) {
@@ -330,8 +418,14 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         }
     }
 
-    //TODO: Needs to implement a function that the admin sets how long you can borrow book for + extend
 
+    /**
+     * Borrows a book from the database and updates its state to 'Borrowed'.
+     *
+     * @param book   The book to be borrowed
+     * @param patron The patron borrowing the book
+     * @throws SQLException If a database access error occurs
+     */
     public void borrowBook(Book book, Patron patron) throws SQLException {
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
@@ -359,7 +453,14 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
             }
         }
     }
-
+    /**
+     * Returns a book
+     * Updates the database to mark a book as returned and sets its state to 'Available'.
+     *
+     * @param book The Book object representing the book being returned.
+     * @param patron The Patron object representing the user returning the book.
+     * @throws SQLException If a database access error occurs or this method is called on a closed connection.
+     */
     public void returnBookToDatabase(Book book, Patron patron) throws SQLException {
         try (Connection connection = getConnection()) {
                 PreparedStatement returnStatement = connection.prepareStatement(
@@ -387,6 +488,13 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
             }
         }
 
+    /**
+     * Retrieves a list of borrowed books for a given patron from the database.
+     *
+     * @param patron The Patron object representing the user whose borrowed books are being retrieved.
+     * @return An ArrayList of Book objects representing the borrowed books.
+     * @throws SQLException If a database access error occurs or this method is called on a closed connection.
+     */
     public ArrayList<Book> readBorrowedBook(Patron patron) throws SQLException{
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
@@ -445,6 +553,14 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
             return books;
         }
     }
+
+    /**
+     * Retrieves a list of books that a given patron borrowed from the database in the past.
+     *
+     * @param patron The Patron object representing the user whose past borrowed books are being retrieved.
+     * @return An ArrayList of Book objects representing the books form the past borrowings.
+     * @throws SQLException If a database access error occurs or this method is called on a closed connection.
+     */
     public ArrayList<Book> readHistoryOfBooks(Patron patron) throws SQLException{
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
@@ -497,6 +613,14 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
             return books;
         }
     }
+
+    /**
+     * Retrieves the count of books read by a given patron from the database.
+     *
+     * @param patron The Patron object representing the user whose book count is being retrieved.
+     * @return The count of books read by the patron.
+     * @throws SQLException If a database access error occurs or this method is called on a closed connection.
+     */
     public int readAmountOfBooksRead(Patron patron) throws SQLException{
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
@@ -519,6 +643,14 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
             return amount;
         }
     }
+
+    /**
+     * Adds a book to a patron's wishlist in the database.
+     *
+     * @param book The Book object representing the book being added to the wishlist.
+     * @param patron The Patron object representing the user adding the book to the wishlist.
+     * @throws SQLException If a database access error occurs or this method is called on a closed connection.
+     */
     public void wishlistBook(Book book, Patron patron) throws SQLException {
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
@@ -531,6 +663,15 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
 
         }
     }
+
+    /**
+     * Checks if a book is wishlisted by a given patron in the database.
+     *
+     * @param book The Book object representing the book being checked.
+     * @param patron The Patron object representing the user whose wishlist is being checked.
+     * @return true if the book is wishlisted by the patron, false otherwise.
+     * @throws SQLException If a database access error occurs or this method is called on a closed connection.
+     */
     public boolean isWishlisted(Book book,Patron patron) throws SQLException{
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement("SELECT count(*)\n"
@@ -553,6 +694,13 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         }
     }
 
+    /**
+     * Retrieves a list of wishlisted books by a given patron from the database.
+     *
+     * @param patron The Patron object representing the user whose wishlisted books are being retrieved.
+     * @return An ArrayList of Book objects representing the wishlisted books.
+     * @throws SQLException If a database access error occurs or this method is called on a closed connection.
+     */
     public ArrayList<Book> readWishlistedBooks(Patron patron) throws SQLException{
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
@@ -603,6 +751,14 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
             return books;
         }
     }
+
+    /**
+     * Deletes a book from a patron's wishlist in the database.
+     *
+     * @param book The Book object representing the book being deleted from the wishlist.
+     * @param patron The Patron object representing the user removing the book from the wishlist.
+     * @throws SQLException If a database access error occurs or this method is called on a closed connection.
+     */
     public void deleteFromWishlist(Book book,Patron patron) throws SQLException{
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
@@ -615,6 +771,13 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         }
     }
 
+    /**
+     * Retrieves the amount of books currently borrowed by a given patron from the database.
+     *
+     * @param patron The Patron object representing the user whose borrowed books are being counted.
+     * @return The number of books currently borrowed by the patron.
+     * @throws SQLException If a database access error occurs or this method is called on a closed connection.
+     */
     @Override public int readAmountOfBorrowedBooks(Patron patron)
         throws SQLException
     {
@@ -641,6 +804,13 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         }
     }
 
+    /**
+     * Retrieves the ID of a genre given its name from the database.
+     *
+     * @param genreName The name of the genre.
+     * @return The ID of the genre.
+     * @throws SQLException If a database access error occurs or this method is called on a closed connection.
+     */
     public int getGenreId(String genreName) throws SQLException {
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT id FROM book_worm_db.genre WHERE genre = ?")) {
@@ -654,6 +824,20 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         }
     }
 
+    /**
+     * Allows a patron to donate a book to the library and adds it to the database.
+     *
+     * @param title The title of the book being donated.
+     * @param author The author of the book being donated.
+     * @param isbn The ISBN of the book being donated.
+     * @param year The year of publication of the book being donated.
+     * @param publisher The publisher of the book being donated.
+     * @param pageCount The page count of the book being donated.
+     * @param genre The genre of the book being donated.
+     * @param patron The Patron object representing the user donating the book.
+     * @return The Book object representing the donated book.
+     * @throws SQLException If a database access error occurs or this method is called on a closed connection.
+     */
     public Book donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException {
         int genreId = getGenreId(genre);
 
@@ -690,6 +874,13 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         }
     }
 
+    /**
+     * Checks for books borrowed by a patron that are due within the next week.
+     *
+     * @param patron The Patron object representing the user whose borrowed books are being checked.
+     * @return A list of titles of books that are due within the next week.
+     * @throws SQLException If a database access error occurs or this method is called on a closed connection.
+     */
     @Override public ArrayList<String> checkEndingBooks(Patron patron) throws SQLException
     {
         try (Connection connection = getConnection()) {
@@ -713,6 +904,12 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         }
     }
 
+    /**
+     * Extends the return date of a borrowed book by 10 days.
+     *
+     * @param book The Book object representing the book whose return date is being extended.
+     * @param patron The Patron object representing the user who is extending the book's return date.
+     */
     @Override
     public void extendBook(Book book, Patron patron) {
         try (Connection connection = getConnection();
@@ -742,7 +939,19 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         }
     }
 
-
+    /**
+     * Approves a donated book, adds it to the library, and removes it from the donated books list.
+     *
+     * @param id The ID of the donated book.
+     * @param title The title of the donated book.
+     * @param author The author of the donated book.
+     * @param isbn The ISBN of the donated book.
+     * @param year The year of publication of the donated book.
+     * @param publisher The publisher of the donated book.
+     * @param pageCount The page count of the donated book.
+     * @param genreId The ID of the genre of the donated book.
+     * @throws SQLException If a database access error occurs or this method is called on a closed connection.
+     */
     public void approveDonatedBook(int id,String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException {
         int genre_id = getGenreId(genreId);
 
@@ -786,6 +995,11 @@ public class BookDatabaseImplementation implements BookDatabaseInterface {
         }
     }
 
+    /**
+     * Rejects a donated book and removes it from the donated books list.
+     *
+     * @param bookId The ID of the donated book to be rejected.
+     */
     public void rejectDonatedBook(int bookId){
         try (Connection connection = getConnection();
              PreparedStatement deleteStatement = connection.prepareStatement(

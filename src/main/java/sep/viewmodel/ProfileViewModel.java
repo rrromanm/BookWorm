@@ -21,7 +21,7 @@ import java.sql.SQLException;
  * including username, email, first name, last name, phone number, password, patron ID, history of books,
  * and wishlist.
  * It allows patrons to update their profile information, view their borrowing history, and remove books from their wishlist.
- * <p>
+ *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 public class ProfileViewModel implements PropertyChangeListener

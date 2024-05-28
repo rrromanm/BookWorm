@@ -6,7 +6,7 @@ import sep.view.AdminServerLogViewController;
 /**
  * The ViewModelFactory class is responsible for creating and providing instances of various view model classes.
  * Each view model corresponds to a specific view or functionality in the application.
- * <p>
+ *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 public class ViewModelFactory

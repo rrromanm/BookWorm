@@ -20,7 +20,7 @@ import java.util.List;
  * The AdminManageEventsViewModel class provides the view model for managing events in the admin view.
  * It handles the logic for creating, updating, deleting, and loading events from the model.
  * This class listens for property changes from the model and updates the view accordingly.
- * <p>
+ *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 public class AdminManageEventsViewModel implements PropertyChangeListener

@@ -21,7 +21,7 @@ import java.util.List;
  * It handles the logic for managing patron accounts, including updating user information,
  * deleting patrons, and loading the list of patrons from the database.
  * This class listens for property changes from the model and updates the view accordingly.
- * <p>
+ *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 public class AdminManageAccountsViewModel implements PropertyChangeListener {
