@@ -10,6 +10,11 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * The ConnectorInterface provides methods for interacting with the application's database and performing various operations related to books, events, and patrons.\
+ *
+ * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+ */
 public interface ConnectorInterface extends Remote {
     ArrayList<Book> getAllBooks() throws RemoteException;
     ArrayList<Book> getBorrowedBooks(Patron patron) throws RemoteException;

@@ -1,6 +1,5 @@
 package sep.client;
 
-import dk.via.remote.observer.RemotePropertyChangeListener;
 import sep.model.Book;
 import sep.model.Event;
 import sep.model.Patron;
@@ -11,6 +10,12 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * The ClientInterface provides methods for interacting with the library system
+ * from the client's perspective.
+ *
+ * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+ */
 public interface ClientInterface {
     ArrayList<Book> getAllBooks() throws RemoteException;
 
