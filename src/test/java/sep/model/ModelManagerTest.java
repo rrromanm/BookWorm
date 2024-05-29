@@ -6,6 +6,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import sep.client.Client;
 import sep.client.ClientInterface;
 import sep.model.ModelManager;
 import sep.server.Connector;
@@ -30,14 +31,17 @@ public class ModelManagerTest {
     private ModelManager modelManager;
     private Model model;
     private ConnectorInterface connector;
-    private MyBooksViewModel myBooksViewModel;
+    private Patron loggedInUser;
 
     @BeforeEach
     public void setUp() throws IOException, SQLException {
-        connector = Mockito.mock(ConnectorInterface.class);
+        connector = mock(ConnectorInterface.class);
         modelManager = new ModelManager(connector);
-        model = Mockito.mock(Model.class);
-        myBooksViewModel = Mockito.mock(MyBooksViewModel.class);
+        model = mock(Model.class);
+
+        loggedInUser = new Patron(1, "John", "Doe", "johndoe", "password123", "johndoe@example.com", "12345678", 0);
+        UserSession.getInstance().setLoggedInUser(loggedInUser);
+        UserSession.getInstance().getLoggedInUser();
     }
 
     @Test

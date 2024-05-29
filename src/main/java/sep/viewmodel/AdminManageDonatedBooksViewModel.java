@@ -24,7 +24,7 @@ import java.sql.SQLException;
 public class AdminManageDonatedBooksViewModel implements PropertyChangeListener
 {
     private final Model model;
-    private final ListProperty<Book> bookList;
+    final ListProperty<Book> bookList;
 
     /**
      * Constructs an AdminManageDonatedBooksViewModel with the specified model.

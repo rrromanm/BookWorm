@@ -21,7 +21,7 @@ import java.rmi.RemoteException;
  */
 public class EventsViewModel implements PropertyChangeListener
 {
-    private final ListProperty<Event> eventList;
+    final ListProperty<Event> eventList;
     private final Model model;
 
     /**

@@ -26,10 +26,10 @@ import java.util.List;
 public class AdminManageEventsViewModel implements PropertyChangeListener
 {
     private final Model model;
-    private final ListProperty<Event> eventList;
-    private final StringProperty title;
-    private final StringProperty description;
-    private final StringProperty date;
+    final ListProperty<Event> eventList;
+    final StringProperty title;
+    final StringProperty description;
+    final StringProperty date;
     private PropertyChangeSupport support;
 
     /**

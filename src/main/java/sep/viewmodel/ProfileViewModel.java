@@ -24,8 +24,7 @@ import java.sql.SQLException;
  *
  * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
-public class ProfileViewModel implements PropertyChangeListener
-{
+public class ProfileViewModel implements PropertyChangeListener {
     private final Model model;
     protected final StringProperty username;
     protected final StringProperty email;
@@ -44,8 +43,7 @@ public class ProfileViewModel implements PropertyChangeListener
      *
      * @param model The model to interact with for managing profile information
      */
-    public ProfileViewModel(Model model)
-    {
+    public ProfileViewModel(Model model) {
         this.model = model;
         this.username = new SimpleStringProperty("");
         this.email = new SimpleStringProperty("");
@@ -68,8 +66,7 @@ public class ProfileViewModel implements PropertyChangeListener
      * @throws RemoteException If a remote error occurs
      */
     public void bindHistoryList(ObjectProperty<ObservableList<Book>> property) throws
-        RemoteException
-    {
+            RemoteException {
         property.bindBidirectional(historyOfBooksList);
     }
 
@@ -80,8 +77,7 @@ public class ProfileViewModel implements PropertyChangeListener
      * @throws RemoteException If a remote error occurs
      */
     public void bindWishlistList(ObjectProperty<ObservableList<Book>> property) throws
-        RemoteException
-    {
+            RemoteException {
         property.bindBidirectional(wishlistList);
     }
 
@@ -144,7 +140,7 @@ public class ProfileViewModel implements PropertyChangeListener
      *
      * @param property The property to bind to the patronID
      */
-    public void bindUserId(StringProperty property){
+    public void bindUserId(StringProperty property) {
         property.bindBidirectional(patronID);
     }
 
@@ -180,7 +176,7 @@ public class ProfileViewModel implements PropertyChangeListener
      * @param patron The patron whose wishlist is to be reset
      * @throws RemoteException If a remote error occurs
      */
-    public void resetWishlistList(Patron patron) throws RemoteException{
+    public void resetWishlistList(Patron patron) throws RemoteException {
         wishlistList.setAll(model.getWishlistedBooks(patron));
     }
 
@@ -191,7 +187,7 @@ public class ProfileViewModel implements PropertyChangeListener
      * @return The number of books read by the patron
      * @throws RemoteException If a remote error occurs
      */
-    public int getAmountOfReadBooks(Patron patron) throws RemoteException{
+    public int getAmountOfReadBooks(Patron patron) throws RemoteException {
         return model.getAmountOfReadBooks(patron);
     }
 
@@ -200,13 +196,12 @@ public class ProfileViewModel implements PropertyChangeListener
      *
      * @throws RemoteException If a remote error occurs
      */
-    public void deletePatron() throws RemoteException{
-        try{
+    public void deletePatron() throws RemoteException {
+        try {
             model.deletePatron(UserSession.getInstance().getLoggedInUser().getUserID());
-        }catch(RemoteException e)
-            {
-                throw new RemoteException(e.getMessage());
-            }
+        } catch (RemoteException e) {
+            throw new RemoteException(e.getMessage());
+        }
     }
 
     /**
@@ -215,16 +210,16 @@ public class ProfileViewModel implements PropertyChangeListener
      * @param newUsername The new username to set
      * @param userID      The ID of the logged-in patron
      */
-    public void updateUsername(String newUsername,int userID){
+    public void updateUsername(String newUsername, int userID) {
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
-        if(loggedInUser != null){
-            try{
+        if (loggedInUser != null) {
+            try {
                 model.updateUsername(loggedInUser.getUserID(), newUsername);
-            }catch (Exception e){
+            } catch (Exception e) {
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
             }
-        }else{
+        } else {
             throw new IllegalStateException("No user logged in.");
         }
     }
@@ -233,18 +228,18 @@ public class ProfileViewModel implements PropertyChangeListener
      * Updates the email of the logged-in patron.
      *
      * @param newEmail The new email address to set
-     * @param userID    The ID of the logged-in patron
+     * @param userID   The ID of the logged-in patron
      */
-    public void updateEmail(String newEmail,int userID){
+    public void updateEmail(String newEmail, int userID) {
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
-        if(loggedInUser!= null){
-            try{
+        if (loggedInUser != null) {
+            try {
                 model.updateEmail(loggedInUser.getUserID(), newEmail);
-            }catch (Exception e){
+            } catch (Exception e) {
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
             }
-        }else{
+        } else {
             throw new IllegalStateException("No user logged in.");
         }
     }
@@ -255,16 +250,16 @@ public class ProfileViewModel implements PropertyChangeListener
      * @param newPhoneNumber The new phone number to set
      * @param userID         The ID of the logged-in patron
      */
-    public void updatePhoneNumber(String newPhoneNumber,int  userID){
+    public void updatePhoneNumber(String newPhoneNumber, int userID) {
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
-        if(loggedInUser!= null){
-            try{
+        if (loggedInUser != null) {
+            try {
                 model.updatePhoneNumber(loggedInUser.getUserID(), newPhoneNumber);
-            }catch (Exception e){
+            } catch (Exception e) {
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
             }
-        }else{
+        } else {
             throw new IllegalStateException("No user logged in.");
         }
     }
@@ -275,16 +270,16 @@ public class ProfileViewModel implements PropertyChangeListener
      * @param newFirstName The new first name to set
      * @param userID       The ID of the logged-in patron
      */
-    public void updateFirstName(String newFirstName,int userID){
+    public void updateFirstName(String newFirstName, int userID) {
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
-        if(loggedInUser!= null){
-            try{
+        if (loggedInUser != null) {
+            try {
                 model.updateFirstName(loggedInUser.getUserID(), newFirstName);
-            }catch (Exception e){
+            } catch (Exception e) {
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
             }
-        }else{
+        } else {
             throw new IllegalStateException("No user logged in.");
         }
     }
@@ -295,16 +290,16 @@ public class ProfileViewModel implements PropertyChangeListener
      * @param newLastName The new last name to set
      * @param userID      The ID of the logged-in patron
      */
-    public void updateLastName(String newLastName,int userID){
+    public void updateLastName(String newLastName, int userID) {
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
-        if(loggedInUser!= null){
-            try{
+        if (loggedInUser != null) {
+            try {
                 model.updateLastName(loggedInUser.getUserID(), newLastName);
-            }catch (Exception e){
+            } catch (Exception e) {
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
             }
-        }else{
+        } else {
             throw new IllegalStateException("No user logged in.");
         }
     }
@@ -315,16 +310,16 @@ public class ProfileViewModel implements PropertyChangeListener
      * @param newPassword The new password to set
      * @param userID      The ID of the logged-in patron
      */
-    public void updatePassword(String newPassword,int userID){
+    public void updatePassword(String newPassword, int userID) {
         Patron loggedInUser = UserSession.getInstance().getLoggedInUser();
-        if(loggedInUser!= null){
-            try{
+        if (loggedInUser != null) {
+            try {
                 model.updatePassword(loggedInUser.getUserID(), newPassword);
-            }catch (Exception e){
+            } catch (Exception e) {
                 error.set(e.getMessage());
                 throw new IllegalStateException(e.getMessage());
             }
-        }else{
+        } else {
             throw new IllegalStateException("No user logged in.");
         }
     }
@@ -338,9 +333,8 @@ public class ProfileViewModel implements PropertyChangeListener
      * @throws IOException  If an I/O error occurs
      */
     public void removeFromWishlist(Book book, Patron patron)
-        throws SQLException, IOException
-    {
-        model.deleteFromWishlist(book,patron);
+            throws SQLException, IOException {
+        model.deleteFromWishlist(book, patron);
     }
 
     /**
@@ -359,30 +353,27 @@ public class ProfileViewModel implements PropertyChangeListener
      *
      * @param event The property change event containing information about the change
      */
-    @Override public void propertyChange(PropertyChangeEvent event)
-    {
-        Platform.runLater(() -> {
-            if (event.getPropertyName().equals("BorrowBook"))
-            {
+    @Override
+    public void propertyChange(PropertyChangeEvent event) {
+        {
+            if (event.getPropertyName().equals("BorrowBook")) {
                 this.support.firePropertyChange("BorrowBook", false, true);
             }
-            if (event.getPropertyName().equals("ReturnBook"))
-            {
+            if (event.getPropertyName().equals("ReturnBook")) {
                 try {
                     resetHistoryList(UserSession.getInstance().getLoggedInUser());
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
             }
-            if (event.getPropertyName().equals("Wishlist"))
-            {
+            if (event.getPropertyName().equals("Wishlist")) {
                 try {
                     resetWishlistList(UserSession.getInstance().getLoggedInUser());
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
             }
-            if(event.getPropertyName().equals("removeBook")){
+            if (event.getPropertyName().equals("removeBook")) {
                 try {
                     resetHistoryList(UserSession.getInstance().getLoggedInUser());
                     resetWishlistList(UserSession.getInstance().getLoggedInUser());
@@ -390,7 +381,7 @@ public class ProfileViewModel implements PropertyChangeListener
                     throw new RuntimeException(e);
                 }
             }
-            if(event.getPropertyName().equals("updateBook")){
+            if (event.getPropertyName().equals("updateBook")) {
                 try {
                     resetHistoryList(UserSession.getInstance().getLoggedInUser());
                     resetWishlistList(UserSession.getInstance().getLoggedInUser());
@@ -399,17 +390,16 @@ public class ProfileViewModel implements PropertyChangeListener
                 }
 
             }
-            if(event.getPropertyName().equals("updatePatron")){
+            if (event.getPropertyName().equals("updatePatron")) {
                 this.support.firePropertyChange("updatePatron", false, true);
             }
-            if (event.getPropertyName().equals("ExtendBook"))
-            {
+            if (event.getPropertyName().equals("ExtendBook")) {
                 this.support.firePropertyChange("ExtendBook", false, true);
             }
-            if (event.getPropertyName().equals("removePatron")){
+            if (event.getPropertyName().equals("removePatron")) {
                 this.support.firePropertyChange("removePatron", false, true);
             }
-            if (event.getPropertyName().equals("login")){
+            if (event.getPropertyName().equals("login")) {
                 this.support.firePropertyChange("login", false, true);
                 try {
                     resetHistoryList(UserSession.getInstance().getLoggedInUser());
@@ -418,6 +408,6 @@ public class ProfileViewModel implements PropertyChangeListener
                     throw new RuntimeException(e);
                 }
             }
-        });
+        }
     }
 }

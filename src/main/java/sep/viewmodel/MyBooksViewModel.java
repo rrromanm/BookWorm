@@ -27,7 +27,7 @@ public class MyBooksViewModel implements PropertyChangeListener
 {
     private final Model model;
     private PropertyChangeListener support;
-    private final ListProperty<Book> borrowedBookList;
+    final ListProperty<Book> borrowedBookList;
 
     /**
      * Constructs a MyBooksViewModel with the specified model.

@@ -1,6 +1,7 @@
 package sep.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Represents an event with an ID, title, description, and date.
@@ -64,5 +65,16 @@ public class Event implements Serializable {
      */
     public String getEventDate() {
         return eventDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return id == event.id &&
+                Objects.equals(title, event.title) &&
+                Objects.equals(description, event.description) &&
+                Objects.equals(eventDate, event.eventDate);
     }
 }

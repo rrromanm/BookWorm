@@ -22,9 +22,9 @@ import java.rmi.RemoteException;
 public class LoginViewModel
 {
     private final Model model;
-    private final StringProperty username;
-    private final StringProperty password;
-    private final StringProperty error;
+    final StringProperty username;
+    final StringProperty password;
+    final StringProperty error;
 
     /**
      * Constructs a LoginViewModel with the specified model.

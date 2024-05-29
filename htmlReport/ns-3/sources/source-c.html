@@ -56,26 +56,26 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    16.7%
+    100%
   </span>
   <span class="absValue">
-    (1/6)
+    (6/6)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/2)
+    (2/2)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    25%
+    100%
   </span>
   <span class="absValue">
-    (5/20)
+    (20/20)
   </span>
 </td>
 </tr>
@@ -111,9 +111,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;public class LoginViewModel
 &nbsp;{
 &nbsp;    private final Model model;
-&nbsp;    private final StringProperty username;
-&nbsp;    private final StringProperty password;
-&nbsp;    private final StringProperty error;
+&nbsp;    final StringProperty username;
+&nbsp;    final StringProperty password;
+&nbsp;    final StringProperty error;
 &nbsp;
 &nbsp;    /**
 &nbsp;     * Constructs a LoginViewModel with the specified model.
@@ -135,19 +135,19 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    public Patron login(){
 &nbsp;        try {
-<b class="nc">&nbsp;            Patron patron = model.login(username.get(),password.get());</b>
-<b class="nc">&nbsp;            if(patron!=null){</b>
-<b class="nc">&nbsp;                reset();</b>
-<b class="nc">&nbsp;                this.error.set(&quot;&quot;);</b>
-<b class="nc">&nbsp;                return patron;</b>
+<b class="fc">&nbsp;            Patron patron = model.login(username.get(),password.get());</b>
+<b class="fc">&nbsp;            if(patron!=null){</b>
+<b class="fc">&nbsp;                reset();</b>
+<b class="fc">&nbsp;                this.error.set(&quot;&quot;);</b>
+<b class="fc">&nbsp;                return patron;</b>
 &nbsp;            }
 &nbsp;
-<b class="nc">&nbsp;        } catch (RemoteException e) {</b>
-<b class="nc">&nbsp;            this.error.set(e.getMessage());</b>
-<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="fc">&nbsp;        } catch (RemoteException e) {</b>
+<b class="fc">&nbsp;            this.error.set(e.getMessage());</b>
+<b class="fc">&nbsp;            e.printStackTrace();</b>
 &nbsp;        }
-<b class="nc">&nbsp;        this.error.set(&quot;Username or password is incorrect. Try again&quot;);</b>
-<b class="nc">&nbsp;        return null;</b>
+<b class="fc">&nbsp;        this.error.set(&quot;Username or password is incorrect. Try again&quot;);</b>
+<b class="fc">&nbsp;        return null;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -156,7 +156,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @param property The property to bind to the username
 &nbsp;     */
 &nbsp;    public void bindUsername(StringProperty property){
-<b class="nc">&nbsp;        this.username.bindBidirectional(property);</b>
+<b class="fc">&nbsp;        this.username.bindBidirectional(property);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -165,7 +165,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @param property The property to bind to the password
 &nbsp;     */
 &nbsp;    public void bindPassword(StringProperty property){
-<b class="nc">&nbsp;        this.password.bindBidirectional(property);</b>
+<b class="fc">&nbsp;        this.password.bindBidirectional(property);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -173,15 +173,15 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     *
 &nbsp;     * @param property The property to bind to the error
 &nbsp;     */
-<b class="nc">&nbsp;    public void bindError(StringProperty property){this.error.bindBidirectional(property);}</b>
+<b class="fc">&nbsp;    public void bindError(StringProperty property){this.error.bindBidirectional(property);}</b>
 &nbsp;
 &nbsp;    /**
 &nbsp;     * Resets the username and password properties to empty strings.
 &nbsp;     */
 &nbsp;    public void reset()
 &nbsp;    {
-<b class="nc">&nbsp;        this.username.set(&quot;&quot;);</b>
-<b class="nc">&nbsp;        this.password.set(&quot;&quot;);</b>
+<b class="fc">&nbsp;        this.username.set(&quot;&quot;);</b>
+<b class="fc">&nbsp;        this.password.set(&quot;&quot;);</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -207,7 +207,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-29 17:47</div>
+    <div style="float:right;">generated on 2024-05-29 20:02</div>
 </div>
 </body>
 </html>

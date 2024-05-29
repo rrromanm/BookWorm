@@ -56,10 +56,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    14.3%
+    71.4%
   </span>
   <span class="absValue">
-    (1/7)
+    (5/7)
   </span>
 </td>
 <td class="coverageStat">
@@ -72,10 +72,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    19%
+    38.1%
   </span>
   <span class="absValue">
-    (4/21)
+    (8/21)
   </span>
 </td>
 </tr>
@@ -113,7 +113,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;public class AdminManageDonatedBooksViewModel implements PropertyChangeListener
 &nbsp;{
 &nbsp;    private final Model model;
-&nbsp;    private final ListProperty&lt;Book&gt; bookList;
+&nbsp;    final ListProperty&lt;Book&gt; bookList;
 &nbsp;
 &nbsp;    /**
 &nbsp;     * Constructs an AdminManageDonatedBooksViewModel with the specified model.
@@ -134,7 +134,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @throws RemoteException If a remote communication error occurs
 &nbsp;     */
 &nbsp;    public void bindList(ObjectProperty&lt;ObservableList&lt;Book&gt;&gt; property) throws RemoteException {
-<b class="nc">&nbsp;        property.bindBidirectional(bookList);</b>
+<b class="fc">&nbsp;        property.bindBidirectional(bookList);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -152,7 +152,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @throws RemoteException If a remote communication error occurs
 &nbsp;     */
 &nbsp;    public void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException {
-<b class="nc">&nbsp;        model.approveDonatedBook(id, title, author, isbn, year, publisher, pageCount, genreId);</b>
+<b class="fc">&nbsp;        model.approveDonatedBook(id, title, author, isbn, year, publisher, pageCount, genreId);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -163,7 +163,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @throws RemoteException If a remote communication error occurs
 &nbsp;     */
 &nbsp;    public void rejectDonatedBook(int bookId) throws SQLException, RemoteException {
-<b class="nc">&nbsp;        model.rejectDonatedBook(bookId);</b>
+<b class="fc">&nbsp;        model.rejectDonatedBook(bookId);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -172,7 +172,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @throws RemoteException If a remote communication error occurs
 &nbsp;     */
 &nbsp;    public void resetBookList() throws RemoteException {
-<b class="nc">&nbsp;        bookList.setAll(model.getDonatedBooks());</b>
+<b class="fc">&nbsp;        bookList.setAll(model.getDonatedBooks());</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -231,7 +231,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-29 17:47</div>
+    <div style="float:right;">generated on 2024-05-29 20:02</div>
 </div>
 </body>
 </html>

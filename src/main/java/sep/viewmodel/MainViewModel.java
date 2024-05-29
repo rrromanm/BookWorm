@@ -28,8 +28,8 @@ import java.util.ArrayList;
 public class MainViewModel implements PropertyChangeListener
 {
     private final Model model;
-    private final ListProperty<Book> bookList;
-    private final SimpleObjectProperty<Book> selectedBook;
+    final ListProperty<Book> bookList;
+    final SimpleObjectProperty<Book> selectedBook;
 
     /**
      * Constructs a MainViewModel with the specified model.

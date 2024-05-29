@@ -37,6 +37,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 <th class="coverageStat 
 ">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
   Line, %
 </th>
 </tr>
@@ -52,18 +56,26 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    83.3%
   </span>
   <span class="absValue">
-    (5/5)
+    (5/6)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (9/9)
+    (0/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    42.9%
+  </span>
+  <span class="absValue">
+    (9/21)
   </span>
 </td>
 </tr>
@@ -78,6 +90,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <code class="sourceCode" id="sourceCode">&nbsp;package sep.model;
 &nbsp;
 &nbsp;import java.io.Serializable;
+&nbsp;import java.util.Objects;
 &nbsp;
 &nbsp;/**
 &nbsp; * Represents an event with an ID, title, description, and date.
@@ -99,12 +112,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @param title       the title of the event
 &nbsp;     * @param description a brief description of the event
 &nbsp;     * @param eventDate   the date of the event
-&nbsp;     */
+<b class="fc">&nbsp;     */</b>
 <b class="fc">&nbsp;    public Event(int id, String title, String description, String eventDate) {</b>
 <b class="fc">&nbsp;        this.id = id;</b>
 <b class="fc">&nbsp;        this.title = title;</b>
 <b class="fc">&nbsp;        this.description = description;</b>
-<b class="fc">&nbsp;        this.eventDate = eventDate;</b>
+<b class="nc">&nbsp;        this.eventDate = eventDate;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -112,8 +125,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     *
 &nbsp;     * @return the event ID
 &nbsp;     */
-&nbsp;    public int getId() {
-<b class="fc">&nbsp;        return id;</b>
+<b class="fc">&nbsp;    public int getId() {</b>
+<b class="nc">&nbsp;        return id;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -121,8 +134,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     *
 &nbsp;     * @return the event title
 &nbsp;     */
-&nbsp;    public String getTitle() {
-<b class="fc">&nbsp;        return title;</b>
+<b class="fc">&nbsp;    public String getTitle() {</b>
+<b class="nc">&nbsp;        return title;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -130,8 +143,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     *
 &nbsp;     * @return the event description
 &nbsp;     */
-&nbsp;    public String getDescription() {
-<b class="fc">&nbsp;        return description;</b>
+<b class="fc">&nbsp;    public String getDescription() {</b>
+<b class="nc">&nbsp;        return description;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -139,8 +152,19 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     *
 &nbsp;     * @return the event date
 &nbsp;     */
-&nbsp;    public String getEventDate() {
-<b class="fc">&nbsp;        return eventDate;</b>
+<b class="fc">&nbsp;    public String getEventDate() {</b>
+<b class="nc">&nbsp;        return eventDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public boolean equals(Object o) {
+<b class="nc">&nbsp;        if (this == o) return true;</b>
+<b class="nc">&nbsp;        if (o == null || getClass() != o.getClass()) return false;</b>
+<b class="nc">&nbsp;        Event event = (Event) o;</b>
+<b class="nc">&nbsp;        return id == event.id &amp;&amp;</b>
+<b class="nc">&nbsp;                Objects.equals(title, event.title) &amp;&amp;</b>
+<b class="nc">&nbsp;                Objects.equals(description, event.description) &amp;&amp;</b>
+<b class="nc">&nbsp;                Objects.equals(eventDate, event.eventDate);</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -166,7 +190,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-29 17:47</div>
+    <div style="float:right;">generated on 2024-05-29 20:02</div>
 </div>
 </body>
 </html>
