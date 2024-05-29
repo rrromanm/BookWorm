@@ -44,26 +44,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">Available</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/4)
+    (4/4)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/6)
+    (6/6)
   </span>
 </td>
 </tr>
@@ -85,7 +85,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp; *
 &nbsp; * @author Group 6 (Samuel, Kuba, Maciej, Romans)
 &nbsp; */
-<b class="nc">&nbsp;public class Available implements State, Serializable {</b>
+<b class="fc">&nbsp;public class Available implements State, Serializable {</b>
 &nbsp;
 &nbsp;    /**
 &nbsp;     * Changes the state of the book to Borrowed and assigns the borrower.
@@ -95,9 +95,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    @Override
 &nbsp;    public void borrow(Book book, Patron patron) {
-<b class="nc">&nbsp;        book.setState(new Borrowed());</b>
-<b class="nc">&nbsp;        System.out.println(book.getTitle() + &quot; got borrowed by &quot; + patron.getFirstName());</b>
-<b class="nc">&nbsp;        book.setBorrower(patron);</b>
+<b class="fc">&nbsp;        book.setState(new Borrowed());</b>
+<b class="fc">&nbsp;        System.out.println(book.getTitle() + &quot; got borrowed by &quot; + patron.getFirstName());</b>
+<b class="fc">&nbsp;        book.setBorrower(patron);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -109,7 +109,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    @Override
 &nbsp;    public void returnBook(Book book, Patron patron) {
-<b class="nc">&nbsp;        throw new RuntimeException(&quot;The book is available you cannot return it&quot;);</b>
+<b class="fc">&nbsp;        throw new RuntimeException(&quot;The book is available you cannot return it&quot;);</b>
 &nbsp;    }
 &nbsp;    /**
 &nbsp;     * Returns a string of the state.
@@ -118,7 +118,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    public String toString()
 &nbsp;    {
-<b class="nc">&nbsp;        return &quot;Available&quot;;</b>
+<b class="fc">&nbsp;        return &quot;Available&quot;;</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -144,7 +144,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-29 10:04</div>
+    <div style="float:right;">generated on 2024-05-29 17:47</div>
 </div>
 </body>
 </html>

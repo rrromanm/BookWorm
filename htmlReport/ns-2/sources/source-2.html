@@ -48,34 +48,34 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">EmailValidator</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    50%
   </span>
   <span class="absValue">
-    (0/2)
+    (1/2)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/16)
+    (16/16)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    90.9%
   </span>
   <span class="absValue">
-    (0/11)
+    (10/11)
   </span>
 </td>
 </tr>
@@ -103,24 +103,24 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @throws IllegalArgumentException If the email address is null, empty, or does not adhere to the standard format
 &nbsp;     */
 &nbsp;    public static void validate(String email) throws IllegalArgumentException {
-<b class="nc">&nbsp;        if (email == null || email.isEmpty()) {</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Please fill the email field!&quot;);</b>
+<b class="fc">&nbsp;        if (email == null || email.isEmpty()) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Please fill the email field!&quot;);</b>
 &nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        int atPosition = email.indexOf(&#39;@&#39;);</b>
-<b class="nc">&nbsp;        int dotPosition = email.lastIndexOf(&#39;.&#39;);</b>
+<b class="fc">&nbsp;        int atPosition = email.indexOf(&#39;@&#39;);</b>
+<b class="fc">&nbsp;        int dotPosition = email.lastIndexOf(&#39;.&#39;);</b>
 &nbsp;
-<b class="nc">&nbsp;        if (atPosition == -1 || dotPosition == -1 || dotPosition &lt;= atPosition) {</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Email format is invalid!&quot;);</b>
+<b class="fc">&nbsp;        if (atPosition == -1 || dotPosition == -1 || dotPosition &lt;= atPosition) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Email format is invalid!&quot;);</b>
 &nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        if (atPosition == 0) {</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Email format is invalid!&quot;);</b>
+<b class="fc">&nbsp;        if (atPosition == 0) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Email format is invalid!&quot;);</b>
 &nbsp;        }
 &nbsp;
 &nbsp;
-<b class="nc">&nbsp;        if (dotPosition == atPosition + 1 || dotPosition == email.length() - 1) {</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Email format is invalid!&quot;);</b>
+<b class="fc">&nbsp;        if (dotPosition == atPosition + 1 || dotPosition == email.length() - 1) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Email format is invalid!&quot;);</b>
 &nbsp;        }
 &nbsp;
 &nbsp;    }
@@ -148,7 +148,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-29 10:04</div>
+    <div style="float:right;">generated on 2024-05-29 17:47</div>
 </div>
 </body>
 </html>

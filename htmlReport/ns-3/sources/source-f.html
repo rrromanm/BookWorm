@@ -1,0 +1,539 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ProfileViewModel</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">sep.viewmodel</a>
+</div>
+
+<h1>Coverage Summary for Class: ProfileViewModel (sep.viewmodel)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProfileViewModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    60%
+  </span>
+  <span class="absValue">
+    (15/25)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    21.9%
+  </span>
+  <span class="absValue">
+    (7/32)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    41.7%
+  </span>
+  <span class="absValue">
+    (48/115)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package sep.viewmodel;
+&nbsp;
+&nbsp;import javafx.application.Platform;
+&nbsp;import javafx.beans.property.*;
+&nbsp;import javafx.collections.FXCollections;
+&nbsp;import javafx.collections.ObservableList;
+&nbsp;import sep.model.Book;
+&nbsp;import sep.model.Model;
+&nbsp;import sep.model.Patron;
+&nbsp;import sep.model.UserSession;
+&nbsp;
+&nbsp;import java.beans.PropertyChangeEvent;
+&nbsp;import java.beans.PropertyChangeListener;
+&nbsp;import java.beans.PropertyChangeSupport;
+&nbsp;import java.io.IOException;
+&nbsp;import java.rmi.RemoteException;
+&nbsp;import java.sql.SQLException;
+&nbsp;
+&nbsp;/**
+&nbsp; * The ProfileViewModel class provides the view model for managing a patron&#39;s profile information,
+&nbsp; * including username, email, first name, last name, phone number, password, patron ID, history of books,
+&nbsp; * and wishlist.
+&nbsp; * It allows patrons to update their profile information, view their borrowing history, and remove books from their wishlist.
+&nbsp; *
+&nbsp; * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
+&nbsp; */
+&nbsp;public class ProfileViewModel implements PropertyChangeListener
+&nbsp;{
+&nbsp;    private final Model model;
+&nbsp;    protected final StringProperty username;
+&nbsp;    protected final StringProperty email;
+&nbsp;    protected final StringProperty first_name;
+&nbsp;    protected final StringProperty last_name;
+&nbsp;    protected final StringProperty phone_number;
+&nbsp;    private final StringProperty error;
+&nbsp;    public final StringProperty password;
+&nbsp;    protected final StringProperty patronID;
+&nbsp;    final ListProperty&lt;Book&gt; historyOfBooksList;
+&nbsp;    final ListProperty&lt;Book&gt; wishlistList;
+&nbsp;    final PropertyChangeSupport support;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a ProfileViewModel with the specified model.
+&nbsp;     *
+&nbsp;     * @param model The model to interact with for managing profile information
+&nbsp;     */
+&nbsp;    public ProfileViewModel(Model model)
+<b class="fc">&nbsp;    {</b>
+<b class="fc">&nbsp;        this.model = model;</b>
+<b class="fc">&nbsp;        this.username = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="fc">&nbsp;        this.email = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="fc">&nbsp;        this.first_name = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="fc">&nbsp;        this.last_name = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="fc">&nbsp;        this.phone_number = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="fc">&nbsp;        this.password = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="fc">&nbsp;        this.patronID = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="fc">&nbsp;        this.error = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="fc">&nbsp;        this.historyOfBooksList = new SimpleListProperty&lt;&gt;(FXCollections.observableArrayList());</b>
+<b class="fc">&nbsp;        this.wishlistList = new SimpleListProperty&lt;&gt;(FXCollections.observableArrayList());</b>
+<b class="fc">&nbsp;        model.addPropertyChangeListener(this);</b>
+<b class="fc">&nbsp;        this.support = new PropertyChangeSupport(this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the historyOfBooksList property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the historyOfBooksList
+&nbsp;     * @throws RemoteException If a remote error occurs
+&nbsp;     */
+&nbsp;    public void bindHistoryList(ObjectProperty&lt;ObservableList&lt;Book&gt;&gt; property) throws
+&nbsp;        RemoteException
+&nbsp;    {
+<b class="nc">&nbsp;        property.bindBidirectional(historyOfBooksList);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the wishlistList property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the wishlistList
+&nbsp;     * @throws RemoteException If a remote error occurs
+&nbsp;     */
+&nbsp;    public void bindWishlistList(ObjectProperty&lt;ObservableList&lt;Book&gt;&gt; property) throws
+&nbsp;        RemoteException
+&nbsp;    {
+<b class="nc">&nbsp;        property.bindBidirectional(wishlistList);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the username property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the username
+&nbsp;     */
+&nbsp;    public void bindUsername(StringProperty property) {
+<b class="nc">&nbsp;        property.bindBidirectional(username);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the email property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the email
+&nbsp;     */
+&nbsp;    public void bindEmail(StringProperty property) {
+<b class="nc">&nbsp;        property.bindBidirectional(email);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the first_name property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the first_name
+&nbsp;     */
+&nbsp;    public void bindFirstName(StringProperty property) {
+<b class="nc">&nbsp;        property.bindBidirectional(first_name);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the last_name property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the last_name
+&nbsp;     */
+&nbsp;    public void bindLastName(StringProperty property) {
+<b class="nc">&nbsp;        property.bindBidirectional(last_name);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the phone_number property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the phone_number
+&nbsp;     */
+&nbsp;    public void bindPhoneNumber(StringProperty property) {
+<b class="nc">&nbsp;        property.bindBidirectional(phone_number);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the password property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the password
+&nbsp;     */
+&nbsp;    public void bindPassword(StringProperty property) {
+<b class="nc">&nbsp;        property.bindBidirectional(password);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the patronID property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the patronID
+&nbsp;     */
+&nbsp;    public void bindUserId(StringProperty property){
+<b class="nc">&nbsp;        property.bindBidirectional(patronID);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Fills the profile data with information of the logged-in user.
+&nbsp;     */
+&nbsp;    public void fillData() {
+<b class="fc">&nbsp;        Patron loggedInUser = UserSession.getInstance().getLoggedInUser();</b>
+<b class="pc">&nbsp;        if (loggedInUser != null) {</b>
+<b class="fc">&nbsp;            username.set(loggedInUser.getUsername());</b>
+<b class="fc">&nbsp;            email.set(loggedInUser.getEmail());</b>
+<b class="fc">&nbsp;            first_name.set(loggedInUser.getFirstName());</b>
+<b class="fc">&nbsp;            last_name.set(loggedInUser.getLastName());</b>
+<b class="fc">&nbsp;            phone_number.set(loggedInUser.getPhoneNumber());</b>
+<b class="fc">&nbsp;            password.set(loggedInUser.getPassword());</b>
+<b class="fc">&nbsp;            patronID.set(String.valueOf(loggedInUser.getUserID()));</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Resets the list of borrowed books for the specified patron.
+&nbsp;     *
+&nbsp;     * @param patron The patron whose borrowed books are to be reset
+&nbsp;     * @throws RemoteException If a remote error occurs
+&nbsp;     */
+&nbsp;    public void resetHistoryList(Patron patron) throws RemoteException {
+<b class="fc">&nbsp;        historyOfBooksList.setAll(model.getHistoryOfBooks(patron));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Resets the wishlist for the specified patron.
+&nbsp;     *
+&nbsp;     * @param patron The patron whose wishlist is to be reset
+&nbsp;     * @throws RemoteException If a remote error occurs
+&nbsp;     */
+&nbsp;    public void resetWishlistList(Patron patron) throws RemoteException{
+<b class="fc">&nbsp;        wishlistList.setAll(model.getWishlistedBooks(patron));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the amount of books read by the specified patron.
+&nbsp;     *
+&nbsp;     * @param patron The patron whose read book count is to be retrieved
+&nbsp;     * @return The number of books read by the patron
+&nbsp;     * @throws RemoteException If a remote error occurs
+&nbsp;     */
+&nbsp;    public int getAmountOfReadBooks(Patron patron) throws RemoteException{
+<b class="fc">&nbsp;        return model.getAmountOfReadBooks(patron);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Deletes the logged-in patron&#39;s account.
+&nbsp;     *
+&nbsp;     * @throws RemoteException If a remote error occurs
+&nbsp;     */
+&nbsp;    public void deletePatron() throws RemoteException{
+&nbsp;        try{
+<b class="fc">&nbsp;            model.deletePatron(UserSession.getInstance().getLoggedInUser().getUserID());</b>
+<b class="nc">&nbsp;        }catch(RemoteException e)</b>
+&nbsp;            {
+<b class="nc">&nbsp;                throw new RemoteException(e.getMessage());</b>
+&nbsp;            }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the username of the logged-in patron.
+&nbsp;     *
+&nbsp;     * @param newUsername The new username to set
+&nbsp;     * @param userID      The ID of the logged-in patron
+&nbsp;     */
+&nbsp;    public void updateUsername(String newUsername,int userID){
+<b class="fc">&nbsp;        Patron loggedInUser = UserSession.getInstance().getLoggedInUser();</b>
+<b class="pc">&nbsp;        if(loggedInUser != null){</b>
+&nbsp;            try{
+<b class="fc">&nbsp;                model.updateUsername(loggedInUser.getUserID(), newUsername);</b>
+<b class="nc">&nbsp;            }catch (Exception e){</b>
+<b class="nc">&nbsp;                error.set(e.getMessage());</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(e.getMessage());</b>
+&nbsp;            }
+&nbsp;        }else{
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;No user logged in.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the email of the logged-in patron.
+&nbsp;     *
+&nbsp;     * @param newEmail The new email address to set
+&nbsp;     * @param userID    The ID of the logged-in patron
+&nbsp;     */
+&nbsp;    public void updateEmail(String newEmail,int userID){
+<b class="fc">&nbsp;        Patron loggedInUser = UserSession.getInstance().getLoggedInUser();</b>
+<b class="pc">&nbsp;        if(loggedInUser!= null){</b>
+&nbsp;            try{
+<b class="fc">&nbsp;                model.updateEmail(loggedInUser.getUserID(), newEmail);</b>
+<b class="nc">&nbsp;            }catch (Exception e){</b>
+<b class="nc">&nbsp;                error.set(e.getMessage());</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(e.getMessage());</b>
+&nbsp;            }
+&nbsp;        }else{
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;No user logged in.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the phone number of the logged-in patron.
+&nbsp;     *
+&nbsp;     * @param newPhoneNumber The new phone number to set
+&nbsp;     * @param userID         The ID of the logged-in patron
+&nbsp;     */
+&nbsp;    public void updatePhoneNumber(String newPhoneNumber,int  userID){
+<b class="fc">&nbsp;        Patron loggedInUser = UserSession.getInstance().getLoggedInUser();</b>
+<b class="pc">&nbsp;        if(loggedInUser!= null){</b>
+&nbsp;            try{
+<b class="fc">&nbsp;                model.updatePhoneNumber(loggedInUser.getUserID(), newPhoneNumber);</b>
+<b class="nc">&nbsp;            }catch (Exception e){</b>
+<b class="nc">&nbsp;                error.set(e.getMessage());</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(e.getMessage());</b>
+&nbsp;            }
+&nbsp;        }else{
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;No user logged in.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the first name of the logged-in patron.
+&nbsp;     *
+&nbsp;     * @param newFirstName The new first name to set
+&nbsp;     * @param userID       The ID of the logged-in patron
+&nbsp;     */
+&nbsp;    public void updateFirstName(String newFirstName,int userID){
+<b class="fc">&nbsp;        Patron loggedInUser = UserSession.getInstance().getLoggedInUser();</b>
+<b class="pc">&nbsp;        if(loggedInUser!= null){</b>
+&nbsp;            try{
+<b class="fc">&nbsp;                model.updateFirstName(loggedInUser.getUserID(), newFirstName);</b>
+<b class="nc">&nbsp;            }catch (Exception e){</b>
+<b class="nc">&nbsp;                error.set(e.getMessage());</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(e.getMessage());</b>
+&nbsp;            }
+&nbsp;        }else{
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;No user logged in.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the last name of the logged-in patron.
+&nbsp;     *
+&nbsp;     * @param newLastName The new last name to set
+&nbsp;     * @param userID      The ID of the logged-in patron
+&nbsp;     */
+&nbsp;    public void updateLastName(String newLastName,int userID){
+<b class="fc">&nbsp;        Patron loggedInUser = UserSession.getInstance().getLoggedInUser();</b>
+<b class="pc">&nbsp;        if(loggedInUser!= null){</b>
+&nbsp;            try{
+<b class="fc">&nbsp;                model.updateLastName(loggedInUser.getUserID(), newLastName);</b>
+<b class="nc">&nbsp;            }catch (Exception e){</b>
+<b class="nc">&nbsp;                error.set(e.getMessage());</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(e.getMessage());</b>
+&nbsp;            }
+&nbsp;        }else{
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;No user logged in.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the password of the logged-in patron.
+&nbsp;     *
+&nbsp;     * @param newPassword The new password to set
+&nbsp;     * @param userID      The ID of the logged-in patron
+&nbsp;     */
+&nbsp;    public void updatePassword(String newPassword,int userID){
+<b class="fc">&nbsp;        Patron loggedInUser = UserSession.getInstance().getLoggedInUser();</b>
+<b class="pc">&nbsp;        if(loggedInUser!= null){</b>
+&nbsp;            try{
+<b class="fc">&nbsp;                model.updatePassword(loggedInUser.getUserID(), newPassword);</b>
+<b class="nc">&nbsp;            }catch (Exception e){</b>
+<b class="nc">&nbsp;                error.set(e.getMessage());</b>
+<b class="nc">&nbsp;                throw new IllegalStateException(e.getMessage());</b>
+&nbsp;            }
+&nbsp;        }else{
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;No user logged in.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes the specified book from the wishlist of the logged-in patron.
+&nbsp;     *
+&nbsp;     * @param book   The book to remove from the wishlist
+&nbsp;     * @param patron The logged-in patron
+&nbsp;     * @throws SQLException If a SQL error occurs
+&nbsp;     * @throws IOException  If an I/O error occurs
+&nbsp;     */
+&nbsp;    public void removeFromWishlist(Book book, Patron patron)
+&nbsp;        throws SQLException, IOException
+&nbsp;    {
+<b class="fc">&nbsp;        model.deleteFromWishlist(book,patron);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds a property change listener to the support object.
+&nbsp;     *
+&nbsp;     * @param listener The property change listener to add
+&nbsp;     */
+&nbsp;    public void addPropertyChangeListener(PropertyChangeListener listener) {
+<b class="fc">&nbsp;        this.support.addPropertyChangeListener(listener);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles property change events triggered by changes in the model.
+&nbsp;     * This method is called when a property value in the model changes,
+&nbsp;     * and it updates the view model accordingly.
+&nbsp;     *
+&nbsp;     * @param event The property change event containing information about the change
+&nbsp;     */
+&nbsp;    @Override public void propertyChange(PropertyChangeEvent event)
+&nbsp;    {
+<b class="fc">&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc">&nbsp;            if (event.getPropertyName().equals(&quot;BorrowBook&quot;))</b>
+&nbsp;            {
+<b class="nc">&nbsp;                this.support.firePropertyChange(&quot;BorrowBook&quot;, false, true);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            if (event.getPropertyName().equals(&quot;ReturnBook&quot;))</b>
+&nbsp;            {
+&nbsp;                try {
+<b class="nc">&nbsp;                    resetHistoryList(UserSession.getInstance().getLoggedInUser());</b>
+<b class="nc">&nbsp;                } catch (RemoteException e) {</b>
+<b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            if (event.getPropertyName().equals(&quot;Wishlist&quot;))</b>
+&nbsp;            {
+&nbsp;                try {
+<b class="nc">&nbsp;                    resetWishlistList(UserSession.getInstance().getLoggedInUser());</b>
+<b class="nc">&nbsp;                } catch (RemoteException e) {</b>
+<b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            if(event.getPropertyName().equals(&quot;removeBook&quot;)){</b>
+&nbsp;                try {
+<b class="nc">&nbsp;                    resetHistoryList(UserSession.getInstance().getLoggedInUser());</b>
+<b class="nc">&nbsp;                    resetWishlistList(UserSession.getInstance().getLoggedInUser());</b>
+<b class="nc">&nbsp;                } catch (RemoteException e) {</b>
+<b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            if(event.getPropertyName().equals(&quot;updateBook&quot;)){</b>
+&nbsp;                try {
+<b class="nc">&nbsp;                    resetHistoryList(UserSession.getInstance().getLoggedInUser());</b>
+<b class="nc">&nbsp;                    resetWishlistList(UserSession.getInstance().getLoggedInUser());</b>
+<b class="nc">&nbsp;                } catch (RemoteException e) {</b>
+<b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
+&nbsp;                }
+&nbsp;
+&nbsp;            }
+<b class="nc">&nbsp;            if(event.getPropertyName().equals(&quot;updatePatron&quot;)){</b>
+<b class="nc">&nbsp;                this.support.firePropertyChange(&quot;updatePatron&quot;, false, true);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            if (event.getPropertyName().equals(&quot;ExtendBook&quot;))</b>
+&nbsp;            {
+<b class="nc">&nbsp;                this.support.firePropertyChange(&quot;ExtendBook&quot;, false, true);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            if (event.getPropertyName().equals(&quot;removePatron&quot;)){</b>
+<b class="nc">&nbsp;                this.support.firePropertyChange(&quot;removePatron&quot;, false, true);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            if (event.getPropertyName().equals(&quot;login&quot;)){</b>
+<b class="nc">&nbsp;                this.support.firePropertyChange(&quot;login&quot;, false, true);</b>
+&nbsp;                try {
+<b class="nc">&nbsp;                    resetHistoryList(UserSession.getInstance().getLoggedInUser());</b>
+<b class="nc">&nbsp;                    resetWishlistList(UserSession.getInstance().getLoggedInUser());</b>
+<b class="nc">&nbsp;                } catch (RemoteException e) {</b>
+<b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        });
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-29 17:47</div>
+</div>
+</body>
+</html>

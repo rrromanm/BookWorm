@@ -43,7 +43,7 @@ public class AdminManageBooksViewModel implements PropertyChangeListener
         this.bookList = new SimpleListProperty<>(FXCollections.observableArrayList());
         this.selectedBook = new SimpleObjectProperty<>();
         this.support = new PropertyChangeSupport(this);
-        
+
         model.addPropertyChangeListener(this);
     }
 
@@ -74,8 +74,7 @@ public class AdminManageBooksViewModel implements PropertyChangeListener
      */
     public void loadBooks() throws RemoteException {
         try{
-            List<Book> books = BookDatabaseImplementation.getInstance().readBooks();
-            bookList.setAll(books);
+            bookList.setAll(model.getAllBooks());
             support.firePropertyChange("bookList", null, bookList);
         }catch (Exception e){
             throw new IllegalStateException(e.getMessage());

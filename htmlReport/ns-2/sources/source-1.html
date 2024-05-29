@@ -48,34 +48,34 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">BookValidator</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    80%
   </span>
   <span class="absValue">
-    (0/5)
+    (4/5)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/12)
+    (12/12)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    91.7%
   </span>
   <span class="absValue">
-    (0/12)
+    (11/12)
   </span>
 </td>
 </tr>
@@ -106,7 +106,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @return true if the ISBN is not null and matches the pattern of 13 digits, false otherwise
 &nbsp;     */
 &nbsp;    public static boolean validateISBN(String isbn) {
-<b class="nc">&nbsp;        return isbn != null &amp;&amp; isbn.matches(&quot;\\d{13}&quot;);</b>
+<b class="fc">&nbsp;        return isbn != null &amp;&amp; isbn.matches(&quot;\\d{13}&quot;);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -117,11 +117,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    public static boolean validateYear(String yearStr) {
 &nbsp;        try {
-<b class="nc">&nbsp;            int year = Integer.parseInt(yearStr);</b>
-<b class="nc">&nbsp;            int currentYear = Calendar.getInstance().get(Calendar.YEAR);</b>
-<b class="nc">&nbsp;            return year &gt;= 1000 &amp;&amp; year &lt;= currentYear;</b>
-<b class="nc">&nbsp;        } catch (NumberFormatException e) {</b>
-<b class="nc">&nbsp;            return false;</b>
+<b class="fc">&nbsp;            int year = Integer.parseInt(yearStr);</b>
+<b class="fc">&nbsp;            int currentYear = Calendar.getInstance().get(Calendar.YEAR);</b>
+<b class="fc">&nbsp;            return year &gt;= 1000 &amp;&amp; year &lt;= currentYear;</b>
+<b class="fc">&nbsp;        } catch (NumberFormatException e) {</b>
+<b class="fc">&nbsp;            return false;</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -133,10 +133,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    public static boolean validatePageCount(String pageCountStr) {
 &nbsp;        try {
-<b class="nc">&nbsp;            int pageCount = Integer.parseInt(pageCountStr);</b>
-<b class="nc">&nbsp;            return pageCount &gt; 0;</b>
-<b class="nc">&nbsp;        } catch (NumberFormatException e) {</b>
-<b class="nc">&nbsp;            return false;</b>
+<b class="fc">&nbsp;            int pageCount = Integer.parseInt(pageCountStr);</b>
+<b class="fc">&nbsp;            return pageCount &gt; 0;</b>
+<b class="fc">&nbsp;        } catch (NumberFormatException e) {</b>
+<b class="fc">&nbsp;            return false;</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -149,7 +149,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @return true if all details of the book are valid, false otherwise
 &nbsp;     */
 &nbsp;    public static boolean validateBookDetails(String isbn, String year, String pageCount) {
-<b class="nc">&nbsp;        return validateISBN(isbn) &amp;&amp; validateYear(year) &amp;&amp; validatePageCount(pageCount);</b>
+<b class="fc">&nbsp;        return validateISBN(isbn) &amp;&amp; validateYear(year) &amp;&amp; validatePageCount(pageCount);</b>
 &nbsp;    }
 &nbsp;}
 &nbsp;
@@ -176,7 +176,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-29 10:04</div>
+    <div style="float:right;">generated on 2024-05-29 17:47</div>
 </div>
 </body>
 </html>

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class ModelManager extends UnicastRemoteObject implements Model , PropertyChangeListener {
     private final ClientInterface client;
     private String error;
-    private final PropertyChangeSupport support;
+    final PropertyChangeSupport support;
 
     /**
      * Constructs a ModelManager object with the specified connector interface to the underlying data source.

@@ -48,34 +48,34 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">PasswordValidator</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    50%
   </span>
   <span class="absValue">
-    (0/2)
+    (1/2)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    95.8%
   </span>
   <span class="absValue">
-    (0/24)
+    (23/24)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    94.7%
   </span>
   <span class="absValue">
-    (0/19)
+    (18/19)
   </span>
 </td>
 </tr>
@@ -107,30 +107,30 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @throws IllegalArgumentException If the password does not meet the specified criteria
 &nbsp;     */
 &nbsp;    public static void validate(String password) throws IllegalArgumentException {
-<b class="nc">&nbsp;        if (password == null || password.length() &lt; MIN_LENGTH || password.length() &gt; MAX_LENGTH) {</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Password must be at least &quot; + MIN_LENGTH + &quot; characters!&quot;);</b>
+<b class="fc">&nbsp;        if (password == null || password.length() &lt; MIN_LENGTH || password.length() &gt; MAX_LENGTH) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Password must be at least &quot; + MIN_LENGTH + &quot; characters!&quot;);</b>
 &nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        boolean hasUpper = false;</b>
-<b class="nc">&nbsp;        boolean hasLower = false;</b>
-<b class="nc">&nbsp;        boolean hasDigit = false;</b>
-<b class="nc">&nbsp;        boolean hasSpecial = false;</b>
+<b class="fc">&nbsp;        boolean hasUpper = false;</b>
+<b class="fc">&nbsp;        boolean hasLower = false;</b>
+<b class="fc">&nbsp;        boolean hasDigit = false;</b>
+<b class="fc">&nbsp;        boolean hasSpecial = false;</b>
 &nbsp;
-<b class="nc">&nbsp;        for (int i = 0; i &lt; password.length(); i++) {</b>
-<b class="nc">&nbsp;            char c = password.charAt(i);</b>
-<b class="nc">&nbsp;            if (Character.isUpperCase(c)) {</b>
-<b class="nc">&nbsp;                hasUpper = true;</b>
-<b class="nc">&nbsp;            } else if (Character.isLowerCase(c)) {</b>
-<b class="nc">&nbsp;                hasLower = true;</b>
-<b class="nc">&nbsp;            } else if (Character.isDigit(c)) {</b>
-<b class="nc">&nbsp;                hasDigit = true;</b>
-<b class="nc">&nbsp;            } else if (SPECIAL_CHARACTERS.indexOf(c) &gt;= 0) {</b>
-<b class="nc">&nbsp;                hasSpecial = true;</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; password.length(); i++) {</b>
+<b class="fc">&nbsp;            char c = password.charAt(i);</b>
+<b class="fc">&nbsp;            if (Character.isUpperCase(c)) {</b>
+<b class="fc">&nbsp;                hasUpper = true;</b>
+<b class="fc">&nbsp;            } else if (Character.isLowerCase(c)) {</b>
+<b class="fc">&nbsp;                hasLower = true;</b>
+<b class="fc">&nbsp;            } else if (Character.isDigit(c)) {</b>
+<b class="fc">&nbsp;                hasDigit = true;</b>
+<b class="pc">&nbsp;            } else if (SPECIAL_CHARACTERS.indexOf(c) &gt;= 0) {</b>
+<b class="fc">&nbsp;                hasSpecial = true;</b>
 &nbsp;            }
 &nbsp;        }
 &nbsp;
-<b class="nc">&nbsp;        if(!hasUpper || !hasLower || !hasDigit || !hasSpecial){</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Password must have at least one uppercase character, &quot; +</b>
+<b class="fc">&nbsp;        if(!hasUpper || !hasLower || !hasDigit || !hasSpecial){</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Password must have at least one uppercase character, &quot; +</b>
 &nbsp;                    &quot;one digit and one special character!&quot;);
 &nbsp;        };
 &nbsp;    }
@@ -159,7 +159,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-29 10:04</div>
+    <div style="float:right;">generated on 2024-05-29 17:47</div>
 </div>
 </body>
 </html>

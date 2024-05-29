@@ -27,17 +27,17 @@ import java.sql.SQLException;
 public class ProfileViewModel implements PropertyChangeListener
 {
     private final Model model;
-    private final StringProperty username;
-    private final StringProperty email;
-    private final StringProperty first_name;
-    private final StringProperty last_name;
-    private final StringProperty phone_number;
+    protected final StringProperty username;
+    protected final StringProperty email;
+    protected final StringProperty first_name;
+    protected final StringProperty last_name;
+    protected final StringProperty phone_number;
     private final StringProperty error;
-    private final StringProperty password;
-    private final StringProperty patronID;
-    private final ListProperty<Book> historyOfBooksList;
-    private final ListProperty<Book> wishlistList;
-    private final PropertyChangeSupport support;
+    public final StringProperty password;
+    protected final StringProperty patronID;
+    final ListProperty<Book> historyOfBooksList;
+    final ListProperty<Book> wishlistList;
+    final PropertyChangeSupport support;
 
     /**
      * Constructs a ProfileViewModel with the specified model.

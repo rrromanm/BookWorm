@@ -48,34 +48,34 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">PhoneValidator</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    50%
   </span>
   <span class="absValue">
-    (0/2)
+    (1/2)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/6)
+    (6/6)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    83.3%
   </span>
   <span class="absValue">
-    (0/6)
+    (5/6)
   </span>
 </td>
 </tr>
@@ -102,12 +102,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;   * @throws IllegalArgumentException If the phone number does not consist of exactly 8 digits or contains non-numeric characters
 &nbsp;   */
 &nbsp;   public static void validate(String phone){
-<b class="nc">&nbsp;       if(phone.length()!= 8){</b>
-<b class="nc">&nbsp;           throw new IllegalArgumentException(&quot;Phone number must be 8 digits&quot;);</b>
+<b class="fc">&nbsp;       if(phone.length()!= 8){</b>
+<b class="fc">&nbsp;           throw new IllegalArgumentException(&quot;Phone number must be 8 digits&quot;);</b>
 &nbsp;       }
-<b class="nc">&nbsp;       for(int i = 0; i &lt; phone.length(); i++){</b>
-<b class="nc">&nbsp;           if(!Character.isDigit(phone.charAt(i))){</b>
-<b class="nc">&nbsp;               throw new IllegalArgumentException(&quot;Phone number must only contain digits&quot;);</b>
+<b class="fc">&nbsp;       for(int i = 0; i &lt; phone.length(); i++){</b>
+<b class="fc">&nbsp;           if(!Character.isDigit(phone.charAt(i))){</b>
+<b class="fc">&nbsp;               throw new IllegalArgumentException(&quot;Phone number must only contain digits&quot;);</b>
 &nbsp;           }
 &nbsp;       }
 &nbsp;   }
@@ -135,7 +135,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-29 10:04</div>
+    <div style="float:right;">generated on 2024-05-29 17:47</div>
 </div>
 </body>
 </html>

@@ -44,26 +44,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">ModelManager</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    97.5%
   </span>
   <span class="absValue">
-    (0/40)
+    (39/40)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    98.8%
   </span>
   <span class="absValue">
-    (0/85)
+    (84/85)
   </span>
 </td>
 </tr>
@@ -102,7 +102,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;public class ModelManager extends UnicastRemoteObject implements Model , PropertyChangeListener {
 &nbsp;    private final ClientInterface client;
 &nbsp;    private String error;
-&nbsp;    private final PropertyChangeSupport support;
+&nbsp;    final PropertyChangeSupport support;
 &nbsp;
 &nbsp;    /**
 &nbsp;     * Constructs a ModelManager object with the specified connector interface to the underlying data source.
@@ -111,11 +111,11 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @throws IOException  If an I/O error occurs
 &nbsp;     * @throws SQLException If a SQL error occurs
 &nbsp;     */
-<b class="nc">&nbsp;    public ModelManager(ConnectorInterface library) throws IOException, SQLException {</b>
-<b class="nc">&nbsp;        this.client = new Client(library);</b>
-<b class="nc">&nbsp;        this.error = &quot;&quot;;</b>
-<b class="nc">&nbsp;        this.client.addPropertyChangeListener(this);</b>
-<b class="nc">&nbsp;        this.support = new PropertyChangeSupport(this);</b>
+<b class="fc">&nbsp;    public ModelManager(ConnectorInterface library) throws IOException, SQLException {</b>
+<b class="fc">&nbsp;        this.client = new Client(library);</b>
+<b class="fc">&nbsp;        this.error = &quot;&quot;;</b>
+<b class="fc">&nbsp;        this.client.addPropertyChangeListener(this);</b>
+<b class="fc">&nbsp;        this.support = new PropertyChangeSupport(this);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -126,7 +126,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    @Override
 &nbsp;    public ArrayList&lt;Book&gt; getAllBooks() throws RemoteException {
-<b class="nc">&nbsp;        return client.getAllBooks();</b>
+<b class="fc">&nbsp;        return client.getAllBooks();</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -139,7 +139,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override public ArrayList&lt;Book&gt; getBorrowedBooks(Patron patron)
 &nbsp;        throws RemoteException
 &nbsp;    {
-<b class="nc">&nbsp;        return client.getBorrowedBooks(patron);</b>
+<b class="fc">&nbsp;        return client.getBorrowedBooks(patron);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -152,7 +152,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override public ArrayList&lt;Book&gt; getHistoryOfBooks(Patron patron)
 &nbsp;        throws RemoteException
 &nbsp;    {
-<b class="nc">&nbsp;        return client.getHistoryOfBooks(patron);</b>
+<b class="fc">&nbsp;        return client.getHistoryOfBooks(patron);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -165,7 +165,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override public ArrayList&lt;Book&gt; getWishlistedBooks(Patron patron)
 &nbsp;        throws RemoteException
 &nbsp;    {
-<b class="nc">&nbsp;        return client.getWishlistedBooks(patron);</b>
+<b class="fc">&nbsp;        return client.getWishlistedBooks(patron);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -176,7 +176,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    @Override
 &nbsp;    public ArrayList&lt;Book&gt; getDonatedBooks() throws RemoteException {
-<b class="nc">&nbsp;        return client.getDonatedBooks();</b>
+<b class="fc">&nbsp;        return client.getDonatedBooks();</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -187,7 +187,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    @Override
 &nbsp;    public ArrayList&lt;Event&gt; getAllEvents() throws RemoteException {
-<b class="nc">&nbsp;        return client.getAllEvents();</b>
+<b class="fc">&nbsp;        return client.getAllEvents();</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -200,7 +200,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override public int getAmountOfReadBooks(Patron patron)
 &nbsp;        throws RemoteException
 &nbsp;    {
-<b class="nc">&nbsp;        return client.getAmountOfReadBooks(patron);</b>
+<b class="fc">&nbsp;        return client.getAmountOfReadBooks(patron);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -213,7 +213,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override public int getAmountOfBorrowedBooks(Patron patron)
 &nbsp;        throws RemoteException
 &nbsp;    {
-<b class="nc">&nbsp;        return client.getAmountOfBorrowedBooks(patron);</b>
+<b class="fc">&nbsp;        return client.getAmountOfBorrowedBooks(patron);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;
@@ -224,7 +224,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    @Override
 &nbsp;    public void addPropertyChangeListener(PropertyChangeListener listener) {
-<b class="nc">&nbsp;        this.support.addPropertyChangeListener(listener);</b>
+<b class="fc">&nbsp;        this.support.addPropertyChangeListener(listener);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -234,7 +234,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    @Override
 &nbsp;    public void removePropertyChangeListener(PropertyChangeListener listener) {
-<b class="nc">&nbsp;        this.support.removePropertyChangeListener(listener);</b>
+<b class="fc">&nbsp;        this.support.removePropertyChangeListener(listener);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -255,20 +255,20 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;        try
 &nbsp;        {
 &nbsp;
-<b class="nc">&nbsp;            UsernameValidator.validate(username);</b>
-<b class="nc">&nbsp;            EmailValidator.validate(email);</b>
-<b class="nc">&nbsp;            PasswordValidator.validate(password);</b>
-<b class="nc">&nbsp;            PhoneValidator.validate(phone_number);</b>
-<b class="nc">&nbsp;            NameValidator.validate(first_name);</b>
-<b class="nc">&nbsp;            NameValidator.validate(last_name);</b>
+<b class="fc">&nbsp;            UsernameValidator.validate(username);</b>
+<b class="fc">&nbsp;            EmailValidator.validate(email);</b>
+<b class="fc">&nbsp;            PasswordValidator.validate(password);</b>
+<b class="fc">&nbsp;            PhoneValidator.validate(phone_number);</b>
+<b class="fc">&nbsp;            NameValidator.validate(first_name);</b>
+<b class="fc">&nbsp;            NameValidator.validate(last_name);</b>
 &nbsp;
-<b class="nc">&nbsp;            this.client.createPatron(username,  password,  first_name,  last_name,  email,  phone_number,  fees);</b>
+<b class="fc">&nbsp;            this.client.createPatron(username,  password,  first_name,  last_name,  email,  phone_number,  fees);</b>
 &nbsp;
 &nbsp;        }
-<b class="nc">&nbsp;        catch (Exception e)</b>
+<b class="fc">&nbsp;        catch (Exception e)</b>
 &nbsp;        {
-<b class="nc">&nbsp;            error = e.getMessage();</b>
-<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+<b class="fc">&nbsp;            error = e.getMessage();</b>
+<b class="fc">&nbsp;            throw new RemoteException(e.getMessage());</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -284,12 +284,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    public void createEvent(String title, String description, String date) throws RemoteException {
 &nbsp;        try
 &nbsp;        {
-<b class="nc">&nbsp;            this.client.createEvent(title, description, date);</b>
+<b class="fc">&nbsp;            this.client.createEvent(title, description, date);</b>
 &nbsp;
 &nbsp;        }
-<b class="nc">&nbsp;        catch (Exception e)</b>
+<b class="fc">&nbsp;        catch (Exception e)</b>
 &nbsp;        {
-<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+<b class="fc">&nbsp;            throw new RemoteException(e.getMessage());</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -303,12 +303,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    public void deleteEvent(int id) throws RemoteException {
 &nbsp;        try
 &nbsp;        {
-<b class="nc">&nbsp;            this.client.deleteEvent(id);</b>
+<b class="fc">&nbsp;            this.client.deleteEvent(id);</b>
 &nbsp;
 &nbsp;        }
-<b class="nc">&nbsp;        catch (Exception e)</b>
+<b class="fc">&nbsp;        catch (Exception e)</b>
 &nbsp;        {
-<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+<b class="fc">&nbsp;            throw new RemoteException(e.getMessage());</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -324,10 +324,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override
 &nbsp;    public void updateEvent(int id, String title, String description, String eventDate) throws RemoteException {
 &nbsp;        try{
-<b class="nc">&nbsp;            this.client.updateEvent( id,  title,  description,  eventDate);</b>
-<b class="nc">&nbsp;        } catch (Exception e)</b>
+<b class="fc">&nbsp;            this.client.updateEvent( id,  title,  description,  eventDate);</b>
+<b class="fc">&nbsp;        } catch (Exception e)</b>
 &nbsp;        {
-<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+<b class="fc">&nbsp;            throw new RemoteException(e.getMessage());</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -341,12 +341,12 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    public void deletePatron(int id) throws RemoteException {
 &nbsp;        try
 &nbsp;        {
-<b class="nc">&nbsp;            this.client.deletePatron(id);</b>
+<b class="fc">&nbsp;            this.client.deletePatron(id);</b>
 &nbsp;
 &nbsp;        }
-<b class="nc">&nbsp;        catch (Exception e)</b>
+<b class="fc">&nbsp;        catch (Exception e)</b>
 &nbsp;        {
-<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+<b class="fc">&nbsp;            throw new RemoteException(e.getMessage());</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -361,7 +361,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @throws RemoteException If a remote communication error occurs
 &nbsp;     */
 &nbsp;    public ArrayList&lt;Book&gt; filter(String genre,String state, String search) throws RemoteException {
-<b class="nc">&nbsp;        return client.filter(genre,state,search);</b>
+<b class="fc">&nbsp;        return client.filter(genre,state,search);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -375,7 +375,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override
 &nbsp;    public void borrowBooks(Book book, Patron patron)
 &nbsp;        throws IOException, SQLException {
-<b class="nc">&nbsp;        client.borrowBooks(book,patron);</b>
+<b class="fc">&nbsp;        client.borrowBooks(book,patron);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -389,7 +389,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override public void wishlistBook(Book book, Patron patron)
 &nbsp;        throws IOException, SQLException
 &nbsp;    {
-<b class="nc">&nbsp;        client.wishlistBook(book,patron);</b>
+<b class="fc">&nbsp;        client.wishlistBook(book,patron);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -402,7 +402,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    @Override
 &nbsp;    public void extendBook(Book book, Patron patron) throws RemoteException, SQLException {
-<b class="nc">&nbsp;        client.extendBook(book, patron);</b>
+<b class="fc">&nbsp;        client.extendBook(book, patron);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -417,7 +417,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override public boolean isWishlisted(Book book, Patron patron)
 &nbsp;        throws RemoteException, SQLException
 &nbsp;    {
-<b class="nc">&nbsp;        return client.isWishlisted(book,patron);</b>
+<b class="fc">&nbsp;        return client.isWishlisted(book,patron);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -431,7 +431,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override
 &nbsp;    public void returnBookToDatabase(Book book, Patron patron)
 &nbsp;        throws IOException, SQLException {
-<b class="nc">&nbsp;        client.returnBookToDatabase(book,patron);</b>
+<b class="fc">&nbsp;        client.returnBookToDatabase(book,patron);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -452,7 +452,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    public void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron)
 &nbsp;        throws SQLException, IOException
 &nbsp;    {
-<b class="nc">&nbsp;        client.donateBook(title, author, isbn, year, publisher, pageCount, genre, patron);</b>
+<b class="fc">&nbsp;        client.donateBook(title, author, isbn, year, publisher, pageCount, genre, patron);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;
@@ -467,7 +467,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override public void deleteFromWishlist(Book book, Patron patron)
 &nbsp;        throws IOException, SQLException
 &nbsp;    {
-<b class="nc">&nbsp;        client.deleteFromWishlist(book,patron);</b>
+<b class="fc">&nbsp;        client.deleteFromWishlist(book,patron);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -480,7 +480,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override public ArrayList&lt;String&gt; getEndingBooks(Patron patron)
 &nbsp;        throws RemoteException
 &nbsp;    {
-<b class="nc">&nbsp;         return client.getEndingBooks(patron);</b>
+<b class="fc">&nbsp;         return client.getEndingBooks(patron);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -499,7 +499,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    @Override
 &nbsp;    public void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException {
-<b class="nc">&nbsp;        client.approveDonatedBook(id, title, author, isbn, year, publisher, pageCount, genreId);</b>
+<b class="fc">&nbsp;        client.approveDonatedBook(id, title, author, isbn, year, publisher, pageCount, genreId);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -511,7 +511,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    @Override
 &nbsp;    public void rejectDonatedBook(int bookId) throws SQLException, RemoteException {
-<b class="nc">&nbsp;        client.rejectDonatedBook(bookId);</b>
+<b class="fc">&nbsp;        client.rejectDonatedBook(bookId);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -526,10 +526,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    public Patron login(String username, String password) throws RemoteException {
 &nbsp;        try{
 &nbsp;
-<b class="nc">&nbsp;            return this.client.login(username, password);</b>
+<b class="fc">&nbsp;            return this.client.login(username, password);</b>
 &nbsp;
-<b class="nc">&nbsp;        }catch (Exception e){</b>
-<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+<b class="fc">&nbsp;        }catch (Exception e){</b>
+<b class="fc">&nbsp;            throw new RemoteException(e.getMessage());</b>
 &nbsp;        }
 &nbsp;
 &nbsp;    }
@@ -544,9 +544,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    public boolean loginAsAdmin(String username, String password) throws RemoteException{
 &nbsp;        try{
-<b class="nc">&nbsp;            return this.client.loginAsAdmin(username, password);</b>
-<b class="nc">&nbsp;        }catch (Exception e){</b>
-<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+<b class="fc">&nbsp;            return this.client.loginAsAdmin(username, password);</b>
+<b class="fc">&nbsp;        }catch (Exception e){</b>
+<b class="fc">&nbsp;            throw new RemoteException(e.getMessage());</b>
 &nbsp;        }
 &nbsp;
 &nbsp;    }
@@ -561,9 +561,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override
 &nbsp;    public void updateUsername(int userID, String newUsername) throws RemoteException {
 &nbsp;        try{
-<b class="nc">&nbsp;            client.updateUsername(userID, newUsername);</b>
-<b class="nc">&nbsp;        }catch (Exception e){</b>
-<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+<b class="fc">&nbsp;            client.updateUsername(userID, newUsername);</b>
+<b class="fc">&nbsp;        }catch (Exception e){</b>
+<b class="fc">&nbsp;            throw new RemoteException(e.getMessage());</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -577,9 +577,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override
 &nbsp;    public void updateEmail(int userID, String newEmail) throws RemoteException {
 &nbsp;        try{
-<b class="nc">&nbsp;            client.updateEmail(userID, newEmail);</b>
-<b class="nc">&nbsp;        }catch (Exception e){</b>
-<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+<b class="fc">&nbsp;            client.updateEmail(userID, newEmail);</b>
+<b class="fc">&nbsp;        }catch (Exception e){</b>
+<b class="fc">&nbsp;            throw new RemoteException(e.getMessage());</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -593,9 +593,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override
 &nbsp;    public void updatePhoneNumber(int userID, String newPhoneNumber) throws RemoteException {
 &nbsp;        try{
-<b class="nc">&nbsp;            client.updatePhoneNumber(userID, newPhoneNumber);</b>
-<b class="nc">&nbsp;        }catch (Exception e){</b>
-<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+<b class="fc">&nbsp;            client.updatePhoneNumber(userID, newPhoneNumber);</b>
+<b class="fc">&nbsp;        }catch (Exception e){</b>
+<b class="fc">&nbsp;            throw new RemoteException(e.getMessage());</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -609,9 +609,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override
 &nbsp;    public void updateFirstName(int userID, String newFirstName) throws RemoteException {
 &nbsp;        try{
-<b class="nc">&nbsp;            client.updateFirstName(userID, newFirstName);</b>
-<b class="nc">&nbsp;        }catch (Exception e){</b>
-<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+<b class="fc">&nbsp;            client.updateFirstName(userID, newFirstName);</b>
+<b class="fc">&nbsp;        }catch (Exception e){</b>
+<b class="fc">&nbsp;            throw new RemoteException(e.getMessage());</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -625,9 +625,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override
 &nbsp;    public void updateLastName(int userID, String newLastName) throws RemoteException {
 &nbsp;        try{
-<b class="nc">&nbsp;            client.updateLastName(userID, newLastName);</b>
-<b class="nc">&nbsp;        }catch (Exception e){</b>
-<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+<b class="fc">&nbsp;            client.updateLastName(userID, newLastName);</b>
+<b class="fc">&nbsp;        }catch (Exception e){</b>
+<b class="fc">&nbsp;            throw new RemoteException(e.getMessage());</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -641,9 +641,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override
 &nbsp;    public void updatePassword(int userID, String newPassword) throws RemoteException {
 &nbsp;        try{
-<b class="nc">&nbsp;            client.updatePassword(userID, newPassword);</b>
-<b class="nc">&nbsp;        }catch (Exception e){</b>
-<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+<b class="fc">&nbsp;            client.updatePassword(userID, newPassword);</b>
+<b class="fc">&nbsp;        }catch (Exception e){</b>
+<b class="fc">&nbsp;            throw new RemoteException(e.getMessage());</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -657,9 +657,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override
 &nbsp;    public void updateFees(int userID, int newFees) throws RemoteException {
 &nbsp;        try{
-<b class="nc">&nbsp;            client.updateFees(userID, newFees);</b>
-<b class="nc">&nbsp;        }catch (Exception e){</b>
-<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+<b class="fc">&nbsp;            client.updateFees(userID, newFees);</b>
+<b class="fc">&nbsp;        }catch (Exception e){</b>
+<b class="fc">&nbsp;            throw new RemoteException(e.getMessage());</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -679,9 +679,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override
 &nbsp;    public void deleteBook(int bookID,String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException {
 &nbsp;        try{
-<b class="nc">&nbsp;            client.deleteBook(bookID,title, author, year, publisher, isbn, pageCount, genre);</b>
-<b class="nc">&nbsp;        } catch(Exception e){</b>
-<b class="nc">&nbsp;            throw new IllegalArgumentException(e);</b>
+<b class="fc">&nbsp;            client.deleteBook(bookID,title, author, year, publisher, isbn, pageCount, genre);</b>
+<b class="fc">&nbsp;        } catch(Exception e){</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(e);</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -701,9 +701,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override
 &nbsp;    public void createBook(String title, String author,String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException {
 &nbsp;        try{
-<b class="nc">&nbsp;            client.createBook(title, author, year, publisher, isbn, pageCount, genre);</b>
-<b class="nc">&nbsp;        }catch (Exception e){</b>
-<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+<b class="fc">&nbsp;            client.createBook(title, author, year, publisher, isbn, pageCount, genre);</b>
+<b class="fc">&nbsp;        }catch (Exception e){</b>
+<b class="fc">&nbsp;            throw new RemoteException(e.getMessage());</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -724,9 +724,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;    @Override
 &nbsp;    public void updateBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException {
 &nbsp;        try{
-<b class="nc">&nbsp;            client.updateBook(bookID, title, author, year, publisher, isbn, pageCount, genre);</b>
-<b class="nc">&nbsp;        }catch (Exception e){</b>
-<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+<b class="fc">&nbsp;            client.updateBook(bookID, title, author, year, publisher, isbn, pageCount, genre);</b>
+<b class="fc">&nbsp;        }catch (Exception e){</b>
+<b class="fc">&nbsp;            throw new RemoteException(e.getMessage());</b>
 &nbsp;        }
 &nbsp;    }
 &nbsp;
@@ -764,7 +764,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-29 10:04</div>
+    <div style="float:right;">generated on 2024-05-29 17:47</div>
 </div>
 </body>
 </html>
