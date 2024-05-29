@@ -344,7 +344,7 @@ public class AdminManageAccountsViewController implements RemotePropertyChangeLi
             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confirmationAlert.setTitle("Confirm Deletion");
             confirmationAlert.setHeaderText(null);
-            confirmationAlert.setContentText("Are you sure you want to delete the patron: " + selectedPatron.getFirstName() + " " + selectedPatron.getLastName() + "?");
+            confirmationAlert.setContentText("Are you sure you want to delete the patron: " + selectedPatron.getUsername() + " " + "?");
 
             ButtonType yesButton = new ButtonType("Yes");
             ButtonType noButton = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
