@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1250"> 
   <title>Coverage Report > EventsViewModel</title>
   <style type="text/css">
     @import "../../css/coverage.css";
@@ -37,10 +37,6 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 <th class="coverageStat 
 ">
-  Branch, %
-</th>
-<th class="coverageStat 
-">
   Line, %
 </th>
 </tr>
@@ -67,15 +63,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     0%
   </span>
   <span class="absValue">
-    (0/6)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    0%
-  </span>
-  <span class="absValue">
-    (0/22)
+    (0/25)
   </span>
 </td>
 </tr>
@@ -110,7 +98,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp; */
 &nbsp;public class EventsViewModel implements PropertyChangeListener
 &nbsp;{
-&nbsp;    private final ListProperty&lt;Event&gt; eventList;
+&nbsp;    final ListProperty&lt;Event&gt; eventList;
 &nbsp;    private final Model model;
 &nbsp;
 &nbsp;    /**
@@ -159,7 +147,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;                    System.out.println(&quot;refreshed table&quot;);</b>
 <b class="nc">&nbsp;                } catch (RemoteException e) {</b>
 <b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
-&nbsp;                }
+<b class="nc">&nbsp;                }</b>
 &nbsp;            }
 <b class="nc">&nbsp;            if (&quot;DeleteEvent&quot;.equals(evt.getPropertyName())){</b>
 &nbsp;                try {
@@ -167,14 +155,14 @@ Current scope:     <a href="../../index.html">all classes</a>
 <b class="nc">&nbsp;                    System.out.println(&quot;refreshed table&quot;);</b>
 <b class="nc">&nbsp;                } catch (RemoteException e) {</b>
 <b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
-&nbsp;                }
+<b class="nc">&nbsp;                }</b>
 &nbsp;            }
 <b class="nc">&nbsp;            if (&quot;UpdateEvent&quot;.equals(evt.getPropertyName())) {</b>
 &nbsp;                try {
 <b class="nc">&nbsp;                    resetEventList();</b>
 <b class="nc">&nbsp;                } catch (RemoteException e) {</b>
 <b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
-&nbsp;                }
+<b class="nc">&nbsp;                }</b>
 &nbsp;            }
 &nbsp;        });
 &nbsp;    }
@@ -202,7 +190,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-29 13:00</div>
+    <div style="float:right;">generated on 2024-05-29 21:28</div>
 </div>
 </body>
 </html>

@@ -269,4 +269,112 @@ class ProfileViewModelTest {
         verify(model).getHistoryOfBooks(loggedInUser);
         verify(model).getWishlistedBooks(loggedInUser);
     }
+    @Test
+    void testResetHistoryList_RemoteException() throws RemoteException {
+        doThrow(new RemoteException()).when(model).getHistoryOfBooks(any(Patron.class));
+        assertThrows(RemoteException.class, () -> profileViewModel.resetHistoryList(loggedInUser));
+    }
+
+    @Test
+    void testResetWishlistList_RemoteException() throws RemoteException {
+        doThrow(new RemoteException()).when(model).getWishlistedBooks(any(Patron.class));
+        assertThrows(RemoteException.class, () -> profileViewModel.resetWishlistList(loggedInUser));
+    }
+
+    @Test
+    void testGetAmountOfReadBooks_RemoteException() throws RemoteException {
+        doThrow(new RemoteException()).when(model).getAmountOfReadBooks(any(Patron.class));
+        assertThrows(RemoteException.class, () -> profileViewModel.getAmountOfReadBooks(loggedInUser));
+    }
+
+    @Test
+    void testDeletePatron_RemoteException() throws RemoteException {
+        doThrow(new RemoteException()).when(model).deletePatron(anyInt());
+        assertThrows(RemoteException.class, () -> profileViewModel.deletePatron());
+    }
+
+    @Test
+    void testUpdateUsername_IllegalStateException() throws RemoteException {
+        doThrow(new IllegalStateException()).when(model).updateUsername(anyInt(), anyString());
+        assertThrows(IllegalStateException.class, () -> profileViewModel.updateUsername("newUsername", loggedInUser.getUserID()));
+    }
+
+    @Test
+    void testUpdateEmail_IllegalStateException() throws RemoteException {
+        doThrow(new IllegalStateException()).when(model).updateEmail(anyInt(), anyString());
+        assertThrows(IllegalStateException.class, () -> profileViewModel.updateEmail("newEmail@example.com", loggedInUser.getUserID()));
+    }
+
+    @Test
+    void testUpdatePhoneNumber_IllegalStateException() throws RemoteException {
+        doThrow(new IllegalStateException()).when(model).updatePhoneNumber(anyInt(), anyString());
+        assertThrows(IllegalStateException.class, () -> profileViewModel.updatePhoneNumber("87654321", loggedInUser.getUserID()));
+    }
+
+    @Test
+    void testUpdateFirstName_IllegalStateException() throws RemoteException {
+        doThrow(new IllegalStateException()).when(model).updateFirstName(anyInt(), anyString());
+        assertThrows(IllegalStateException.class, () -> profileViewModel.updateFirstName("Jane", loggedInUser.getUserID()));
+    }
+
+    @Test
+    void testUpdateLastName_IllegalStateException() throws RemoteException {
+        doThrow(new IllegalStateException()).when(model).updateLastName(anyInt(), anyString());
+        assertThrows(IllegalStateException.class, () -> profileViewModel.updateLastName("Smith", loggedInUser.getUserID()));
+    }
+
+    @Test
+    void testUpdatePassword_IllegalStateException() throws RemoteException {
+        doThrow(new IllegalStateException()).when(model).updatePassword(anyInt(), anyString());
+        assertThrows(IllegalStateException.class, () -> profileViewModel.updatePassword("newPassword123", loggedInUser.getUserID()));
+    }
+
+    @Test
+    void testRemoveFromWishlist_RemoteException() throws SQLException, IOException {
+        Book book = new Book(1, "Book Title", "Author Name", 2024, "Publisher Name", 1234567890123L, 200, "Genre");
+        doThrow(new RemoteException()).when(model).deleteFromWishlist(any(Book.class), any(Patron.class));
+        assertThrows(RemoteException.class, () -> profileViewModel.removeFromWishlist(book, loggedInUser));
+    }
+    @Test
+    void testUpdateUsername_NoUserLoggedIn() {
+        UserSession.getInstance().setLoggedInUser(null);
+        assertThrows(IllegalStateException.class, () -> profileViewModel.updateUsername("newUsername", 1));
+    }
+
+    @Test
+    void testUpdateEmail_NoUserLoggedIn() {
+        UserSession.getInstance().setLoggedInUser(null);
+        assertThrows(IllegalStateException.class, () -> profileViewModel.updateEmail("newEmail@example.com", 1));
+    }
+
+    @Test
+    void testUpdatePhoneNumber_NoUserLoggedIn() {
+        UserSession.getInstance().setLoggedInUser(null);
+        assertThrows(IllegalStateException.class, () -> profileViewModel.updatePhoneNumber("87654321", 1));
+    }
+
+    @Test
+    void testUpdateFirstName_NoUserLoggedIn() {
+        UserSession.getInstance().setLoggedInUser(null);
+        assertThrows(IllegalStateException.class, () -> profileViewModel.updateFirstName("Jane", 1));
+    }
+
+    @Test
+    void testUpdateLastName_NoUserLoggedIn() {
+        UserSession.getInstance().setLoggedInUser(null);
+        assertThrows(IllegalStateException.class, () -> profileViewModel.updateLastName("Smith", 1));
+    }
+
+    @Test
+    void testUpdatePassword_NoUserLoggedIn() {
+        UserSession.getInstance().setLoggedInUser(null);
+        assertThrows(IllegalStateException.class, () -> profileViewModel.updatePassword("newPassword123", 1));
+    }
+    @Test
+    public void testAddPropertyChangeListener() {
+        PropertyChangeListener listener = mock(PropertyChangeListener.class);
+        profileViewModel.addPropertyChangeListener(listener);
+
+        assertTrue(profileViewModel.support.hasListeners(null));
+    }
 }

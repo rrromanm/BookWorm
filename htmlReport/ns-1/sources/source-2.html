@@ -4,8 +4,8 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
-  <title>Coverage Report > Book</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1250"> 
+  <title>Coverage Report > AdminMainViewModel</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -19,10 +19,10 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">sep.model</a>
+    <a href="../index.html">sep.viewmodel</a>
 </div>
 
-<h1>Coverage Summary for Class: Book (sep.model)</h1>
+<h1>Coverage Summary for Class: AdminMainViewModel (sep.viewmodel)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -37,45 +37,33 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 <th class="coverageStat 
 ">
-  Branch, %
-</th>
-<th class="coverageStat 
-">
   Line, %
 </th>
 </tr>
 <tr>
-  <td class="name">Book</td>
+  <td class="name">AdminMainViewModel</td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (1/1)
+    (0/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (27/27)
+    (0/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (6/6)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    100%
-  </span>
-  <span class="absValue">
-    (43/43)
+    (0/2)
   </span>
 </td>
 </tr>
@@ -87,313 +75,27 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<code class="sourceCode" id="sourceCode">&nbsp;package sep.model;
+<code class="sourceCode" id="sourceCode">&nbsp;package sep.viewmodel;
 &nbsp;
-&nbsp;import java.io.Serializable;
-&nbsp;import java.util.Objects;
+&nbsp;import sep.model.Model;
 &nbsp;
 &nbsp;/**
-&nbsp; * Represents a book with title, author, publisher, year, isbn, page count, id, genre, return date, state and the borrower.
-&nbsp; * Implements Serializable interface to allow the object to be serialized.
+&nbsp; * The AdminMainViewModel class provides the view model for the admin main view.
+&nbsp; * It handles the interaction between the admin main view and the underlying model.
 &nbsp; *
-&nbsp; * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+&nbsp; * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
 &nbsp; */
-&nbsp;public class Book implements Serializable {
-&nbsp;    private String title;
-&nbsp;    private String author;
-&nbsp;    private String publisher;
-&nbsp;    private int year;
-&nbsp;    private long isbn;
-&nbsp;    private int pageCount;
-&nbsp;    private int bookId;
-&nbsp;    private String genre;
-&nbsp;    private String returnDate;
 &nbsp;
-&nbsp;    private State state;
-&nbsp;    private Patron borrower;
-&nbsp;
+&nbsp;public class AdminMainViewModel {
+&nbsp;    private final Model model;
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Constructs a new Book with the specified details.
+&nbsp;     * Constructs an AdminMainViewModel with the specified model.
 &nbsp;     *
-&nbsp;     * @param bookId the unique identifier of the book
-&nbsp;     * @param title the title of the book
-&nbsp;     * @param author the author of the book
-&nbsp;     * @param year the year the book was published
-&nbsp;     * @param publisher the publisher of the book
-&nbsp;     * @param isbn the ISBN of the book
-&nbsp;     * @param pageCount the number of pages in the book
-&nbsp;     * @param genre the genre of the book
+&nbsp;     * @param model The model to interact with for admin operations
 &nbsp;     */
-<b class="fc">&nbsp;    public Book(int bookId, String title, String author,int year, String publisher, long isbn, int pageCount, String genre){</b>
-<b class="fc">&nbsp;        this.bookId = bookId;</b>
-<b class="fc">&nbsp;        this.title = title;</b>
-<b class="fc">&nbsp;        this.author = author;</b>
-<b class="fc">&nbsp;        this.year = year;</b>
-<b class="fc">&nbsp;        this.publisher = publisher;</b>
-<b class="fc">&nbsp;        this.isbn = isbn;</b>
-<b class="fc">&nbsp;        this.pageCount = pageCount;</b>
-<b class="fc">&nbsp;        this.genre = genre;</b>
-<b class="fc">&nbsp;        this.state = new Available();</b>
-<b class="fc">&nbsp;        this.borrower = null;</b>
-<b class="fc">&nbsp;        this.returnDate = null;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Gets the title of the book.
-&nbsp;     *
-&nbsp;     * @return the title of the book
-&nbsp;     */
-&nbsp;    public String getTitle() {
-<b class="fc">&nbsp;        return title;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Sets the title of the book.
-&nbsp;     *
-&nbsp;     * @param title the title of the book
-&nbsp;     */
-&nbsp;    public void setTitle(String title) {
-<b class="fc">&nbsp;        this.title = title;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Gets the author of the book.
-&nbsp;     *
-&nbsp;     * @return the author of the book
-&nbsp;     */
-&nbsp;    public String getAuthor() {
-<b class="fc">&nbsp;        return author;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Sets the author of the book.
-&nbsp;     *
-&nbsp;     * @param author of the book
-&nbsp;     */
-&nbsp;    public void setAuthor(String author) {
-<b class="fc">&nbsp;        this.author = author;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Gets the year of the book.
-&nbsp;     *
-&nbsp;     * @return the year of the book
-&nbsp;     */
-&nbsp;    public int getYear() {
-<b class="fc">&nbsp;        return year;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Sets the year of the book.
-&nbsp;     *
-&nbsp;     * @param year the year of the book
-&nbsp;     */
-&nbsp;    public void setYear(int year) {
-<b class="fc">&nbsp;        this.year = year;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Gets the publisher of the book.
-&nbsp;     *
-&nbsp;     * @return the publisher of the book
-&nbsp;     */
-&nbsp;    public String getPublisher() {
-<b class="fc">&nbsp;        return publisher;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Sets the publisher of the book.
-&nbsp;     *
-&nbsp;     * @param publisher the publisher of the book
-&nbsp;     */
-&nbsp;    public void setPublisher(String publisher) {
-<b class="fc">&nbsp;        this.publisher = publisher;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Gets the isbn of the book.
-&nbsp;     *
-&nbsp;     * @return the isbn of the book
-&nbsp;     */
-&nbsp;    public long getIsbn() {
-<b class="fc">&nbsp;        return isbn;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Sets the isbn of the book.
-&nbsp;     *
-&nbsp;     * @param isbn the isbn of the book
-&nbsp;     */
-&nbsp;    public void setIsbn(long isbn) {
-<b class="fc">&nbsp;        this.isbn = isbn;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Gets the page count of the book.
-&nbsp;     *
-&nbsp;     * @return the page count of the book
-&nbsp;     */
-&nbsp;    public int getPageCount() {
-<b class="fc">&nbsp;        return pageCount;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Sets the page count of the book.
-&nbsp;     *
-&nbsp;     * @param pageCount the page count of the book
-&nbsp;     */
-&nbsp;    public void setPageCount(int pageCount) {
-<b class="fc">&nbsp;        this.pageCount = pageCount;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Gets the genre of the book.
-&nbsp;     *
-&nbsp;     * @return the genre of the book
-&nbsp;     */
-&nbsp;    public String getGenre() {
-<b class="fc">&nbsp;        return genre;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Sets the genre of the book.
-&nbsp;     *
-&nbsp;     * @param genre the genre of the book
-&nbsp;     */
-&nbsp;    public void setGenre(String genre) {
-<b class="fc">&nbsp;        this.genre = genre;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Gets the id of the book.
-&nbsp;     *
-&nbsp;     * @return the book id
-&nbsp;     */
-&nbsp;    public int getBookId() {
-<b class="fc">&nbsp;        return bookId;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Sets the id of the book.
-&nbsp;     *
-&nbsp;     * @param bookId the id of the book
-&nbsp;     */
-&nbsp;    public void setBookId(int bookId) {
-<b class="fc">&nbsp;        this.bookId = bookId;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Gets the state of the book.
-&nbsp;     *
-&nbsp;     * @return the state of the book
-&nbsp;     */
-&nbsp;    public State getState() {
-<b class="fc">&nbsp;        return state;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Sets the state of the book.
-&nbsp;     *
-&nbsp;     * @param state the state of the book
-&nbsp;     */
-&nbsp;    public void setState(State state) {
-<b class="fc">&nbsp;        this.state = state;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Sets the borrower of the book.
-&nbsp;     *
-&nbsp;     * @param borrower the borrower of the book
-&nbsp;     */
-&nbsp;    public void setBorrower(Patron borrower) {
-<b class="fc">&nbsp;        this.borrower = borrower;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Gets the borrower of the book.
-&nbsp;     *
-&nbsp;     * @return the borrower of the book
-&nbsp;     */
-&nbsp;    public Patron getBorrower() {
-<b class="fc">&nbsp;        return borrower;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Gets the return date of the book.
-&nbsp;     *
-&nbsp;     * @return the return date of the book
-&nbsp;     */
-&nbsp;    public String getReturnDate() {
-<b class="fc">&nbsp;        return returnDate;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Sets the return date of the book.
-&nbsp;     *
-&nbsp;     * @param returnDate the new return date of the book
-&nbsp;     */
-&nbsp;    public void setReturnDate(String returnDate) {
-<b class="fc">&nbsp;        this.returnDate = returnDate;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Borrows the book for the specified patron.
-&nbsp;     *
-&nbsp;     * @param book the book to be borrowed
-&nbsp;     * @param patron the patron borrowing the book
-&nbsp;     */
-&nbsp;    public void borrow(Book book, Patron patron)
-&nbsp;    {
-<b class="fc">&nbsp;        state.borrow(book,patron);</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Returns the book from the specified patron.
-&nbsp;     *
-&nbsp;     * @param book the book to be returned
-&nbsp;     * @param patron the patron returning the book
-&nbsp;     */
-&nbsp;    public void returnBook(Book book, Patron patron)
-&nbsp;    {
-<b class="fc">&nbsp;        state.returnBook(book, patron);</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Checks if this book is equal to another object.
-&nbsp;     *
-&nbsp;     * @param obj the object to compare with
-&nbsp;     * @return true if the books are equal, false otherwise
-&nbsp;     */
-&nbsp;    @Override
-&nbsp;    public boolean equals(Object obj) {
-<b class="fc">&nbsp;        if (this == obj) {</b>
-<b class="fc">&nbsp;            return true;</b>
-&nbsp;        }
-<b class="fc">&nbsp;        if (obj == null || getClass() != obj.getClass()) {</b>
-<b class="fc">&nbsp;            return false;</b>
-&nbsp;        }
-<b class="fc">&nbsp;        Book book = (Book) obj;</b>
-<b class="fc">&nbsp;        return Objects.equals(this.borrower, book.borrower);</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Returns a string representation of the book, including its title, author, publisher, year, ISBN, page count, and genre.
-&nbsp;     *
-&nbsp;     * @return a string representation of the book
-&nbsp;     */
-&nbsp;    @Override
-&nbsp;    public String toString() {
-<b class="fc">&nbsp;        return &quot;Book{&quot; +</b>
-&nbsp;                &quot;title=&#39;&quot; + title + &#39;\&#39;&#39; +
-&nbsp;                &quot;, author=&#39;&quot; + author + &#39;\&#39;&#39; +
-&nbsp;                &quot;, publisher=&#39;&quot; + publisher + &#39;\&#39;&#39; +
-&nbsp;                &quot;, year=&quot; + year +
-&nbsp;                &quot;, isbn=&quot; + isbn +
-&nbsp;                &quot;, pageCount=&quot; + pageCount +
-&nbsp;                &quot;, bookID=&quot; + bookId +
-&nbsp;                &quot;, genre=&#39;&quot; + genre + &#39;\&#39;&#39; +
-&nbsp;                &#39;}&#39;;
+<b class="nc">&nbsp;    public AdminMainViewModel(Model model) {</b>
+<b class="nc">&nbsp;        this.model = model;</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -419,7 +121,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-29 20:02</div>
+    <div style="float:right;">generated on 2024-05-29 21:28</div>
 </div>
 </body>
 </html>

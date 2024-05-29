@@ -6,6 +6,7 @@ module sep {
     requires org.postgresql.jdbc;
     requires java.desktop;
     requires remoteobserver;
+    requires javafx.swing;
 //    requires javafx.swing;
 
 

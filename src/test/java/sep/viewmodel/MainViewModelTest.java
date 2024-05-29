@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.JFXPanel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import sep.model.Book;
@@ -30,6 +31,7 @@ public class MainViewModelTest {
     void setUp() {
         model = mock(Model.class);
         viewModel = new MainViewModel(model);
+        new JFXPanel();
     }
 
     @Test
@@ -161,45 +163,249 @@ public class MainViewModelTest {
         // Then
         assertEquals(endingBooks, result);
     }
+    @Test
+    void propertyChange_BorrowBook() throws RemoteException {
+        // Given
+        PropertyChangeEvent event = new PropertyChangeEvent(model, "BorrowBook", null, null);
+        when(model.getAllBooks()).thenReturn(new ArrayList<>());
 
-//    @Test
-//    void propertyChange_BorrowBook() throws RemoteException {
-//        // Given
-//        ArrayList<Book> books = new ArrayList<>();
-//        books.add(new Book(1, "Book Title", "Author Name", 2024, "Publisher Name", 1234567890123L, 200, "Genre"));
-//        when(model.getAllBooks()).thenReturn(books);
-//
-//        // When
-//        viewModel.propertyChange(null);
-//
-//        // Then
-//        assertEquals(books, viewModel.bookList.get());
-//    }
+        // When
+        Platform.runLater(() -> viewModel.propertyChange(event));
 
-//    @Test
-//    void propertyChange_ReturnBook() throws RemoteException {
-//        // Given
-//        ArrayList<Book> books = new ArrayList<>();
-//        books.add(new Book(1, "Book Title", "Author Name", 2024, "Publisher Name", 1234567890123L, 200, "Genre"));
-//        when(model.getAllBooks()).thenReturn(books);
-//
-//        // When
-//        viewModel.propertyChange(null);
-//
-//        // Then
-//        assertEquals(books, viewModel.bookList.get());
-//    }
-//
-//    @Test
-//    void propertyChange_DonatedBookApproved() throws RemoteException {
-//        ArrayList<Book> books = new ArrayList<>();
-//        books.add(new Book(1, "Book Title", "Author Name", 2024, "Publisher Name", 1234567890123L, 200, "Genre"));
-//        when(model.getAllBooks()).thenReturn(books);
-//
-//        PropertyChangeEvent event = new PropertyChangeEvent(this, "BorrowBook", null, null);
-//
-//        viewModel.propertyChange(event);
-//
-//        assertEquals(books, viewModel.bookList.get());
-//    }
+        // Wait for the Platform.runLater to execute
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Then
+        verify(model).getAllBooks();
+    }
+
+    @Test
+    void propertyChange_ReturnBook() throws RemoteException {
+        // Given
+        PropertyChangeEvent event = new PropertyChangeEvent(model, "ReturnBook", null, null);
+        when(model.getAllBooks()).thenReturn(new ArrayList<>());
+
+        // When
+        Platform.runLater(() -> viewModel.propertyChange(event));
+
+        // Wait for the Platform.runLater to execute
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Then
+        verify(model).getAllBooks();
+    }
+
+    @Test
+    void propertyChange_DonatedBookApproved() throws RemoteException {
+        // Given
+        PropertyChangeEvent event = new PropertyChangeEvent(model, "DonatedBookApproved", null, null);
+        when(model.getAllBooks()).thenReturn(new ArrayList<>());
+
+        // When
+        Platform.runLater(() -> viewModel.propertyChange(event));
+
+        // Wait for the Platform.runLater to execute
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Then
+        verify(model).getAllBooks();
+    }
+
+    @Test
+    void propertyChange_RemoveBook() throws RemoteException {
+        // Given
+        PropertyChangeEvent event = new PropertyChangeEvent(model, "removeBook", null, null);
+        when(model.getAllBooks()).thenReturn(new ArrayList<>());
+
+        // When
+        Platform.runLater(() -> viewModel.propertyChange(event));
+
+        // Wait for the Platform.runLater to execute
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Then
+        verify(model).getAllBooks();
+    }
+
+    @Test
+    void propertyChange_CreateBook() throws RemoteException {
+        // Given
+        PropertyChangeEvent event = new PropertyChangeEvent(model, "createBook", null, null);
+        when(model.getAllBooks()).thenReturn(new ArrayList<>());
+
+        // When
+        Platform.runLater(() -> viewModel.propertyChange(event));
+
+        // Wait for the Platform.runLater to execute
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Then
+        verify(model).getAllBooks();
+    }
+
+    @Test
+    void propertyChange_UpdateBook() throws RemoteException {
+        // Given
+        PropertyChangeEvent event = new PropertyChangeEvent(model, "updateBook", null, null);
+        when(model.getAllBooks()).thenReturn(new ArrayList<>());
+
+        // When
+        Platform.runLater(() -> viewModel.propertyChange(event));
+
+        // Wait for the Platform.runLater to execute
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Then
+        verify(model).getAllBooks();
+    }
+
+    @Test
+    void propertyChange_BorrowBook_RemoteException() throws RemoteException {
+        // Given
+        PropertyChangeEvent event = new PropertyChangeEvent(model, "BorrowBook", null, null);
+        doThrow(new RemoteException()).when(model).getAllBooks();
+
+        // When
+        Platform.runLater(() -> viewModel.propertyChange(event));
+
+        // Wait for the Platform.runLater to execute
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Then
+        verify(model).getAllBooks();
+        // If RemoteException is properly handled, no further action is required
+    }
+
+    @Test
+    void propertyChange_ReturnBook_RemoteException() throws RemoteException {
+        // Given
+        PropertyChangeEvent event = new PropertyChangeEvent(model, "ReturnBook", null, null);
+        doThrow(new RemoteException()).when(model).getAllBooks();
+
+        // When
+        Platform.runLater(() -> viewModel.propertyChange(event));
+
+        // Wait for the Platform.runLater to execute
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Then
+        verify(model).getAllBooks();
+        // If RemoteException is properly handled, no further action is required
+    }
+
+    @Test
+    void propertyChange_DonatedBookApproved_RemoteException() throws RemoteException {
+        // Given
+        PropertyChangeEvent event = new PropertyChangeEvent(model, "DonatedBookApproved", null, null);
+        doThrow(new RemoteException()).when(model).getAllBooks();
+
+        // When
+        Platform.runLater(() -> viewModel.propertyChange(event));
+
+        // Wait for the Platform.runLater to execute
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Then
+        verify(model).getAllBooks();
+        // If RemoteException is properly handled, no further action is required
+    }
+
+    @Test
+    void propertyChange_RemoveBook_RemoteException() throws RemoteException {
+        // Given
+        PropertyChangeEvent event = new PropertyChangeEvent(model, "removeBook", null, null);
+        doThrow(new RemoteException()).when(model).getAllBooks();
+
+        // When
+        Platform.runLater(() -> viewModel.propertyChange(event));
+
+        // Wait for the Platform.runLater to execute
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Then
+        verify(model).getAllBooks();
+        // If RemoteException is properly handled, no further action is required
+    }
+
+    @Test
+    void propertyChange_CreateBook_RemoteException() throws RemoteException {
+        // Given
+        PropertyChangeEvent event = new PropertyChangeEvent(model, "createBook", null, null);
+        doThrow(new RemoteException()).when(model).getAllBooks();
+
+        // When
+        Platform.runLater(() -> viewModel.propertyChange(event));
+
+        // Wait for the Platform.runLater to execute
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Then
+        verify(model).getAllBooks();
+        // If RemoteException is properly handled, no further action is required
+    }
+
+    @Test
+    void propertyChange_UpdateBook_RemoteException() throws RemoteException {
+        // Given
+        PropertyChangeEvent event = new PropertyChangeEvent(model, "updateBook", null, null);
+        doThrow(new RemoteException()).when(model).getAllBooks();
+
+        // When
+        Platform.runLater(() -> viewModel.propertyChange(event));
+
+        // Wait for the Platform.runLater to execute
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Then
+        verify(model).getAllBooks();
+        // If RemoteException is properly handled, no further action is required
+    }
 }

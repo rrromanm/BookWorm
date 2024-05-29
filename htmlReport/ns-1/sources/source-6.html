@@ -4,8 +4,8 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
-  <title>Coverage Report > Patron</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1250"> 
+  <title>Coverage Report > AdminManageEventsViewModel</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -19,10 +19,10 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">sep.model</a>
+    <a href="../index.html">sep.viewmodel</a>
 </div>
 
-<h1>Coverage Summary for Class: Patron (sep.model)</h1>
+<h1>Coverage Summary for Class: AdminManageEventsViewModel (sep.viewmodel)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -37,45 +37,33 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 <th class="coverageStat 
 ">
-  Branch, %
-</th>
-<th class="coverageStat 
-">
   Line, %
 </th>
 </tr>
 <tr>
-  <td class="name">Patron</td>
+  <td class="name">AdminManageEventsViewModel</td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (1/1)
+    (0/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (19/19)
+    (0/13)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (8/8)
-  </span>
-</td>
-<td class="coverageStat">
-  <span class="percent">
-    100%
-  </span>
-  <span class="absValue">
-    (32/32)
+    (0/44)
   </span>
 </td>
 </tr>
@@ -87,231 +75,200 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<code class="sourceCode" id="sourceCode">&nbsp;package sep.model;
+<code class="sourceCode" id="sourceCode">&nbsp;package sep.viewmodel;
 &nbsp;
-&nbsp;import java.io.Serializable;
+&nbsp;import javafx.application.Platform;
+&nbsp;import javafx.beans.property.*;
+&nbsp;import javafx.collections.FXCollections;
+&nbsp;import javafx.collections.ObservableList;
+&nbsp;import sep.jdbc.AdminDatabaseImplementation;
+&nbsp;import sep.jdbc.BookDatabaseImplementation;
+&nbsp;import sep.model.Book;
+&nbsp;import sep.model.Event;
+&nbsp;import sep.model.Model;
+&nbsp;
+&nbsp;import java.beans.PropertyChangeEvent;
+&nbsp;import java.beans.PropertyChangeListener;
+&nbsp;import java.beans.PropertyChangeSupport;
+&nbsp;import java.rmi.RemoteException;
+&nbsp;import java.util.List;
+&nbsp;
 &nbsp;/**
-&nbsp; * Represents a patron with id, first name, last name, username, password, phone number and fees.
-&nbsp; * Implements Serializable interface to allow the object to be serialized.
+&nbsp; * The AdminManageEventsViewModel class provides the view model for managing events in the admin view.
+&nbsp; * It handles the logic for creating, updating, deleting, and loading events from the model.
+&nbsp; * This class listens for property changes from the model and updates the view accordingly.
 &nbsp; *
-&nbsp; * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+&nbsp; * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
 &nbsp; */
-&nbsp;public class Patron implements Serializable {
-&nbsp;    private String firstName;
-&nbsp;    private String lastName;
-&nbsp;    private String username;
-&nbsp;    private String password;
-&nbsp;    private String email;
-&nbsp;    private String phoneNumber;
-&nbsp;    private int userId;
-&nbsp;    private int fees;
+&nbsp;public class AdminManageEventsViewModel implements PropertyChangeListener
+&nbsp;{
+&nbsp;    private final Model model;
+&nbsp;    final ListProperty&lt;Event&gt; eventList;
+&nbsp;    final StringProperty title;
+&nbsp;    final StringProperty description;
+&nbsp;    final StringProperty date;
+&nbsp;    private PropertyChangeSupport support;
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Constructs a new Patron with the specified details.
+&nbsp;     * Constructs an AdminManageEventsViewModel with the specified model.
+&nbsp;     * Initializes the event list and properties for event details, and sets up a property change listener for the model.
 &nbsp;     *
-&nbsp;     * @param userId      the unique identifier for the patron
-&nbsp;     * @param firstName   the first name of the patron
-&nbsp;     * @param lastName    the last name of the patron
-&nbsp;     * @param username    the username of the patron
-&nbsp;     * @param password    the password of the patron
-&nbsp;     * @param email       the email address of the patron
-&nbsp;     * @param phoneNumber the phone number of the patron
-&nbsp;     * @param fees        the fees owed by the patron
+&nbsp;     * @param model The model to interact with for managing events
 &nbsp;     */
-<b class="fc">&nbsp;    public Patron(int userId, String firstName, String lastName, String username, String password, String email, String phoneNumber, int fees) {</b>
-<b class="fc">&nbsp;        this.userId = userId;</b>
-<b class="fc">&nbsp;        this.firstName = firstName;</b>
-<b class="fc">&nbsp;        this.lastName = lastName;</b>
-<b class="fc">&nbsp;        this.username = username;</b>
-<b class="fc">&nbsp;        this.password = password;</b>
-<b class="fc">&nbsp;        this.email = email;</b>
-<b class="fc">&nbsp;        this.phoneNumber = phoneNumber;</b>
-<b class="fc">&nbsp;        this.fees = fees;</b>
+<b class="nc">&nbsp;    public AdminManageEventsViewModel(Model model){</b>
+<b class="nc">&nbsp;        this.model = model;</b>
+<b class="nc">&nbsp;        this.eventList = new SimpleListProperty&lt;&gt;(FXCollections.observableArrayList());</b>
+&nbsp;
+<b class="nc">&nbsp;        this.title = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.description = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.date = new SimpleStringProperty(&quot;&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;        this.support = new PropertyChangeSupport(this);</b>
+<b class="nc">&nbsp;        model.addPropertyChangeListener(this);</b>
 &nbsp;    }
-&nbsp;//    public Patron(String firstName, String lastName, String username, String password, String email, String phoneNumber, int fees) {
-&nbsp;//        this.firstName = firstName;
-&nbsp;//        this.lastName = lastName;
-&nbsp;//        this.username = username;
-&nbsp;//        this.password = password;
-&nbsp;//        this.email = email;
-&nbsp;//        this.phoneNumber = phoneNumber;
-&nbsp;//        this.fees = fees;
-&nbsp;//    }
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Returns the first name of the patron.
+&nbsp;     * Binds the provided property to the event list property in the view model.
 &nbsp;     *
-&nbsp;     * @return the first name
+&nbsp;     * @param property The property to bind to the event list
+&nbsp;     * @throws RemoteException If a remote communication error occurs
 &nbsp;     */
-&nbsp;    public String getFirstName() {
-<b class="fc">&nbsp;        return firstName;</b>
+&nbsp;    public void bindList(ObjectProperty&lt;ObservableList&lt;Event&gt;&gt; property) throws RemoteException {
+<b class="nc">&nbsp;        property.bindBidirectional(eventList);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Sets the first name of the patron.
+&nbsp;     * Binds the provided property to the title property in the view model.
 &nbsp;     *
-&nbsp;     * @param firstName the first name to set
+&nbsp;     * @param property The property to bind to the title
 &nbsp;     */
-&nbsp;    public void setFirstName(String firstName) {
-<b class="fc">&nbsp;        this.firstName = firstName;</b>
+&nbsp;    public void bindTitle(StringProperty property){
+<b class="nc">&nbsp;        this.title.bindBidirectional(property);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Returns the last name of the patron.
+&nbsp;     * Binds the provided property to the description property in the view model.
 &nbsp;     *
-&nbsp;     * @return the last name
+&nbsp;     * @param property The property to bind to the description
 &nbsp;     */
-&nbsp;    public String getLastName() {
-<b class="fc">&nbsp;        return lastName;</b>
+&nbsp;    public void bindDescription(StringProperty property){
+<b class="nc">&nbsp;        this.description.bindBidirectional(property);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Sets the last name of the patron.
+&nbsp;     * Binds the provided property to the date property in the view model.
 &nbsp;     *
-&nbsp;     * @param lastName the last name to set
+&nbsp;     * @param property The property to bind to the date
 &nbsp;     */
-&nbsp;    public void setLastName(String lastName) {
-<b class="fc">&nbsp;        this.lastName = lastName;</b>
+&nbsp;    public void bindDate(StringProperty property){
+<b class="nc">&nbsp;        this.date.bindBidirectional(property);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Returns the username of the patron.
+&nbsp;     * Resets the event list by fetching all events from the database.
 &nbsp;     *
-&nbsp;     * @return the username
+&nbsp;     * @throws RemoteException If a remote communication error occurs
 &nbsp;     */
-&nbsp;    public String getUsername() {
-<b class="fc">&nbsp;        return username;</b>
+&nbsp;    public void resetEventList() throws RemoteException {
+&nbsp;        try{
+<b class="nc">&nbsp;            List&lt;Event&gt; events = AdminDatabaseImplementation.getInstance().getAllEvents();</b>
+<b class="nc">&nbsp;            eventList.setAll(events);</b>
+<b class="nc">&nbsp;            support.firePropertyChange(&quot;CreateEvent&quot;, null, eventList);</b>
+<b class="nc">&nbsp;        }catch (Exception e){</b>
+<b class="nc">&nbsp;            throw new IllegalStateException(e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Sets the username of the patron.
+&nbsp;     * Creates a new event with the details specified in the title, description, and date properties.
 &nbsp;     *
-&nbsp;     * @param username the username to set
+&nbsp;     * @throws RemoteException If a remote communication error occurs
 &nbsp;     */
-&nbsp;    public void setUsername(String username) {
-<b class="fc">&nbsp;        this.username = username;</b>
+&nbsp;    public void createEvent() throws RemoteException{
+&nbsp;        try{
+<b class="nc">&nbsp;            model.createEvent(title.get(), description.get(), date.get());</b>
+<b class="nc">&nbsp;            support.firePropertyChange(&quot;CreateEvent&quot;, null, eventList);</b>
+<b class="nc">&nbsp;        } catch(Exception e){</b>
+<b class="nc">&nbsp;            throw new RuntimeException(e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Returns the password of the patron.
+&nbsp;     * Deletes an event with the specified ID.
 &nbsp;     *
-&nbsp;     * @return the password
+&nbsp;     * @param id The ID of the event to delete
+&nbsp;     * @throws RemoteException If a remote communication error occurs
 &nbsp;     */
-&nbsp;    public String getPassword() {
-<b class="fc">&nbsp;        return password;</b>
+&nbsp;    public void deleteEvent(int id) throws RemoteException {
+&nbsp;        try {
+<b class="nc">&nbsp;            model.deleteEvent(id);</b>
+<b class="nc">&nbsp;            support.firePropertyChange(&quot;DeleteEvent&quot;, false, true);</b>
+<b class="nc">&nbsp;            resetEventList();</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            throw new RemoteException(&quot;Failed to delete event: &quot; + e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Sets the password of the patron.
+&nbsp;     * Updates an event with the specified details.
 &nbsp;     *
-&nbsp;     * @param password the password to set
+&nbsp;     * @param id The ID of the event to update
+&nbsp;     * @param title The new title of the event
+&nbsp;     * @param description The new description of the event
+&nbsp;     * @param eventDate The new date of the event
+&nbsp;     * @throws RemoteException If a remote communication error occurs
 &nbsp;     */
-&nbsp;    public void setPassword(String password) {
-<b class="fc">&nbsp;        this.password = password;</b>
+&nbsp;    public void updateEvent(int id, String title, String description, String eventDate) throws RemoteException{
+&nbsp;        try {
+<b class="nc">&nbsp;            model.updateEvent(id, title, description, eventDate);</b>
+<b class="nc">&nbsp;            support.firePropertyChange(&quot;UpdateEvent&quot;, false, true);</b>
+<b class="nc">&nbsp;            resetEventList();</b>
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            throw new RemoteException(&quot;Failed to edit event: &quot; + e.getMessage());</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Returns the email of the patron.
+&nbsp;     * Adds a property change listener.
 &nbsp;     *
-&nbsp;     * @return the email
+&nbsp;     * @param listener The listener to add
 &nbsp;     */
-&nbsp;    public String getEmail() {
-<b class="fc">&nbsp;        return email;</b>
+&nbsp;    public void addPropertyChangeListener(PropertyChangeListener listener) {
+<b class="nc">&nbsp;        support.addPropertyChangeListener(listener);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Sets the email of the patron.
+&nbsp;     * Removes a property change listener.
 &nbsp;     *
-&nbsp;     * @param email the email to set
+&nbsp;     * @param listener The listener to remove
 &nbsp;     */
-&nbsp;    public void setEmail(String email) {
-<b class="fc">&nbsp;        this.email = email;</b>
+&nbsp;    public void removePropertyChangeListener(PropertyChangeListener listener) {
+<b class="nc">&nbsp;        support.removePropertyChangeListener(listener);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Returns the phone number of the patron.
+&nbsp;     * Handles property change events from the model.
+&nbsp;     * Updates the event list based on changes in events.
 &nbsp;     *
-&nbsp;     * @return the phone number
-&nbsp;     */
-&nbsp;    public String getPhoneNumber() {
-<b class="fc">&nbsp;        return phoneNumber;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    public void setPhoneNumber(String phoneNumber) {
-<b class="fc">&nbsp;        this.phoneNumber = phoneNumber;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Returns the id of the patron.
-&nbsp;     *
-&nbsp;     * @return the user id
-&nbsp;     */
-&nbsp;    public int getUserID() {
-<b class="fc">&nbsp;        return userId;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Sets the id of the patron.
-&nbsp;     *
-&nbsp;     * @param userID the user id to set
-&nbsp;     */
-&nbsp;    public void setUserID(int userID) {
-<b class="fc">&nbsp;        this.userId = userID;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Returns the fees of the patron.
-&nbsp;     *
-&nbsp;     * @return the fees
-&nbsp;     */
-&nbsp;    public int getFees() {
-<b class="fc">&nbsp;        return fees;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Sets the fees of the patron.
-&nbsp;     *
-&nbsp;     * @param fees the fees to set
-&nbsp;     */
-&nbsp;    public void setFees(int fees) {
-<b class="fc">&nbsp;        this.fees = fees;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Compares this patron to the specified object. The result is true if and only if the argument is not null and is a Patron object that has the same user ID as this object.
-&nbsp;     *
-&nbsp;     * @param obj the object to compare this Patron against
-&nbsp;     * @return true if the given object represents a Patron equivalent to this Patron, false otherwise
+&nbsp;     * @param evt The property change event
 &nbsp;     */
 &nbsp;    @Override
-&nbsp;    public boolean equals(Object obj) {
-<b class="fc">&nbsp;        if (this == obj) {</b>
-<b class="fc">&nbsp;            return true;</b>
-&nbsp;        }
-<b class="fc">&nbsp;        if (obj == null || getClass() != obj.getClass()) {</b>
-<b class="fc">&nbsp;            return false;</b>
-&nbsp;        }
-<b class="fc">&nbsp;        Patron patron = (Patron) obj;</b>
-<b class="fc">&nbsp;        return this.userId == patron.userId;</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Returns first name, last name, username, password, email, phone number, id, fees of the Patron.
-&nbsp;     *
-&nbsp;     * @return a first name, last name, username, password, email, phone number, id, fees of the Patron
-&nbsp;     */
-&nbsp;    @Override
-&nbsp;    public String toString() {
-<b class="fc">&nbsp;        return &quot;User{&quot; +</b>
-&nbsp;                &quot;firstName=&#39;&quot; + firstName + &#39;\&#39;&#39; +
-&nbsp;                &quot;, lastName=&#39;&quot; + lastName + &#39;\&#39;&#39; +
-&nbsp;                &quot;, username=&#39;&quot; + username + &#39;\&#39;&#39; +
-&nbsp;                &quot;, password=&#39;&quot; + password + &#39;\&#39;&#39; +
-&nbsp;                &quot;, email=&#39;&quot; + email + &#39;\&#39;&#39; +
-&nbsp;                &quot;, phoneNumber=&#39;&quot; + phoneNumber + &#39;\&#39;&#39; +
-&nbsp;                &quot;, fees=&quot; + fees + &#39;\&#39;&#39; +
-&nbsp;                &quot;, userID=&quot; + userId +
-&nbsp;                &#39;}&#39;;
+&nbsp;    public void propertyChange(PropertyChangeEvent evt) {
+<b class="nc">&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc">&nbsp;            if (evt.getPropertyName().equals(&quot;CreateEvent&quot;))</b>
+&nbsp;            {
+<b class="nc">&nbsp;                this.support.firePropertyChange(&quot;CreateEvent&quot;, false, true);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            if (evt.getPropertyName().equals(&quot;DeleteEvent&quot;))</b>
+&nbsp;            {
+<b class="nc">&nbsp;                this.support.firePropertyChange(&quot;DeleteEvent&quot;, false, true);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            if (evt.getPropertyName().equals(&quot;UpdateEvent&quot;))</b>
+&nbsp;            {
+<b class="nc">&nbsp;                this.support.firePropertyChange(&quot;UpdateEvent&quot;, false, true);</b>
+&nbsp;            }
+&nbsp;        });
 &nbsp;    }
 &nbsp;}
 </code>
@@ -337,7 +294,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-29 20:02</div>
+    <div style="float:right;">generated on 2024-05-29 21:28</div>
 </div>
 </body>
 </html>
