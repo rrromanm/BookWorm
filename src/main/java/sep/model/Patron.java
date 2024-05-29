@@ -219,7 +219,7 @@ public class Patron implements Serializable {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", phoneNumber=" + phoneNumber + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 ", fees=" + fees + '\'' +
                 ", userID=" + userId +
                 '}';

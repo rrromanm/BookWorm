@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BorrowedTest {
     private Book book;
     private Patron patron;
+    private Patron anotherPatron;
 
     @BeforeEach
     void setUp() {
@@ -15,7 +16,7 @@ class BorrowedTest {
         book.setState(new Borrowed());
 
         patron = new Patron(1, "John", "Doe", "johndoe", "password123", "johndoe@example.com", "12345678", 0);
-
+        anotherPatron = new Patron(2, "Jane", "Doe", "janedoe", "password", "janedoe@example.com", "87654321", 0);
     }
 
     @Test
@@ -52,5 +53,23 @@ class BorrowedTest {
     void toStringDisplaysBorrowed()
     {
         assertTrue(book.getState().toString().contains("Borrowed"));
+    }
+
+    @Test
+    void returningBookByDifferentPatronThrowsException()
+    {
+        book.setBorrower(patron);
+
+        assertThrows(RuntimeException.class, () -> {
+            book.returnBook(book, anotherPatron);
+        });
+    }
+
+    @Test
+    public void returningBookByCorrectPatronChangesStateToAvailable() {
+        book.setBorrower(patron);
+        book.returnBook(book, patron);
+        assertTrue(book.getState() instanceof Available);
+        assertNull(book.getBorrower());
     }
 }

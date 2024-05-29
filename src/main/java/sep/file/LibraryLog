@@ -342,3 +342,163 @@
 27/05/2024 19:40:33 - john_doe has logged in
 27/05/2024 19:40:48 - jane_smith has logged in
 28/05/2024 12:38:50 - Admin has logged in
+28/05/2024 23:23:38 - Event has been deleted by admin
+28/05/2024 23:23:38 - A event has been updated!
+28/05/2024 23:23:38 - New event has been created by admin: Event Title
+28/05/2024 23:23:38 - Title has been updated in the database by Admin
+28/05/2024 23:23:38 - johndoe has borrowed a "Book Title"
+28/05/2024 23:23:38 - johndoe has returned a "Book Title"
+28/05/2024 23:23:38 - Patron got deleted from database!
+28/05/2024 23:23:38 - johndoe has added a "Book Title" to the wishlist
+28/05/2024 23:23:38 - johndoe has extended a "Book Title"
+28/05/2024 23:24:02 - Event has been deleted by admin
+28/05/2024 23:24:02 - A event has been updated!
+28/05/2024 23:24:03 - New event has been created by admin: Event Title
+28/05/2024 23:24:03 - Title has been updated in the database by Admin
+28/05/2024 23:24:03 - johndoe has borrowed a "Book Title"
+28/05/2024 23:24:03 - johndoe has returned a "Book Title"
+28/05/2024 23:24:03 - Patron got deleted from database!
+28/05/2024 23:24:03 - johndoe has added a "Book Title" to the wishlist
+28/05/2024 23:24:03 - johndoe has extended a "Book Title"
+28/05/2024 23:24:30 - Event has been deleted by admin
+28/05/2024 23:24:31 - A event has been updated!
+28/05/2024 23:24:31 - New event has been created by admin: Event Title
+28/05/2024 23:24:31 - Title has been updated in the database by Admin
+28/05/2024 23:24:31 - johndoe has borrowed a "Book Title"
+28/05/2024 23:24:31 - johndoe has returned a "Book Title"
+28/05/2024 23:24:31 - Patron got deleted from database!
+28/05/2024 23:24:31 - johndoe has added a "Book Title" to the wishlist
+28/05/2024 23:24:31 - johndoe has extended a "Book Title"
+28/05/2024 23:24:52 - New user has been created: user
+28/05/2024 23:24:52 - Event has been deleted by admin
+28/05/2024 23:24:52 - A event has been updated!
+28/05/2024 23:24:52 - New event has been created by admin: Event Title
+28/05/2024 23:24:52 - Title has been updated in the database by Admin
+28/05/2024 23:24:52 - johndoe has borrowed a "Book Title"
+28/05/2024 23:24:52 - johndoe has returned a "Book Title"
+28/05/2024 23:24:52 - Patron got deleted from database!
+28/05/2024 23:24:52 - johndoe has added a "Book Title" to the wishlist
+28/05/2024 23:24:52 - johndoe has extended a "Book Title"
+28/05/2024 23:37:16 - New user has been created: user
+28/05/2024 23:37:16 - Event has been deleted by admin
+28/05/2024 23:37:16 - A event has been updated!
+28/05/2024 23:37:16 - New event has been created by admin: Event Title
+28/05/2024 23:37:16 - Title has been updated in the database by Admin
+28/05/2024 23:37:16 - johndoe has borrowed a "Book Title"
+28/05/2024 23:37:16 - johndoe has returned a "Book Title"
+28/05/2024 23:37:16 - Patron got deleted from database!
+28/05/2024 23:37:16 - johndoe has added a "Book Title" to the wishlist
+28/05/2024 23:37:17 - johndoe has extended a "Book Title"
+28/05/2024 23:40:40 - New user has been created: user
+29/05/2024 00:04:50 - New user has been created: user
+29/05/2024 00:05:08 - New user has been created: user
+29/05/2024 00:05:26 - New event has been created by admin: Event Title
+29/05/2024 00:05:36 - New event has been created by admin: Event Title
+29/05/2024 00:21:26 - New user has been created: user
+29/05/2024 00:21:26 - Event has been deleted by admin
+29/05/2024 00:21:26 - A event has been updated!
+29/05/2024 00:21:26 - New event has been created by admin: Event Title
+29/05/2024 00:21:26 - Title has been updated in the database by Admin
+29/05/2024 00:21:26 - johndoe has borrowed a "Book Title"
+29/05/2024 00:21:26 - johndoe has returned a "Book Title"
+29/05/2024 00:21:26 - Patron got deleted from database!
+29/05/2024 00:21:26 - johndoe has added a "Book Title" to the wishlist
+29/05/2024 00:21:26 - johndoe has extended a "Book Title"
+29/05/2024 00:40:15 - New user has been created: user
+29/05/2024 00:40:15 - Event has been deleted by admin
+29/05/2024 00:40:15 - A event has been updated!
+29/05/2024 00:40:15 - New event has been created by admin: Event Title
+29/05/2024 00:40:15 - Title has been updated in the database by Admin
+29/05/2024 00:40:15 - johndoe has borrowed a "Book Title"
+29/05/2024 00:40:15 - johndoe has returned a "Book Title"
+29/05/2024 00:40:15 - Patron got deleted from database!
+29/05/2024 00:40:15 - johndoe has added a "Book Title" to the wishlist
+29/05/2024 00:40:15 - johndoe has extended a "Book Title"
+29/05/2024 01:05:46 - New user has been created: user
+29/05/2024 01:05:46 - Event has been deleted by admin
+29/05/2024 01:05:46 - A event has been updated!
+29/05/2024 01:05:46 - New event has been created by admin: Event Title
+29/05/2024 01:05:46 - Title has been updated in the database by Admin
+29/05/2024 01:05:46 - johndoe has borrowed a "Book Title"
+29/05/2024 01:05:46 - johndoe has donated a "Title"
+29/05/2024 01:05:46 - johndoe has returned a "Book Title"
+29/05/2024 01:05:46 - Patron got deleted from database!
+29/05/2024 01:05:46 - johndoe has added a "Book Title" to the wishlist
+29/05/2024 01:05:46 - Book Title has been deleted from the database by Admin
+29/05/2024 01:05:46 - johndoe has extended a "Book Title"
+29/05/2024 01:06:28 - New user has been created: user
+29/05/2024 01:06:28 - Event has been deleted by admin
+29/05/2024 01:06:28 - A event has been updated!
+29/05/2024 01:06:28 - New event has been created by admin: Event Title
+29/05/2024 01:06:28 - Title has been updated in the database by Admin
+29/05/2024 01:06:28 - johndoe has borrowed a "Book Title"
+29/05/2024 01:06:28 - johndoe has donated a "Title"
+29/05/2024 01:06:28 - johndoe has returned a "Book Title"
+29/05/2024 01:06:28 - Patron got deleted from database!
+29/05/2024 01:06:28 - johndoe has added a "Book Title" to the wishlist
+29/05/2024 01:06:28 - Book Title has been deleted from the database by Admin
+29/05/2024 01:06:28 - johndoe has extended a "Book Title"
+29/05/2024 01:07:45 - New user has been created: user
+29/05/2024 01:07:45 - Event has been deleted by admin
+29/05/2024 01:07:45 - A event has been updated!
+29/05/2024 01:07:45 - New event has been created by admin: Event Title
+29/05/2024 01:07:45 - Title has been updated in the database by Admin
+29/05/2024 01:07:45 - johndoe has borrowed a "Book Title"
+29/05/2024 01:07:45 - johndoe has donated a "Title"
+29/05/2024 01:07:45 - johndoe has returned a "Book Title"
+29/05/2024 01:07:45 - Patron got deleted from database!
+29/05/2024 01:07:45 - johndoe has added a "Book Title" to the wishlist
+29/05/2024 01:07:45 - Book Title has been deleted from the database by Admin
+29/05/2024 01:07:45 - johndoe has extended a "Book Title"
+29/05/2024 01:07:55 - New user has been created: user
+29/05/2024 01:07:55 - Event has been deleted by admin
+29/05/2024 01:07:55 - A event has been updated!
+29/05/2024 01:07:55 - New event has been created by admin: Event Title
+29/05/2024 01:07:55 - Title has been updated in the database by Admin
+29/05/2024 01:07:55 - johndoe has borrowed a "Book Title"
+29/05/2024 01:07:55 - johndoe has donated a "Title"
+29/05/2024 01:07:55 - johndoe has returned a "Book Title"
+29/05/2024 01:07:55 - Patron got deleted from database!
+29/05/2024 01:07:55 - johndoe has added a "Book Title" to the wishlist
+29/05/2024 01:07:55 - Book Title has been deleted from the database by Admin
+29/05/2024 01:07:55 - johndoe has extended a "Book Title"
+29/05/2024 01:11:51 - New user has been created: user
+29/05/2024 01:11:51 - Event has been deleted by admin
+29/05/2024 01:11:51 - A event has been updated!
+29/05/2024 01:11:51 - New event has been created by admin: Event Title
+29/05/2024 01:11:51 - Title has been updated in the database by Admin
+29/05/2024 01:11:51 - johndoe has borrowed a "Book Title"
+29/05/2024 01:11:51 - johndoe has donated a "Title"
+29/05/2024 01:11:51 - johndoe has returned a "Book Title"
+29/05/2024 01:11:51 - Patron got deleted from database!
+29/05/2024 01:11:51 - johndoe has added a "Book Title" to the wishlist
+29/05/2024 01:11:51 - Book Title has been deleted from the database by Admin
+29/05/2024 01:11:51 - johndoe has extended a "Book Title"
+29/05/2024 01:12:56 - New event has been created by admin: Event Title
+29/05/2024 01:14:12 - New event has been created by admin: Test Event
+29/05/2024 01:16:32 - Event has been deleted by admin
+29/05/2024 01:18:37 - New user has been created: user
+29/05/2024 01:18:37 - Event has been deleted by admin
+29/05/2024 01:18:37 - A event has been updated!
+29/05/2024 01:18:37 - New event has been created by admin: Event Title
+29/05/2024 01:18:37 - Title has been updated in the database by Admin
+29/05/2024 01:18:37 - johndoe has borrowed a "Book Title"
+29/05/2024 01:18:37 - johndoe has donated a "Title"
+29/05/2024 01:18:37 - johndoe has returned a "Book Title"
+29/05/2024 01:18:37 - Patron got deleted from database!
+29/05/2024 01:18:37 - johndoe has added a "Book Title" to the wishlist
+29/05/2024 01:18:37 - Book Title has been deleted from the database by Admin
+29/05/2024 01:18:37 - johndoe has extended a "Book Title"
+29/05/2024 01:19:51 - New user has been created: user
+29/05/2024 01:19:51 - Event has been deleted by admin
+29/05/2024 01:19:51 - A event has been updated!
+29/05/2024 01:19:51 - New event has been created by admin: Event Title
+29/05/2024 01:19:51 - Title has been updated in the database by Admin
+29/05/2024 01:19:51 - johndoe has borrowed a "Book Title"
+29/05/2024 01:19:51 - johndoe has donated a "Title"
+29/05/2024 01:19:51 - johndoe has returned a "Book Title"
+29/05/2024 01:19:51 - Patron got deleted from database!
+29/05/2024 01:19:51 - johndoe has added a "Book Title" to the wishlist
+29/05/2024 01:19:51 - Book Title has been deleted from the database by Admin
+29/05/2024 01:19:51 - johndoe has extended a "Book Title"
+29/05/2024 01:20:08 - A event has been updated!

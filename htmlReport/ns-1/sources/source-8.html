@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
-  <title>Coverage Report > Model</title>
+  <title>Coverage Report > State</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -22,14 +22,14 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">sep.model</a>
 </div>
 
-<h1>Coverage Summary for Class: Model (sep.model)</h1>
+<h1>Coverage Summary for Class: State (sep.model)</h1>
 
 <table class="coverageStats">
 <tr>
   <th class="name">Class</th>
 </tr>
 <tr>
-  <td class="name">Model</td>
+  <td class="name">State</td>
 </tr>
 
 </table>
@@ -41,56 +41,27 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package sep.model;
 &nbsp;
-&nbsp;import java.beans.PropertyChangeListener;
-&nbsp;import java.io.IOException;
-&nbsp;import java.rmi.RemoteException;
-&nbsp;import java.sql.SQLException;
-&nbsp;import java.util.ArrayList;
-&nbsp;
 &nbsp;/**
-&nbsp; * Interface defining the methods for the library management model.
+&nbsp; * This interface represents the state of a book in the library system, defining actions that can be performed on a book.
+&nbsp; *
+&nbsp; * @author Group 6 (Samuel, Kuba, Maciej, Romans)
 &nbsp; */
-&nbsp;public interface Model {
-&nbsp;    ArrayList&lt;Book&gt; getAllBooks() throws RemoteException;
-&nbsp;    ArrayList&lt;Book&gt; getBorrowedBooks(Patron patron) throws RemoteException;
-&nbsp;    ArrayList&lt;Book&gt; getHistoryOfBooks(Patron patron) throws RemoteException;
-&nbsp;    ArrayList&lt;Book&gt; getWishlistedBooks(Patron patron) throws RemoteException;
-&nbsp;    ArrayList&lt;Book&gt; getDonatedBooks() throws RemoteException;
-&nbsp;    ArrayList&lt;Event&gt; getAllEvents() throws RemoteException;
-&nbsp;    void addPropertyChangeListener(PropertyChangeListener listener);
-&nbsp;    void removePropertyChangeListener(PropertyChangeListener listener);
-&nbsp;    void deleteBook(int bookID,String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws RemoteException, SQLException;
-&nbsp;    void createBook(String title, String author,String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException;
-&nbsp;    void updateBook(int bookID, String title, String author, String year, String publisher, String isbn, String pageCount, String genre) throws SQLException, RemoteException;
-&nbsp;    int getAmountOfReadBooks(Patron patron) throws RemoteException;
-&nbsp;    int getAmountOfBorrowedBooks(Patron patron) throws RemoteException;
-&nbsp;    void createPatron(String username, String password, String first_name, String last_name, String email, String phone_number, int fees) throws RemoteException;
-&nbsp;    void createEvent(String title, String description, String date) throws RemoteException;
-&nbsp;    void deleteEvent(int id) throws RemoteException;
-&nbsp;    void updateEvent(int id, String title, String description, String eventDate) throws RemoteException;
-&nbsp;    void deletePatron(int id) throws RemoteException;
-&nbsp;    Patron login(String username, String password) throws RemoteException;
-&nbsp;    boolean loginAsAdmin(String username, String password) throws RemoteException;
-&nbsp;    void updateUsername(int userID, String newUsername) throws RemoteException;
-&nbsp;    void updateEmail(int userID, String newEmail) throws RemoteException;
-&nbsp;    void updatePhoneNumber(int userID, String newPhoneNumber) throws RemoteException;
-&nbsp;    void updateFirstName(int userID, String newFirstName) throws RemoteException;
-&nbsp;    void updateLastName(int userID, String newLastName) throws RemoteException;
-&nbsp;    void updatePassword(int userID, String newPassowrd) throws RemoteException;
-&nbsp;    void updateFees(int userID, int newFees) throws RemoteException;
-&nbsp;    ArrayList&lt;Book&gt; filter(String genre, String state, String search) throws RemoteException;
-&nbsp;    void borrowBooks(Book book, Patron patron) throws IOException, SQLException;
-&nbsp;    void wishlistBook(Book book, Patron patron) throws IOException, SQLException;
-&nbsp;    void extendBook(Book book, Patron patron) throws RemoteException, SQLException;
-&nbsp;    boolean isWishlisted(Book book, Patron patron) throws RemoteException, SQLException;
-&nbsp;    void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException;
-&nbsp;    void rejectDonatedBook(int bookId) throws SQLException, RemoteException;
-&nbsp;    void returnBookToDatabase(Book book, Patron patron) throws IOException, SQLException;
-&nbsp;    void donateBook(String title, String author, long isbn, int year, String publisher, int pageCount, String genre, Patron patron) throws SQLException, IOException;
-&nbsp;    void deleteFromWishlist(Book book, Patron patron) throws IOException, SQLException;
-&nbsp;    ArrayList&lt;String&gt; getEndingBooks(Patron patron) throws RemoteException;
+&nbsp;public interface State {
+&nbsp;    /**
+&nbsp;     * Borrow a book from the library.
+&nbsp;     *
+&nbsp;     * @param book the book to be borrowed
+&nbsp;     * @param patron the patron who is borrowing the book
+&nbsp;     */
+&nbsp;    void borrow(Book book, Patron patron);
+&nbsp;    /**
+&nbsp;     * Return a book to the library.
+&nbsp;     *
+&nbsp;     * @param book the book to be returned
+&nbsp;     * @param patron the patron who is returning the book
+&nbsp;     */
+&nbsp;    void returnBook(Book book, Patron patron);
 &nbsp;}
-&nbsp;
 </code>
 </pre>
 </div>
@@ -114,7 +85,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-28 17:57</div>
+    <div style="float:right;">generated on 2024-05-29 10:04</div>
 </div>
 </body>
 </html>
