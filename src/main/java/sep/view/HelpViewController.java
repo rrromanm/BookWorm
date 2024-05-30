@@ -5,13 +5,16 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Region;
 import sep.viewmodel.HelpViewModel;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 /**
  * Controller class for the Help view.
  * Handles user interactions and updates the view based on changes in the underlying data.
  *
- * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+ * @Author: Group 6 (Samuel, Kuba, Maciej, Romans)
  */
 public class HelpViewController {
 
@@ -52,13 +55,27 @@ public class HelpViewController {
     /**
      * Handles the event when the User Guide button is clicked.
      * This method is triggered when the User Guide button in the user interface is clicked.
-     * It navigates to the user guide view.
+     * It opens the user guide PDF.
      *
      * @throws RemoteException if a remote communication-related exception occurs
      */
     @FXML
     private void userGuideButtonClicked() throws RemoteException {
-        viewHandler.openView("UserGuide");
+        File pdfFile = new File("src/main/resources/sep/UserGuide.pdf");
+
+        if (pdfFile.exists()) {
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().open(pdfFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Desktop is not supported on this system.");
+            }
+        } else {
+            System.out.println("The file does not exist.");
+        }
     }
 
     /**
