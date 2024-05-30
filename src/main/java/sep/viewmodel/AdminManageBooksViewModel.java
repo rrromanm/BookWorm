@@ -27,9 +27,9 @@ import java.util.List;
 public class AdminManageBooksViewModel implements PropertyChangeListener
 {
     private final Model model;
-    private final ListProperty<Book> bookList;
-    private final SimpleObjectProperty<Book> selectedBook;
-    private PropertyChangeSupport support;
+    final ListProperty<Book> bookList;
+    final SimpleObjectProperty<Book> selectedBook;
+    PropertyChangeSupport support;
 
     /**
      * Constructs an AdminManageBooksViewModel with the specified model.

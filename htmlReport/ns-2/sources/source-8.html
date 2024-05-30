@@ -1,0 +1,253 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > CreateAccountViewModel</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">sep.viewmodel</a>
+</div>
+
+<h1>Coverage Summary for Class: CreateAccountViewModel (sep.viewmodel)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CreateAccountViewModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/30)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package sep.viewmodel;
+&nbsp;
+&nbsp;import javafx.beans.property.LongProperty;
+&nbsp;import javafx.beans.property.SimpleLongProperty;
+&nbsp;import javafx.beans.property.SimpleStringProperty;
+&nbsp;import javafx.beans.property.StringProperty;
+&nbsp;import javafx.scene.control.Alert;
+&nbsp;import sep.model.Model;
+&nbsp;
+&nbsp;import java.rmi.RemoteException;
+&nbsp;
+&nbsp;/**
+&nbsp; * The CreateAccountViewModel class provides the view model for creating a new patron account in the system.
+&nbsp; * It interacts with the model to create a new patron account.
+&nbsp; *
+&nbsp; * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
+&nbsp; */
+&nbsp;public class CreateAccountViewModel {
+&nbsp;    private final Model model;
+&nbsp;    final StringProperty email;
+&nbsp;    final StringProperty username;
+&nbsp;    final StringProperty password;
+&nbsp;    final StringProperty first_name;
+&nbsp;    final StringProperty last_name;
+&nbsp;    final StringProperty phone_number;
+&nbsp;    final StringProperty repeatPassword;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a CreateAccountViewModel with the specified model.
+&nbsp;     *
+&nbsp;     * @param model The model to interact with for creating user accounts
+&nbsp;     */
+<b class="nc">&nbsp;    public CreateAccountViewModel(Model model) {</b>
+<b class="nc">&nbsp;        this.model = model;</b>
+<b class="nc">&nbsp;        this.email = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.username = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.password = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.repeatPassword = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.first_name = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.last_name = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.phone_number = new SimpleStringProperty(&quot;&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Creates a new patron account with the provided details.
+&nbsp;     *
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    public void createPatron() throws RemoteException {
+&nbsp;        try{
+&nbsp;
+<b class="nc">&nbsp;            if(!password.get().equals(repeatPassword.get())){</b>
+<b class="nc">&nbsp;                throw new IllegalArgumentException(&quot;Passwords must match!&quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            model.createPatron(username.get(), password.get(), first_name.get(), last_name.get(), email.get(), phone_number.get(),0);</b>
+<b class="nc">&nbsp;            reset();</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Patron created!&quot;);</b>
+<b class="nc">&nbsp;        }catch(Exception e){</b>
+<b class="nc">&nbsp;            throw new RemoteException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the email property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the email
+&nbsp;     */
+&nbsp;    public void bindEmail(StringProperty property){
+<b class="nc">&nbsp;        this.email.bindBidirectional(property);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the username property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the username
+&nbsp;     */
+&nbsp;    public void bindUsername(StringProperty property){
+<b class="nc">&nbsp;        this.username.bindBidirectional(property);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the password property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the password
+&nbsp;     */
+&nbsp;    public void bindPassword(StringProperty property){
+<b class="nc">&nbsp;        this.password.bindBidirectional(property);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the repeatPassword property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the repeatPassword
+&nbsp;     */
+&nbsp;    public void bindRepeatPassword(StringProperty property){
+<b class="nc">&nbsp;        this.repeatPassword.bindBidirectional(property);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the first_name property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the first_name
+&nbsp;     */
+&nbsp;    public void bindFirstName(StringProperty property){
+<b class="nc">&nbsp;        this.first_name.bindBidirectional(property);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the last_name property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the last_name
+&nbsp;     */
+&nbsp;    public void bindLastName(StringProperty property){
+<b class="nc">&nbsp;        this.last_name.bindBidirectional(property);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the phone_number property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the phone_number
+&nbsp;     */
+&nbsp;    public void bindPhoneNumber(StringProperty property){
+<b class="nc">&nbsp;        this.phone_number.bindBidirectional(property);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Resets the fields to empty strings.
+&nbsp;     */
+&nbsp;    public void reset() {
+<b class="nc">&nbsp;        this.email.set(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.username.set(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.password.set(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.repeatPassword.set(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.first_name.set(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.last_name.set(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.phone_number.set(&quot;&quot;);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-30 11:54</div>
+</div>
+</body>
+</html>

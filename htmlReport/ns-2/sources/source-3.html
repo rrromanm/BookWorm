@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
-  <title>Coverage Report > NameValidator</title>
+  <title>Coverage Report > AdminManageAccountsViewModel</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -19,10 +19,10 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">sep.model.validators</a>
+    <a href="../index.html">sep.viewmodel</a>
 </div>
 
-<h1>Coverage Summary for Class: NameValidator (sep.model.validators)</h1>
+<h1>Coverage Summary for Class: AdminManageAccountsViewModel (sep.viewmodel)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -45,7 +45,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">NameValidator</td>
+  <td class="name">AdminManageAccountsViewModel</td>
 <td class="coverageStat">
   <span class="percent">
     100%
@@ -56,26 +56,26 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    50%
+    75%
   </span>
   <span class="absValue">
-    (1/2)
+    (12/16)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (8/8)
+    (0/8)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    83.3%
+    59%
   </span>
   <span class="absValue">
-    (5/6)
+    (36/61)
   </span>
 </td>
 </tr>
@@ -87,30 +87,276 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<code class="sourceCode" id="sourceCode">&nbsp;package sep.model.validators;
+<code class="sourceCode" id="sourceCode">&nbsp;package sep.viewmodel;
+&nbsp;
+&nbsp;import javafx.application.Platform;
+&nbsp;import javafx.beans.property.*;
+&nbsp;import javafx.collections.FXCollections;
+&nbsp;import javafx.collections.ObservableList;
+&nbsp;import sep.jdbc.PatronDatabaseImplementation;
+&nbsp;import sep.model.Model;
+&nbsp;import sep.model.Patron;
+&nbsp;import sep.model.UserSession;
+&nbsp;
+&nbsp;import java.beans.PropertyChangeEvent;
+&nbsp;import java.beans.PropertyChangeListener;
+&nbsp;import java.beans.PropertyChangeSupport;
+&nbsp;import java.rmi.RemoteException;
+&nbsp;import java.sql.SQLException;
+&nbsp;import java.util.List;
 &nbsp;
 &nbsp;/**
-&nbsp; * The NameValidator class provides a method to validate the name.
+&nbsp; * The AdminManageAccountsViewModel class provides the view model for the admin manage accounts view.
+&nbsp; * It handles the logic for managing patron accounts, including updating user information,
+&nbsp; * deleting patrons, and loading the list of patrons from the database.
+&nbsp; * This class listens for property changes from the model and updates the view accordingly.
 &nbsp; *
-&nbsp; * @author Group 6 (Samuel, Kuba, Maciej, Romans)
+&nbsp; * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
 &nbsp; */
-<b class="nc">&nbsp;public class NameValidator {</b>
-&nbsp;    /**
-&nbsp;     * Validates a given name.
-&nbsp;     *
-&nbsp;     * @param firstname The name to be validated
-&nbsp;     * @throws IllegalArgumentException If the name is null, empty, or contains non-letter characters
-&nbsp;     */
-&nbsp;    public static void validate(String firstname){
-<b class="fc">&nbsp;        if (firstname == null || firstname.isEmpty()) {</b>
-<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Firstname must not be empty!&quot;);</b>
-&nbsp;        }
-<b class="fc">&nbsp;        for (char c : firstname.toCharArray()) {</b>
+&nbsp;public class AdminManageAccountsViewModel implements PropertyChangeListener {
+&nbsp;    private final Model model;
+&nbsp;    private final ListProperty&lt;Patron&gt; patronList;
+&nbsp;    private final SimpleObjectProperty&lt;Patron&gt; selectedPatron;
+&nbsp;    private PropertyChangeSupport support;
 &nbsp;
-<b class="fc">&nbsp;            if (!Character.isLetter(c)) {</b>
-<b class="fc">&nbsp;                throw new IllegalArgumentException(&quot;Firstname must contain only letters!&quot;);</b>
+&nbsp;    /**
+&nbsp;     * Constructs an AdminManageAccountsViewModel with the specified model.
+&nbsp;     * Initializes the patron list and sets up a property change listener for the model.
+&nbsp;     *
+&nbsp;     * @param model The model to interact with for patron management operations
+&nbsp;     */
+<b class="fc">&nbsp;    public AdminManageAccountsViewModel(Model model) {</b>
+<b class="fc">&nbsp;        this.model = model;</b>
+<b class="fc">&nbsp;        this.patronList = new SimpleListProperty&lt;&gt;(FXCollections.observableArrayList());</b>
+<b class="fc">&nbsp;        this.selectedPatron = new SimpleObjectProperty&lt;&gt;();</b>
+<b class="fc">&nbsp;        this.support = new PropertyChangeSupport(this);</b>
+&nbsp;
+<b class="fc">&nbsp;        model.addPropertyChangeListener(this);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the patron list property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the patron list
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    public void bindList(ObjectProperty&lt;ObservableList&lt;Patron&gt;&gt; property) throws RemoteException {
+<b class="fc">&nbsp;        property.bindBidirectional(patronList);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Binds the provided property to the selected patron property in the view model.
+&nbsp;     *
+&nbsp;     * @param property The property to bind to the selected patron
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    public void bindSelectedBook(ReadOnlyObjectProperty&lt;Patron&gt; property) throws RemoteException {
+<b class="fc">&nbsp;        selectedPatron.bind(property);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the username of the patron with the specified user ID.
+&nbsp;     *
+&nbsp;     * @param newUsername The new username
+&nbsp;     * @param userID The ID of the user to update
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;
+&nbsp;    public void updateUsername(String newUsername,int userID) throws RemoteException {
+&nbsp;            try{
+<b class="fc">&nbsp;                model.updateUsername(userID, newUsername);</b>
+<b class="fc">&nbsp;            }catch (Exception e){</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(e.getMessage());</b>
 &nbsp;            }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the email of the patron with the specified user ID.
+&nbsp;     *
+&nbsp;     * @param newEmail The new email
+&nbsp;     * @param userID The ID of the user to update
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    public void updateEmail(String newEmail,int userID) throws RemoteException{
+&nbsp;
+&nbsp;            try{
+<b class="fc">&nbsp;                model.updateEmail(userID, newEmail);</b>
+<b class="fc">&nbsp;            }catch (Exception e){</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(e.getMessage());</b>
+&nbsp;            }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the phone number of the patron with the specified user ID.
+&nbsp;     *
+&nbsp;     * @param newPhoneNumber The new phone number
+&nbsp;     * @param userID The ID of the user to update
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;
+&nbsp;    public void updatePhoneNumber(String newPhoneNumber,int userID) throws RemoteException{
+&nbsp;
+&nbsp;            try{
+<b class="fc">&nbsp;                model.updatePhoneNumber(userID, newPhoneNumber);</b>
+<b class="fc">&nbsp;            }catch (Exception e){</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(e.getMessage());</b>
+&nbsp;            }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the first name of the patron with the specified user ID.
+&nbsp;     *
+&nbsp;     * @param newFirstName The new first name
+&nbsp;     * @param userID The ID of the user to update
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    public void updateFirstName(String newFirstName,int userID) throws RemoteException{
+&nbsp;
+&nbsp;            try{
+<b class="fc">&nbsp;                model.updateFirstName(userID, newFirstName);</b>
+<b class="fc">&nbsp;            }catch (Exception e){</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(e.getMessage());</b>
+&nbsp;            }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the last name of the patron with the specified user ID.
+&nbsp;     *
+&nbsp;     * @param newLastName The new last name
+&nbsp;     * @param userID The ID of the user to update
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    public void updateLastName(String newLastName,int userID) throws RemoteException{
+&nbsp;
+&nbsp;            try{
+<b class="fc">&nbsp;                model.updateLastName(userID, newLastName);</b>
+<b class="fc">&nbsp;            }catch (Exception e){</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(e.getMessage());</b>
+&nbsp;            }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Updates the password of the patron with the specified user ID.
+&nbsp;     *
+&nbsp;     * @param userID The ID of the user to update
+&nbsp;     * @param newPassword The new password
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    public void updatePassword(int userID,String newPassword) throws RemoteException{
+&nbsp;            try{
+<b class="fc">&nbsp;                model.updatePassword(userID, newPassword);</b>
+<b class="fc">&nbsp;            }catch (Exception e){</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(e.getMessage());</b>
+&nbsp;            }
+&nbsp;    }
+&nbsp;    /**
+&nbsp;     * Updates the fees of the patron with the specified user ID.
+&nbsp;     *
+&nbsp;     * @param userID The ID of the user to update
+&nbsp;     * @param newFees The new fees amount
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    public void updateFees(int userID, int newFees) throws RemoteException{
+&nbsp;            try{
+<b class="fc">&nbsp;                model.updateFees(userID, newFees);</b>
+<b class="fc">&nbsp;            }catch (Exception e){</b>
+<b class="fc">&nbsp;                throw new IllegalStateException(e.getMessage());</b>
+&nbsp;            }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Deletes the patron with the specified ID and reloads the list of patrons.
+&nbsp;     *
+&nbsp;     * @param id The ID of the patron to delete
+&nbsp;     * @throws RemoteException If a remote communication error occurs
+&nbsp;     */
+&nbsp;    public void deletePatron(int id) throws RemoteException {
+&nbsp;        try {
+<b class="fc">&nbsp;            model.deletePatron(id);</b>
+<b class="fc">&nbsp;            loadPatrons();</b>
+<b class="fc">&nbsp;        } catch (Exception e) {</b>
+<b class="fc">&nbsp;            throw new RemoteException(&quot;Failed to delete patron: &quot; + e.getMessage());</b>
 &nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Loads the list of patrons from the database and updates the patron list property.
+&nbsp;     *
+&nbsp;     * @throws SQLException If a database access error occurs
+&nbsp;     */
+&nbsp;    public void loadPatrons() throws SQLException {
+&nbsp;        try{
+<b class="fc">&nbsp;            List&lt;Patron&gt; patrons = PatronDatabaseImplementation.getInstance().getAllPatrons();</b>
+<b class="fc">&nbsp;            patronList.setAll(patrons);</b>
+<b class="fc">&nbsp;            support.firePropertyChange(&quot;patronList&quot;, null, patronList);</b>
+<b class="nc">&nbsp;        }catch (Exception e){</b>
+<b class="nc">&nbsp;            throw new IllegalStateException(e.getMessage());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Adds a property change listener to this view model.
+&nbsp;     *
+&nbsp;     * @param listener The listener to add
+&nbsp;     */
+&nbsp;    public void addPropertyChangeListener(PropertyChangeListener listener) {
+<b class="nc">&nbsp;        support.addPropertyChangeListener(listener);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Removes a property change listener from this view model.
+&nbsp;     *
+&nbsp;     * @param listener The listener to remove
+&nbsp;     */
+&nbsp;    public void removePropertyChangeListener(PropertyChangeListener listener) {
+<b class="nc">&nbsp;        support.removePropertyChangeListener(listener);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Handles property change events from the model.
+&nbsp;     * Updates the patron list and notifies listeners of changes to the borrow and return book events.
+&nbsp;     *
+&nbsp;     * @param evt The property change event
+&nbsp;     */
+&nbsp;    @Override
+&nbsp;    public void propertyChange(PropertyChangeEvent evt) {
+<b class="nc">&nbsp;        Platform.runLater(() -&gt; {</b>
+<b class="nc">&nbsp;            if (&quot;createPatron&quot;.equals(evt.getPropertyName())){</b>
+&nbsp;                try {
+<b class="nc">&nbsp;                    loadPatrons();</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;refreshed patron table&quot;);</b>
+<b class="nc">&nbsp;                } catch (SQLException e) {</b>
+<b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            if(&quot;updatePatron&quot;.equals(evt.getPropertyName())){</b>
+&nbsp;                try {
+<b class="nc">&nbsp;                    loadPatrons();</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;refreshed patron table&quot;);</b>
+<b class="nc">&nbsp;                } catch (SQLException e) {</b>
+<b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            if (evt.getPropertyName().equals(&quot;BorrowBook&quot;))</b>
+&nbsp;            {
+&nbsp;                try {
+<b class="nc">&nbsp;                    loadPatrons();</b>
+<b class="nc">&nbsp;                } catch (SQLException e) {</b>
+<b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                this.support.firePropertyChange(&quot;BorrowBook&quot;, false, true);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            if (evt.getPropertyName().equals(&quot;ReturnBook&quot;))</b>
+&nbsp;            {
+&nbsp;                try {
+<b class="nc">&nbsp;                    loadPatrons();</b>
+<b class="nc">&nbsp;                } catch (SQLException e) {</b>
+<b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
+&nbsp;                }
+<b class="nc">&nbsp;                this.support.firePropertyChange(&quot;ReturnBook&quot;, false, true);</b>
+&nbsp;            }
+&nbsp;        });
 &nbsp;    }
 &nbsp;}
 </code>
@@ -136,7 +382,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-29 20:02</div>
+    <div style="float:right;">generated on 2024-05-30 11:54</div>
 </div>
 </body>
 </html>

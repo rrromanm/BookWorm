@@ -5,7 +5,7 @@
 <html id="htmlId">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
-  <title>Coverage Report > AdminLoginViewModel</title>
+  <title>Coverage Report > LoginViewModel</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -22,7 +22,7 @@ Current scope:     <a href="../../index.html">all classes</a>
     <a href="../index.html">sep.viewmodel</a>
 </div>
 
-<h1>Coverage Summary for Class: AdminLoginViewModel (sep.viewmodel)</h1>
+<h1>Coverage Summary for Class: LoginViewModel (sep.viewmodel)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -45,37 +45,37 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 </tr>
 <tr>
-  <td class="name">AdminLoginViewModel</td>
+  <td class="name">LoginViewModel</td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (1/1)
+    (0/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (6/6)
+    (0/6)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (2/2)
+    (0/2)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    100%
+    0%
   </span>
   <span class="absValue">
-    (18/18)
+    (0/20)
   </span>
 </td>
 </tr>
@@ -89,58 +89,65 @@ Current scope:     <a href="../../index.html">all classes</a>
 <pre>
 <code class="sourceCode" id="sourceCode">&nbsp;package sep.viewmodel;
 &nbsp;
+&nbsp;import dk.via.remote.observer.RemotePropertyChangeEvent;
+&nbsp;import dk.via.remote.observer.RemotePropertyChangeListener;
+&nbsp;import dk.via.remote.observer.RemotePropertyChangeSupport;
+&nbsp;import javafx.application.Platform;
 &nbsp;import javafx.beans.property.SimpleStringProperty;
 &nbsp;import javafx.beans.property.StringProperty;
 &nbsp;import sep.model.Model;
+&nbsp;import sep.model.Patron;
 &nbsp;
+&nbsp;import java.beans.PropertyChangeEvent;
+&nbsp;import java.beans.PropertyChangeListener;
 &nbsp;import java.rmi.RemoteException;
 &nbsp;
 &nbsp;/**
-&nbsp; * The AdminLoginViewModel class provides the view model for the admin login view.
-&nbsp; * It handles the logic for admin login, including binding properties to the view,
-&nbsp; * performing the login action, and resetting the view model state.
+&nbsp; * The LoginViewModel class provides the view model for handling user login functionality.
+&nbsp; * It interacts with the model to perform login operations and manages the login view state.
 &nbsp; *
 &nbsp; * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
 &nbsp; */
-&nbsp;
-&nbsp;public class AdminLoginViewModel {
+&nbsp;public class LoginViewModel
+&nbsp;{
 &nbsp;    private final Model model;
-&nbsp;    private final StringProperty username;
-&nbsp;    private final StringProperty password;
-&nbsp;    private final StringProperty error;
+&nbsp;    final StringProperty username;
+&nbsp;    final StringProperty password;
+&nbsp;    final StringProperty error;
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Constructs an AdminLoginViewModel with the specified model.
+&nbsp;     * Constructs a LoginViewModel with the specified model.
 &nbsp;     *
 &nbsp;     * @param model The model to interact with for login operations
 &nbsp;     */
-&nbsp;
-<b class="fc">&nbsp;    public AdminLoginViewModel(Model model) {</b>
-<b class="fc">&nbsp;        this.model = model;</b>
-<b class="fc">&nbsp;        this.username = new SimpleStringProperty(&quot;&quot;);</b>
-<b class="fc">&nbsp;        this.password = new SimpleStringProperty(&quot;&quot;);</b>
-<b class="fc">&nbsp;        this.error = new SimpleStringProperty(&quot;&quot;);</b>
+&nbsp;    public LoginViewModel(Model model)
+<b class="nc">&nbsp;    {</b>
+<b class="nc">&nbsp;        this.model = model;</b>
+<b class="nc">&nbsp;        this.username = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.password = new SimpleStringProperty(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.error = new SimpleStringProperty(&quot;&quot;);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Attempts to log in as an admin using the provided username and password.
-&nbsp;     * If the login is successful, the view model calls reset. Otherwise, an error message is set.
+&nbsp;     * Attempts to log in the user using the provided username and password.
 &nbsp;     *
-&nbsp;     * @return true if the login is successful, false otherwise
+&nbsp;     * @return The logged-in patron if successful, null otherwise
 &nbsp;     */
-&nbsp;
-&nbsp;    public boolean login(){
-&nbsp;        try{
-<b class="fc">&nbsp;            if(model.loginAsAdmin(username.get(), password.get())){</b>
-<b class="fc">&nbsp;                reset();</b>
-<b class="fc">&nbsp;                return true;</b>
+&nbsp;    public Patron login(){
+&nbsp;        try {
+<b class="nc">&nbsp;            Patron patron = model.login(username.get(),password.get());</b>
+<b class="nc">&nbsp;            if(patron!=null){</b>
+<b class="nc">&nbsp;                reset();</b>
+<b class="nc">&nbsp;                this.error.set(&quot;&quot;);</b>
+<b class="nc">&nbsp;                return patron;</b>
 &nbsp;            }
-<b class="fc">&nbsp;        } catch (RemoteException e){</b>
-<b class="fc">&nbsp;            error.set(e.getMessage());</b>
-<b class="fc">&nbsp;            e.printStackTrace();</b>
+&nbsp;
+<b class="nc">&nbsp;        } catch (RemoteException e) {</b>
+<b class="nc">&nbsp;            this.error.set(e.getMessage());</b>
+<b class="nc">&nbsp;            e.printStackTrace();</b>
 &nbsp;        }
-<b class="fc">&nbsp;        error.set(&quot;Username or password incorrect. Try again.&quot;);</b>
-<b class="fc">&nbsp;        return false;</b>
+<b class="nc">&nbsp;        this.error.set(&quot;Username or password is incorrect. Try again&quot;);</b>
+<b class="nc">&nbsp;        return null;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -148,9 +155,8 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     *
 &nbsp;     * @param property The property to bind to the username
 &nbsp;     */
-&nbsp;
 &nbsp;    public void bindUsername(StringProperty property){
-<b class="fc">&nbsp;        this.username.bindBidirectional(property);</b>
+<b class="nc">&nbsp;        this.username.bindBidirectional(property);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -158,27 +164,24 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     *
 &nbsp;     * @param property The property to bind to the password
 &nbsp;     */
-&nbsp;
 &nbsp;    public void bindPassword(StringProperty property){
-<b class="fc">&nbsp;        this.password.bindBidirectional(property);</b>
+<b class="nc">&nbsp;        this.password.bindBidirectional(property);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
 &nbsp;     * Binds the provided property to the error property in the view model.
 &nbsp;     *
-&nbsp;     * @param property The property to bind to the error message
+&nbsp;     * @param property The property to bind to the error
 &nbsp;     */
-&nbsp;    public void bindError(StringProperty property){
-<b class="fc">&nbsp;        this.error.bindBidirectional(property);</b>
-&nbsp;    }
+<b class="nc">&nbsp;    public void bindError(StringProperty property){this.error.bindBidirectional(property);}</b>
 &nbsp;
 &nbsp;    /**
-&nbsp;     * Resets the view model to its initial state by clearing the username and password properties.
+&nbsp;     * Resets the username and password properties to empty strings.
 &nbsp;     */
 &nbsp;    public void reset()
 &nbsp;    {
-<b class="fc">&nbsp;        this.username.set(&quot;&quot;);</b>
-<b class="fc">&nbsp;        this.password.set(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.username.set(&quot;&quot;);</b>
+<b class="nc">&nbsp;        this.password.set(&quot;&quot;);</b>
 &nbsp;    }
 &nbsp;}
 </code>

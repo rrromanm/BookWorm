@@ -1,0 +1,285 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ViewModelFactory</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">sep.viewmodel</a>
+</div>
+
+<h1>Coverage Summary for Class: ViewModelFactory (sep.viewmodel)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ViewModelFactory</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/31)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package sep.viewmodel;
+&nbsp;
+&nbsp;import sep.model.Model;
+&nbsp;import sep.view.AdminServerLogViewController;
+&nbsp;
+&nbsp;/**
+&nbsp; * The ViewModelFactory class is responsible for creating and providing instances of various view model classes.
+&nbsp; * Each view model corresponds to a specific view or functionality in the application.
+&nbsp; *
+&nbsp; * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
+&nbsp; */
+&nbsp;public class ViewModelFactory
+&nbsp;{
+&nbsp;    private final LoginViewModel loginViewModel;
+&nbsp;    private final AdminLoginViewModel adminLoginViewModel;
+&nbsp;    private final CreateAccountViewModel createAccountViewModel;
+&nbsp;    private final DonateViewModel donateViewModel;
+&nbsp;    private final AdminManageAccountsViewModel adminManageAccountsViewModel;
+&nbsp;    private final AdminServerLogViewModel adminServerLogViewModel;
+&nbsp;    private final HelpViewModel helpViewModel;
+&nbsp;    private final MainViewModel mainViewModel;
+&nbsp;    private final ProfileViewModel profileViewModel;
+&nbsp;    private final MyBooksViewModel myBooksViewModel;
+&nbsp;    private final AdminManageEventsViewModel adminManageEventsViewModel;
+&nbsp;    private final AdminManageDonatedBooksViewModel adminManageDonatedBooksViewModel;
+&nbsp;    private final AdminMainViewModel adminMainViewModel;
+&nbsp;    private final AdminManageBooksViewModel adminManageBooksViewModel;
+&nbsp;    private final EventsViewModel eventsViewModel;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a ViewModelFactory with the specified model.
+&nbsp;     *
+&nbsp;     * @param model The model to interact with for creating view models
+&nbsp;     */
+<b class="nc">&nbsp;    public ViewModelFactory(Model model) {</b>
+<b class="nc">&nbsp;        this.loginViewModel = new LoginViewModel(model);</b>
+<b class="nc">&nbsp;        this.adminLoginViewModel = new AdminLoginViewModel(model);</b>
+<b class="nc">&nbsp;        this.createAccountViewModel = new CreateAccountViewModel(model);</b>
+<b class="nc">&nbsp;        this.donateViewModel = new DonateViewModel(model);</b>
+<b class="nc">&nbsp;        this.adminManageAccountsViewModel = new AdminManageAccountsViewModel(model);</b>
+<b class="nc">&nbsp;        this.adminServerLogViewModel = new AdminServerLogViewModel(model);</b>
+<b class="nc">&nbsp;        this.helpViewModel = new HelpViewModel(model);</b>
+<b class="nc">&nbsp;        this.mainViewModel = new MainViewModel(model);</b>
+<b class="nc">&nbsp;        this.myBooksViewModel = new MyBooksViewModel(model);</b>
+<b class="nc">&nbsp;        this.profileViewModel = new ProfileViewModel(model);</b>
+<b class="nc">&nbsp;        this.adminManageEventsViewModel = new AdminManageEventsViewModel(model);</b>
+<b class="nc">&nbsp;        this.adminManageDonatedBooksViewModel = new AdminManageDonatedBooksViewModel(model);</b>
+<b class="nc">&nbsp;        this.adminMainViewModel = new AdminMainViewModel(model);</b>
+<b class="nc">&nbsp;        this.adminManageBooksViewModel = new AdminManageBooksViewModel(model);</b>
+<b class="nc">&nbsp;        this.eventsViewModel = new EventsViewModel(model);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the LoginViewModel instance.
+&nbsp;     *
+&nbsp;     * @return The LoginViewModel instance
+&nbsp;     */
+&nbsp;    public LoginViewModel getLoginViewModel()
+&nbsp;    {
+<b class="nc">&nbsp;        return loginViewModel;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the AdminLoginViewModel instance.
+&nbsp;     *
+&nbsp;     * @return The AdminLoginViewModel instance
+&nbsp;     */
+&nbsp;    public AdminLoginViewModel getAdminLoginViewModel()
+&nbsp;    {
+<b class="nc">&nbsp;        return adminLoginViewModel;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the CreateAccountViewModel instance.
+&nbsp;     *
+&nbsp;     * @return The CreateAccountViewModel instance
+&nbsp;     */
+&nbsp;    public CreateAccountViewModel getCreateAccountViewModel()
+&nbsp;    {
+<b class="nc">&nbsp;        return createAccountViewModel;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the DonateViewModel instance.
+&nbsp;     *
+&nbsp;     * @return The DonateViewModel instance
+&nbsp;     */
+<b class="nc">&nbsp;    public DonateViewModel getDonateViewModel(){return donateViewModel;}</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the AdminManageAccountsViewModel instance.
+&nbsp;     *
+&nbsp;     * @return The AdminManageAccountsViewModel instance
+&nbsp;     */
+<b class="nc">&nbsp;    public AdminManageAccountsViewModel getAdminManageAccountsViewModel(){return adminManageAccountsViewModel;}</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the AdminServerLogViewModel instance.
+&nbsp;     *
+&nbsp;     * @return The AdminServerLogViewModel instance
+&nbsp;     */
+<b class="nc">&nbsp;    public AdminServerLogViewModel getAdminServerLogViewModel() {return adminServerLogViewModel;}</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the HelpViewModel instance.
+&nbsp;     *
+&nbsp;     * @return The HelpViewModel instance
+&nbsp;     */
+<b class="nc">&nbsp;    public HelpViewModel getHelpViewModel(){return helpViewModel;}</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the MainViewModel instance.
+&nbsp;     *
+&nbsp;     * @return The MainViewModel instance
+&nbsp;     */
+<b class="nc">&nbsp;    public MainViewModel getMainViewModel(){return mainViewModel;}</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the MyBooksViewModel instance.
+&nbsp;     *
+&nbsp;     * @return The MyBooksViewModel instance
+&nbsp;     */
+&nbsp;    public MyBooksViewModel getMyBooksViewModel() {
+<b class="nc">&nbsp;        return myBooksViewModel;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the ProfileViewModel instance.
+&nbsp;     *
+&nbsp;     * @return The ProfileViewModel instance
+&nbsp;     */
+&nbsp;    public ProfileViewModel getProfileViewModel() {
+<b class="nc">&nbsp;        return profileViewModel;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the AdminManageEventsViewModel instance.
+&nbsp;     *
+&nbsp;     * @return The AdminManageEventsViewModel instance
+&nbsp;     */
+&nbsp;    public AdminManageEventsViewModel getAdminManageEventsViewModel() {
+<b class="nc">&nbsp;        return adminManageEventsViewModel;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the AdminManageDonatedBooksViewModel instance.
+&nbsp;     *
+&nbsp;     * @return The AdminManageDonatedBooksViewModel instance
+&nbsp;     */
+&nbsp;    public AdminManageDonatedBooksViewModel getAdminManageDonatedBooksViewModel() {
+<b class="nc">&nbsp;        return adminManageDonatedBooksViewModel;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the AdminMainViewModel instance.
+&nbsp;     *
+&nbsp;     * @return The AdminMainViewModel instance
+&nbsp;     */
+&nbsp;    public AdminMainViewModel getAdminMainViewModel() {
+<b class="nc">&nbsp;        return adminMainViewModel;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the AdminManageBooksViewModel instance.
+&nbsp;     *
+&nbsp;     * @return The AdminManageBooksViewModel instance
+&nbsp;     */
+&nbsp;
+&nbsp;    public AdminManageBooksViewModel getAdminManageBooksViewModel() {
+<b class="nc">&nbsp;        return adminManageBooksViewModel;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retrieves the EventsViewModel instance.
+&nbsp;     *
+&nbsp;     * @return The EventsViewModel instance
+&nbsp;     */
+&nbsp;    public EventsViewModel getEventsViewModel() {
+<b class="nc">&nbsp;        return eventsViewModel;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-30 11:54</div>
+</div>
+</body>
+</html>

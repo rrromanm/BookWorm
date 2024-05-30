@@ -1,116 +1,130 @@
 package sep.viewmodel;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import sep.jdbc.BookDatabaseImplementation;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import org.junit.Before;
+import org.junit.Test;
 import sep.model.Book;
+import sep.model.Event;
 import sep.model.Model;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class AdminManageBooksViewModelTest {
 
+    private AdminManageBooksViewModel viewModel;
     private Model model;
-    private AdminManageBooksViewModel adminManageBooksViewModel;
+    private Book book;
+    private ArrayList<Book> books;
 
-    @BeforeEach
+    @Before
     public void setUp() {
         model = mock(Model.class);
-        adminManageBooksViewModel = Mockito.mock(AdminManageBooksViewModel.class);
+        viewModel = new AdminManageBooksViewModel(model);
+        books = new ArrayList<>();
+        book = new Book(1,"Title", "Author", 2000, "ISBN", 2000, 300, "Genre");
+        books.add(book);
+    }
+
+    @Test
+    public void testBindList() throws RemoteException {
+        ObjectProperty<ObservableList<Book>> property = new SimpleObjectProperty<>(FXCollections.observableArrayList());
+        viewModel.bindList(property);
+        
+        assertSame(property.get(), viewModel.bookList.get());
     }
 
     @Test
     public void testResetBookList() throws RemoteException {
-        // Arrange
-        ArrayList<Book> books = new ArrayList<>();
-        books.add(new Book(1, "Title 1", "Author 1", 2022, "Publisher 1", 1234567891235L, 100, "Genre 1"));
-        books.add(new Book(2, "Title 2", "Author 2", 2023, "Publisher 2", 1234567891236L, 200, "Genre 2"));
-
         when(model.getAllBooks()).thenReturn(books);
 
-        // Act
-        assertDoesNotThrow(() -> adminManageBooksViewModel.resetBookList());
+        viewModel.resetBookList();
 
-        // Assert
-        verify(model, times(1)).getAllBooks();
+        verify(model).getAllBooks();
+        assertEquals(1, viewModel.bookList.size());
+        assertEquals(book, viewModel.bookList.get(0));
+    }
+
+    @Test
+    public void testLoadBooks() throws RemoteException {
+        when(model.getAllBooks()).thenReturn(books);
+
+        viewModel.loadBooks();
+
+        verify(model).getAllBooks();
+        assertEquals(1, viewModel.bookList.size());
+        assertEquals(book, viewModel.bookList.get(0));
     }
 
     @Test
     public void testShowFiltered() throws RemoteException {
-        List<Book> filteredBooks = Arrays.asList(
-                new Book(1, "Filtered Title 1", "Filtered Author 1", 2022, "Filtered Publisher 1", 1234567891235L, 100, "Filtered Genre 1"),
-                new Book(2, "Filtered Title 2", "Filtered Author 2", 2023, "Filtered Publisher 2", 1234567891236L, 200, "Filtered Genre 2")
-        );
-        when(model.filter(anyString(), anyString(), anyString()));
+        when(model.filter(anyString(), anyString(), anyString())).thenReturn(books);
 
-        // Act
-        assertDoesNotThrow(() -> adminManageBooksViewModel.showFiltered("Genre", "State", "Search"));
+        viewModel.showFiltered("genre", "state", "search");
 
-        // Assert
-        verify(model, times(1)).filter("Genre", "State", "Search");
-    }
-
-    @Test
-    public void testUpdateBook() throws SQLException, RemoteException {
-        // Arrange
-        int bookID = 1;
-        String title = "Updated Title";
-        String author = "Updated Author";
-        String year = "2024";
-        String publisher = "Updated Publisher";
-        String isbn = "Updated ISBN";
-        String pageCount = "150";
-        String genre = "Updated Genre";
-
-        // Act
-        assertDoesNotThrow(() -> adminManageBooksViewModel.updateBook(bookID, title, author, year, publisher, isbn, pageCount, genre));
-
-        // Assert
-        verify(model, times(1)).updateBook(bookID, title, author, year, publisher, isbn, pageCount, genre);
-    }
-
-    @Test
-    public void testDeleteBook() throws SQLException, RemoteException {
-        // Arrange
-        int bookID = 1;
-        String title = "Title";
-        String author = "Author";
-        String year = "2024";
-        String publisher = "Publisher";
-        String isbn = "ISBN";
-        String pageCount = "150";
-        String genre = "Genre";
-
-        // Act
-        assertDoesNotThrow(() -> adminManageBooksViewModel.deleteBook(bookID, title, author, year, publisher, isbn, pageCount, genre));
-
-        // Assert
-        verify(model, times(1)).deleteBook(bookID, title, author, year, publisher, isbn, pageCount, genre);
+        verify(model).filter("genre", "state", "search");
+        assertEquals(1, viewModel.bookList.size());
+        assertEquals(book, viewModel.bookList.get(0));
     }
 
     @Test
     public void testCreateBook() throws SQLException, RemoteException {
-        // Arrange
-        String title = "New Title";
-        String author = "New Author";
-        String year = "2025";
-        String publisher = "New Publisher";
-        String isbn = "New ISBN";
-        String pageCount = "200";
-        String genre = "New Genre";
+        viewModel.createBook("title", "author", "year", "publisher", "isbn", "pageCount", "genre");
 
-        // Act
-        assertDoesNotThrow(() -> adminManageBooksViewModel.createBook(title, author, year, publisher, isbn, pageCount, genre));
+        verify(model).createBook("title", "author", "year", "publisher", "isbn", "pageCount", "genre");
+    }
 
-        // Assert
-        verify(model, times(1)).createBook(title, author, year, publisher, isbn, pageCount, genre);
+    @Test
+    public void testUpdateBook() throws SQLException, RemoteException {
+        viewModel.updateBook(1, "title", "author", "year", "publisher", "isbn", "pageCount", "genre");
+
+        verify(model).updateBook(1, "title", "author", "year", "publisher", "isbn", "pageCount", "genre");
+    }
+
+    @Test
+    public void testDeleteBook() throws SQLException, RemoteException {
+        viewModel.deleteBook(1, "title", "author", "year", "publisher", "isbn", "pageCount", "genre");
+
+        verify(model).deleteBook(1, "title", "author", "year", "publisher", "isbn", "pageCount", "genre");
+    }
+
+    @Test
+    public void testSetSelectedBook() {
+        viewModel.setSelectedBook(book);
+
+        assertNotNull(viewModel.selectedBook);
+        assertSame(book, viewModel.selectedBook.get());
+    }
+
+    @Test
+    public void testAddPropertyChangeListener() {
+        PropertyChangeListener listener = mock(PropertyChangeListener.class);
+        viewModel.addPropertyChangeListener(listener);
+
+        assertTrue(viewModel.support.hasListeners("BorrowBook"));
+    }
+
+    @Test
+    public void testRemovePropertyChangeListener() {
+        PropertyChangeListener listener = mock(PropertyChangeListener.class);
+        viewModel.addPropertyChangeListener(listener);
+        viewModel.removePropertyChangeListener(listener);
+
+        assertFalse(viewModel.support.hasListeners("BorrowBook"));
     }
 }
