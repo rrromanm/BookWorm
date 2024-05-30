@@ -7,8 +7,8 @@ module sep {
     requires java.desktop;
     requires remoteobserver;
     requires javafx.swing;
-//    requires javafx.swing;
 
+    requires org.junit.jupiter.api;
 
     opens sep.server to javafx.fxml;
     opens sep.view to javafx.fxml;
