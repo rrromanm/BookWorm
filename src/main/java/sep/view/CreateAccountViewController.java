@@ -77,6 +77,10 @@ public class CreateAccountViewController {
         try {
             this.viewModel.createPatron();
             viewHandler.openView("login");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Account created");
+            alert.setHeaderText("Accounts got created, now you can login to BookWorm");
+            alert.show();
             reset();
         } catch (RemoteException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
