@@ -172,7 +172,7 @@ public class MainViewModelTest {
         // When
         Platform.runLater(() -> viewModel.propertyChange(event));
 
-        // Wait for the Platform.runLater to execute
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -192,7 +192,7 @@ public class MainViewModelTest {
         // When
         Platform.runLater(() -> viewModel.propertyChange(event));
 
-        // Wait for the Platform.runLater to execute
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -212,7 +212,7 @@ public class MainViewModelTest {
         // When
         Platform.runLater(() -> viewModel.propertyChange(event));
 
-        // Wait for the Platform.runLater to execute
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -232,7 +232,7 @@ public class MainViewModelTest {
         // When
         Platform.runLater(() -> viewModel.propertyChange(event));
 
-        // Wait for the Platform.runLater to execute
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -252,7 +252,7 @@ public class MainViewModelTest {
         // When
         Platform.runLater(() -> viewModel.propertyChange(event));
 
-        // Wait for the Platform.runLater to execute
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -272,7 +272,7 @@ public class MainViewModelTest {
         // When
         Platform.runLater(() -> viewModel.propertyChange(event));
 
-        // Wait for the Platform.runLater to execute
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -292,7 +292,7 @@ public class MainViewModelTest {
         // When
         Platform.runLater(() -> viewModel.propertyChange(event));
 
-        // Wait for the Platform.runLater to execute
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -301,7 +301,7 @@ public class MainViewModelTest {
 
         // Then
         verify(model).getAllBooks();
-        // If RemoteException is properly handled, no further action is required
+
     }
 
     @Test
@@ -313,7 +313,7 @@ public class MainViewModelTest {
         // When
         Platform.runLater(() -> viewModel.propertyChange(event));
 
-        // Wait for the Platform.runLater to execute
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -322,7 +322,7 @@ public class MainViewModelTest {
 
         // Then
         verify(model).getAllBooks();
-        // If RemoteException is properly handled, no further action is required
+
     }
 
     @Test
@@ -334,7 +334,7 @@ public class MainViewModelTest {
         // When
         Platform.runLater(() -> viewModel.propertyChange(event));
 
-        // Wait for the Platform.runLater to execute
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -343,7 +343,7 @@ public class MainViewModelTest {
 
         // Then
         verify(model).getAllBooks();
-        // If RemoteException is properly handled, no further action is required
+
     }
 
     @Test
@@ -355,7 +355,7 @@ public class MainViewModelTest {
         // When
         Platform.runLater(() -> viewModel.propertyChange(event));
 
-        // Wait for the Platform.runLater to execute
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -364,7 +364,7 @@ public class MainViewModelTest {
 
         // Then
         verify(model).getAllBooks();
-        // If RemoteException is properly handled, no further action is required
+
     }
 
     @Test
@@ -376,7 +376,7 @@ public class MainViewModelTest {
         // When
         Platform.runLater(() -> viewModel.propertyChange(event));
 
-        // Wait for the Platform.runLater to execute
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -385,7 +385,7 @@ public class MainViewModelTest {
 
         // Then
         verify(model).getAllBooks();
-        // If RemoteException is properly handled, no further action is required
+
     }
 
     @Test
@@ -397,7 +397,7 @@ public class MainViewModelTest {
         // When
         Platform.runLater(() -> viewModel.propertyChange(event));
 
-        // Wait for the Platform.runLater to execute
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -406,6 +406,7 @@ public class MainViewModelTest {
 
         // Then
         verify(model).getAllBooks();
-        // If RemoteException is properly handled, no further action is required
+
     }
+
 }
