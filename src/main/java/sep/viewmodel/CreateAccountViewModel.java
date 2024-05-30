@@ -17,13 +17,13 @@ import java.rmi.RemoteException;
  */
 public class CreateAccountViewModel {
     private final Model model;
-    private final StringProperty email;
-    private final StringProperty username;
-    private final StringProperty password;
-    private final StringProperty first_name;
-    private final StringProperty last_name;
-    private final StringProperty phone_number;
-    private final StringProperty repeatPassword;
+    final StringProperty email;
+    final StringProperty username;
+    final StringProperty password;
+    final StringProperty first_name;
+    final StringProperty last_name;
+    final StringProperty phone_number;
+    final StringProperty repeatPassword;
 
     /**
      * Constructs a CreateAccountViewModel with the specified model.
@@ -125,26 +125,13 @@ public class CreateAccountViewModel {
     /**
      * Resets the fields to empty strings.
      */
-    public void reset()
-    {
+    public void reset() {
         this.email.set("");
         this.username.set("");
         this.password.set("");
-        this.phone_number.set("");
+        this.repeatPassword.set("");
         this.first_name.set("");
         this.last_name.set("");
-    }
-
-    /**
-     * Displays an alert with the given message.
-     *
-     * @param message The message to display in the alert
-     */
-    public void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Something went wrong...");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        this.phone_number.set("");
     }
 }

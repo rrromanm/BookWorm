@@ -76,6 +76,6 @@ class NameValidatorTest {
     @Test
     public void singleInvalidCharacterNameThrowsException() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> NameValidator.validate("1"));
-        assertEquals("Firstname must contain only letters!", exception.getMessage());
+        assertEquals("Firstname or lastname must contain only letters!", exception.getMessage());
     }
 }

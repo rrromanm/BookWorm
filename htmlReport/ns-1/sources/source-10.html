@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=windows-1250"> 
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
   <title>Coverage Report > ViewModelFactory</title>
   <style type="text/css">
     @import "../../css/coverage.css";
@@ -44,26 +44,26 @@ Current scope:     <a href="../../index.html">all classes</a>
   <td class="name">ViewModelFactory</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/16)
+    (16/16)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/31)
+    (31/31)
   </span>
 </td>
 </tr>
@@ -109,22 +109,22 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     *
 &nbsp;     * @param model The model to interact with for creating view models
 &nbsp;     */
-<b class="nc">&nbsp;    public ViewModelFactory(Model model) {</b>
-<b class="nc">&nbsp;        this.loginViewModel = new LoginViewModel(model);</b>
-<b class="nc">&nbsp;        this.adminLoginViewModel = new AdminLoginViewModel(model);</b>
-<b class="nc">&nbsp;        this.createAccountViewModel = new CreateAccountViewModel(model);</b>
-<b class="nc">&nbsp;        this.donateViewModel = new DonateViewModel(model);</b>
-<b class="nc">&nbsp;        this.adminManageAccountsViewModel = new AdminManageAccountsViewModel(model);</b>
-<b class="nc">&nbsp;        this.adminServerLogViewModel = new AdminServerLogViewModel(model);</b>
-<b class="nc">&nbsp;        this.helpViewModel = new HelpViewModel(model);</b>
-<b class="nc">&nbsp;        this.mainViewModel = new MainViewModel(model);</b>
-<b class="nc">&nbsp;        this.myBooksViewModel = new MyBooksViewModel(model);</b>
-<b class="nc">&nbsp;        this.profileViewModel = new ProfileViewModel(model);</b>
-<b class="nc">&nbsp;        this.adminManageEventsViewModel = new AdminManageEventsViewModel(model);</b>
-<b class="nc">&nbsp;        this.adminManageDonatedBooksViewModel = new AdminManageDonatedBooksViewModel(model);</b>
-<b class="nc">&nbsp;        this.adminMainViewModel = new AdminMainViewModel(model);</b>
-<b class="nc">&nbsp;        this.adminManageBooksViewModel = new AdminManageBooksViewModel(model);</b>
-<b class="nc">&nbsp;        this.eventsViewModel = new EventsViewModel(model);</b>
+<b class="fc">&nbsp;    public ViewModelFactory(Model model) {</b>
+<b class="fc">&nbsp;        this.loginViewModel = new LoginViewModel(model);</b>
+<b class="fc">&nbsp;        this.adminLoginViewModel = new AdminLoginViewModel(model);</b>
+<b class="fc">&nbsp;        this.createAccountViewModel = new CreateAccountViewModel(model);</b>
+<b class="fc">&nbsp;        this.donateViewModel = new DonateViewModel(model);</b>
+<b class="fc">&nbsp;        this.adminManageAccountsViewModel = new AdminManageAccountsViewModel(model);</b>
+<b class="fc">&nbsp;        this.adminServerLogViewModel = new AdminServerLogViewModel(model);</b>
+<b class="fc">&nbsp;        this.helpViewModel = new HelpViewModel(model);</b>
+<b class="fc">&nbsp;        this.mainViewModel = new MainViewModel(model);</b>
+<b class="fc">&nbsp;        this.myBooksViewModel = new MyBooksViewModel(model);</b>
+<b class="fc">&nbsp;        this.profileViewModel = new ProfileViewModel(model);</b>
+<b class="fc">&nbsp;        this.adminManageEventsViewModel = new AdminManageEventsViewModel(model);</b>
+<b class="fc">&nbsp;        this.adminManageDonatedBooksViewModel = new AdminManageDonatedBooksViewModel(model);</b>
+<b class="fc">&nbsp;        this.adminMainViewModel = new AdminMainViewModel(model);</b>
+<b class="fc">&nbsp;        this.adminManageBooksViewModel = new AdminManageBooksViewModel(model);</b>
+<b class="fc">&nbsp;        this.eventsViewModel = new EventsViewModel(model);</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -134,7 +134,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    public LoginViewModel getLoginViewModel()
 &nbsp;    {
-<b class="nc">&nbsp;        return loginViewModel;</b>
+<b class="fc">&nbsp;        return loginViewModel;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -144,7 +144,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    public AdminLoginViewModel getAdminLoginViewModel()
 &nbsp;    {
-<b class="nc">&nbsp;        return adminLoginViewModel;</b>
+<b class="fc">&nbsp;        return adminLoginViewModel;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -154,7 +154,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;    public CreateAccountViewModel getCreateAccountViewModel()
 &nbsp;    {
-<b class="nc">&nbsp;        return createAccountViewModel;</b>
+<b class="fc">&nbsp;        return createAccountViewModel;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -162,35 +162,35 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     *
 &nbsp;     * @return The DonateViewModel instance
 &nbsp;     */
-<b class="nc">&nbsp;    public DonateViewModel getDonateViewModel(){return donateViewModel;}</b>
+<b class="fc">&nbsp;    public DonateViewModel getDonateViewModel(){return donateViewModel;}</b>
 &nbsp;
 &nbsp;    /**
 &nbsp;     * Retrieves the AdminManageAccountsViewModel instance.
 &nbsp;     *
 &nbsp;     * @return The AdminManageAccountsViewModel instance
 &nbsp;     */
-<b class="nc">&nbsp;    public AdminManageAccountsViewModel getAdminManageAccountsViewModel(){return adminManageAccountsViewModel;}</b>
+<b class="fc">&nbsp;    public AdminManageAccountsViewModel getAdminManageAccountsViewModel(){return adminManageAccountsViewModel;}</b>
 &nbsp;
 &nbsp;    /**
 &nbsp;     * Retrieves the AdminServerLogViewModel instance.
 &nbsp;     *
 &nbsp;     * @return The AdminServerLogViewModel instance
 &nbsp;     */
-<b class="nc">&nbsp;    public AdminServerLogViewModel getAdminServerLogViewModel() {return adminServerLogViewModel;}</b>
+<b class="fc">&nbsp;    public AdminServerLogViewModel getAdminServerLogViewModel() {return adminServerLogViewModel;}</b>
 &nbsp;
 &nbsp;    /**
 &nbsp;     * Retrieves the HelpViewModel instance.
 &nbsp;     *
 &nbsp;     * @return The HelpViewModel instance
 &nbsp;     */
-<b class="nc">&nbsp;    public HelpViewModel getHelpViewModel(){return helpViewModel;}</b>
+<b class="fc">&nbsp;    public HelpViewModel getHelpViewModel(){return helpViewModel;}</b>
 &nbsp;
 &nbsp;    /**
 &nbsp;     * Retrieves the MainViewModel instance.
 &nbsp;     *
 &nbsp;     * @return The MainViewModel instance
 &nbsp;     */
-<b class="nc">&nbsp;    public MainViewModel getMainViewModel(){return mainViewModel;}</b>
+<b class="fc">&nbsp;    public MainViewModel getMainViewModel(){return mainViewModel;}</b>
 &nbsp;
 &nbsp;    /**
 &nbsp;     * Retrieves the MyBooksViewModel instance.
@@ -198,7 +198,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @return The MyBooksViewModel instance
 &nbsp;     */
 &nbsp;    public MyBooksViewModel getMyBooksViewModel() {
-<b class="nc">&nbsp;        return myBooksViewModel;</b>
+<b class="fc">&nbsp;        return myBooksViewModel;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -207,7 +207,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @return The ProfileViewModel instance
 &nbsp;     */
 &nbsp;    public ProfileViewModel getProfileViewModel() {
-<b class="nc">&nbsp;        return profileViewModel;</b>
+<b class="fc">&nbsp;        return profileViewModel;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -216,7 +216,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @return The AdminManageEventsViewModel instance
 &nbsp;     */
 &nbsp;    public AdminManageEventsViewModel getAdminManageEventsViewModel() {
-<b class="nc">&nbsp;        return adminManageEventsViewModel;</b>
+<b class="fc">&nbsp;        return adminManageEventsViewModel;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -225,7 +225,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @return The AdminManageDonatedBooksViewModel instance
 &nbsp;     */
 &nbsp;    public AdminManageDonatedBooksViewModel getAdminManageDonatedBooksViewModel() {
-<b class="nc">&nbsp;        return adminManageDonatedBooksViewModel;</b>
+<b class="fc">&nbsp;        return adminManageDonatedBooksViewModel;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -234,7 +234,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @return The AdminMainViewModel instance
 &nbsp;     */
 &nbsp;    public AdminMainViewModel getAdminMainViewModel() {
-<b class="nc">&nbsp;        return adminMainViewModel;</b>
+<b class="fc">&nbsp;        return adminMainViewModel;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -244,7 +244,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     */
 &nbsp;
 &nbsp;    public AdminManageBooksViewModel getAdminManageBooksViewModel() {
-<b class="nc">&nbsp;        return adminManageBooksViewModel;</b>
+<b class="fc">&nbsp;        return adminManageBooksViewModel;</b>
 &nbsp;    }
 &nbsp;
 &nbsp;    /**
@@ -253,7 +253,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;     * @return The EventsViewModel instance
 &nbsp;     */
 &nbsp;    public EventsViewModel getEventsViewModel() {
-<b class="nc">&nbsp;        return eventsViewModel;</b>
+<b class="fc">&nbsp;        return eventsViewModel;</b>
 &nbsp;    }
 &nbsp;}
 </code>
@@ -279,7 +279,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-29 21:28</div>
+    <div style="float:right;">generated on 2024-05-30 11:18</div>
 </div>
 </body>
 </html>

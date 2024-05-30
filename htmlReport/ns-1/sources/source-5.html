@@ -4,8 +4,8 @@
 <!DOCTYPE html>
 <html id="htmlId">
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=windows-1250"> 
-  <title>Coverage Report > AdminManageDonatedBooksViewModel</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > PhoneValidator</title>
   <style type="text/css">
     @import "../../css/coverage.css";
     @import "../../css/idea.min.css";
@@ -19,10 +19,10 @@
 <div class="breadCrumbs">
 Current scope:     <a href="../../index.html">all classes</a>
     <span class="separator">|</span>
-    <a href="../index.html">sep.viewmodel</a>
+    <a href="../index.html">sep.model.validators</a>
 </div>
 
-<h1>Coverage Summary for Class: AdminManageDonatedBooksViewModel (sep.viewmodel)</h1>
+<h1>Coverage Summary for Class: PhoneValidator (sep.model.validators)</h1>
 
 <table class="coverageStats">
 <tr>
@@ -37,33 +37,45 @@ Current scope:     <a href="../../index.html">all classes</a>
 </th>
 <th class="coverageStat 
 ">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
   Line, %
 </th>
 </tr>
 <tr>
-  <td class="name">AdminManageDonatedBooksViewModel</td>
+  <td class="name">PhoneValidator</td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/1)
+    (1/1)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    50%
   </span>
   <span class="absValue">
-    (0/7)
+    (1/2)
   </span>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    0%
+    100%
   </span>
   <span class="absValue">
-    (0/24)
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (5/6)
   </span>
 </td>
 </tr>
@@ -75,126 +87,30 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 
 <pre>
-<code class="sourceCode" id="sourceCode">&nbsp;package sep.viewmodel;
-&nbsp;
-&nbsp;import javafx.application.Platform;
-&nbsp;import javafx.beans.property.ListProperty;
-&nbsp;import javafx.beans.property.ObjectProperty;
-&nbsp;import javafx.beans.property.SimpleListProperty;
-&nbsp;import javafx.collections.FXCollections;
-&nbsp;import javafx.collections.ObservableList;
-&nbsp;import sep.model.Book;
-&nbsp;import sep.model.Model;
-&nbsp;
-&nbsp;import java.beans.PropertyChangeEvent;
-&nbsp;import java.beans.PropertyChangeListener;
-&nbsp;import java.rmi.RemoteException;
-&nbsp;import java.sql.SQLException;
+<code class="sourceCode" id="sourceCode">&nbsp;package sep.model.validators;
 &nbsp;
 &nbsp;/**
-&nbsp; * The AdminManageDonatedBooksViewModel class provides the view model for managing donated books in the admin view.
-&nbsp; * It handles the logic for approving and rejecting donated books, as well as loading the list of donated books from the model.
-&nbsp; * This class listens for property changes from the model and updates the view accordingly.
+&nbsp; * The PhoneValidator class provides a method to validate the phone.
 &nbsp; *
-&nbsp; * Author: Group 6 (Samuel, Kuba, Maciej, Romans)
+&nbsp; * @author Group 6 (Samuel, Kuba, Maciej, Romans)
 &nbsp; */
-&nbsp;public class AdminManageDonatedBooksViewModel implements PropertyChangeListener
-&nbsp;{
-&nbsp;    private final Model model;
-&nbsp;    final ListProperty&lt;Book&gt; bookList;
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Constructs an AdminManageDonatedBooksViewModel with the specified model.
-&nbsp;     * Initializes the book list and sets up a property change listener for the model.
-&nbsp;     *
-&nbsp;     * @param model The model to interact with for managing donated books
-&nbsp;     */
-<b class="nc">&nbsp;    public AdminManageDonatedBooksViewModel(Model model){</b>
-<b class="nc">&nbsp;        this.model = model;</b>
-<b class="nc">&nbsp;        this.bookList = new SimpleListProperty&lt;&gt;(FXCollections.observableArrayList());</b>
-<b class="nc">&nbsp;        model.addPropertyChangeListener(this);</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Binds the provided property to the book list property in the view model.
-&nbsp;     *
-&nbsp;     * @param property The property to bind to the book list
-&nbsp;     * @throws RemoteException If a remote communication error occurs
-&nbsp;     */
-&nbsp;    public void bindList(ObjectProperty&lt;ObservableList&lt;Book&gt;&gt; property) throws RemoteException {
-<b class="nc">&nbsp;        property.bindBidirectional(bookList);</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Approves a donated book with the specified details.
-&nbsp;     *
-&nbsp;     * @param id The ID of the donated book
-&nbsp;     * @param title The title of the book
-&nbsp;     * @param author The author of the book
-&nbsp;     * @param isbn The ISBN of the book
-&nbsp;     * @param year The year of publication
-&nbsp;     * @param publisher The publisher of the book
-&nbsp;     * @param pageCount The page count of the book
-&nbsp;     * @param genreId The genre ID of the book
-&nbsp;     * @throws SQLException If a database access error occurs
-&nbsp;     * @throws RemoteException If a remote communication error occurs
-&nbsp;     */
-&nbsp;    public void approveDonatedBook(int id, String title, String author, long isbn, int year, String publisher, int pageCount, String genreId) throws SQLException, RemoteException {
-<b class="nc">&nbsp;        model.approveDonatedBook(id, title, author, isbn, year, publisher, pageCount, genreId);</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Rejects a donated book with the specified ID.
-&nbsp;     *
-&nbsp;     * @param bookId The ID of the book to reject
-&nbsp;     * @throws SQLException If a database access error occurs
-&nbsp;     * @throws RemoteException If a remote communication error occurs
-&nbsp;     */
-&nbsp;    public void rejectDonatedBook(int bookId) throws SQLException, RemoteException {
-<b class="nc">&nbsp;        model.rejectDonatedBook(bookId);</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Resets the book list by fetching all donated books from the model.
-&nbsp;     *
-&nbsp;     * @throws RemoteException If a remote communication error occurs
-&nbsp;     */
-&nbsp;    public void resetBookList() throws RemoteException {
-<b class="nc">&nbsp;        bookList.setAll(model.getDonatedBooks());</b>
-&nbsp;    }
-&nbsp;
-&nbsp;    /**
-&nbsp;     * Handles property change events from the model.
-&nbsp;     * Updates the book list based on changes in donated books.
-&nbsp;     *
-&nbsp;     * @param evt The property change event
-&nbsp;     */
-&nbsp;    @Override
-&nbsp;    public void propertyChange(PropertyChangeEvent evt) {
-<b class="nc">&nbsp;        Platform.runLater(() -&gt; {</b>
-<b class="nc">&nbsp;            if (&quot;BookDonate&quot;.equals(evt.getPropertyName())) {</b>
-&nbsp;                try {
-<b class="nc">&nbsp;                    resetBookList();</b>
-<b class="nc">&nbsp;                } catch (RemoteException e) {</b>
-<b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
-<b class="nc">&nbsp;                }</b>
-&nbsp;            }
-<b class="nc">&nbsp;            if (&quot;DonatedBookApproved&quot;.equals(evt.getPropertyName())) {</b>
-&nbsp;                try {
-<b class="nc">&nbsp;                    resetBookList();</b>
-<b class="nc">&nbsp;                } catch (RemoteException e) {</b>
-<b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
-<b class="nc">&nbsp;                }</b>
-&nbsp;            }
-<b class="nc">&nbsp;            if (&quot;DonatedBookRejected&quot;.equals(evt.getPropertyName())) {</b>
-&nbsp;                try {
-<b class="nc">&nbsp;                    resetBookList();</b>
-<b class="nc">&nbsp;                } catch (RemoteException e) {</b>
-<b class="nc">&nbsp;                    throw new RuntimeException(e);</b>
-<b class="nc">&nbsp;                }</b>
-&nbsp;            }
-&nbsp;        });
-&nbsp;    }
+<b class="nc">&nbsp;public class PhoneValidator {</b>
+&nbsp;  /**
+&nbsp;   * Validates a given phone number.
+&nbsp;   *
+&nbsp;   * @param phone The phone number to be validated
+&nbsp;   * @throws IllegalArgumentException If the phone number does not consist of exactly 8 digits or contains non-numeric characters
+&nbsp;   */
+&nbsp;   public static void validate(String phone){
+<b class="fc">&nbsp;       if(phone.length()!= 8){</b>
+<b class="fc">&nbsp;           throw new IllegalArgumentException(&quot;Phone number must be 8 digits&quot;);</b>
+&nbsp;       }
+<b class="fc">&nbsp;       for(int i = 0; i &lt; phone.length(); i++){</b>
+<b class="fc">&nbsp;           if(!Character.isDigit(phone.charAt(i))){</b>
+<b class="fc">&nbsp;               throw new IllegalArgumentException(&quot;Phone number must only contain digits&quot;);</b>
+&nbsp;           }
+&nbsp;       }
+&nbsp;   }
 &nbsp;}
 </code>
 </pre>
@@ -219,7 +135,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2024-05-29 21:28</div>
+    <div style="float:right;">generated on 2024-05-30 11:24</div>
 </div>
 </body>
 </html>
